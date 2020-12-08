@@ -1,0 +1,8 @@
+export const SET_MODEL = 'SET_MODEL'
+export const UPDATE_MODEL = 'UPDATE_MODEL'
+export const LOADING = 'LOADING'
+export const LOADED = 'LOADED'
+export const SET_PARAMS = 'SET_PARAMS'
+export const UPDATE_PARAMS = 'UPDATE_PARAMS'
+export const SET_LIST = 'SET_LIST'
+export const SET_ERROR = 'SET_ERROR'
