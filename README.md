@@ -1,36 +1,27 @@
-# NMH - Dashboard - Frontend
+# Swaponline
 
 ## Docker environment
 
-### Start development server
-```
-docker-compose up
-```
-
 ## Project setup
+
 ```
-npm run install
+yarn
 ```
 
 ### Compiles and hot-reloads for development
+
 ```
-npm run serve
+yarn serve
 ```
 
 ### Compiles and minifies for production
-```
-npm run build
-```
 
-### Run your unit tests
 ```
-npm run test:unit
+yarn build
 ```
 
 ### Lints and fixes files
-```
-npm run lint
-```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+```
+yarn lint
+```
