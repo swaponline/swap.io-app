@@ -5,7 +5,7 @@ module.exports = {
     open: true,
     watchOptions: {
       poll: true
-    },
+    }
     // proxy: ''
   },
 
