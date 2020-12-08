@@ -1,7 +1,5 @@
 # Swaponline
 
-## Docker environment
-
 ## Project setup
 
 ```
