@@ -16,7 +16,7 @@
   }
 }
 
-@mixin tablet {
+@mixin tablet() {
   @media screen and (max-width: $--bp-tablet) {
     @content;
   }
