@@ -8,7 +8,7 @@
         active-class="navigation-drawer__list-item--purple"
         link
         color="purple"
-        class="navigation-drawer__list-item"
+        class="navigation-drawer__list-item pb-2 mb-0"
       >
         <v-list-item-icon class="navigation-drawer__list-icon mr-0 mb-4 ml-0">
           <v-icon :class="`navigation-drawer__icon--${item.modificator}`">{{ item.icon }}</v-icon>
@@ -62,9 +62,8 @@ export default {
   .navigation-drawer {
     min-width: 100%;
     position: fixed;
-    bottom: 0 !important;
-    top: calc(100% - 55px) !important;
-    max-height: 55px;
+    top: calc(100% - 56px) !important;
+    max-height: 56px;
     &__list {
       display: flex;
     }
