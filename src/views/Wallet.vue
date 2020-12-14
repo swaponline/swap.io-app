@@ -1,9 +1,11 @@
 <template>
-  <div>Hello World</div>
+  <div></div>
 </template>
 
 <script>
 export default {
-  name: 'HelloWorld'
+  name: 'Wallet'
 }
 </script>
+
+<style></style>
