@@ -8,29 +8,29 @@ export default [
       {
         path: '/wallet',
         name: 'Wallets',
-        component: () => import(/* webpackChunkName: 'WalletsLayout' */ '@/views/Wallets'),
+        component: () => import(/* webpackChunkName: 'WalletsLayout' */ '@/views/Wallets/Wallets.vue'),
         children: [
           {
             path: '/wallet/:nameWallet',
             name: 'Wallet',
-            component: () => import(/* webpackChunkName: 'Wallet' */ '@/views/Wallet')
+            component: () => import(/* webpackChunkName: 'Wallet' */ '@/views/Wallets/Wallet.vue')
           }
         ]
       },
       {
         path: '/swap',
         name: 'Swap',
-        component: () => import(/* webpackChunkName: 'Wallet' */ '@/views/Wallet')
+        component: () => import(/* webpackChunkName: 'Wallet' */ '@/views/Wallets/Wallets.vue')
       },
       {
         path: '/history',
         name: 'History',
-        component: () => import(/* webpackChunkName: 'Wallet' */ '@/views/Wallet')
+        component: () => import(/* webpackChunkName: 'Wallet' */ '@/views/Wallets/Wallets.vue')
       },
       {
         path: '/settings',
         name: 'Settings',
-        component: () => import(/* webpackChunkName: 'Wallet' */ '@/views/Wallet')
+        component: () => import(/* webpackChunkName: 'Wallet' */ '@/views/Wallets/Wallets.vue')
       }
     ]
   }
