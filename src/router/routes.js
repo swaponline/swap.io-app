@@ -8,10 +8,10 @@ export default [
       {
         path: '/wallet',
         name: 'Wallets',
-        component: () => import(/* webpackChunkName: 'WalletsLayout' */ '@/layouts/WalletsLayout'),
+        component: () => import(/* webpackChunkName: 'WalletsLayout' */ '@/views/Wallets'),
         children: [
           {
-            path: '/wallet/:namewallet',
+            path: '/wallet/:nameWallet',
             name: 'Wallet',
             component: () => import(/* webpackChunkName: 'Wallet' */ '@/views/Wallet')
           }
