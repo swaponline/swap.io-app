@@ -1,6 +1,6 @@
 <template>
   <div class="main-layout">
-    <v-toolbar color="purple" class="main-layout__header"></v-toolbar>
+    <v-toolbar color="purple" class="main-layout__header" height="auto"></v-toolbar>
     <div class="main-layout__page">
       <navigation-drawer class="main-layout__navbar"></navigation-drawer>
       <router-view></router-view>
@@ -22,9 +22,12 @@ export default {
 <style lang="scss">
 .main-layout {
   height: 100vh;
+  &__header {
+    min-height: 64px;
+  }
   &__page {
     display: flex;
-    height: 100%;
+    height: calc(100% - 64px);
   }
 }
 @include tablet {

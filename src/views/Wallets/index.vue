@@ -30,7 +30,7 @@
               v-for="(subWallet, i) in wallet.subWallets"
               :key="i"
               link
-              :to="{ name: 'Wallet', params: { nameWallet: subWallet.adress } }"
+              :to="{ name: 'Wallet', params: { nameWallet: subWallet.address } }"
             >
               <v-list-item-content>
                 <v-list-item-title class="d-flex mr-4"
