@@ -11,7 +11,7 @@ export default {
           {
             name: 'Default',
             value: 0.056734,
-            addresss: '1C9Uae6kyDtPo4ykzd5AJaLzLEZSpEbP3y'
+            address: '1C9Uae6kyDtPo4ykzd5AJaLzLEZSpEbP3y'
           }
         ]
       },
@@ -22,7 +22,7 @@ export default {
           {
             name: 'Default',
             value: 40.0561,
-            addresss: '0x2dF6C87022A039c60E1A27ED6ea7A8cDa3101Cd0'
+            address: '0x2dF6C87022A039c60E1A27ED6ea7A8cDa3101Cd0'
           },
           {
             name: 'Swaps',
@@ -41,7 +41,7 @@ export default {
           {
             name: 'Default',
             value: 100.1,
-            addresss: 'GUzPzmRhx5VgsYH3vZjGjLgtFQMHkJzyHU'
+            address: 'GUzPzmRhx5VgsYH3vZjGjLgtFQMHkJzyHU'
           }
         ]
       }
