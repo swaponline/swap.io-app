@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import Wallets from './Modules/Wallets'
+import Wallets from './modules/Wallets'
 
 Vue.use(Vuex)
 
