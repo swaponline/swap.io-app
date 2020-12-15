@@ -15,7 +15,7 @@
           Invoice
         </v-btn>
       </div>
-      <v-sheet elevation="4" class="mt-8">
+      <v-sheet elevation="4" class="mt-8 mb-2">
         <v-tabs v-model="tab" background-color="white">
           <v-tabs-slider></v-tabs-slider>
           <v-tab href="#all">All</v-tab>
@@ -67,10 +67,10 @@ export default {
   &__info {
     text-align: center;
     width: 100%;
-    font-size: $--font-size-subtitle;
+    font-size: $--font-size-medium;
   }
   &__value {
-    font-size: $--font-size-title;
+    font-size: $--font-size-small-subtitle;
     font-weight: $--font-weight-bold;
   }
   &__value-in-usd {

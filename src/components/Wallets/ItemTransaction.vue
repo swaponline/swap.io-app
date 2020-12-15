@@ -1,10 +1,9 @@
 <template>
   <v-list-item class="item-transaction">
-    <v-list-item-avatar size="50">
+    <v-list-item-avatar size="40">
       <v-icon
         class="item-transaction__icon grey lighten-1"
         dark
-        large
         :class="{
           'item-transaction__icon--received': type.toLowerCase() === 'received'
         }"
@@ -92,7 +91,7 @@ export default {
   &__title {
     display: flex;
     align-items: center;
-    font-size: $--font-size-subtitle;
+    font-size: $--font-size-medium;
     font-weight: $--font-weight-bold;
   }
   &__status {
@@ -121,7 +120,7 @@ export default {
   }
   &__subtitle {
     color: $--grey;
-    font-size: $--font-size-small-subtitle;
+    font-size: $--font-size-medium;
   }
   &__value-in-usd {
     margin-left: 20px;
