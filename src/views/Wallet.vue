@@ -17,7 +17,6 @@
       </div>
       <v-sheet elevation="4" class="mt-8 mb-2">
         <v-tabs v-model="tab" background-color="white">
-          <v-tabs-slider></v-tabs-slider>
           <v-tab href="#all">All</v-tab>
           <v-tab href="#confirmed">Confirmed</v-tab>
           <v-tab href="#pending">Pending</v-tab>
@@ -25,9 +24,11 @@
         </v-tabs>
       </v-sheet>
       <v-tabs-items v-model="tab">
-        <v-tab-item :value="tab">
-          <list-transactions :filter-type="tab"></list-transactions>
-        </v-tab-item>
+        <v-slide-x-transition>
+          <v-tab-item v-show="tab" :key="tab" :value="tab">
+            <list-transactions :filter-type="tab"></list-transactions>
+          </v-tab-item>
+        </v-slide-x-transition>
       </v-tabs-items>
     </div>
   </div>
