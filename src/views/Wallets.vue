@@ -92,6 +92,7 @@ export default {
     width: 30%;
     display: flex;
     flex-direction: column;
+    border-right: 1px solid $--grey;
   }
   &__wallet {
     width: 70%;
