@@ -1,12 +1,12 @@
 <template>
-  <v-list-item class="item-transition">
+  <v-list-item class="item-transaction">
     <v-list-item-avatar size="50">
       <v-icon
-        class="item-transition__icon grey lighten-1"
+        class="item-transaction__icon grey lighten-1"
         dark
         large
         :class="{
-          'item-transition__icon--received': type.toLowerCase() === 'received'
+          'item-transaction__icon--received': type.toLowerCase() === 'received'
         }"
       >
         mdi-arrow-bottom-left
@@ -14,23 +14,23 @@
     </v-list-item-avatar>
     <template>
       <v-list-item-content class="text-left">
-        <v-list-item-title class="item-transition__title">
-          <span class="item-transition__type">{{ type }}</span>
-          <span class="item-transition__status">{{ status }}</span>
+        <v-list-item-title class="item-transaction__title">
+          <span class="item-transaction__type">{{ type }}</span>
+          <span class="item-transaction__status">{{ status }}</span>
         </v-list-item-title>
         <v-list-item-subtitle>
-          <h3 class="item-transition__time">{{ `${hours}:${minutes}` }}</h3>
+          <h3 class="item-transaction__time">{{ `${hours}:${minutes}` }}</h3>
         </v-list-item-subtitle>
       </v-list-item-content>
       <v-list-item-action>
-        <v-list-item-title class="item-transition__title">
-          <span class="item-transition__crypto-currency">{{ currency }}</span>
-          <span class="item-transition__value">{{ type.toLowerCase() === 'received' ? '+' : '-' }}{{ value }}</span>
+        <v-list-item-title class="item-transaction__title">
+          <span class="item-transaction__crypto-currency">{{ currency }}</span>
+          <span class="item-transaction__value">{{ computedValue }}</span>
         </v-list-item-title>
         <v-list-item-subtitle>
-          <h3 class="item-transition__subtitle">
-            <span class="item-transition__currency">USD</span>
-            <span class="item-transition__value-in-usd">~{{ valueInUsd }}</span>
+          <h3 class="item-transaction__subtitle">
+            <span class="item-transaction__currency">USD</span>
+            <span class="item-transaction__value-in-usd">~{{ valueInUsd }}</span>
           </h3>
         </v-list-item-subtitle>
       </v-list-item-action>
@@ -68,6 +68,9 @@ export default {
     }
   },
   computed: {
+    computedValue() {
+      return (this.type.toLowerCase() === 'received' ? '+' : '-') + this.value.toString()
+    },
     hours() {
       return this.date
         .getHours()
@@ -85,7 +88,7 @@ export default {
 </script>
 
 <style lang="scss">
-.item-transition {
+.item-transaction {
   &__title {
     display: flex;
     align-items: center;
@@ -99,7 +102,7 @@ export default {
     font-size: $--font-size-small;
     font-weight: $--font-weight-medium;
     color: $--blue;
-    border-radius: 3px;
+    border-radius: $--small-border-radius;
     padding: 4px 8px;
     margin-left: 16px;
   }
