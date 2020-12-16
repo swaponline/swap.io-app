@@ -157,11 +157,6 @@ export default {
 }
 @include tablet {
   .wallet {
-    position: fixed;
-    top: 0;
-    left: 0;
-    min-height: 100vh;
-    height: 100%;
     &__info {
       &--open-menu {
         width: 100%;
