@@ -33,9 +33,9 @@
         </v-tabs-items>
       </div>
       <div
-        class="wallet__side"
+        class="wallet__side-menu"
         :class="{
-          'wallet__side--open-menu': open !== null
+          'wallet__side-menu--open-menu': open !== null
         }"
       >
         <wallets-menu :visible="open === 'menu'" :await-status="open === 'share'">
@@ -106,16 +106,17 @@ export default {
 .wallet {
   background: $--white;
   &__content {
+    position: relative;
     width: 100%;
     display: flex;
     height: calc(100% - 64px);
   }
   &__info {
+    background: $--white;
     padding-top: 16px;
     text-align: center;
     width: 100%;
     font-size: $--font-size-medium;
-    border-right: 1px solid $--grey;
     transition: 0.5s;
     &--open-menu {
       width: 75%;
@@ -137,14 +138,20 @@ export default {
   &__button {
     margin: 0 16px;
   }
-  &__side {
+  &__side-menu {
     background: $--white;
-    position: relative;
-    width: 0%;
+    position: absolute;
+    z-index: 2;
+    right: 0;
+    height: 100%;
+    width: 25%;
+    position: absolute;
     transition: 0.5s;
     overflow: hidden;
+    border-left: 1px solid $--grey;
+    transform: translateX(100%);
     &--open-menu {
-      width: 25%;
+      transform: translateX(0%);
     }
   }
 }
@@ -155,6 +162,18 @@ export default {
     left: 0;
     min-height: 100vh;
     height: 100%;
+    &__info {
+      &--open-menu {
+        width: 100%;
+      }
+    }
+    &__side-menu {
+      width: 100%;
+      min-width: 100vw;
+      &--open-menu {
+        width: 100%;
+      }
+    }
   }
   // Переопределим некоторые стили для vuetify
   // уберем левый отступ у вкладок на маленьких устройствах
