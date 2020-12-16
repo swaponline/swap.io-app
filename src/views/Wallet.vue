@@ -17,7 +17,7 @@
           </v-btn>
         </div>
         <v-sheet elevation="4" class="mt-8 mb-2">
-          <v-tabs v-model="tab" background-color="white">
+          <v-tabs v-model="tab" background-color="white" fixed-tabs>
             <v-tab href="#all">All</v-tab>
             <v-tab href="#confirmed">Confirmed</v-tab>
             <v-tab href="#pending">Pending</v-tab>
@@ -138,6 +138,7 @@ export default {
     margin: 0 16px;
   }
   &__side {
+    background: $--white;
     position: relative;
     width: 0%;
     transition: 0.5s;
@@ -154,6 +155,13 @@ export default {
     left: 0;
     min-height: 100vh;
     height: 100%;
+  }
+  // Переопределим некоторые стили для vuetify
+  // уберем левый отступ у вкладок на маленьких устройствах
+  .v-slide-group__prev {
+    &--disabled {
+      display: none !important;
+    }
   }
 }
 </style>
