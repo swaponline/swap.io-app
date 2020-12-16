@@ -38,10 +38,10 @@
           'wallet__side-menu--open-menu': open !== null
         }"
       >
-        <wallets-menu :visible="open === 'menu'" :await-status="open === 'share'">
+        <wallets-menu :visible="open === 'menu'" :await-status="open === 'share'" :list="[]">
           <template #default="{ info }"> item {{ info }} </template>
         </wallets-menu>
-        <wallets-menu :visible="open === 'share'" :await-status="open === 'menu'">
+        <wallets-menu :visible="open === 'share'" :await-status="open === 'menu'" :list="[]">
           <template #default="{ info }"> item share {{ info }} </template>
         </wallets-menu>
       </div>
