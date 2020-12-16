@@ -38,24 +38,12 @@
           'wallet__side--open-menu': open !== null
         }"
       >
-        <v-list
-          class="wallet__side-menu purple"
-          :class="{
-            'wallet__side-menu--open-menu': open === 'menu',
-            'wallet__side-menu--await': open === 'share'
-          }"
-        >
-          <v-list-item v-for="i in 5" :key="i">item {{ i }}</v-list-item>
-        </v-list>
-        <v-list
-          class="wallet__side-menu purple"
-          :class="{
-            'wallet__side-menu--open-menu': open === 'share',
-            'wallet__side-menu--await': open === 'menu'
-          }"
-        >
-          <v-list-item v-for="i in 5" :key="i">item share {{ i }}</v-list-item>
-        </v-list>
+        <wallets-menu :visible="open === 'menu'" :await-status="open === 'share'">
+          <template #default="{ info }"> item {{ info }} </template>
+        </wallets-menu>
+        <wallets-menu :visible="open === 'share'" :await-status="open === 'menu'">
+          <template #default="{ info }"> item share {{ info }} </template>
+        </wallets-menu>
       </div>
     </div>
   </div>
@@ -63,12 +51,14 @@
 
 <script>
 import HeaderWallet from '@/components/Wallets/HeaderWallet.vue'
+import WalletsMenu from '@/components/Wallets/WalletsMenu.vue'
 import ListTransactions from '@/components/Wallets/ListTransactions.vue'
 
 export default {
   name: 'Wallet',
   components: {
     HeaderWallet,
+    WalletsMenu,
     ListTransactions
   },
   data() {
@@ -154,25 +144,6 @@ export default {
     overflow: hidden;
     &--open-menu {
       width: 25%;
-    }
-  }
-  &__side-menu {
-    border-top: 1px solid $--grey;
-    overflow: hidden;
-    width: 100%;
-    color: $--white;
-    position: absolute;
-    left: 0;
-    top: 0;
-    transition: 0.5s;
-    white-space: nowrap;
-    &--open-menu {
-      opacity: 0.85;
-      transform: translate(0, 0);
-      z-index: 2;
-    }
-    &--await {
-      transform: translate(100%, 0);
     }
   }
 }
