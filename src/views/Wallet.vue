@@ -3,9 +3,9 @@
     <header-wallet @openMenu="openMenu" />
     <div class="wallet__content">
       <div class="wallet__info" :class="{ 'wallet__info--open-menu': open !== null }">
-        <p class="wallet__value">{{ wallet.value }}</p>
+        <p class="wallet__value">{{ currentWallet.value }}</p>
         <p class="wallet__value-in-usd"><span>$</span> 3000.04</p>
-        <p class="wallet__address">{{ wallet.address }}</p>
+        <p class="wallet__address">{{ currentWallet.address }}</p>
         <div class="wallet__buttons">
           <v-btn class="wallet__button" color="primary" outlined>
             <v-icon class="wallet__icon-copy">mdi-content-copy</v-icon>
@@ -61,6 +61,12 @@ export default {
     WalletsMenu,
     ListTransactions
   },
+  props: {
+    wallet: {
+      type: String,
+      required: true
+    }
+  },
   data() {
     return {
       tab: 'all',
@@ -68,15 +74,9 @@ export default {
     }
   },
   computed: {
-    route() {
-      return this.$route
-    },
-    nameWallet() {
-      return this.$route.params.nameWallet
-    },
-    wallet() {
-      if (this.nameWallet) {
-        return this.$store.getters.siblingList.find(el => el.address === this.nameWallet)
+    currentWallet() {
+      if (this.wallet) {
+        return this.$store.getters.siblingList.find(el => el.address === this.wallet)
       }
       return {}
     }
@@ -104,6 +104,7 @@ export default {
 
 <style lang="scss">
 .wallet {
+  height: 100%;
   background: $--white;
   &__content {
     position: relative;
