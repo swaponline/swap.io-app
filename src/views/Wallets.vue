@@ -1,12 +1,7 @@
 <template>
   <page-layout class="wallets-layout">
     <template #main-block>
-      <div
-        class="wallets-layout__list"
-        :class="{
-          'wallets-layout__list--open-wallet': $route.params.nameWallet
-        }"
-      >
+      <div class="wallets-layout__list">
         <v-toolbar class="wallets-layout__header-list" color="purple">
           <v-toolbar-items class="align-center">
             <v-img :src="photo" width="40" height="40" class="rounded-circle" position="center top"></v-img>
@@ -35,7 +30,8 @@
               v-for="(subWallet, i) in wallet.subWallets"
               :key="i"
               link
-              :to="{ name: 'Wallet', params: { nameWallet: subWallet.address } }"
+              exact
+              :to="{ name: 'Wallets', query: { wallet: subWallet.address } }"
             >
               <v-list-item-content>
                 <v-list-item-title class="d-flex mr-4"
@@ -52,14 +48,7 @@
       </div>
     </template>
     <template #more-info-block>
-      <div
-        class="wallets-layout__wallet"
-        :class="{
-          'wallets-layout__wallet--open-wallet': $route.params.nameWallet
-        }"
-      >
-        <router-view />
-      </div>
+      <wallet-info v-if="query" :wallet="localQueryWallet" />
     </template>
   </page-layout>
 </template>
@@ -68,14 +57,24 @@
 import { MODULE_NAME as WALLETS_NAME } from '@/store/modules/Wallets'
 import PageLayout from '@/layouts/PageLayout/index.vue'
 import SvgIcon from '@/components/SvgIcon.vue'
+import Wallet from './Wallet.vue'
 
 export default {
   name: 'WalletsLayout',
   components: {
     SvgIcon,
-    PageLayout
+    PageLayout,
+    WalletInfo: Wallet
+  },
+  data() {
+    return {
+      localQueryWallet: null
+    }
   },
   computed: {
+    queryWallet() {
+      return this.$route.query.wallet
+    },
     photo() {
       // eslint-disable-next-line vue/max-len
       return `https://sun9-60.userapi.com/impg/zCF4saFPwlwi0PtC41GIQ1WP30Khy-thQ9FtuA/b6bn4u-Y9D4.jpg?size=646x1148&quality=96&proxy=1&sign=b1ff76233f1ee088d886dd165748e481&type=album`
@@ -83,6 +82,23 @@ export default {
     wallets() {
       return this.$store.state[WALLETS_NAME].list
     }
+  },
+  watch: {
+    queryWallet: {
+      immediate: true,
+      handler(value) {
+        if (!value) {
+          this.timer = setTimeout(() => {
+            this.localQueryWallet = null
+          }, 500)
+        } else {
+          this.localQueryWallet = value
+        }
+      }
+    }
+  },
+  beforeDestroy() {
+    clearInterval(this.timer)
   }
 }
 </script>
@@ -96,13 +112,10 @@ export default {
   }
   &__list {
     position: relative;
-    width: 30%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     border-right: 1px solid $--grey;
-  }
-  &__wallet {
-    width: 70%;
   }
   &__header-list {
     font-size: 18px;
@@ -130,41 +143,11 @@ export default {
     height: 20px;
     fill: $--white;
   }
-  &__info-block {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: $--font-size-subtitle;
-    width: 70%;
-  }
 }
 
 @include tablet {
   .wallets-layout {
     position: relative;
-    &__list {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      border-right: none;
-      transition: 0.5s;
-      transform: translate(0, 0);
-      &--open-wallet {
-        transform: translate(-100%, 0);
-      }
-    }
-    &__wallet {
-      position: fixed;
-      width: 100%;
-      transition: 0.5s;
-      transform: translate(100%, 0);
-      &--open-wallet {
-        transform: translate(0, 0);
-      }
-    }
-    &__info-block {
-      display: none;
-    }
   }
 }
 </style>
