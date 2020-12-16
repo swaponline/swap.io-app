@@ -47,12 +47,12 @@
       </div>
     </template>
     <template #more-info-block>
-      <v-slide-y-reverse-transition mode="out-in">
+      <v-slide-x-reverse-transition mode="out-in">
         <router-view v-if="$route.params.nameWallet" :key="$route.params.nameWallet" class="wallets-layout__wallet" />
         <div v-else class="wallets-layout__info-block">
           Выберите кошелек чтобы увидеть подробную информацию.
         </div>
-      </v-slide-y-reverse-transition>
+      </v-slide-x-reverse-transition>
     </template>
   </page-layout>
 </template>
