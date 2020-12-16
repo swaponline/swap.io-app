@@ -1,7 +1,12 @@
 <template>
-  <page-layout>
+  <page-layout class="wallets-layout">
     <template #main-block>
-      <div class="wallets-layout__list">
+      <div
+        class="wallets-layout__list"
+        :class="{
+          'wallets-layout__list--open-wallet': $route.params.nameWallet
+        }"
+      >
         <v-toolbar class="wallets-layout__header-list" color="purple">
           <v-toolbar-items class="align-center">
             <v-img :src="photo" width="40" height="40" class="rounded-circle" position="center top"></v-img>
@@ -134,15 +139,26 @@ export default {
 
 @include tablet {
   .wallets-layout {
-    flex-direction: column;
+    position: relative;
     &__list {
+      position: fixed;
       width: 100%;
       height: 100%;
-      margin: 0px 0 57px;
       border-right: none;
+      transition: 0.5s;
+      transform: translate(0, 0);
+      &--open-wallet {
+        transform: translate(-100%, 0);
+      }
     }
     &__wallet {
+      position: fixed;
       width: 100%;
+      transition: 0.5s;
+      transform: translate(100%, 0);
+      &--open-wallet {
+        transform: translate(0, 0);
+      }
     }
     &__info-block {
       display: none;
