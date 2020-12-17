@@ -27,7 +27,8 @@ export default {
           currency: 'BTC',
           value: 0.693232,
           valueInUsd: 13382.39,
-          data: new Date()
+          date: new Date(),
+          status: 'confirmed'
         },
         {
           id: 2,
@@ -35,7 +36,8 @@ export default {
           currency: 'BTC',
           value: 0.693232,
           valueInUsd: 13382.39,
-          data: new Date()
+          date: new Date(),
+          status: 'confirmed'
         }
       ]
     }

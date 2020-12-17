@@ -40,13 +40,19 @@
             </v-list-item>
           </v-list-group>
         </v-list>
+        <v-spacer />
+        <v-btn color="primary" class="mb-6 ml-auto mr-4" relative right fab>
+          <v-icon>mdi-plus</v-icon>
+        </v-btn>
       </div>
     </template>
     <template #more-info-block>
-      <router-view v-if="$route.params.nameWallet" class="wallets-layout__wallet" />
-      <div v-else class="wallets-layout__info-block">
-        Выберите кошелек чтобы увидеть подробную информацию.
-      </div>
+      <v-slide-x-reverse-transition mode="out-in">
+        <router-view v-if="$route.params.nameWallet" :key="$route.params.nameWallet" class="wallets-layout__wallet" />
+        <div v-else class="wallets-layout__info-block">
+          Выберите кошелек чтобы увидеть подробную информацию.
+        </div>
+      </v-slide-x-reverse-transition>
     </template>
   </page-layout>
 </template>
@@ -82,13 +88,18 @@ export default {
     border-bottom: 1px solid rgba($color: $--black, $alpha: 0.2);
   }
   &__list {
+    position: relative;
     width: 30%;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid $--grey;
   }
   &__wallet {
     width: 70%;
   }
   &__header-list {
     font-size: 18px;
+    max-height: 64px;
   }
   &__currnecy {
     color: rgba($color: $--white, $alpha: 0.5);
@@ -126,9 +137,15 @@ export default {
     flex-direction: column;
     &__list {
       width: 100%;
+      height: 100%;
+      margin: 0px 0 57px;
+      border-right: none;
     }
     &__wallet {
       width: 100%;
+    }
+    &__info-block {
+      display: none;
     }
   }
 }

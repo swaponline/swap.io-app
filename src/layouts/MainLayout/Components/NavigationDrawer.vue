@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer class="navigation-drawer" permanent width="0">
+  <v-navigation-drawer class="navigation-drawer" permanent touchless width="0">
     <v-list dense nav class="navigation-drawer__list">
       <v-list-item
         v-for="item in items"
@@ -37,7 +37,9 @@ export default {
 
 <style lang="scss">
 .navigation-drawer {
+  position: relative;
   min-width: 70px;
+  z-index: 9999;
   &__list {
     padding: 0 0;
     .navigation-drawer__list-item {
@@ -62,8 +64,9 @@ export default {
   .navigation-drawer {
     min-width: 100%;
     position: fixed;
-    top: calc(100% - 56px) !important;
-    max-height: 56px;
+    top: calc(100% - 57px) !important;
+    border-top: 1px solid $--grey;
+    max-height: 57px;
     &__list {
       display: flex;
     }
