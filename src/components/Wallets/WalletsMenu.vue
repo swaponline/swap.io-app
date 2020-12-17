@@ -52,4 +52,16 @@ export default {
     transform: translate(100%, 0);
   }
 }
+@include tablet {
+  .wallets-menu {
+    &--open-menu {
+      opacity: 0.85;
+      transform: translate(0, 0);
+      z-index: 2;
+    }
+    &--await {
+      transform: translate(0, -100%);
+    }
+  }
+}
 </style>

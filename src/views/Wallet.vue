@@ -110,13 +110,16 @@ export default {
     position: relative;
     width: 100%;
     display: flex;
-    height: calc(100% - 64px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: calc(100vh - 128px);
   }
   &__info {
     background: $--white;
     padding-top: 16px;
     text-align: center;
     width: 100%;
+    height: 100%;
     font-size: $--font-size-medium;
     transition: 0.5s;
     &--open-menu {
@@ -158,15 +161,31 @@ export default {
 }
 @include tablet {
   .wallet {
+    &__content {
+      flex-direction: column;
+      height: calc(100vh - 176px);
+    }
     &__info {
+      order: 2;
       &--open-menu {
         width: 100%;
       }
     }
     &__side-menu {
+      order: 1;
+      position: relative;
       width: 100%;
-      min-width: 100vw;
+      min-height: 0;
+      height: 0;
+      overflow: hidden;
+      left: 0;
+      transform: translateX(0);
       &--open-menu {
+        height: auto;
+        min-height: 256px;
+        max-height: 256px;
+        overflow-y: auto;
+        overflow-x: hidden;
         width: 100%;
       }
     }
