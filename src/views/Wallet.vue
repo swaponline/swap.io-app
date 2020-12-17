@@ -180,6 +180,7 @@ export default {
       overflow: hidden;
       left: 0;
       transform: translateX(0);
+      border-left: none;
       &--open-menu {
         height: auto;
         min-height: 256px;

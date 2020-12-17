@@ -54,6 +54,7 @@ export default {
 }
 @include tablet {
   .wallets-menu {
+    transform: translate(0, -100%);
     &--open-menu {
       opacity: 0.85;
       transform: translate(0, 0);
