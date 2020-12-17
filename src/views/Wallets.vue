@@ -47,12 +47,12 @@
       </div>
     </template>
     <template #more-info-block>
-      <v-slide-x-reverse-transition hide-on-leave>
-        <router-view v-show="$route.params.nameWallet" :key="$route.params.nameWallet" class="wallets-layout__wallet" />
+      <v-slide-x-reverse-transition mode="out-in">
+        <router-view v-if="$route.params.nameWallet" :key="$route.params.nameWallet" class="wallets-layout__wallet" />
+        <div v-else class="wallets-layout__info-block">
+          Выберите кошелек чтобы увидеть подробную информацию.
+        </div>
       </v-slide-x-reverse-transition>
-      <div v-show="!$route.params.nameWallet" class="wallets-layout__info-block">
-        Выберите кошелек чтобы увидеть подробную информацию.
-      </div>
     </template>
   </page-layout>
 </template>
@@ -137,9 +137,15 @@ export default {
     flex-direction: column;
     &__list {
       width: 100%;
+      height: 100%;
+      margin: 0px 0 57px;
+      border-right: none;
     }
     &__wallet {
       width: 100%;
+    }
+    &__info-block {
+      display: none;
     }
   }
 }
