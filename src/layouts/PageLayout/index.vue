@@ -27,10 +27,12 @@ export default {
   height: 100%;
   overflow-x: hidden;
   &__main-block {
+    position: relative;
     height: 100%;
     width: 30%;
   }
   &__more-info-block {
+    position: relative;
     height: 100%;
     width: 70%;
   }
