@@ -3,9 +3,9 @@
     <header-wallet @openMenu="openMenu" />
     <div class="wallet__content">
       <div class="wallet__info" :class="{ 'wallet__info--open-menu': open !== null }">
-        <p class="wallet__value">{{ wallet.value }}</p>
+        <p class="wallet__value">{{ currentWallet.value }}</p>
         <p class="wallet__value-in-usd"><span>$</span> 3000.04</p>
-        <p class="wallet__address">{{ wallet.address }}</p>
+        <p class="wallet__address">{{ currentWallet.address }}</p>
         <div class="wallet__buttons">
           <v-btn class="wallet__button" color="primary" outlined>
             <v-icon class="wallet__icon-copy">mdi-content-copy</v-icon>
@@ -61,6 +61,12 @@ export default {
     WalletsMenu,
     ListTransactions
   },
+  props: {
+    wallet: {
+      type: String,
+      required: true
+    }
+  },
   data() {
     return {
       tab: 'all',
@@ -68,15 +74,9 @@ export default {
     }
   },
   computed: {
-    route() {
-      return this.$route
-    },
-    nameWallet() {
-      return this.$route.params.nameWallet
-    },
-    wallet() {
-      if (this.nameWallet) {
-        return this.$store.getters.siblingList.find(el => el.address === this.nameWallet)
+    currentWallet() {
+      if (this.wallet) {
+        return this.$store.getters.siblingList.find(el => el.address === this.wallet)
       }
       return {}
     }
@@ -104,18 +104,22 @@ export default {
 
 <style lang="scss">
 .wallet {
+  height: 100%;
   background: $--white;
   &__content {
     position: relative;
     width: 100%;
     display: flex;
-    height: calc(100% - 64px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: calc(100vh - 128px);
   }
   &__info {
     background: $--white;
     padding-top: 16px;
     text-align: center;
     width: 100%;
+    height: 100%;
     font-size: $--font-size-medium;
     transition: 0.5s;
     &--open-menu {
@@ -157,20 +161,32 @@ export default {
 }
 @include tablet {
   .wallet {
-    position: fixed;
-    top: 0;
-    left: 0;
-    min-height: 100vh;
-    height: 100%;
+    &__content {
+      flex-direction: column;
+      height: calc(100vh - 176px);
+    }
     &__info {
+      order: 2;
       &--open-menu {
         width: 100%;
       }
     }
     &__side-menu {
+      order: 1;
+      position: relative;
       width: 100%;
-      min-width: 100vw;
+      min-height: 0;
+      height: 0;
+      overflow: hidden;
+      left: 0;
+      transform: translateX(0);
+      border-left: none;
       &--open-menu {
+        height: auto;
+        min-height: 256px;
+        max-height: 256px;
+        overflow-y: auto;
+        overflow-x: hidden;
         width: 100%;
       }
     }

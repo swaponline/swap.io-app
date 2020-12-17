@@ -1,5 +1,5 @@
 <template>
-  <page-layout>
+  <page-layout class="wallets-layout">
     <template #main-block>
       <div class="wallets-layout__list">
         <v-toolbar class="wallets-layout__header-list" color="purple">
@@ -30,7 +30,8 @@
               v-for="(subWallet, i) in wallet.subWallets"
               :key="i"
               link
-              :to="{ name: 'Wallet', params: { nameWallet: subWallet.address } }"
+              exact
+              :to="{ name: 'Wallets', query: { wallet: subWallet.address } }"
             >
               <v-list-item-content>
                 <v-list-item-title class="d-flex mr-4"
@@ -47,12 +48,18 @@
       </div>
     </template>
     <template #more-info-block>
-      <v-slide-x-reverse-transition mode="out-in">
-        <router-view v-if="$route.params.nameWallet" :key="$route.params.nameWallet" class="wallets-layout__wallet" />
-        <div v-else class="wallets-layout__info-block">
-          Выберите кошелек чтобы увидеть подробную информацию.
-        </div>
-      </v-slide-x-reverse-transition>
+      <transition
+        name="custom-classes-transition"
+        enter-class="wallets-layout__animation"
+        leave-to-class="wallets-layout__animation"
+        enter-active-class="wallets-layout__animation-active"
+        leave-active-class="wallets-layout__animation-active"
+      >
+        <wallet-info v-if="queryWallet" :key="queryWallet" :wallet="queryWallet" />
+      </transition>
+      <div v-if="!queryWallet">
+        Выберите кошелек для получения дополнительной информации
+      </div>
     </template>
   </page-layout>
 </template>
@@ -61,14 +68,19 @@
 import { MODULE_NAME as WALLETS_NAME } from '@/store/modules/Wallets'
 import PageLayout from '@/layouts/PageLayout/index.vue'
 import SvgIcon from '@/components/SvgIcon.vue'
+import Wallet from './Wallet.vue'
 
 export default {
   name: 'WalletsLayout',
   components: {
     SvgIcon,
-    PageLayout
+    PageLayout,
+    WalletInfo: Wallet
   },
   computed: {
+    queryWallet() {
+      return this.$route.query.wallet || ''
+    },
     photo() {
       // eslint-disable-next-line vue/max-len
       return `https://sun9-60.userapi.com/impg/zCF4saFPwlwi0PtC41GIQ1WP30Khy-thQ9FtuA/b6bn4u-Y9D4.jpg?size=646x1148&quality=96&proxy=1&sign=b1ff76233f1ee088d886dd165748e481&type=album`
@@ -76,6 +88,9 @@ export default {
     wallets() {
       return this.$store.state[WALLETS_NAME].list
     }
+  },
+  beforeDestroy() {
+    clearInterval(this.timer)
   }
 }
 </script>
@@ -89,13 +104,10 @@ export default {
   }
   &__list {
     position: relative;
-    width: 30%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     border-right: 1px solid $--grey;
-  }
-  &__wallet {
-    width: 70%;
   }
   &__header-list {
     font-size: 18px;
@@ -123,29 +135,26 @@ export default {
     height: 20px;
     fill: $--white;
   }
-  &__info-block {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: $--font-size-subtitle;
-    width: 70%;
+  &__animation {
+    position: absolute;
+    width: 100%;
+    transform: translate(100%, 0);
+    opacity: 0.5;
+  }
+  &__animation-active {
+    transition: 0.5s;
   }
 }
-
 @include tablet {
   .wallets-layout {
-    flex-direction: column;
-    &__list {
-      width: 100%;
-      height: 100%;
-      margin: 0px 0 57px;
-      border-right: none;
+    position: relative;
+    &__animation {
+      position: relative;
+      transform: translate(0, 0);
+      opacity: 1;
     }
-    &__wallet {
-      width: 100%;
-    }
-    &__info-block {
-      display: none;
+    &__animation-active {
+      transition: 1s;
     }
   }
 }
