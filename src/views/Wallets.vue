@@ -48,7 +48,12 @@
       </div>
     </template>
     <template #more-info-block>
-      <wallet-info v-if="query" :wallet="localQueryWallet" />
+      <transition name="fade">
+        <wallet-info v-if="queryWallet" :wallet="queryWallet" />
+      </transition>
+      <div v-if="!queryWallet">
+        ыберите кошелек для получения дополнительной информации
+      </div>
     </template>
   </page-layout>
 </template>
@@ -66,14 +71,9 @@ export default {
     PageLayout,
     WalletInfo: Wallet
   },
-  data() {
-    return {
-      localQueryWallet: null
-    }
-  },
   computed: {
     queryWallet() {
-      return this.$route.query.wallet
+      return this.$route.query.wallet || ''
     },
     photo() {
       // eslint-disable-next-line vue/max-len
@@ -81,20 +81,6 @@ export default {
     },
     wallets() {
       return this.$store.state[WALLETS_NAME].list
-    }
-  },
-  watch: {
-    queryWallet: {
-      immediate: true,
-      handler(value) {
-        if (!value) {
-          this.timer = setTimeout(() => {
-            this.localQueryWallet = null
-          }, 500)
-        } else {
-          this.localQueryWallet = value
-        }
-      }
     }
   },
   beforeDestroy() {
@@ -148,6 +134,10 @@ export default {
 @include tablet {
   .wallets-layout {
     position: relative;
+  }
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: 1s;
   }
 }
 </style>
