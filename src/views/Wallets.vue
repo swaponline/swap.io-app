@@ -48,11 +48,17 @@
       </div>
     </template>
     <template #more-info-block>
-      <transition name="fade">
-        <wallet-info v-if="queryWallet" :wallet="queryWallet" />
+      <transition
+        name="custom-classes-transition"
+        enter-class="wallets-layout__animation"
+        leave-to-class="wallets-layout__animation"
+        enter-active-class="wallets-layout__animation-active"
+        leave-active-class="wallets-layout__animation-active"
+      >
+        <wallet-info v-if="queryWallet" :key="queryWallet" :wallet="queryWallet" />
       </transition>
       <div v-if="!queryWallet">
-        ыберите кошелек для получения дополнительной информации
+        Выберите кошелек для получения дополнительной информации
       </div>
     </template>
   </page-layout>
@@ -129,15 +135,27 @@ export default {
     height: 20px;
     fill: $--white;
   }
+  &__animation {
+    position: absolute;
+    width: 100%;
+    transform: translate(100%, 0);
+    opacity: 0.5;
+  }
+  &__animation-active {
+    transition: 0.5s;
+  }
 }
-
 @include tablet {
   .wallets-layout {
     position: relative;
-  }
-  .fade-enter-active,
-  .fade-leave-active {
-    transition: 1s;
+    &__animation {
+      position: relative;
+      transform: translate(0, 0);
+      opacity: 1;
+    }
+    &__animation-active {
+      transition: 1s;
+    }
   }
 }
 </style>
