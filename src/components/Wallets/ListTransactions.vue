@@ -2,11 +2,18 @@
   <v-list>
     <v-subheader>{{ filterType }}</v-subheader>
 
-    <item-transaction v-for="transaction in list" :key="transaction.id" v-bind="transaction" />
+    <item-transaction
+      v-for="transaction in transactions"
+      :key="transaction.hash"
+      v-bind="transaction"
+      :address="address"
+    />
   </v-list>
 </template>
 
 <script>
+import { MODULE_NAME as TRANSACTION_NAME, GET_TRANSACTION } from '@/store/modules/Transaction'
+import { mapActions } from 'vuex'
 import ItemTransaction from './ItemTransaction.vue'
 
 export default {
@@ -16,9 +23,16 @@ export default {
     filterType: {
       type: String,
       default: 'all'
+    },
+    address: {
+      type: String,
+      required: true
     }
   },
   computed: {
+    transactions() {
+      return this.$store.state[TRANSACTION_NAME].list.filter(el => el.to === this.address || el.from === this.address)
+    },
     list() {
       return [
         {
@@ -41,6 +55,14 @@ export default {
         }
       ]
     }
+  },
+  created() {
+    this.actionGetTransaction()
+  },
+  methods: {
+    ...mapActions({
+      actionGetTransaction: GET_TRANSACTION
+    })
   }
 }
 </script>
