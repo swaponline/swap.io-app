@@ -5,7 +5,7 @@
         class="item-transaction__icon grey lighten-1"
         dark
         :class="{
-          'item-transaction__icon--received': type.toLowerCase() === 'received'
+          'item-transaction__icon--send': !isReceived
         }"
       >
         mdi-arrow-bottom-left
@@ -14,8 +14,8 @@
     <template>
       <v-list-item-content class="text-left">
         <v-list-item-title class="item-transaction__title">
-          <span class="item-transaction__type">{{ type }}</span>
-          <span class="item-transaction__status">{{ status }}</span>
+          <span class="item-transaction__type">{{ isReceived ? 'Received' : 'Sent' }}</span>
+          <span v-if="status" class="item-transaction__status">{{ status }}</span>
         </v-list-item-title>
         <v-list-item-subtitle>
           <h3 class="item-transaction__time">{{ `${hours}:${minutes}` }}</h3>
@@ -41,46 +41,58 @@
 export default {
   name: 'ItemTransaction',
   props: {
-    currency: {
-      type: String,
-      default: ''
-    },
-    type: {
-      type: String,
-      default: ''
+    journal: {
+      type: Array,
+      default() {
+        return []
+      }
     },
     value: {
       type: Number,
       required: true
     },
-    valueInUsd: {
-      type: Number,
-      required: true
-    },
-    date: {
-      type: Date,
-      required: true
-    },
     status: {
       type: String,
       default: ''
+    },
+    timestamp: {
+      type: Number,
+      required: true
+    },
+    to: {
+      type: String,
+      required: true
+    },
+    address: {
+      type: String,
+      required: true
     }
   },
   computed: {
+    isReceived() {
+      return this.to === this.address
+    },
     computedValue() {
-      return (this.type.toLowerCase() === 'received' ? '+' : '-') + this.value.toString()
+      return (this.isReceived ? '+' : '-') + this.value.toString()
     },
     hours() {
-      return this.date
+      return new Date(this.timestamp)
         .getHours()
         .toString()
         .padStart(2, '0')
     },
     minutes() {
-      return this.date
+      return new Date(this.timestamp)
         .getMinutes()
         .toString()
         .padStart(2, '0')
+    },
+    currency() {
+      return this.journal[0].asset.symbol
+    },
+    valueInUsd() {
+      const usd = this.journal[0].asset.rate?.value || 500
+      return usd * this.value
     }
   }
 }
@@ -124,6 +136,11 @@ export default {
   }
   &__value-in-usd {
     margin-left: 20px;
+  }
+  &__icon {
+    &--send {
+      transform: rotate(180deg);
+    }
   }
 }
 </style>

@@ -27,7 +27,7 @@
         <v-tabs-items v-model="tab">
           <v-slide-x-transition>
             <v-tab-item v-show="tab" :key="tab" :value="tab">
-              <list-transactions :filter-type="tab"></list-transactions>
+              <list-transactions :address="currentWallet.address" :filter-type="tab"></list-transactions>
             </v-tab-item>
           </v-slide-x-transition>
         </v-tabs-items>
