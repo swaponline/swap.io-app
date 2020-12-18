@@ -73,7 +73,7 @@ export default {
       return this.to === this.address
     },
     computedValue() {
-      return (this.isReceived ? '+' : '-') + this.value.toString()
+      return (this.isReceived ? '+' : '-') + (this.value / 10 ** this.decimal).toFixed(9)
     },
     hours() {
       return new Date(this.timestamp)
@@ -90,9 +90,12 @@ export default {
     currency() {
       return this.journal[0].asset.symbol
     },
+    decimal() {
+      return this.journal[0].asset.decimals || 1
+    },
     valueInUsd() {
       const usd = this.journal[0].asset.rate?.value || 500
-      return usd * this.value
+      return ((this.value / 10 ** this.decimal) * usd).toFixed(4)
     }
   }
 }
