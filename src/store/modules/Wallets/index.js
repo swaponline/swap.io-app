@@ -22,7 +22,7 @@ export default {
           {
             name: 'Default',
             value: 40.0561,
-            address: '0x2dF6C87022A039c60E1A27ED6ea7A8cDa3101Cd0'
+            address: '0xd19615f2Eab2ABfBF7ca16618b5eD43386374DD0'
           },
           {
             name: 'Swaps',
