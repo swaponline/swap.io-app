@@ -9,4 +9,4 @@ services:
       - '8080:8080'
     volumes:
       - '.:/app'
-    command: /bin/sh -c "npm run serve"
+    command: /bin/sh -c "npm install -g @vue/cli && npm install && npm rebuild node-sass && npm run serve"
