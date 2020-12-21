@@ -14,8 +14,27 @@
             <span>9,943.02</span>
           </v-toolbar-items>
         </v-toolbar>
-        <v-list>
-          <v-list-group v-for="wallet in wallets" :key="wallet.name" no-action class="wallets-layout__group">
+        <v-list v-for="wallet in wallets" :key="wallet.name">
+          <v-list-item
+            v-if="wallet.subWallets.length === 1"
+            link
+            exact
+            color="purple"
+            class="wallets-layout__wallet-item"
+            :to="{ name: 'Wallets', query: { wallet: wallet.subWallets[0].address } }"
+          >
+            <v-list-item-icon class="wallets-layout__icon-wrapper mr-4">
+              <svg-icon class="wallets-layout__icon" name="btc" />
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title class="d-flex mr-4">
+                {{ wallet.name }}
+                <v-spacer />
+                {{ wallet.value }}
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-group v-else class="wallets-layout__wallet-item">
             <template v-slot:activator>
               <v-list-item-icon class="wallets-layout__icon-wrapper mr-4">
                 <svg-icon class="wallets-layout__icon" name="btc" />
@@ -99,7 +118,7 @@ export default {
 .wallets-layout {
   display: flex;
   width: 100%;
-  &__group {
+  &__wallet-item {
     border-bottom: 1px solid rgba($color: $--black, $alpha: 0.2);
   }
   &__list {
@@ -138,11 +157,6 @@ export default {
   &__animation {
     position: absolute;
     width: 100%;
-    transform: translate(100%, 0);
-    opacity: 0.5;
-  }
-  &__animation-active {
-    transition: 0.5s;
   }
 }
 @include tablet {
