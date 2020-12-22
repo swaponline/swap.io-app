@@ -74,7 +74,7 @@
         enter-active-class="wallets-layout__animation-active"
         leave-active-class="wallets-layout__animation-active"
       >
-        <wallet-info v-if="queryWallet" :key="queryWallet" :wallet="queryWallet" />
+        <wallet-info v-if="queryWallet" :wallet="queryWallet" />
       </transition>
       <div v-if="!queryWallet">
         Выберите кошелек для получения дополнительной информации
@@ -153,10 +153,6 @@ export default {
     width: 20px;
     height: 20px;
     fill: $--white;
-  }
-  &__animation {
-    position: absolute;
-    width: 100%;
   }
 }
 @include tablet {
