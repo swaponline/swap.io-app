@@ -1,14 +1,10 @@
 <template>
-  <v-list>
-    <v-subheader>{{ filterType }}</v-subheader>
-
-    <item-transaction
-      v-for="transaction in transactions"
-      :key="transaction.hash"
-      v-bind="transaction"
-      :address="address"
-    />
-  </v-list>
+  <v-expansion-panels>
+    <div v-for="transaction in transactions" :key="transaction.hash" class="list-transaction__item">
+      <v-subheader v-if="transaction.nameDay" class="list-transaction__title">{{ transaction.nameDay }}</v-subheader>
+      <item-transaction v-else v-bind="transaction" :address="address" />
+    </div>
+  </v-expansion-panels>
 </template>
 
 <script>
@@ -31,7 +27,7 @@ export default {
   },
   computed: {
     transactions() {
-      return this.$store.state[TRANSACTION_NAME].list.filter(el => el.to === this.address || el.from === this.address)
+      return this.$store.state[TRANSACTION_NAME].list
     },
     list() {
       return [
@@ -67,4 +63,16 @@ export default {
 }
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.list-transaction {
+  &__item {
+    display: flex;
+    flex-grow: 1;
+    width: 100%;
+  }
+  &__title {
+    width: 100%;
+    text-align: left;
+  }
+}
+</style>

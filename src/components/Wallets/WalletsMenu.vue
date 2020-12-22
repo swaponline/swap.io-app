@@ -5,8 +5,9 @@
       'wallets-menu--open-menu': visible,
       'wallets-menu--await': awaitStatus
     }"
+    @click.stop="closed"
   >
-    <v-list-item v-for="i in 5" :key="i">
+    <v-list-item v-for="i in 5" :key="i" tabindex="-1" @click.stop="closed">
       <slot :info="i"> item {{ i }} </slot>
     </v-list-item>
   </v-list>
@@ -27,6 +28,28 @@ export default {
     awaitStatus: {
       type: Boolean,
       default: false
+    }
+  },
+  watch: {
+    visible: {
+      handler(val) {
+        if (val) {
+          document.body.addEventListener('click', this.closed)
+        } else {
+          document.body.removeEventListener('click', this.closed)
+        }
+      }
+    }
+  },
+  beforeDestroy() {
+    document.body.removeEventListener('click', () => {
+      this.closed()
+    })
+  },
+  methods: {
+    closed() {
+      console.log(123456)
+      this.$emit('closed')
     }
   }
 }

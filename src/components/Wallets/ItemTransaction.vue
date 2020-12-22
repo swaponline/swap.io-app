@@ -1,27 +1,27 @@
 <template>
-  <v-list-item class="item-transaction">
-    <v-list-item-avatar size="40">
-      <v-icon
-        class="item-transaction__icon grey lighten-1"
-        dark
-        :class="{
-          'item-transaction__icon--send': !isReceived
-        }"
-      >
-        mdi-arrow-bottom-left
-      </v-icon>
-    </v-list-item-avatar>
-    <template>
+  <v-expansion-panel class="item-transaction">
+    <v-expansion-panel-header class="item-transaction__header px-1">
+      <v-avatar size="40" class="flex-grow-0 mr-1">
+        <v-icon
+          class="item-transaction__icon grey lighten-1"
+          dark
+          :class="{
+            'item-transaction__icon--send': !isReceived
+          }"
+        >
+          mdi-arrow-bottom-left
+        </v-icon>
+      </v-avatar>
       <v-list-item-content class="text-left">
         <v-list-item-title class="item-transaction__title">
           <span class="item-transaction__type">{{ isReceived ? 'Received' : 'Sent' }}</span>
           <span v-if="status" class="item-transaction__status">{{ status }}</span>
         </v-list-item-title>
         <v-list-item-subtitle>
-          <h3 class="item-transaction__time">{{ `${hours}:${minutes}` }}</h3>
+          <h3 class="item-transaction__time">{{ new Date(timestamp) }}</h3>
         </v-list-item-subtitle>
       </v-list-item-content>
-      <v-list-item-action>
+      <v-list-item-action class="flex-grow-0 mr-1">
         <v-list-item-title class="item-transaction__title">
           <span class="item-transaction__crypto-currency">{{ currency }}</span>
           <span class="item-transaction__value">{{ computedValue }}</span>
@@ -33,8 +33,13 @@
           </h3>
         </v-list-item-subtitle>
       </v-list-item-action>
-    </template>
-  </v-list-item>
+    </v-expansion-panel-header>
+    <v-expansion-panel-content>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+      magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+      consequat.
+    </v-expansion-panel-content>
+  </v-expansion-panel>
 </template>
 
 <script>
@@ -103,6 +108,9 @@ export default {
 
 <style lang="scss">
 .item-transaction {
+  &__header {
+    padding: 0 0;
+  }
   &__title {
     display: flex;
     align-items: center;

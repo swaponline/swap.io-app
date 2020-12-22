@@ -13,11 +13,11 @@
 
     <v-spacer />
 
-    <v-btn icon color="white" @click="$emit('openMenu', 'share')">
+    <v-btn icon color="white" @click.stop="$emit('openMenu', 'share')">
       <v-icon>mdi-share-variant</v-icon>
     </v-btn>
 
-    <v-btn icon color="white" @click="$emit('openMenu', 'menu')">
+    <v-btn icon color="white" @click.stop="$emit('openMenu', 'menu')">
       <v-icon>mdi-dots-vertical</v-icon>
     </v-btn>
   </v-toolbar>
