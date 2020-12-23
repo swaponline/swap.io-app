@@ -5,7 +5,7 @@ import { getDate } from '@/utils/date'
 
 export const MODULE_NAME = 'Transaction'
 
-export const GET_TRANSACTION = 'GET_TRANSACTION'
+export const GET_TRANSACTIONS = 'GET_TRANSACTIONS'
 
 export default {
   state: {
@@ -21,8 +21,8 @@ export default {
     listTransactionsSortByDate({ list }) {
       return list.reduce((newList, el) => {
         const nameDay = getDate(el.timestamp)
-        if (newList.find(day => day.date === nameDay)) {
-          const day = newList.find(item => item.date === nameDay)
+        const day = newList.find(item => item.date === nameDay)
+        if (day) {
           day.list.push(el)
         } else {
           newList.push({
@@ -35,7 +35,7 @@ export default {
     }
   },
   actions: {
-    [GET_TRANSACTION]({ commit }) {
+    [GET_TRANSACTIONS]({ commit }) {
       const list = Transaction.sort((a, b) => b.timestamp - a.timestamp)
       commit(SET_LIST, { list })
     }

@@ -17,7 +17,7 @@
           </v-btn>
         </div>
         <v-sheet elevation="4" class="mt-8 mb-2">
-          <v-tabs v-model="tab" background-color="white" fixed-tabs>
+          <v-tabs ref="tabs" v-model="tab" background-color="white" fixed-tabs>
             <v-tab href="#all">All</v-tab>
             <v-tab href="#confirmed">Confirmed</v-tab>
             <v-tab href="#pending">Pending</v-tab>
@@ -109,6 +109,9 @@ export default {
       } else {
         this.open = key
       }
+      setTimeout(() => {
+        this.$refs.tabs.onResize()
+      }, 500)
     }
   }
 }

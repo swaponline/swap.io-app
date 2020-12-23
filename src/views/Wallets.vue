@@ -109,9 +109,6 @@ export default {
     wallets() {
       return this.$store.state[WALLETS_NAME].list
     }
-  },
-  beforeDestroy() {
-    clearInterval(this.timer)
   }
 }
 </script>

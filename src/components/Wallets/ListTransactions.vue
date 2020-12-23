@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { GET_TRANSACTION } from '@/store/modules/Transactions'
+import { GET_TRANSACTIONS } from '@/store/modules/Transactions'
 import { mapActions, mapGetters } from 'vuex'
 import ItemTransaction from './ItemTransaction.vue'
 
@@ -58,7 +58,7 @@ export default {
   },
   methods: {
     ...mapActions({
-      actionGetTransaction: GET_TRANSACTION
+      actionGetTransaction: GET_TRANSACTIONS
     })
   }
 }
