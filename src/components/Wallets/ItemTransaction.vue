@@ -104,7 +104,7 @@ export default {
       return Math.ceil(this.rateValue).toString().length + 1
     },
     valueInUsd() {
-      return ((this.value / 10 ** this.decimal) * this.rateValue).toFixed(2)
+      return ((this.value / 10 ** this.decimal) * this.rateValue).toFixed(4)
     }
   }
 }
