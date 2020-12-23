@@ -122,8 +122,7 @@ export default {
     position: relative;
     width: 100%;
     display: flex;
-    overflow-y: auto;
-    overflow-x: hidden;
+    overflow: hidden;
     height: calc(100vh - 128px);
   }
   &__info {
@@ -134,6 +133,8 @@ export default {
     height: 100%;
     font-size: $--font-size-medium;
     transition: 0.5s;
+    overflow-y: auto;
+    overflow-x: hidden;
     &--open-menu {
       width: 75%;
     }
@@ -161,9 +162,9 @@ export default {
     right: 0;
     height: 100%;
     width: 25%;
-    position: absolute;
     transition: 0.5s;
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
     border-left: 1px solid $--grey;
     transform: translateX(100%);
     &--open-menu {

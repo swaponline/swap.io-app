@@ -1,15 +1,15 @@
 <template>
   <v-expansion-panels>
-    <div v-for="transaction in transactions" :key="transaction.hash" class="list-transaction__item">
-      <v-subheader v-if="transaction.nameDay" class="list-transaction__title">{{ transaction.nameDay }}</v-subheader>
-      <item-transaction v-else v-bind="transaction" :address="address" />
+    <div v-for="transaction in transactions" :key="transaction.date" class="list-transaction__item">
+      <v-subheader class="list-transaction__title">{{ transaction.date }}</v-subheader>
+      <item-transaction v-for="item in transaction.list" :key="item.hash" v-bind="item" :address="address" />
     </div>
   </v-expansion-panels>
 </template>
 
 <script>
-import { MODULE_NAME as TRANSACTION_NAME, GET_TRANSACTION } from '@/store/modules/Transaction'
-import { mapActions } from 'vuex'
+import { GET_TRANSACTION } from '@/store/modules/Transactions'
+import { mapActions, mapGetters } from 'vuex'
 import ItemTransaction from './ItemTransaction.vue'
 
 export default {
@@ -26,8 +26,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['listTransactionsSortByDate']),
     transactions() {
-      return this.$store.state[TRANSACTION_NAME].list
+      return this.listTransactionsSortByDate
     },
     list() {
       return [
@@ -66,7 +67,6 @@ export default {
 <style lang="scss">
 .list-transaction {
   &__item {
-    display: flex;
     flex-grow: 1;
     width: 100%;
   }

@@ -48,7 +48,6 @@ export default {
   },
   methods: {
     closed() {
-      console.log(123456)
       this.$emit('closed')
     }
   }

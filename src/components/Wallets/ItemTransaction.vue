@@ -18,7 +18,7 @@
           <span v-if="status" class="item-transaction__status">{{ status }}</span>
         </v-list-item-title>
         <v-list-item-subtitle>
-          <h3 class="item-transaction__time">{{ new Date(timestamp) }}</h3>
+          <h3 class="item-transaction__time">{{ `${hours}:${minutes}` }}</h3>
         </v-list-item-subtitle>
       </v-list-item-content>
       <v-list-item-action class="flex-grow-0 mr-1">

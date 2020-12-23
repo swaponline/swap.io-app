@@ -63,7 +63,7 @@
           </v-list-item>
         </v-list>
         <v-spacer />
-        <v-btn color="primary" class="mb-6 ml-auto mr-4" relative right fab>
+        <v-btn color="primary" class="my-6 ml-auto mr-4" relative right fab>
           <v-icon>mdi-plus</v-icon>
         </v-btn>
       </div>
@@ -130,6 +130,7 @@ export default {
     display: flex;
     flex-direction: column;
     border-right: 1px solid $--grey;
+    overflow-y: auto;
   }
   &__header-list {
     font-size: 18px;
