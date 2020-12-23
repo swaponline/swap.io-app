@@ -34,9 +34,13 @@
       </v-list-item-action>
     </v-expansion-panel-header>
     <v-expansion-panel-content>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-      magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-      consequat.
+      <p class="text-left">
+        {{ comment }}
+      </p>
+      <form class="d-flex" @submit.prevent="addComment">
+        <v-text-field v-model="newComment" type="text" />
+        <v-btn type="submit">Добавить</v-btn>
+      </form>
     </v-expansion-panel-content>
   </v-expansion-panel>
 </template>
@@ -72,6 +76,12 @@ export default {
       required: true
     }
   },
+  data() {
+    return {
+      newComment: '',
+      comment: `Lorem ipsum dolor`
+    }
+  },
   computed: {
     isReceived() {
       return this.to === this.address
@@ -105,6 +115,12 @@ export default {
     },
     valueInUsd() {
       return ((this.value / 10 ** this.decimal) * this.rateValue).toFixed(2)
+    }
+  },
+  methods: {
+    addComment() {
+      this.comment = this.newComment
+      this.newComment = ''
     }
   }
 }
