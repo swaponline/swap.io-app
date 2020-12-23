@@ -1,12 +1,15 @@
 <template>
-  <v-list>
-    <v-subheader>{{ filterType }}</v-subheader>
-
-    <item-transaction v-for="transaction in list" :key="transaction.id" v-bind="transaction" />
-  </v-list>
+  <v-expansion-panels>
+    <div v-for="transaction in transactions" :key="transaction.date" class="list-transaction__item">
+      <v-subheader class="list-transaction__title">{{ transaction.date }}</v-subheader>
+      <item-transaction v-for="item in transaction.list" :key="item.hash" v-bind="item" :address="address" />
+    </div>
+  </v-expansion-panels>
 </template>
 
 <script>
+import { GET_TRANSACTIONS } from '@/store/modules/Transactions'
+import { mapActions, mapGetters } from 'vuex'
 import ItemTransaction from './ItemTransaction.vue'
 
 export default {
@@ -16,9 +19,17 @@ export default {
     filterType: {
       type: String,
       default: 'all'
+    },
+    address: {
+      type: String,
+      required: true
     }
   },
   computed: {
+    ...mapGetters(['listTransactionsSortByDate']),
+    transactions() {
+      return this.listTransactionsSortByDate(this.$route.query.wallet)
+    },
     list() {
       return [
         {
@@ -41,8 +52,27 @@ export default {
         }
       ]
     }
+  },
+  created() {
+    this.actionGetTransaction()
+  },
+  methods: {
+    ...mapActions({
+      actionGetTransaction: GET_TRANSACTIONS
+    })
   }
 }
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.list-transaction {
+  &__item {
+    flex-grow: 1;
+    width: 100%;
+  }
+  &__title {
+    width: 100%;
+    text-align: left;
+  }
+}
+</style>

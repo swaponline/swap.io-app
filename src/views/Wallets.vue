@@ -14,54 +14,56 @@
             <span>9,943.02</span>
           </v-toolbar-items>
         </v-toolbar>
-        <v-list v-for="wallet in wallets" :key="wallet.name">
-          <v-list-item
-            v-if="wallet.subWallets.length === 1"
-            link
-            exact
-            color="purple"
-            class="wallets-layout__wallet-item"
-            :to="{ name: 'Wallets', query: { wallet: wallet.subWallets[0].address } }"
-          >
-            <v-list-item-icon class="wallets-layout__icon-wrapper mr-4">
-              <svg-icon class="wallets-layout__icon" name="btc" />
-            </v-list-item-icon>
-            <v-list-item-content>
-              <v-list-item-title class="d-flex mr-4">
-                {{ wallet.name }}
-                <v-spacer />
-                {{ wallet.value }}
-              </v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-group v-else class="wallets-layout__wallet-item">
-            <template v-slot:activator>
+        <v-list class="py-0">
+          <v-list-item v-for="wallet in wallets" :key="wallet.name" class="px-0">
+            <v-list-item
+              v-if="wallet.subWallets.length === 1"
+              link
+              exact
+              color="purple"
+              class="wallets-layout__wallet-item"
+              :to="{ name: 'Wallets', query: { wallet: wallet.subWallets[0].address } }"
+            >
               <v-list-item-icon class="wallets-layout__icon-wrapper mr-4">
                 <svg-icon class="wallets-layout__icon" name="btc" />
               </v-list-item-icon>
-              <v-list-item-title class="d-flex">
-                <span>{{ wallet.name }}</span>
-                <v-spacer></v-spacer>
-                <span>{{ wallet.value }}</span>
-              </v-list-item-title>
-            </template>
-            <v-list-item
-              v-for="(subWallet, i) in wallet.subWallets"
-              :key="i"
-              link
-              exact
-              :to="{ name: 'Wallets', query: { wallet: subWallet.address } }"
-            >
               <v-list-item-content>
-                <v-list-item-title class="d-flex mr-4"
-                  >{{ subWallet.name }} <v-spacer /> {{ subWallet.value }}</v-list-item-title
-                >
+                <v-list-item-title class="d-flex mr-4">
+                  {{ wallet.name }}
+                  <v-spacer />
+                  {{ wallet.value }}
+                </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
-          </v-list-group>
+            <v-list-group v-else class="wallets-layout__wallet-item">
+              <template v-slot:activator>
+                <v-list-item-icon class="wallets-layout__icon-wrapper mr-4">
+                  <svg-icon class="wallets-layout__icon" name="btc" />
+                </v-list-item-icon>
+                <v-list-item-title class="d-flex">
+                  <span>{{ wallet.name }}</span>
+                  <v-spacer></v-spacer>
+                  <span>{{ wallet.value }}</span>
+                </v-list-item-title>
+              </template>
+              <v-list-item
+                v-for="(subWallet, i) in wallet.subWallets"
+                :key="i"
+                link
+                exact
+                :to="{ name: 'Wallets', query: { wallet: subWallet.address } }"
+              >
+                <v-list-item-content>
+                  <v-list-item-title class="d-flex mr-4"
+                    >{{ subWallet.name }} <v-spacer /> {{ subWallet.value }}</v-list-item-title
+                  >
+                </v-list-item-content>
+              </v-list-item>
+            </v-list-group>
+          </v-list-item>
         </v-list>
         <v-spacer />
-        <v-btn color="primary" class="mb-6 ml-auto mr-4" relative right fab>
+        <v-btn color="primary" class="my-6 ml-auto mr-4" relative right fab>
           <v-icon>mdi-plus</v-icon>
         </v-btn>
       </div>
@@ -107,9 +109,6 @@ export default {
     wallets() {
       return this.$store.state[WALLETS_NAME].list
     }
-  },
-  beforeDestroy() {
-    clearInterval(this.timer)
   }
 }
 </script>
@@ -119,6 +118,7 @@ export default {
   display: flex;
   width: 100%;
   &__wallet-item {
+    width: 100%;
     border-bottom: 1px solid rgba($color: $--black, $alpha: 0.2);
   }
   &__list {
@@ -127,6 +127,7 @@ export default {
     display: flex;
     flex-direction: column;
     border-right: 1px solid $--grey;
+    overflow-y: auto;
   }
   &__header-list {
     font-size: 18px;
@@ -164,7 +165,7 @@ export default {
       opacity: 1;
     }
     &__animation-active {
-      transition: 1s;
+      transition: 0.5s;
     }
   }
 }
