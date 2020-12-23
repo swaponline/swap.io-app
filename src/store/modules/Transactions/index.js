@@ -19,19 +19,23 @@ export default {
      * }]
      */
     listTransactionsSortByDate({ list }) {
-      return list.reduce((newList, el) => {
-        const nameDay = getDate(el.timestamp)
-        const day = newList.find(item => item.date === nameDay)
-        if (day) {
-          day.list.push(el)
-        } else {
-          newList.push({
-            date: nameDay,
-            list: [el]
-          })
-        }
-        return newList
-      }, [])
+      return wallet => {
+        return list
+          .filter(el => el.to === wallet || el.from === wallet)
+          .reduce((newList, el) => {
+            const nameDay = getDate(el.timestamp)
+            const day = newList.find(item => item.date === nameDay)
+            if (day) {
+              day.list.push(el)
+            } else {
+              newList.push({
+                date: nameDay,
+                list: [el]
+              })
+            }
+            return newList
+          }, [])
+      }
     }
   },
   actions: {

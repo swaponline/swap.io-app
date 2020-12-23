@@ -28,7 +28,7 @@ export default {
   computed: {
     ...mapGetters(['listTransactionsSortByDate']),
     transactions() {
-      return this.listTransactionsSortByDate
+      return this.listTransactionsSortByDate(this.$route.query.wallet)
     },
     list() {
       return [
