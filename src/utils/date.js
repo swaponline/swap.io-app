@@ -16,5 +16,12 @@ export const getDate = elDate => {
     .padStart(2, '0')
   const month = (date.getMonth() + 1).toString().padStart(2, '0')
   const year = date.getFullYear()
+  const newDate = new Date()
+  if (isToday(date, newDate)) {
+    return 'Today'
+  }
+  if (isYesterdayDay(date, newDate)) {
+    return 'Yesterday'
+  }
   return [day, month, year].join('.')
 }
