@@ -13,7 +13,7 @@
 
     <v-spacer />
 
-    <v-btn icon color="white" @click.stop="$emit('openMenu', 'share')">
+    <v-btn icon color="white" @click.stop="share">
       <v-icon>mdi-share-variant</v-icon>
     </v-btn>
 
@@ -25,7 +25,25 @@
 
 <script>
 export default {
-  name: 'HeaderWallet'
+  name: 'HeaderWallet',
+  props: {
+    address: {
+      type: String,
+      required: true
+    }
+  },
+  methods: {
+    share() {
+      if (navigator && navigator.canShare) {
+        navigator.share({
+          title: 'Номер кошелька', // Заголовок
+          text: `Номер кошелька для перевода: \n${this.address}` // текст
+        })
+      } else {
+        this.$emit('openMenu', 'share')
+      }
+    }
+  }
 }
 </script>
 

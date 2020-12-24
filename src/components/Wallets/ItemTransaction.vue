@@ -1,5 +1,5 @@
 <template>
-  <v-expansion-panel class="item-transaction">
+  <v-expansion-panel class="item-transaction my-0">
     <v-expansion-panel-header class="item-transaction__header px-1">
       <v-list-item-content class="flex-grow-0 mr-1">
         <v-icon
@@ -16,9 +16,13 @@
       <v-list-item-content class="text-left">
         <v-list-item-title class="item-transaction__title">
           <span class="item-transaction__type">{{ isReceived ? 'Received' : 'Sent' }}</span>
-          <span v-if="status" class="item-transaction__status">{{ status }}</span>
+          <span class="item-transaction__status">CONFIRMED</span>
         </v-list-item-title>
-        <v-list-item-subtitle> </v-list-item-subtitle>
+        <v-list-item-subtitle>
+          <form v-if="comment !== undefined" class="item-transaction__descr" @submit.prevent="addComment">
+            <input v-model="comment" type="text" class="item-transaction__input-descr" @click.stop />
+          </form>
+        </v-list-item-subtitle>
       </v-list-item-content>
       <v-list-item-action class="flex-grow-0 mr-1">
         <v-list-item-title class="item-transaction__title justify-end">
@@ -32,15 +36,19 @@
           </h3>
         </v-list-item-subtitle>
       </v-list-item-action>
+      <v-list-item-action class="flex-grow-0 mr-1 ml-2 item-transaction__balance">
+        <v-list-item-title class="item-transaction__title">
+          <span class="item-transaction__balance-title">Balance: </span>
+        </v-list-item-title>
+        <v-list-item-subtitle class="item-transaction__subtitle">
+          <span class="item-transaction__balance-value">{{ currentBalance }}</span>
+        </v-list-item-subtitle>
+      </v-list-item-action>
     </v-expansion-panel-header>
     <v-expansion-panel-content>
       <p class="text-left">
         {{ comment }}
       </p>
-      <form class="d-flex" @submit.prevent="addComment">
-        <v-text-field v-model="newComment" type="text" />
-        <v-btn type="submit">Добавить</v-btn>
-      </form>
     </v-expansion-panel-content>
   </v-expansion-panel>
 </template>
@@ -67,6 +75,10 @@ export default {
       type: Number,
       required: true
     },
+    from: {
+      type: String,
+      required: true
+    },
     to: {
       type: String,
       required: true
@@ -74,15 +86,22 @@ export default {
     address: {
       type: String,
       required: true
+    },
+    description: {
+      type: String,
+      default: ''
     }
   },
   data() {
     return {
-      newComment: '',
-      comment: `Lorem ipsum dolor`
+      comment: ''
     }
   },
   computed: {
+    currentBalance() {
+      const wallet = this.journal[0].balance.find(wall => wall.wallet === this.address)
+      return (wallet.balance / 10 ** this.decimal).toFixed(this.currentDecimal)
+    },
     isReceived() {
       return this.to === this.address
     },
@@ -117,10 +136,19 @@ export default {
       return ((this.value / 10 ** this.decimal) * this.rateValue).toFixed(2)
     }
   },
+  mounted() {
+    if (this.description) {
+      this.comment = this.description || undefined
+    } else {
+      this.comment = this.isReceived ? `From: ${this.from}` : `To: ${this.to}`
+    }
+  },
   methods: {
     addComment() {
-      this.comment = this.newComment
-      this.newComment = ''
+      this.description = this.comment || undefined
+      if (this.comment === '') {
+        this.comment = this.description
+      }
     }
   }
 }
@@ -128,6 +156,17 @@ export default {
 
 <style lang="scss">
 .item-transaction {
+  border-bottom: 1px solid rgba($color: $--black, $alpha: 0.12);
+  border-top: 1px solid rgba($color: $--black, $alpha: 0.12);
+  &[aria-expended] {
+    margin: 0 0;
+  }
+  &:after {
+    border: none;
+  }
+  &:before {
+    box-shadow: none;
+  }
   &__header {
     padding: 0 0;
   }
@@ -153,6 +192,7 @@ export default {
     font-weight: $--font-weight-bold;
     color: $--grey;
     text-align: center;
+    font-size: $--font-size-small;
   }
   &__crypto-currency {
     color: $--grey;
@@ -164,8 +204,12 @@ export default {
     margin-left: 16px;
   }
   &__subtitle {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: 100%;
     color: $--grey;
-    font-size: $--font-size-medium;
+    font-size: $--font-size-base;
   }
   &__value-in-usd {
     margin-left: 20px;
@@ -173,6 +217,42 @@ export default {
   &__icon {
     &--send {
       transform: rotate(180deg);
+    }
+  }
+  &__descr {
+    display: flex;
+    font-size: $--font-size-base;
+    line-height: 15px;
+  }
+  &__input-descr {
+    outline: none;
+    border: none;
+    color: $--red;
+    width: 100%;
+  }
+  &__button-descr {
+    font-size: $--font-size-small;
+    line-height: 15px;
+    background: rgba($color: $--blue, $alpha: 0.2);
+    padding: 2px 2px;
+  }
+  &__balance-title {
+    font-size: $--font-size-small;
+    width: 100%;
+    text-align: center;
+    color: $--grey;
+  }
+  &__balance-value {
+    color: $--grey;
+    font-size: $--font-size-medium;
+    width: 100%;
+    text-align: center;
+  }
+}
+@include tablet {
+  .item-transaction {
+    &__balance {
+      display: none;
     }
   }
 }

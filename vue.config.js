@@ -3,6 +3,7 @@ module.exports = {
 
   devServer: {
     open: true,
+    https: true,
     watchOptions: {
       poll: true
     }

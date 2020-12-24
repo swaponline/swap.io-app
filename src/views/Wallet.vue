@@ -1,11 +1,23 @@
 <template>
   <div class="wallet">
-    <header-wallet @openMenu="openMenu" />
+    <header-wallet :address="wallet" @openMenu="openMenu" />
     <div class="wallet__content">
       <div class="wallet__info" :class="{ 'wallet__info--open-menu': open !== null }">
-        <p class="wallet__value">{{ currentWallet.value }}</p>
-        <p class="wallet__value-in-usd"><span>$</span> 3000.04</p>
-        <p class="wallet__address">{{ currentWallet.address }}</p>
+        <p class="wallet__value">
+          <span class="wallet__icon-value"><svg-icon name="btc"/></span>
+          {{ currentWallet.value }}
+        </p>
+        <p class="wallet__value-in-usd"><span>USD</span> 3000.04</p>
+
+        <v-tooltip v-model="show" top>
+          <template #activator="{attrs}">
+            <button class="wallet__address" v-bind="attrs" @click="copy">
+              {{ currentWallet.address }}
+              <v-icon class="wallet__icon-copy">mdi-content-copy</v-icon>
+            </button>
+          </template>
+          <span>Copied</span>
+        </v-tooltip>
         <div class="wallet__buttons">
           <v-btn class="wallet__button" color="primary" outlined>
             <v-icon class="wallet__icon-copy">mdi-content-copy</v-icon>
@@ -43,7 +55,7 @@
           :await-status="open === 'share'"
           :list="[]"
           tabindex="-1"
-          @closed="open = null"
+          @closed="openMenu(null)"
         >
           <template #default="{ info }"> item {{ info }} </template>
         </wallets-menu>
@@ -52,7 +64,7 @@
           :await-status="open === 'menu'"
           :list="[]"
           tabindex="-1"
-          @closed="open = null"
+          @closed="openMenu(null)"
         >
           <template #default="{ info }"> item share {{ info }} </template>
         </wallets-menu>
@@ -65,13 +77,15 @@
 import HeaderWallet from '@/components/Wallets/HeaderWallet.vue'
 import WalletsMenu from '@/components/Wallets/WalletsMenu.vue'
 import ListTransactions from '@/components/Wallets/ListTransactions.vue'
+import SvgIcon from '@/components/SvgIcon.vue'
 
 export default {
   name: 'Wallet',
   components: {
     HeaderWallet,
     WalletsMenu,
-    ListTransactions
+    ListTransactions,
+    SvgIcon
   },
   props: {
     wallet: {
@@ -82,7 +96,9 @@ export default {
   data() {
     return {
       tab: 'all',
-      open: null
+      open: null,
+      show: false,
+      tooltipTimer: undefined
     }
   },
   computed: {
@@ -102,6 +118,9 @@ export default {
       }
     }
   },
+  beforeDestroy() {
+    clearTimeout(this.tooltipTimer)
+  },
   methods: {
     openMenu(key) {
       if (this.open === key) {
@@ -112,6 +131,24 @@ export default {
       setTimeout(() => {
         this.$refs.tabs.onResize()
       }, 500)
+    },
+    copy() {
+      if (navigator && navigator.clipboard) {
+        navigator.clipboard
+          .writeText(this.wallet)
+          .then(() => {
+            this.show = true
+            if (this.tooltipTimer) {
+              clearTimeout(this.tooltipTimer)
+            }
+            this.tooltipTimer = setTimeout(() => {
+              this.show = false
+            }, 1500)
+          })
+          .catch(err => {
+            console.log('Значение скопировано', err)
+          })
+      }
     }
   }
 }
@@ -143,8 +180,26 @@ export default {
     }
   }
   &__value {
-    font-size: $--font-size-small-subtitle;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: $--font-size-subtitle;
     font-weight: $--font-weight-bold;
+  }
+  &__icon-value {
+    width: 40px;
+    height: 40px;
+    background: $--grey;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    margin-right: 5px;
+    svg {
+      width: 20px;
+      height: 20px;
+      fill: #ffffff;
+    }
   }
   &__value-in-usd {
     font-weight: $--font-weight-medium;
@@ -154,6 +209,16 @@ export default {
   }
   &__address {
     opacity: 0.5;
+    outline: none;
+    padding-left: 24px;
+    &:hover {
+      .wallet__icon-copy {
+        opacity: 1;
+      }
+    }
+  }
+  &__icon-copy {
+    opacity: 0;
   }
   &__button {
     margin: 0 16px;
