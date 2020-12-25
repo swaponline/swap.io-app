@@ -30,7 +30,7 @@
           <template v-slot:activator="{ on }">
             <v-list-item-title class="item-transaction__title justify-end" v-on="on">
               <span class="item-transaction__crypto-currency">{{ currency }}</span>
-              <span class="item-transaction__value">{{ computedValue }}</span>
+              <h3 class="item-transaction__value">{{ computedValue }}</h3>
             </v-list-item-title>
           </template>
           <span>Balance change</span>
@@ -251,10 +251,7 @@ export default {
     text-transform: uppercase;
     margin-left: 16px;
     @include tablet {
-      font-size: $--font-size-base;
-    }
-    @include phone {
-      font-size: $--font-size-small;
+      font-size: 1.5em;
     }
   }
   &__subtitle {
