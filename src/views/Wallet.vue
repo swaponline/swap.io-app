@@ -246,6 +246,9 @@ export default {
   }
   &__icon-copy {
     opacity: 0;
+    @include phone {
+      display: none !important;
+    }
   }
   &__button {
     margin: 0 16px;
