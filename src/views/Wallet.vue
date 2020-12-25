@@ -142,7 +142,6 @@ export default {
   },
   methods: {
     openMenu(key) {
-      console.log(key)
       if (this.open === key) {
         this.open = null
       } else {
