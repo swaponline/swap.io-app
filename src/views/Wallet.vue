@@ -113,16 +113,19 @@ export default {
         {
           name: 'Telegram',
           icon: 'mdi-telegram',
+          target: '_blank',
           url: 'https://web.telegram.org/'
         },
         {
           name: 'WhatsApp',
           icon: 'mdi-whatsapp',
+          target: '_blank',
           url: 'https://web.whatsapp.com/'
         },
         {
           name: 'Facebook',
           icon: 'mdi-facebook-box',
+          target: '_blank',
           url: 'https://www.facebook.com/'
         }
       ]
@@ -165,7 +168,7 @@ export default {
             }, 1500)
           })
           .catch(err => {
-            console.log('Значение скопировано', err)
+            console.log('Значение не скопировано', err)
           })
       }
     }

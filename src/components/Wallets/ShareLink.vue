@@ -1,5 +1,5 @@
 <template>
-  <a class="share-link" target="_blank" :href="url" @click="$emit('copy')">
+  <a class="share-link" :target="target" :href="url" @click="$emit('copy')">
     <v-icon v-if="icon" color="white">{{ icon }}</v-icon>
     {{ name }}
   </a>
@@ -18,6 +18,10 @@ export default {
       required: true
     },
     icon: {
+      type: String,
+      default: ''
+    },
+    target: {
       type: String,
       default: ''
     }
