@@ -51,7 +51,7 @@
         <v-list-item-subtitle class="item-transaction__subtitle">
           <v-tooltip top>
             <template v-slot:activator="{ on }">
-              <span class="item-transaction__balance-value" v-on="on">~${{ currentBalance }}</span>
+              <span class="item-transaction__balance-value" v-on="on">{{ currentBalance }}</span>
             </template>
             <span>Balance after transaction</span>
           </v-tooltip>
@@ -176,7 +176,9 @@ export default {
     if (this.description) {
       this.comment = this.description || undefined
     } else {
-      this.comment = this.isReceived ? `From: ${this.from}` : `To: ${this.to}`
+      this.comment = this.isReceived
+        ? `From: ${this.from.slice(0, 5)}...${this.from.slice(-3)}`
+        : `To: ${this.to.slice(0, 5)}...${this.to.slice(-3)}`
     }
   },
   methods: {
@@ -214,6 +216,9 @@ export default {
     width: 100%;
     overflow: visible;
     @include tablet {
+      font-size: $--font-size-base;
+    }
+    @include phone {
       font-size: $--font-size-small;
     }
   }
@@ -237,6 +242,9 @@ export default {
     color: $--grey;
     text-transform: uppercase;
     @include tablet {
+      font-size: $--font-size-base;
+    }
+    @include phone {
       font-size: $--font-size-small;
     }
   }
@@ -245,6 +253,9 @@ export default {
     text-transform: uppercase;
     margin-left: 16px;
     @include tablet {
+      font-size: $--font-size-base;
+    }
+    @include phone {
       font-size: $--font-size-small;
     }
   }
@@ -256,6 +267,9 @@ export default {
     color: $--grey;
     font-size: $--font-size-base;
     @include tablet {
+      font-size: $--font-size-base;
+    }
+    @include phone {
       font-size: $--font-size-small;
     }
   }
@@ -279,6 +293,9 @@ export default {
     width: 100%;
     @include tablet {
       overflow: hidden;
+      font-size: $--font-size-base;
+    }
+    @include phone {
       font-size: $--font-size-small;
     }
   }
@@ -309,9 +326,12 @@ export default {
   }
   &__expansion {
     .v-expansion-panel-content__wrap {
-      padding: 0 0;
+      padding: 0 10px 10px;
       font-size: $--font-size-base;
       @include tablet {
+        font-size: $--font-size-base;
+      }
+      @include phone {
         font-size: $--font-size-small;
       }
     }
