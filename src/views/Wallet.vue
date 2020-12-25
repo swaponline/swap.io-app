@@ -20,10 +20,6 @@
         </v-tooltip>
         <div class="wallet__buttons">
           <v-btn class="wallet__button" color="primary" outlined>
-            <v-icon class="wallet__icon-copy">mdi-content-copy</v-icon>
-            Copy
-          </v-btn>
-          <v-btn class="wallet__button" color="primary" outlined>
             <v-icon class="wallet__icon-invoice">mdi-arrow-down-bold-circle</v-icon>
             Invoice
           </v-btn>
@@ -51,22 +47,24 @@
         }"
       >
         <wallets-menu
-          :visible="open === 'menu'"
-          :await-status="open === 'share'"
-          :list="[]"
-          tabindex="-1"
-          @closed="openMenu(null)"
-        >
-          <template #default="{ info }"> item {{ info }} </template>
-        </wallets-menu>
-        <wallets-menu
           :visible="open === 'share'"
           :await-status="open === 'menu'"
-          :list="[]"
+          :list="shareLinks"
           tabindex="-1"
           @closed="openMenu(null)"
         >
-          <template #default="{ info }"> item share {{ info }} </template>
+          <template #default="{ item }">
+            <share-link v-bind="item" @copy="copy" />
+          </template>
+        </wallets-menu>
+        <wallets-menu
+          :visible="open === 'menu'"
+          :await-status="open === 'share'"
+          :list="shareLinks"
+          tabindex="-1"
+          @closed="openMenu(null)"
+        >
+          <template #default="{ item }"> {{ item.name }} </template>
         </wallets-menu>
       </div>
     </div>
@@ -77,6 +75,7 @@
 import HeaderWallet from '@/components/Wallets/HeaderWallet.vue'
 import WalletsMenu from '@/components/Wallets/WalletsMenu.vue'
 import ListTransactions from '@/components/Wallets/ListTransactions.vue'
+import ShareLink from '@/components/Wallets/ShareLink.vue'
 import SvgIcon from '@/components/SvgIcon.vue'
 
 export default {
@@ -85,6 +84,7 @@ export default {
     HeaderWallet,
     WalletsMenu,
     ListTransactions,
+    ShareLink,
     SvgIcon
   },
   props: {
@@ -107,6 +107,25 @@ export default {
         return this.$store.getters.siblingList.find(el => el.address === this.wallet)
       }
       return {}
+    },
+    shareLinks() {
+      return [
+        {
+          name: 'Telegram',
+          icon: 'mdi-telegram',
+          url: 'https://web.telegram.org/'
+        },
+        {
+          name: 'WhatsApp',
+          icon: 'mdi-whatsapp',
+          url: 'https://web.whatsapp.com/'
+        },
+        {
+          name: 'Facebook',
+          icon: 'mdi-facebook-box',
+          url: 'https://www.facebook.com/'
+        }
+      ]
     }
   },
   watch: {
@@ -123,6 +142,7 @@ export default {
   },
   methods: {
     openMenu(key) {
+      console.log(key)
       if (this.open === key) {
         this.open = null
       } else {
@@ -187,8 +207,8 @@ export default {
     font-weight: $--font-weight-bold;
   }
   &__icon-value {
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     background: $--grey;
     display: flex;
     align-items: center;
@@ -196,8 +216,8 @@ export default {
     border-radius: 20px;
     margin-right: 5px;
     svg {
-      width: 20px;
-      height: 20px;
+      width: 14px;
+      height: 14px;
       fill: #ffffff;
     }
   }
