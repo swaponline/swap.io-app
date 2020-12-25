@@ -63,10 +63,10 @@
       <div class="text-left">
         <span class="d-block">Transaction fee: {{ transactionFee }}</span>
         <span class="d-block">Hash: {{ hash }}</span>
-        <span class="d-block">Entries:</span>
+        <h3 class="d-block">Entries:</h3>
         <span v-for="(entry, i) in entries.filter(el => !el.label)" :key="i" class="d-flex justify-space-between">
           <span>
-            <span>{{ entry.value > 0 ? 'to:' : 'from:' }}</span>
+            <span>{{ entry.value > 0 ? 'to: ' : 'from: ' }}</span>
             <span>{{ entry.wallet }}</span>
           </span>
           <span>{{ (entry.value / 10 ** decimal).toFixed(currentDecimal) }}</span>
@@ -176,9 +176,7 @@ export default {
     if (this.description) {
       this.comment = this.description || undefined
     } else {
-      this.comment = this.isReceived
-        ? `From: ${this.from.slice(0, 5)}...${this.from.slice(-3)}`
-        : `To: ${this.to.slice(0, 5)}...${this.to.slice(-3)}`
+      this.comment = this.isReceived ? `From: ${this.from}` : `To: ${this.to}`
     }
   },
   methods: {
