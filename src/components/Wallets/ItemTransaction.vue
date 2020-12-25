@@ -47,7 +47,7 @@
     </v-expansion-panel-header>
     <v-expansion-panel-content>
       <p class="text-left">
-        {{ comment }}
+        <span>Transaction fee: {{ transactionFee }}</span>
       </p>
     </v-expansion-panel-content>
   </v-expansion-panel>
@@ -98,6 +98,12 @@ export default {
     }
   },
   computed: {
+    transactionFee() {
+      const feeEntries = this.journal[0].entries.filter(entry => entry.label && entry.value > 0)
+      return feeEntries.reduce((acc, el) => {
+        return acc + (el.value / 10 ** this.decimal).toFixed(this.currentDecimal)
+      }, 0)
+    },
     currentBalance() {
       const wallet = this.journal[0].balance.find(wall => wall.wallet === this.address)
       return (wallet.balance / 10 ** this.decimal).toFixed(this.currentDecimal)
