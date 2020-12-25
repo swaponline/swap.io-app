@@ -13,42 +13,65 @@
         </v-icon>
         <h3 class="item-transaction__time">{{ `${hours}:${minutes}` }}</h3>
       </v-list-item-content>
+
       <v-list-item-content class="text-left">
         <v-list-item-title class="item-transaction__title">
-          <span class="item-transaction__type">{{ isReceived ? 'Received' : 'Sent' }}</span>
           <span class="item-transaction__status">CONFIRMED</span>
         </v-list-item-title>
         <v-list-item-subtitle>
-          <form v-if="comment !== undefined" class="item-transaction__descr" @submit.prevent="addComment">
+          <form class="item-transaction__descr" @submit.prevent="addComment">
             <input v-model="comment" type="text" class="item-transaction__input-descr" @click.stop />
           </form>
         </v-list-item-subtitle>
       </v-list-item-content>
+
       <v-list-item-action class="flex-grow-0 mr-1">
-        <v-list-item-title class="item-transaction__title justify-end">
-          <span class="item-transaction__crypto-currency">{{ currency }}</span>
-          <span class="item-transaction__value">{{ computedValue }}</span>
-        </v-list-item-title>
+        <v-tooltip top>
+          <template v-slot:activator="{ on }">
+            <v-list-item-title class="item-transaction__title justify-end" v-on="on">
+              <span class="item-transaction__crypto-currency">{{ currency }}</span>
+              <span class="item-transaction__value">{{ computedValue }}</span>
+            </v-list-item-title>
+          </template>
+          <span>Balance change</span>
+        </v-tooltip>
         <v-list-item-subtitle>
           <h3 class="item-transaction__subtitle">
-            <span class="item-transaction__currency">USD</span>
-            <span class="item-transaction__value-in-usd">~{{ valueInUsd }}</span>
+            <v-tooltip top>
+              <template v-slot:activator="{ on }">
+                <span class="item-transaction__value-in-usd" v-on="on">~${{ valueInUsd }}</span>
+              </template>
+              <span> USD Equivalent of transaction amount @ {{ rateValue.toFixed(2) }} USD/ETH)</span>
+            </v-tooltip>
           </h3>
         </v-list-item-subtitle>
       </v-list-item-action>
-      <v-list-item-action class="flex-grow-0 mr-1 ml-2 item-transaction__balance">
-        <v-list-item-title class="item-transaction__title">
-          <span class="item-transaction__balance-title">Balance: </span>
-        </v-list-item-title>
+
+      <v-list-item-action class="flex-grow-0 mr-1 ml-2 mt-0 item-transaction__balance">
         <v-list-item-subtitle class="item-transaction__subtitle">
-          <span class="item-transaction__balance-value">{{ currentBalance }}</span>
+          <v-tooltip top>
+            <template v-slot:activator="{ on }">
+              <span class="item-transaction__balance-value" v-on="on">~${{ currentBalance }}</span>
+            </template>
+            <span>Balance after transaction</span>
+          </v-tooltip>
         </v-list-item-subtitle>
       </v-list-item-action>
     </v-expansion-panel-header>
-    <v-expansion-panel-content>
-      <p class="text-left">
-        <span>Transaction fee: {{ transactionFee }}</span>
-      </p>
+
+    <v-expansion-panel-content class="item-transaction__expansion">
+      <div class="text-left">
+        <span class="d-block">Transaction fee: {{ transactionFee }}</span>
+        <span class="d-block">Hash: {{ hash }}</span>
+        <span class="d-block">Entries:</span>
+        <span v-for="(entry, i) in entries.filter(el => !el.label)" :key="i" class="d-flex justify-space-between">
+          <span>
+            <span>{{ entry.value > 0 ? 'to:' : 'from:' }}</span>
+            <span>{{ entry.wallet }}</span>
+          </span>
+          <span>{{ (entry.value / 10 ** decimal).toFixed(currentDecimal) }}</span>
+        </span>
+      </div>
     </v-expansion-panel-content>
   </v-expansion-panel>
 </template>
@@ -62,6 +85,10 @@ export default {
       default() {
         return []
       }
+    },
+    hash: {
+      type: String,
+      required: true
     },
     value: {
       type: Number,
@@ -98,8 +125,11 @@ export default {
     }
   },
   computed: {
+    entries() {
+      return this.journal[0].entries
+    },
     transactionFee() {
-      const feeEntries = this.journal[0].entries.filter(entry => entry.label && entry.value > 0)
+      const feeEntries = this.entries.filter(entry => entry.label && entry.value > 0)
       return feeEntries.reduce((acc, el) => {
         return acc + (el.value / 10 ** this.decimal).toFixed(this.currentDecimal)
       }, 0)
@@ -182,6 +212,10 @@ export default {
     font-size: $--font-size-medium;
     font-weight: $--font-weight-bold;
     width: 100%;
+    overflow: visible;
+    @include tablet {
+      font-size: $--font-size-small;
+    }
   }
   &__status {
     display: inline-block;
@@ -192,7 +226,6 @@ export default {
     color: $--blue;
     border-radius: $--small-border-radius;
     padding: 4px 8px;
-    margin-left: 16px;
   }
   &__time {
     font-weight: $--font-weight-bold;
@@ -203,11 +236,17 @@ export default {
   &__crypto-currency {
     color: $--grey;
     text-transform: uppercase;
+    @include tablet {
+      font-size: $--font-size-small;
+    }
   }
   &__value {
     color: $--salad;
     text-transform: uppercase;
     margin-left: 16px;
+    @include tablet {
+      font-size: $--font-size-small;
+    }
   }
   &__subtitle {
     display: flex;
@@ -216,9 +255,12 @@ export default {
     width: 100%;
     color: $--grey;
     font-size: $--font-size-base;
+    @include tablet {
+      font-size: $--font-size-small;
+    }
   }
   &__value-in-usd {
-    margin-left: 20px;
+    margin-left: 5px;
   }
   &__icon {
     &--send {
@@ -233,14 +275,25 @@ export default {
   &__input-descr {
     outline: none;
     border: none;
-    color: $--red;
+    color: $--black;
     width: 100%;
+    @include tablet {
+      overflow: hidden;
+      font-size: $--font-size-small;
+    }
   }
   &__button-descr {
     font-size: $--font-size-small;
     line-height: 15px;
     background: rgba($color: $--blue, $alpha: 0.2);
     padding: 2px 2px;
+  }
+  &__balance {
+    height: 100%;
+    margin-bottom: 20px;
+    @include tablet {
+      display: none;
+    }
   }
   &__balance-title {
     font-size: $--font-size-small;
@@ -254,11 +307,13 @@ export default {
     width: 100%;
     text-align: center;
   }
-}
-@include tablet {
-  .item-transaction {
-    &__balance {
-      display: none;
+  &__expansion {
+    .v-expansion-panel-content__wrap {
+      padding: 0 0;
+      font-size: $--font-size-base;
+      @include tablet {
+        font-size: $--font-size-small;
+      }
     }
   }
 }

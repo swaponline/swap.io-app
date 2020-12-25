@@ -235,6 +235,11 @@ export default {
         opacity: 1;
       }
     }
+    @include tablet {
+      font-size: $--font-size-small;
+      padding-left: 0;
+      word-break: break-all;
+    }
   }
   &__icon-copy {
     opacity: 0;
