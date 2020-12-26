@@ -62,14 +62,14 @@
     <v-expansion-panel-content class="item-transaction__expansion">
       <div class="text-left">
         <span class="d-block">Transaction fee: {{ transactionFee }}</span>
-        <span class="d-block">Hash: {{ hash }}</span>
+        <span class="item-transaction__hash">Hash: {{ hash }}</span>
         <h3 class="d-block">Entries:</h3>
         <span v-for="(entry, i) in entries.filter(el => !el.label)" :key="i" class="d-flex justify-space-between">
           <span>
             <span>{{ entry.value > 0 ? 'to: ' : 'from: ' }}</span>
             <span>{{ entry.wallet }}</span>
           </span>
-          <span>{{ (entry.value / 10 ** decimal).toFixed(currentDecimal) }}</span>
+          <span class="item-transaction__entry-value">{{ (entry.value / 10 ** decimal).toFixed(currentDecimal) }}</span>
         </span>
       </div>
     </v-expansion-panel-content>
@@ -323,6 +323,7 @@ export default {
     .v-expansion-panel-content__wrap {
       padding: 0 10px 10px;
       font-size: $--font-size-base;
+      word-break: break-word;
       @include tablet {
         font-size: $--font-size-base;
       }
@@ -330,6 +331,12 @@ export default {
         font-size: $--font-size-small;
       }
     }
+  }
+  &__hash {
+    display: block;
+  }
+  &__entry-value {
+    white-space: nowrap;
   }
 }
 </style>
