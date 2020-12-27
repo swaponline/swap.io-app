@@ -185,7 +185,7 @@ export default {
     width: 100%;
     display: flex;
     overflow: hidden;
-    height: calc(100vh - 128px);
+    height: calc(100vh - 104px);
   }
   &__info {
     background: $--white;
@@ -274,7 +274,8 @@ export default {
   .wallet {
     &__content {
       flex-direction: column;
-      height: calc(100vh - 176px);
+      flex-direction: column;
+      height: calc(100vh - 152px);
     }
     &__info {
       order: 2;

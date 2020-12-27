@@ -27,7 +27,7 @@ export default {
   }
   &__page {
     display: flex;
-    height: calc(100% - 64px);
+    height: calc(100% - 40px);
   }
 }
 @include tablet {
