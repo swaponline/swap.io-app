@@ -6,11 +6,11 @@
           height="48"
           width="48"
           class="header-list__avatar"
-          :src="`https://identicon-api.herokuapp.com/${currentAccount.name}/96?format=png`"
+          :src="`https://identicon-api.herokuapp.com/${currentAccountName}/96?format=png`"
           alt="avatar"
         />
       </v-btn>
-      <span class="header-list__name">{{ currentAccount.name }}</span>
+      <span class="header-list__name">{{ currentAccountName }}</span>
       <v-spacer></v-spacer>
       <v-toolbar-items class="header-list__summ align-center">
         <span>{{ balance }}</span>
@@ -63,6 +63,9 @@ export default {
     },
     currentAccount() {
       return this.$store.getters.currentAccount
+    },
+    currentAccountName() {
+      return this.currentAccount.name
     }
   },
   methods: {
