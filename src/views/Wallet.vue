@@ -1,6 +1,6 @@
 <template>
-  <div class="wallet">
-    <header-wallet :address="wallet" @openMenu="openMenu" />
+  <div v-if="currentWallet.address" class="wallet">
+    <header-wallet :address="currentWallet.address" :name="currentWallet.name" @openMenu="openMenu" />
     <div class="wallet__content">
       <div class="wallet__info" :class="{ 'wallet__info--open-menu': open !== null }">
         <p class="wallet__value">
@@ -9,7 +9,7 @@
         </p>
         <p class="wallet__value-in-usd"><span>USD</span> 3000.04</p>
 
-        <v-tooltip v-model="show" top activator="#copyAdress">
+        <v-tooltip v-model="show" top :open-on-hover="false" activator="#copyAdress">
           <span>Copied</span>
         </v-tooltip>
         <button id="copyAdress" class="wallet__address" @click="copy">
@@ -100,9 +100,12 @@ export default {
     }
   },
   computed: {
+    siblingList() {
+      return this.$store.getters.siblingList
+    },
     currentWallet() {
-      if (this.wallet) {
-        return this.$store.getters.siblingList.find(el => el.address === this.wallet)
+      if (this.wallet && this.siblingList) {
+        return this.siblingList.find(el => el.address === this.wallet)
       }
       return {}
     },
@@ -228,6 +231,7 @@ export default {
     }
   }
   &__address {
+    position: relative;
     opacity: 0.5;
     outline: none;
     padding-left: 24px;

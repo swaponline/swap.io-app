@@ -9,7 +9,7 @@
       <v-icon>mdi-arrow-left</v-icon>
     </v-btn>
 
-    <v-toolbar-title class="header-wallet__title pl-2">Bitcoin (Personal)</v-toolbar-title>
+    <v-toolbar-title class="header-wallet__title pl-2">{{ name }}</v-toolbar-title>
 
     <v-spacer />
 
@@ -17,9 +17,14 @@
       <v-icon>mdi-share-variant</v-icon>
     </v-btn>
 
-    <v-btn icon color="white" @click.stop="$emit('openMenu', 'menu')">
-      <v-icon>mdi-dots-vertical</v-icon>
-    </v-btn>
+    <v-tooltip top>
+      <template v-slot:activator="{ on }">
+        <v-btn icon color="white" @click.stop="$emit('openMenu', 'menu')" v-on="on">
+          <v-icon>mdi-settings</v-icon>
+        </v-btn>
+      </template>
+      <span>Settings Wallet</span>
+    </v-tooltip>
   </v-toolbar>
 </template>
 
@@ -28,6 +33,10 @@ export default {
   name: 'HeaderWallet',
   props: {
     address: {
+      type: String,
+      required: true
+    },
+    name: {
       type: String,
       required: true
     }
