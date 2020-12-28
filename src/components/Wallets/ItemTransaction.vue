@@ -20,7 +20,13 @@
         </v-list-item-title>
         <v-list-item-subtitle>
           <form class="item-transaction__descr" @submit.prevent="addComment">
-            <input v-model="comment" type="text" class="item-transaction__input-descr" @click.stop />
+            <input
+              v-model="comment"
+              type="text"
+              class="item-transaction__input-descr"
+              @keyup.space.prevent
+              @click.stop
+            />
           </form>
         </v-list-item-subtitle>
       </v-list-item-content>

@@ -41,9 +41,6 @@ export default {
       required: true
     }
   },
-  mounted() {
-    console.log(this.name)
-  },
   methods: {
     share() {
       if (navigator && navigator.canShare) {

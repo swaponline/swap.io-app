@@ -85,16 +85,14 @@ export default {
       const account = state.list.find(el => el.id === state.model.accountId) || {}
       return account.list
     },
-    siblingList(state) {
-      const account = state.list.find(el => el.id === state.model.accountId) || {}
-      return account.list?.reduce((acc, el) => {
+    siblingList(state, { currentListWallets }) {
+      return currentListWallets?.reduce((acc, el) => {
         acc.push(...el.subWallets)
         return acc
       }, [])
     },
-    walletsSumm(state) {
-      const account = state.list.find(el => el.id === state.model.accountId) || {}
-      return account.list?.reduce((balance, el) => {
+    walletsSumm(state, { currentListWallets }) {
+      return currentListWallets?.reduce((balance, el) => {
         return balance + el.value
       }, 0)
     }
@@ -102,7 +100,6 @@ export default {
   actions: {
     [GET_ACCOUNT_ID]({ state, commit }) {
       const accountId = window.localStorage.getItem('accountId') || state.list[0].id
-      console.log(123, accountId)
       commit(SET_MODEL, { model: { accountId } })
     },
     [SET_ACCOUNT_ID]({ commit }, accountId) {

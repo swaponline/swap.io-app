@@ -9,7 +9,7 @@
         </p>
         <p class="wallet__value-in-usd"><span>USD</span> 3000.04</p>
 
-        <v-tooltip v-model="show" top activator="#copyAdress">
+        <v-tooltip v-model="show" top :open-on-hover="false" activator="#copyAdress">
           <span>Copied</span>
         </v-tooltip>
         <button id="copyAdress" class="wallet__address" @click="copy">
