@@ -36,7 +36,14 @@
           <template v-slot:activator="{ on }">
             <v-list-item-title class="item-transaction__title justify-end" v-on="on">
               <span class="item-transaction__crypto-currency">{{ currency }}</span>
-              <h3 class="item-transaction__value">{{ computedValue }}</h3>
+              <h3
+                class="item-transaction__value"
+                :class="{
+                  'item-transaction__value--send': !isReceived
+                }"
+              >
+                {{ computedValue }}
+              </h3>
             </v-list-item-title>
           </template>
           <span>Balance change</span>
@@ -259,6 +266,9 @@ export default {
     color: $--salad;
     text-transform: uppercase;
     margin-left: 16px;
+    &--send {
+      color: $--red;
+    }
     @include tablet {
       font-size: 1.5em;
     }
