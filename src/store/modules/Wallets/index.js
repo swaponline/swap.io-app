@@ -81,9 +81,11 @@ export default {
     ]
   },
   getters: {
-    currentListWallets(state) {
-      const account = state.list.find(el => el.id === state.model.accountId) || {}
-      return account.list
+    currentAccount(state) {
+      return state.list.find(el => el.id === state.model.accountId) || {}
+    },
+    currentListWallets(state, { currentAccount }) {
+      return currentAccount.list
     },
     siblingList(state, { currentListWallets }) {
       return currentListWallets?.reduce((acc, el) => {
