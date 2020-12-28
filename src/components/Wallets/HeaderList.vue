@@ -1,9 +1,16 @@
 <template>
   <div>
     <v-toolbar class="header-list" color="purple">
-      <v-btn class="header-list__button ml-1" icon @click="openAccountMenu">
-        <v-img :src="photo" width="48" height="48" class="rounded-circle" position="center top" />
+      <v-btn class="header-list__button ml-0" icon @click="openAccountMenu">
+        <img
+          height="48"
+          width="48"
+          class="header-list__avatar"
+          :src="`https://identicon-api.herokuapp.com/${currentAccount.name}/96?format=png`"
+          alt="avatar"
+        />
       </v-btn>
+      <span class="header-list__name">{{ currentAccount.name }}</span>
       <v-spacer></v-spacer>
       <v-toolbar-items class="header-list__summ align-center">
         <span>{{ balance }}</span>
@@ -18,7 +25,15 @@
     >
       <v-list class="py-0">
         <v-list-item v-for="account in accounts" :key="account.id" @click="setAccount(account.id)">
-          {{ account.name }}
+          <img
+            height="48"
+            width="48"
+            class="header-list__avatar-item"
+            :src="`https://identicon-api.herokuapp.com/${account.name}/96?format=png`"
+            alt="avatar-item"
+            loading="lazy"
+          />
+          <span>{{ account.name }}</span>
         </v-list-item>
       </v-list>
     </div>
@@ -37,10 +52,6 @@ export default {
     }
   },
   computed: {
-    photo() {
-      // eslint-disable-next-line vue/max-len
-      return `https://sun9-60.userapi.com/impg/zCF4saFPwlwi0PtC41GIQ1WP30Khy-thQ9FtuA/b6bn4u-Y9D4.jpg?size=646x1148&quality=96&proxy=1&sign=b1ff76233f1ee088d886dd165748e481&type=album`
-    },
     balance() {
       return this.$store.getters.walletsSumm
     },
@@ -49,6 +60,9 @@ export default {
     },
     accounts() {
       return this.$store.state[WALLETS_MODULE].list
+    },
+    currentAccount() {
+      return this.$store.getters.currentAccount
     }
   },
   methods: {
@@ -85,6 +99,18 @@ export default {
       //   min-height: calc(100vh - 152px) !important;
       // }
     }
+  }
+  &__avatar {
+    background: white;
+    border-radius: 50%;
+  }
+  &__name {
+    margin-left: 10px;
+    color: $--white;
+  }
+  &__avatar-item {
+    border-radius: 50%;
+    margin-right: 15px;
   }
 }
 </style>
