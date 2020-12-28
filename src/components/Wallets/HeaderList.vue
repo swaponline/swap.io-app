@@ -2,13 +2,7 @@
   <div>
     <v-toolbar class="header-list" color="purple">
       <v-btn class="header-list__button ml-0" icon @click="openAccountMenu">
-        <img
-          height="48"
-          width="48"
-          class="header-list__avatar"
-          :src="`https://identicon-api.herokuapp.com/${currentAccountName}/96?format=png`"
-          alt="avatar"
-        />
+        <img height="48" width="48" class="header-list__avatar" :src="getSrcAvatar(currentAccountName)" alt="avatar" />
       </v-btn>
       <span class="header-list__name">{{ currentAccountName }}</span>
       <v-spacer></v-spacer>
@@ -29,7 +23,7 @@
             height="48"
             width="48"
             class="header-list__avatar-item"
-            :src="`https://identicon-api.herokuapp.com/${account.name}/96?format=png`"
+            :src="getSrcAvatar(account.name)"
             alt="avatar-item"
             loading="lazy"
           />
@@ -78,6 +72,9 @@ export default {
     setAccount(id) {
       this.actionSetAccount(id)
       this.openMenu = false
+    },
+    getSrcAvatar(name) {
+      return `https://identicon-api.herokuapp.com/${name}/96?format=png`
     }
   }
 }
