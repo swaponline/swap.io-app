@@ -99,11 +99,11 @@ export default {
     }
   },
   mounted() {
-    this.actionGetAccountid()
+    this.actionGetAccountId()
   },
   methods: {
     ...mapActions({
-      actionGetAccountid: GET_ACCOUNT_ID
+      actionGetAccountId: GET_ACCOUNT_ID
     })
   }
 }
