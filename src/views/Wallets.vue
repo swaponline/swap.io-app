@@ -2,18 +2,7 @@
   <page-layout class="wallets-layout">
     <template #main-block>
       <div class="wallets-layout__list">
-        <v-toolbar class="wallets-layout__header-list" color="purple">
-          <v-toolbar-items class="align-center">
-            <v-img :src="photo" width="40" height="40" class="rounded-circle" position="center top"></v-img>
-          </v-toolbar-items>
-          <v-spacer></v-spacer>
-          <v-toolbar-items class="wallets-layout__currnecy align-center">
-            <span>USD</span>
-          </v-toolbar-items>
-          <v-toolbar-items class="wallets-layout__summ align-center">
-            <span>9,943.02</span>
-          </v-toolbar-items>
-        </v-toolbar>
+        <header-list />
         <v-list class="py-0">
           <v-list-item v-for="wallet in wallets" :key="wallet.name" class="px-0">
             <v-list-item
@@ -76,7 +65,7 @@
         enter-active-class="wallets-layout__animation-active"
         leave-active-class="wallets-layout__animation-active"
       >
-        <wallet-info v-if="queryWallet" :wallet="queryWallet" />
+        <wallet-info v-if="queryWallet" :key="queryWallet" :wallet="queryWallet" />
       </transition>
       <div v-if="!queryWallet">
         Выберите кошелек для получения дополнительной информации
@@ -86,9 +75,11 @@
 </template>
 
 <script>
-import { MODULE_NAME as WALLETS_NAME } from '@/store/modules/Wallets'
+import { mapActions } from 'vuex'
+import { GET_ACCOUNT_ID } from '@/store/modules/Wallets'
 import PageLayout from '@/layouts/PageLayout/index.vue'
 import SvgIcon from '@/components/SvgIcon.vue'
+import HeaderList from '@/components/Wallets/HeaderList.vue'
 import Wallet from './Wallet.vue'
 
 export default {
@@ -96,19 +87,24 @@ export default {
   components: {
     SvgIcon,
     PageLayout,
+    HeaderList,
     WalletInfo: Wallet
   },
   computed: {
     queryWallet() {
       return this.$route.query.wallet || ''
     },
-    photo() {
-      // eslint-disable-next-line vue/max-len
-      return `https://sun9-60.userapi.com/impg/zCF4saFPwlwi0PtC41GIQ1WP30Khy-thQ9FtuA/b6bn4u-Y9D4.jpg?size=646x1148&quality=96&proxy=1&sign=b1ff76233f1ee088d886dd165748e481&type=album`
-    },
     wallets() {
-      return this.$store.state[WALLETS_NAME].list
+      return this.$store.getters.currentListWallets
     }
+  },
+  mounted() {
+    this.actionGetAccountid()
+  },
+  methods: {
+    ...mapActions({
+      actionGetAccountid: GET_ACCOUNT_ID
+    })
   }
 }
 </script>
@@ -129,17 +125,9 @@ export default {
     border-right: 1px solid $--grey;
     overflow-y: auto;
   }
-  &__header-list {
-    font-size: 18px;
-    max-height: 64px;
-  }
   &__currnecy {
     color: rgba($color: $--white, $alpha: 0.5);
     margin-right: 4px;
-  }
-  &__summ {
-    color: $--white;
-    font-weight: 500;
   }
   &__icon-wrapper {
     display: flex;
@@ -165,7 +153,7 @@ export default {
       opacity: 1;
     }
     &__animation-active {
-      transition: 0.5s;
+      transition: 1s;
     }
   }
 }

@@ -136,7 +136,10 @@ export default {
     },
     currentBalance() {
       const wallet = this.journal[0].balance.find(wall => wall.wallet === this.address)
-      return (wallet.balance / 10 ** this.decimal).toFixed(this.currentDecimal)
+      if (wallet) {
+        return (wallet.balance / 10 ** this.decimal).toFixed(this.currentDecimal)
+      }
+      return ''
     },
     isReceived() {
       return this.to === this.address
