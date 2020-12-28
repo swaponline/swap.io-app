@@ -1,16 +1,22 @@
 <template>
   <div class="wallet">
-    <header-wallet @openMenu="openMenu" />
+    <header-wallet :address="wallet" @openMenu="openMenu" />
     <div class="wallet__content">
       <div class="wallet__info" :class="{ 'wallet__info--open-menu': open !== null }">
-        <p class="wallet__value">{{ currentWallet.value }}</p>
-        <p class="wallet__value-in-usd"><span>$</span> 3000.04</p>
-        <p class="wallet__address">{{ currentWallet.address }}</p>
+        <p class="wallet__value">
+          <span class="wallet__icon-value"><svg-icon name="btc"/></span>
+          {{ currentWallet.value }}
+        </p>
+        <p class="wallet__value-in-usd"><span>USD</span> 3000.04</p>
+
+        <v-tooltip v-model="show" top activator="#copyAdress">
+          <span>Copied</span>
+        </v-tooltip>
+        <button id="copyAdress" class="wallet__address" @click="copy">
+          {{ currentWallet.address }}
+          <v-icon class="wallet__icon-copy">mdi-content-copy</v-icon>
+        </button>
         <div class="wallet__buttons">
-          <v-btn class="wallet__button" color="primary" outlined>
-            <v-icon class="wallet__icon-copy">mdi-content-copy</v-icon>
-            Copy
-          </v-btn>
           <v-btn class="wallet__button" color="primary" outlined>
             <v-icon class="wallet__icon-invoice">mdi-arrow-down-bold-circle</v-icon>
             Invoice
@@ -39,22 +45,24 @@
         }"
       >
         <wallets-menu
-          :visible="open === 'menu'"
-          :await-status="open === 'share'"
-          :list="[]"
-          tabindex="-1"
-          @closed="open = null"
-        >
-          <template #default="{ info }"> item {{ info }} </template>
-        </wallets-menu>
-        <wallets-menu
           :visible="open === 'share'"
           :await-status="open === 'menu'"
-          :list="[]"
+          :list="shareLinks"
           tabindex="-1"
-          @closed="open = null"
+          @closed="openMenu(null)"
         >
-          <template #default="{ info }"> item share {{ info }} </template>
+          <template #default="{ item }">
+            <share-link v-bind="item" @copy="copy" />
+          </template>
+        </wallets-menu>
+        <wallets-menu
+          :visible="open === 'menu'"
+          :await-status="open === 'share'"
+          :list="shareLinks"
+          tabindex="-1"
+          @closed="openMenu(null)"
+        >
+          <template #default="{ item }"> {{ item.name }} </template>
         </wallets-menu>
       </div>
     </div>
@@ -65,13 +73,17 @@
 import HeaderWallet from '@/components/Wallets/HeaderWallet.vue'
 import WalletsMenu from '@/components/Wallets/WalletsMenu.vue'
 import ListTransactions from '@/components/Wallets/ListTransactions.vue'
+import ShareLink from '@/components/Wallets/ShareLink.vue'
+import SvgIcon from '@/components/SvgIcon.vue'
 
 export default {
   name: 'Wallet',
   components: {
     HeaderWallet,
     WalletsMenu,
-    ListTransactions
+    ListTransactions,
+    ShareLink,
+    SvgIcon
   },
   props: {
     wallet: {
@@ -82,7 +94,9 @@ export default {
   data() {
     return {
       tab: 'all',
-      open: null
+      open: null,
+      show: false,
+      tooltipTimer: undefined
     }
   },
   computed: {
@@ -91,6 +105,28 @@ export default {
         return this.$store.getters.siblingList.find(el => el.address === this.wallet)
       }
       return {}
+    },
+    shareLinks() {
+      return [
+        {
+          name: 'Telegram',
+          icon: 'mdi-telegram',
+          target: '_blank',
+          url: 'https://web.telegram.org/'
+        },
+        {
+          name: 'WhatsApp',
+          icon: 'mdi-whatsapp',
+          target: '_blank',
+          url: 'https://web.whatsapp.com/'
+        },
+        {
+          name: 'Facebook',
+          icon: 'mdi-facebook-box',
+          target: '_blank',
+          url: 'https://www.facebook.com/'
+        }
+      ]
     }
   },
   watch: {
@@ -102,6 +138,9 @@ export default {
       }
     }
   },
+  beforeDestroy() {
+    clearTimeout(this.tooltipTimer)
+  },
   methods: {
     openMenu(key) {
       if (this.open === key) {
@@ -112,6 +151,24 @@ export default {
       setTimeout(() => {
         this.$refs.tabs.onResize()
       }, 500)
+    },
+    copy() {
+      if (navigator && navigator.clipboard) {
+        navigator.clipboard
+          .writeText(this.wallet)
+          .then(() => {
+            this.show = true
+            if (this.tooltipTimer) {
+              clearTimeout(this.tooltipTimer)
+            }
+            this.tooltipTimer = setTimeout(() => {
+              this.show = false
+            }, 1500)
+          })
+          .catch(err => {
+            console.log('Значение не скопировано', err)
+          })
+      }
     }
   }
 }
@@ -126,7 +183,7 @@ export default {
     width: 100%;
     display: flex;
     overflow: hidden;
-    height: calc(100vh - 128px);
+    height: calc(100vh - 104px);
   }
   &__info {
     background: $--white;
@@ -143,8 +200,26 @@ export default {
     }
   }
   &__value {
-    font-size: $--font-size-small-subtitle;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: $--font-size-subtitle;
     font-weight: $--font-weight-bold;
+  }
+  &__icon-value {
+    width: 30px;
+    height: 30px;
+    background: $--grey;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    margin-right: 5px;
+    svg {
+      width: 14px;
+      height: 14px;
+      fill: #ffffff;
+    }
   }
   &__value-in-usd {
     font-weight: $--font-weight-medium;
@@ -154,6 +229,25 @@ export default {
   }
   &__address {
     opacity: 0.5;
+    outline: none;
+    padding-left: 24px;
+    padding-bottom: 8px;
+    &:hover {
+      .wallet__icon-copy {
+        opacity: 1;
+      }
+    }
+    @include tablet {
+      font-size: $--font-size-small;
+      padding-left: 0;
+      word-break: break-all;
+    }
+  }
+  &__icon-copy {
+    opacity: 0;
+    @include phone {
+      display: none !important;
+    }
   }
   &__button {
     margin: 0 16px;
@@ -179,7 +273,8 @@ export default {
   .wallet {
     &__content {
       flex-direction: column;
-      height: calc(100vh - 176px);
+      flex-direction: column;
+      height: calc(100vh - 152px);
     }
     &__info {
       order: 2;

@@ -7,8 +7,8 @@
     }"
     @click.stop="closed"
   >
-    <v-list-item v-for="i in 5" :key="i" tabindex="-1" @click.stop="closed">
-      <slot :info="i"> item {{ i }} </slot>
+    <v-list-item v-for="(item, i) in list" :key="i" tabindex="-1" @click.stop="closed">
+      <slot :item="item"> item {{ i }} </slot>
     </v-list-item>
   </v-list>
 </template>

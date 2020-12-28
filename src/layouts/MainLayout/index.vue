@@ -23,11 +23,11 @@ export default {
 .main-layout {
   height: 100vh;
   &__header {
-    min-height: 64px;
+    min-height: 40px;
   }
   &__page {
     display: flex;
-    height: calc(100% - 64px);
+    height: calc(100% - 40px);
   }
 }
 @include tablet {
