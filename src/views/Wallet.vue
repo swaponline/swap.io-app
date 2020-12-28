@@ -9,15 +9,13 @@
         </p>
         <p class="wallet__value-in-usd"><span>USD</span> 3000.04</p>
 
-        <v-tooltip v-model="show" top>
-          <template #activator="{attrs}">
-            <button class="wallet__address" v-bind="attrs" @click="copy">
-              {{ currentWallet.address }}
-              <v-icon class="wallet__icon-copy">mdi-content-copy</v-icon>
-            </button>
-          </template>
+        <v-tooltip v-model="show" top activator="#copyAdress">
           <span>Copied</span>
         </v-tooltip>
+        <button id="copyAdress" class="wallet__address" @click="copy">
+          {{ currentWallet.address }}
+          <v-icon class="wallet__icon-copy">mdi-content-copy</v-icon>
+        </button>
         <div class="wallet__buttons">
           <v-btn class="wallet__button" color="primary" outlined>
             <v-icon class="wallet__icon-invoice">mdi-arrow-down-bold-circle</v-icon>
@@ -233,6 +231,7 @@ export default {
     opacity: 0.5;
     outline: none;
     padding-left: 24px;
+    padding-bottom: 8px;
     &:hover {
       .wallet__icon-copy {
         opacity: 1;
