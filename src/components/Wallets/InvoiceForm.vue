@@ -1,14 +1,18 @@
 <template>
   <transition name="invoice-form">
     <form v-if="visible" class="invoice-form">
-      <header class="d-flex mb-4 align-center">
-        <v-btn icon class="mr-3" @click="back">
+      <header class="d-flex mb-2 align-center">
+        <v-btn large icon class="mr-3" @click="back">
           <v-icon>mdi-arrow-left</v-icon>
         </v-btn>
         <h3>Invoice Form</h3>
       </header>
       <v-text-field :value="address" disabled outlined label="Your wallet"></v-text-field>
-      <v-text-field outlined label="Amount"></v-text-field>
+      <v-text-field outlined label="Amount">
+        <template #append>
+          <v-select class="py-0 my-0 mx-0" :items="[1, 2, 3, 4, 5]"></v-select>
+        </template>
+      </v-text-field>
       <v-text-field outlined label="Your contact (email or @nickname)"></v-text-field>
       <v-textarea outlined label="Comment"></v-textarea>
       <div class="d-flex justify-end">
@@ -51,14 +55,24 @@ export default {
   overflow-y: auto;
   background: $--white;
   transform: translateX(0);
-  padding: 20px 15px;
+  padding: 10px 15px;
   @include tablet {
+    padding: 10px 5px;
     width: 100vw;
     height: calc(100vh - 97px);
-    padding: 15px 5px;
   }
   &--visible {
     transform: translateX(0);
+  }
+  .v-text-field__details {
+    display: none;
+  }
+  .v-select__slot {
+    min-height: 48px;
+  }
+  .v-input__append-inner {
+    margin-top: 0;
+    align-self: center;
   }
 }
 .invoice-form-enter-active,
