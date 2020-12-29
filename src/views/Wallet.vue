@@ -17,9 +17,22 @@
           <v-icon class="wallet__icon-copy">mdi-content-copy</v-icon>
         </button>
         <div class="wallet__buttons">
-          <v-btn class="wallet__button" color="primary" outlined>
+          <v-btn class="wallet__button" color="primary" outlined @click="$emit('goToInvoiceForm')">
             <v-icon class="wallet__icon-invoice">mdi-arrow-down-bold-circle</v-icon>
             Invoice
+          </v-btn>
+          <v-btn
+            class="wallet__button"
+            color="primary"
+            outlined
+            :to="{ name: 'Swap', query: { wallet: currentWallet.address, currency: 'BTC' } }"
+          >
+            <v-icon class="wallet__icon-invoice">mdi-swap-vertical</v-icon>
+            Swap
+          </v-btn>
+          <v-btn class="wallet__button" color="primary" outlined>
+            <v-icon class="wallet__icon-invoice">mdi-arrow-up-bold-circle</v-icon>
+            Send
           </v-btn>
         </div>
         <v-sheet elevation="4" class="mt-8 mb-2">
@@ -255,6 +268,9 @@ export default {
   }
   &__button {
     margin: 0 16px;
+  }
+  &__icon-invoice {
+    transform: rotate(45deg);
   }
   &__side-menu {
     background: $--white;
