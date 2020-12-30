@@ -56,6 +56,7 @@ export default {
   z-index: 2000;
   width: calc(100vw - 70px);
   height: calc(100vh - 40px);
+  max-width: ($--max-content-size - 70px);
   overflow-x: hidden;
   overflow-y: auto;
   background: $--white;

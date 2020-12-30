@@ -49,6 +49,9 @@ export default {
       &--purple {
         color: var(--purple);
       }
+      &:before {
+        border-radius: 0px;
+      }
     }
   }
   &__list-icon {
