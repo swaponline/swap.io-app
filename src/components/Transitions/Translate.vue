@@ -6,18 +6,13 @@
 
 <script>
 export default {
-  name: 'RightTranslate',
-  props: {
-    reverse: {
-      type: Boolean,
-      default: false
-    }
-  }
+  name: 'Translate'
 }
 </script>
 
 <style lang="scss">
-.translate-enter-to.translate-leave-from {
+.translate-enter-to,
+.translate-leave-from {
   transform: translateX(0);
 }
 .translate-enter-active,
