@@ -10,6 +10,10 @@ html {
   overflow-y: auto;
 }
 
+.v-application--wrap {
+  min-height: 0;
+}
+
 body {
   font-family: $--font-base;
   font-weight: $--font-weight-regular;

@@ -42,7 +42,7 @@ export default {
 @include tablet {
   .page-layout {
     &__main-block {
-      position: fixed;
+      position: absolute;
       width: 100%;
       transition: 0.5s;
       transform: translate(0, 0);
@@ -51,7 +51,7 @@ export default {
       }
     }
     &__more-info-block {
-      position: fixed;
+      position: absolute;
       width: 100%;
       transition: 0.5s;
       transform: translate(100%, 0);

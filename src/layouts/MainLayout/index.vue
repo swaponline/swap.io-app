@@ -21,7 +21,7 @@ export default {
 
 <style lang="scss">
 .main-layout {
-  height: 100vh;
+  min-height: calc(100vh - 56px);
   &__header {
     min-height: 40px;
   }
