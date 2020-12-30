@@ -202,7 +202,6 @@ export default {
     height: calc(100vh - 104px);
     @include tablet {
       flex-direction: column;
-      flex-direction: column;
       height: calc(100vh - 152px);
     }
   }
