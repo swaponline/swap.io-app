@@ -25,7 +25,7 @@
               </v-list-item-content>
             </v-list-item>
             <v-list-group v-else class="wallets-layout__wallet-item">
-              <template v-slot:activator>
+              <template #activator>
                 <v-list-item-icon class="wallets-layout__icon-wrapper mr-4">
                   <svg-icon class="wallets-layout__icon" name="btc" />
                 </v-list-item-icon>
@@ -62,12 +62,7 @@
         enter-active-class="wallets-layout__animation-active"
         leave-active-class="wallets-layout__animation-active"
       >
-        <wallet-info
-          v-if="queryWallet"
-          :key="queryWallet"
-          :wallet="queryWallet"
-          @goToInvoiceForm="invoiceFormVisible = true"
-        />
+        <wallet-info v-if="queryWallet" :key="queryWallet" :wallet="queryWallet" @invoice="invoiceFormVisible = true" />
       </transition>
       <div v-if="!queryWallet">
         Выберите кошелек для получения дополнительной информации
@@ -75,7 +70,7 @@
     </template>
     <invoice-form :visible="invoiceFormVisible" @back="invoiceFormVisible = false"></invoice-form>
     <v-speed-dial v-model="fab" bottom left direction="top" transition="slide-y-reverse-transition">
-      <template v-slot:activator>
+      <template #activator>
         <v-btn v-model="fab" color="blue darken-2" dark fab>
           <v-icon v-if="fab">
             mdi-close

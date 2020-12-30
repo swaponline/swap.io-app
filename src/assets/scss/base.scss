@@ -6,14 +6,6 @@
   box-sizing: border-box;
 }
 
-html {
-  overflow-y: auto;
-}
-
-.v-application--wrap {
-  min-height: 0;
-}
-
 body {
   font-family: $--font-base;
   font-weight: $--font-weight-regular;
@@ -46,4 +38,13 @@ ul {
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+// Переопределяем стили vuetify
+html {
+  overflow-y: auto;
+}
+.v-application--wrap {
+  // также можно использовать -webkit-fill-available
+  min-height: calc(var(--vh, 1vh) * 100);
 }

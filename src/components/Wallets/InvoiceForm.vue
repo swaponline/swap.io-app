@@ -1,5 +1,5 @@
 <template>
-  <transition name="invoice-form">
+  <transition-translate>
     <form v-if="visible" class="invoice-form">
       <header class="d-flex mb-2 align-center">
         <v-btn large icon class="mr-3" @click="back">
@@ -20,12 +20,17 @@
         <v-btn type="submit">Confirm</v-btn>
       </div>
     </form>
-  </transition>
+  </transition-translate>
 </template>
 
 <script>
+import TransitionTranslate from '@/components/Transitions/Translate.vue'
+
 export default {
   name: 'InvoiceForm',
+  components: {
+    TransitionTranslate
+  },
   props: {
     visible: {
       type: Boolean,
@@ -47,22 +52,18 @@ export default {
 
 <style lang="scss">
 .invoice-form {
-  position: fixed;
+  position: absolute;
   z-index: 2000;
   width: calc(100vw - 70px);
   height: calc(100vh - 40px);
   overflow-x: hidden;
   overflow-y: auto;
   background: $--white;
-  transform: translateX(0);
   padding: 10px 15px;
   @include tablet {
     padding: 10px 5px;
     width: 100vw;
     height: calc(100vh - 97px);
-  }
-  &--visible {
-    transform: translateX(0);
   }
   .v-text-field__details {
     display: none;
@@ -74,13 +75,5 @@ export default {
     margin-top: 0;
     align-self: center;
   }
-}
-.invoice-form-enter-active,
-.invoice-form-leave-active {
-  transition: 0.5s;
-}
-.invoice-form-enter,
-.invoice-form-leave-to {
-  transform: translateX(100vw);
 }
 </style>
