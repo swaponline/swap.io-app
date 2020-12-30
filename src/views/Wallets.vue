@@ -25,7 +25,7 @@
               </v-list-item-content>
             </v-list-item>
             <v-list-group v-else class="wallets-layout__wallet-item">
-              <template v-slot:activator>
+              <template #activator>
                 <v-list-item-icon class="wallets-layout__icon-wrapper mr-4">
                   <svg-icon class="wallets-layout__icon" name="btc" />
                 </v-list-item-icon>
@@ -52,9 +52,6 @@
           </v-list-item>
         </v-list>
         <v-spacer />
-        <v-btn color="primary" class="my-6 ml-auto mr-4" relative right fab>
-          <v-icon>mdi-plus</v-icon>
-        </v-btn>
       </div>
     </template>
     <template #more-info-block>
@@ -65,12 +62,34 @@
         enter-active-class="wallets-layout__animation-active"
         leave-active-class="wallets-layout__animation-active"
       >
-        <wallet-info v-if="queryWallet" :key="queryWallet" :wallet="queryWallet" />
+        <wallet-info v-if="queryWallet" :key="queryWallet" :wallet="queryWallet" @invoice="invoiceFormVisible = true" />
       </transition>
       <div v-if="!queryWallet">
         Выберите кошелек для получения дополнительной информации
       </div>
     </template>
+    <invoice-form :visible="invoiceFormVisible" @back="invoiceFormVisible = false"></invoice-form>
+    <v-speed-dial v-model="fab" bottom left direction="top" transition="slide-y-reverse-transition">
+      <template #activator>
+        <v-btn v-model="fab" color="blue darken-2" dark fab>
+          <v-icon v-if="fab">
+            mdi-close
+          </v-icon>
+          <v-icon v-else>
+            mdi-plus
+          </v-icon>
+        </v-btn>
+      </template>
+      <v-btn fab dark small color="red">
+        <v-icon>mdi-wallet</v-icon>
+      </v-btn>
+      <v-btn fab dark small color="indigo">
+        <v-icon>mdi-swap-horizontal</v-icon>
+      </v-btn>
+      <v-btn fab dark small color="green">
+        <v-icon>mdi-wallet</v-icon>
+      </v-btn>
+    </v-speed-dial>
   </page-layout>
 </template>
 
@@ -80,6 +99,7 @@ import { GET_ACCOUNT_ID } from '@/store/modules/Wallets'
 import PageLayout from '@/layouts/PageLayout/index.vue'
 import SvgIcon from '@/components/SvgIcon.vue'
 import HeaderList from '@/components/Wallets/HeaderList.vue'
+import InvoiceForm from '@/components/Wallets/InvoiceForm.vue'
 import Wallet from './Wallet.vue'
 
 export default {
@@ -88,7 +108,14 @@ export default {
     SvgIcon,
     PageLayout,
     HeaderList,
+    InvoiceForm,
     WalletInfo: Wallet
+  },
+  data() {
+    return {
+      fab: false,
+      invoiceFormVisible: false
+    }
   },
   computed: {
     queryWallet() {
@@ -142,6 +169,18 @@ export default {
     width: 20px;
     height: 20px;
     fill: $--white;
+  }
+  .v-speed-dial {
+    position: absolute;
+    @include tablet {
+      position: fixed;
+      bottom: 80px !important;
+      z-index: 9999;
+      transition: 0.5s;
+      &--wallet {
+        transform: translate(100vw, 0);
+      }
+    }
   }
 }
 @include tablet {

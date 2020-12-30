@@ -17,9 +17,22 @@
           <v-icon class="wallet__icon-copy">mdi-content-copy</v-icon>
         </button>
         <div class="wallet__buttons">
-          <v-btn class="wallet__button" color="primary" outlined>
+          <v-btn class="wallet__button" color="primary" outlined @click="$emit('invoice')">
             <v-icon class="wallet__icon-invoice">mdi-arrow-down-bold-circle</v-icon>
             Invoice
+          </v-btn>
+          <v-btn
+            class="wallet__button"
+            color="primary"
+            outlined
+            :to="{ name: 'Swap', query: { wallet: currentWallet.address, currency: 'BTC' } }"
+          >
+            <v-icon class="wallet__icon-invoice">mdi-swap-vertical</v-icon>
+            Swap
+          </v-btn>
+          <v-btn class="wallet__button" color="primary" outlined>
+            <v-icon class="wallet__icon-invoice">mdi-arrow-up-bold-circle</v-icon>
+            Send
           </v-btn>
         </div>
         <v-sheet elevation="4" class="mt-8 mb-2">
@@ -187,6 +200,10 @@ export default {
     display: flex;
     overflow: hidden;
     height: calc(100vh - 104px);
+    @include tablet {
+      flex-direction: column;
+      height: calc(100vh - 152px);
+    }
   }
   &__info {
     background: $--white;
@@ -200,6 +217,12 @@ export default {
     overflow-x: hidden;
     &--open-menu {
       width: 75%;
+    }
+    @include tablet {
+      order: 2;
+      &--open-menu {
+        width: 100%;
+      }
     }
   }
   &__value {
@@ -255,6 +278,12 @@ export default {
   }
   &__button {
     margin: 0 16px;
+    @include tablet {
+      display: none;
+    }
+  }
+  &__icon-invoice {
+    transform: rotate(45deg);
   }
   &__side-menu {
     background: $--white;
@@ -271,22 +300,7 @@ export default {
     &--open-menu {
       transform: translateX(0%);
     }
-  }
-}
-@include tablet {
-  .wallet {
-    &__content {
-      flex-direction: column;
-      flex-direction: column;
-      height: calc(100vh - 152px);
-    }
-    &__info {
-      order: 2;
-      &--open-menu {
-        width: 100%;
-      }
-    }
-    &__side-menu {
+    @include tablet {
       order: 1;
       position: relative;
       width: 100%;
@@ -306,6 +320,8 @@ export default {
       }
     }
   }
+}
+@include tablet {
   // Переопределим некоторые стили для vuetify
   // уберем левый отступ у вкладок на маленьких устройствах
   .v-slide-group__prev {

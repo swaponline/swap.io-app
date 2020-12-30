@@ -39,3 +39,12 @@ ul {
   padding: 0;
   list-style: none;
 }
+
+// Переопределяем стили vuetify
+html {
+  overflow-y: auto;
+}
+.v-application--wrap {
+  // также можно использовать -webkit-fill-available
+  min-height: calc(var(--vh, 1vh) * 100);
+}

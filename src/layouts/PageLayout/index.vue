@@ -6,6 +6,7 @@
     <div class="page-layout__more-info-block" :class="{ 'page-layout__more-info-block--open': isQueryWallet }">
       <slot name="more-info-block"></slot>
     </div>
+    <slot></slot>
   </div>
 </template>
 
@@ -22,6 +23,7 @@ export default {
 
 <style lang="scss">
 .page-layout {
+  position: relative;
   display: flex;
   width: 100%;
   height: 100%;
@@ -40,7 +42,7 @@ export default {
 @include tablet {
   .page-layout {
     &__main-block {
-      position: fixed;
+      position: absolute;
       width: 100%;
       transition: 0.5s;
       transform: translate(0, 0);
@@ -49,7 +51,7 @@ export default {
       }
     }
     &__more-info-block {
-      position: fixed;
+      position: absolute;
       width: 100%;
       transition: 0.5s;
       transform: translate(100%, 0);
