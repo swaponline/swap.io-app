@@ -21,7 +21,7 @@
             <v-select
               v-model="type"
               return-object
-              item-text="type"
+              item-text="label"
               item-value="id"
               outlined
               class="invoice-form__type"
@@ -35,7 +35,7 @@
       </div>
       <v-row v-if="type.id !== 1">
         <v-col cols="8">
-          <v-text-field outlined :label="type.type" :placeholder="type.type"></v-text-field>
+          <v-text-field outlined :label="type.label" :placeholder="type.label"></v-text-field>
         </v-col>
         <v-col cols="4">
           <v-text-field outlined label="Price"></v-text-field>
@@ -67,11 +67,11 @@ export default {
   data() {
     return {
       currency: 'USD',
-      type: { id: 1, type: 'Amount only' },
+      type: { id: 1, label: 'Amount only' },
       types: [
-        { id: 1, type: 'Amount only' },
-        { id: 2, type: 'Hourly' },
-        { id: 3, type: 'Quantity' }
+        { id: 1, label: 'Amount only' },
+        { id: 2, label: 'Hourly' },
+        { id: 3, label: 'Quantity' }
       ],
       currencies: ['USD', 'BTC', 'ETH']
     }
