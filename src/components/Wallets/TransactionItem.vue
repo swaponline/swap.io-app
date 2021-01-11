@@ -1,74 +1,97 @@
 <template>
-  <v-list-item to="/" class="item-link-transaction px-1">
-    <v-list-item-content class="item-link-transaction__icon-block flex-grow-0 mr-1">
-      <v-icon
-        class="item-link-transaction__icon lighten-1"
-        background="white"
-        :class="{
-          'item-link-transaction__icon--send': !isReceived
-        }"
-      >
-        mdi-arrow-bottom-left
-      </v-icon>
-      <h3 class="item-link-transaction__time">{{ `${hours}:${minutes}` }}</h3>
-    </v-list-item-content>
+  <v-expansion-panel class="item-transaction my-0">
+    <v-expansion-panel-header class="item-transaction__header px-1">
+      <v-list-item-content class="flex-grow-0 mr-1">
+        <v-icon
+          class="item-transaction__icon lighten-1"
+          background="white"
+          :class="{
+            'item-transaction__icon--send': !isReceived
+          }"
+        >
+          mdi-arrow-bottom-left
+        </v-icon>
+        <h3 class="item-transaction__time">{{ `${hours}:${minutes}` }}</h3>
+      </v-list-item-content>
 
-    <v-list-item-content class="text-left">
-      <v-list-item-title class="item-link-transaction__title">
-        <span class="item-link-transaction__status">CONFIRMED</span>
-      </v-list-item-title>
-      <v-list-item-subtitle>
-        <span class="item-link-transaction__descr">
-          {{ comment }}
-        </span>
-      </v-list-item-subtitle>
-    </v-list-item-content>
+      <v-list-item-content class="text-left">
+        <v-list-item-title class="item-transaction__title">
+          <span class="item-transaction__status">CONFIRMED</span>
+        </v-list-item-title>
+        <v-list-item-subtitle>
+          <form class="item-transaction__descr" @submit.prevent="addComment">
+            <input
+              v-model="comment"
+              type="text"
+              class="item-transaction__input-descr"
+              @keyup.space.prevent
+              @click.stop
+            />
+          </form>
+        </v-list-item-subtitle>
+      </v-list-item-content>
 
-    <v-list-item-action class="flex-grow-0 mr-1">
-      <v-tooltip top>
-        <template v-slot:activator="{ on }">
-          <v-list-item-title class="item-link-transaction__title justify-end" v-on="on">
-            <span class="item-link-transaction__crypto-currency">{{ currency }}</span>
-            <h3
-              class="item-link-transaction__value"
-              :class="{
-                'item-link-transaction__value--send': !isReceived
-              }"
-            >
-              {{ computedValue }}
-            </h3>
-          </v-list-item-title>
-        </template>
-        <span>Balance change</span>
-      </v-tooltip>
-      <v-list-item-subtitle>
-        <h3 class="item-link-transaction__subtitle">
-          <v-tooltip top>
-            <template v-slot:activator="{ on }">
-              <span class="item-link-transaction__value-in-usd" v-on="on">~${{ valueInUsd }}</span>
-            </template>
-            <span> USD Equivalent of transaction amount @ {{ rateValue.toFixed(2) }} USD/ETH)</span>
-          </v-tooltip>
-        </h3>
-      </v-list-item-subtitle>
-    </v-list-item-action>
-
-    <v-list-item-action class="flex-grow-0 mr-1 ml-2 mt-0 item-link-transaction__balance">
-      <v-list-item-subtitle class="item-link-transaction__subtitle">
+      <v-list-item-action class="flex-grow-0 mr-1">
         <v-tooltip top>
           <template v-slot:activator="{ on }">
-            <span class="item-link-transaction__balance-value" v-on="on">{{ currentBalance }}</span>
+            <v-list-item-title class="item-transaction__title justify-end" v-on="on">
+              <span class="item-transaction__crypto-currency">{{ currency }}</span>
+              <h3
+                class="item-transaction__value"
+                :class="{
+                  'item-transaction__value--send': !isReceived
+                }"
+              >
+                {{ computedValue }}
+              </h3>
+            </v-list-item-title>
           </template>
-          <span>Balance after transaction</span>
+          <span>Balance change</span>
         </v-tooltip>
-      </v-list-item-subtitle>
-    </v-list-item-action>
-  </v-list-item>
+        <v-list-item-subtitle>
+          <h3 class="item-transaction__subtitle">
+            <v-tooltip top>
+              <template v-slot:activator="{ on }">
+                <span class="item-transaction__value-in-usd" v-on="on">~${{ valueInUsd }}</span>
+              </template>
+              <span> USD Equivalent of transaction amount @ {{ rateValue.toFixed(2) }} USD/ETH)</span>
+            </v-tooltip>
+          </h3>
+        </v-list-item-subtitle>
+      </v-list-item-action>
+
+      <v-list-item-action class="flex-grow-0 mr-1 ml-2 mt-0 item-transaction__balance">
+        <v-list-item-subtitle class="item-transaction__subtitle">
+          <v-tooltip top>
+            <template v-slot:activator="{ on }">
+              <span class="item-transaction__balance-value" v-on="on">{{ currentBalance }}</span>
+            </template>
+            <span>Balance after transaction</span>
+          </v-tooltip>
+        </v-list-item-subtitle>
+      </v-list-item-action>
+    </v-expansion-panel-header>
+
+    <v-expansion-panel-content class="item-transaction__expansion">
+      <div class="text-left">
+        <span class="d-block">Transaction fee: {{ transactionFee }}</span>
+        <span class="item-transaction__hash">Hash: {{ hash }}</span>
+        <h3 class="d-block">Entries:</h3>
+        <span v-for="(entry, i) in entries.filter(el => !el.label)" :key="i" class="d-flex justify-space-between">
+          <span>
+            <span>{{ entry.value > 0 ? 'to: ' : 'from: ' }}</span>
+            <span>{{ entry.wallet }}</span>
+          </span>
+          <span class="item-transaction__entry-value">{{ (entry.value / 10 ** decimal).toFixed(currentDecimal) }}</span>
+        </span>
+      </div>
+    </v-expansion-panel-content>
+  </v-expansion-panel>
 </template>
 
 <script>
 export default {
-  name: 'ItemLinkTransaction',
+  name: 'ItemTransaction',
   props: {
     journal: {
       type: Array,
@@ -166,21 +189,23 @@ export default {
     }
   },
   mounted() {
-    if (this.description) {
-      this.comment = this.description || undefined
-    } else {
-      this.comment = this.isReceived ? `From: ${this.from}` : `To: ${this.to}`
+    this.comment = this.description || this.isReceived ? `From: ${this.from}` : `To: ${this.to}`
+  },
+  methods: {
+    addComment() {
+      this.description = this.comment || undefined
+      if (this.comment === '') {
+        this.comment = this.description
+      }
     }
   }
 }
 </script>
 
 <style lang="scss">
-.item-link-transaction {
-  align-items: center;
+.item-transaction {
   border-bottom: 1px solid rgba($color: $--black, $alpha: 0.12);
   border-top: 1px solid rgba($color: $--black, $alpha: 0.12);
-  text-decoration: none;
   &[aria-expended] {
     margin: 0 0;
   }
@@ -189,6 +214,9 @@ export default {
   }
   &:before {
     box-shadow: none;
+  }
+  &__header {
+    padding: 0 0;
   }
   &__title {
     display: flex;
@@ -258,14 +286,6 @@ export default {
   &__value-in-usd {
     margin-left: 5px;
   }
-  &__expend-icon {
-    @include tablet {
-      display: none !important;
-    }
-  }
-  &__icon-block {
-    min-width: 50px;
-  }
   &__icon {
     &--send {
       transform: rotate(180deg);
@@ -313,6 +333,25 @@ export default {
     font-size: $--font-size-medium;
     width: 100%;
     text-align: center;
+  }
+  &__expansion {
+    .v-expansion-panel-content__wrap {
+      padding: 0 10px 10px;
+      font-size: $--font-size-base;
+      word-break: break-word;
+      @include tablet {
+        font-size: $--font-size-base;
+      }
+      @include phone {
+        font-size: $--font-size-small;
+      }
+    }
+  }
+  &__hash {
+    display: block;
+  }
+  &__entry-value {
+    white-space: nowrap;
   }
 }
 </style>

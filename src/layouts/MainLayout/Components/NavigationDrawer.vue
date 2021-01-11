@@ -38,7 +38,7 @@ export default {
 <style lang="scss">
 .navigation-drawer {
   position: relative;
-  min-width: 70px;
+  min-width: $--navigation-drawer-desktop-width;
   z-index: 9999;
   &__list {
     padding: 0 0;

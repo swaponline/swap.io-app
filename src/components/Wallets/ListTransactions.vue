@@ -2,14 +2,14 @@
   <v-expansion-panels>
     <div v-for="transaction in transactions" :key="transaction.date" class="list-transaction__block">
       <v-subheader class="list-transaction__title">{{ transaction.date }}</v-subheader>
-      <item-transaction
+      <transaction-item
         v-for="item in transaction.list"
         :key="item.hash"
         v-bind="item"
         :address="address"
         class="list-transaction__item"
       />
-      <item-link-transaction
+      <transaction-link-item
         v-for="item in transaction.list"
         :key="item.hash + 'link'"
         v-bind="item"
@@ -23,14 +23,14 @@
 <script>
 import { GET_TRANSACTIONS } from '@/store/modules/Transactions'
 import { mapActions, mapGetters } from 'vuex'
-import ItemTransaction from './ItemTransaction.vue'
-import ItemLinkTransaction from './ItemLinkTransaction.vue'
+import TransactionItem from './TransactionItem.vue'
+import TransactionLinkItem from './TransactionLinkItem.vue'
 
 export default {
   name: 'ListTransactions',
   components: {
-    ItemTransaction,
-    ItemLinkTransaction
+    TransactionItem,
+    TransactionLinkItem
   },
   props: {
     filterType: {
@@ -93,7 +93,7 @@ export default {
   }
   &__item {
     @include tablet {
-      display: none !important;
+      display: none;
     }
   }
   &__item-link {
