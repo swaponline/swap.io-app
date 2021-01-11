@@ -54,9 +54,9 @@ export default {
 .invoice-form {
   position: absolute;
   z-index: 2000;
-  width: calc(100vw - 70px);
+  width: calc(100vw - var(--navigation-drawer-desktop-width));
   height: calc(100vh - 40px);
-  max-width: ($--max-content-size - 70px);
+  max-width: calc($--max-content-size - var(--navigation-drawer-desktop-width));
   overflow-x: hidden;
   overflow-y: auto;
   background: $--white;

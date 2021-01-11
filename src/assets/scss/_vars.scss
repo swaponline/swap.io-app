@@ -29,9 +29,6 @@ $--max-content-size: 1920px;
 $--bp-tablet: 1024px;
 $--bp-phone: 480px;
 
-$--navigation-drawer-desktop-width: 70px;
-$--toolbar-desktop-height: 56px;
-
 // transition duration
 $--transition-duration: 0.3s;
 
@@ -40,6 +37,6 @@ $--z-index-negative: -10;
 $--z-index-high: 1000;
 
 :root {
-  --toolbar-desktop-height: $--toolbar-desktop-height;
-  --navigation-drawer-desktop-width: $--navigation-drawer-desktop-width;
+  --toolbar-desktop-height: 56px;
+  --navigation-drawer-desktop-width: 70px;
 }

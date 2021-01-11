@@ -58,7 +58,7 @@ export default {
 
 <style lang="scss">
 .header-wallet {
-  min-height: $--toolbar-desktop-height;
+  min-height: var(--toolbar-desktop-height);
   &__title {
     color: $--white;
   }
