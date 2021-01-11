@@ -1,5 +1,5 @@
 <template>
-  <v-toolbar class="header-wallet" height="auto" color="purple">
+  <v-toolbar class="header-wallet" color="purple">
     <v-btn
       class="header-wallet__back-button"
       icon
@@ -58,7 +58,6 @@ export default {
 
 <style lang="scss">
 .header-wallet {
-  min-height: var(--toolbar-desktop-height);
   &__title {
     color: $--white;
   }

@@ -67,9 +67,9 @@ export default {
   .navigation-drawer {
     min-width: 100%;
     position: fixed;
-    top: calc(100% - 57px) !important;
+    top: calc(100% - var(--navigation-drawer-mobile-height)) !important;
     border-top: 1px solid $--grey;
-    max-height: 57px;
+    max-height: var(--navigation-drawer-mobile-height);
     &__list {
       display: flex;
     }

@@ -35,8 +35,8 @@ export default {
 }
 @include tablet {
   .main-layout {
-    min-height: calc(100vh - var(--toolbar-desktop-height));
-    min-height: calc(var(--vh, 1vh) * 100 - var(--toolbar-desktop-height));
+    min-height: calc(100vh - var(--navigation-drawer-mobile-height));
+    min-height: calc(var(--vh, 1vh) * 100 - var(--navigation-drawer-mobile-height));
     &__page {
       flex-direction: column;
     }
