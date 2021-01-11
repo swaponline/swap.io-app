@@ -1,8 +1,21 @@
 <template>
   <v-expansion-panels>
-    <div v-for="transaction in transactions" :key="transaction.date" class="list-transaction__item">
+    <div v-for="transaction in transactions" :key="transaction.date" class="list-transaction__block">
       <v-subheader class="list-transaction__title">{{ transaction.date }}</v-subheader>
-      <item-transaction v-for="item in transaction.list" :key="item.hash" v-bind="item" :address="address" />
+      <transaction-item
+        v-for="item in transaction.list"
+        :key="item.hash"
+        v-bind="item"
+        :address="address"
+        class="list-transaction__item"
+      />
+      <transaction-link-item
+        v-for="item in transaction.list"
+        :key="item.hash + 'link'"
+        v-bind="item"
+        :address="address"
+        class="list-transaction__item-link"
+      />
     </div>
   </v-expansion-panels>
 </template>
@@ -10,11 +23,15 @@
 <script>
 import { GET_TRANSACTIONS } from '@/store/modules/Transactions'
 import { mapActions, mapGetters } from 'vuex'
-import ItemTransaction from './ItemTransaction.vue'
+import TransactionItem from './TransactionItem.vue'
+import TransactionLinkItem from './TransactionLinkItem.vue'
 
 export default {
   name: 'ListTransactions',
-  components: { ItemTransaction },
+  components: {
+    TransactionItem,
+    TransactionLinkItem
+  },
   props: {
     filterType: {
       type: String,
@@ -66,13 +83,24 @@ export default {
 
 <style lang="scss">
 .list-transaction {
-  &__item {
+  &__block {
     flex-grow: 1;
     width: 100%;
   }
   &__title {
     width: 100%;
     text-align: left;
+  }
+  &__item {
+    @include tablet {
+      display: none;
+    }
+  }
+  &__item-link {
+    display: none;
+    @include tablet {
+      display: flex;
+    }
   }
 }
 </style>

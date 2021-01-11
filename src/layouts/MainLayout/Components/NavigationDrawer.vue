@@ -38,7 +38,7 @@ export default {
 <style lang="scss">
 .navigation-drawer {
   position: relative;
-  min-width: 70px;
+  min-width: var(--navigation-drawer-desktop-width);
   z-index: 9999;
   &__list {
     padding: 0 0;
@@ -48,6 +48,9 @@ export default {
       width: 100%;
       &--purple {
         color: var(--purple);
+      }
+      &:before {
+        border-radius: 0px;
       }
     }
   }
