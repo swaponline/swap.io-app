@@ -14,6 +14,33 @@
         </template>
       </v-text-field>
       <v-text-field outlined label="Your contact (email or @nickname)"></v-text-field>
+      <div class="invoice-form__items">
+        <h3>Invoice Items</h3>
+        <v-row>
+          <v-col cols="8">
+            <v-select
+              v-model="type"
+              return-object
+              item-text="type"
+              item-value="id"
+              outlined
+              class="invoice-form__type"
+              :items="types"
+            ></v-select>
+          </v-col>
+          <v-col cols="4">
+            <v-select v-model="currency" outlined class="invoice-form__currency" :items="currencies"></v-select>
+          </v-col>
+        </v-row>
+      </div>
+      <v-row v-if="type.id !== 1">
+        <v-col cols="8">
+          <v-text-field outlined :label="type.type" :placeholder="type.type"></v-text-field>
+        </v-col>
+        <v-col cols="4">
+          <v-text-field outlined label="Price"></v-text-field>
+        </v-col>
+      </v-row>
       <v-textarea outlined label="Comment"></v-textarea>
       <div class="d-flex justify-end">
         <v-btn class="mr-2" type="button" @click="back">Cancel</v-btn>
@@ -35,6 +62,18 @@ export default {
     visible: {
       type: Boolean,
       default: false
+    }
+  },
+  data() {
+    return {
+      currency: 'USD',
+      type: { id: 1, type: 'Amount only' },
+      types: [
+        { id: 1, type: 'Amount only' },
+        { id: 2, type: 'Hourly' },
+        { id: 3, type: 'Quantity' }
+      ],
+      currencies: ['USD', 'BTC', 'ETH']
     }
   },
   computed: {
