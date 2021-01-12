@@ -1,90 +1,100 @@
 <template>
-  <div v-if="currentWallet.address" class="wallet">
-    <header-wallet :address="currentWallet.address" :name="currentWallet.name" @openMenu="openMenu" />
-    <div class="wallet__content">
-      <div class="wallet__info" :class="{ 'wallet__info--open-menu': open !== null }">
-        <p class="wallet__value">
-          <span class="wallet__icon-value"><svg-icon name="btc"/></span>
-          {{ currentWallet.value }}
-        </p>
-        <p class="wallet__value-in-usd"><span>USD</span> 3000.04</p>
+  <div class="wallet-wrapper">
+    <div
+      v-if="currentWallet.address"
+      class="wallet"
+      :class="{
+        'wallet--block-scroll': invoice
+      }"
+    >
+      <header-wallet :address="currentWallet.address" :name="currentWallet.name" @openMenu="openMenu" />
+      <div class="wallet__content">
+        <div class="wallet__info" :class="{ 'wallet__info--open-menu': open !== null }">
+          <p class="wallet__value">
+            <span class="wallet__icon-value"><svg-icon name="btc"/></span>
+            {{ currentWallet.value }}
+          </p>
+          <p class="wallet__value-in-usd"><span>USD</span> 3000.04</p>
 
-        <v-tooltip v-model="show" top :open-on-hover="false" activator="#copyAdress">
-          <span>Copied</span>
-        </v-tooltip>
-        <button id="copyAdress" class="wallet__address" @click="copy">
-          {{ currentWallet.address }}
-          <v-icon class="wallet__icon-copy">mdi-content-copy</v-icon>
-        </button>
-        <div class="wallet__buttons">
-          <v-btn class="wallet__button" color="primary" outlined @click="$emit('invoice')">
-            <v-icon class="wallet__icon-invoice">mdi-arrow-down-bold-circle</v-icon>
-            Invoice
-          </v-btn>
-          <v-btn
-            class="wallet__button"
-            color="primary"
-            outlined
-            :to="{ name: 'Swap', query: { wallet: currentWallet.address, currency: 'BTC' } }"
-          >
-            <v-icon class="wallet__icon-invoice">mdi-swap-vertical</v-icon>
-            Swap
-          </v-btn>
-          <v-btn class="wallet__button" color="primary" outlined>
-            <v-icon class="wallet__icon-invoice">mdi-arrow-up-bold-circle</v-icon>
-            Send
-          </v-btn>
+          <v-tooltip v-model="show" top :open-on-hover="false" activator="#copyAdress">
+            <span>Copied</span>
+          </v-tooltip>
+          <button id="copyAdress" class="wallet__address" @click="copy">
+            {{ currentWallet.address }}
+            <v-icon class="wallet__icon-copy">mdi-content-copy</v-icon>
+          </button>
+          <div class="wallet__buttons">
+            <v-btn class="wallet__button" color="primary" outlined @click="invoice = true">
+              <v-icon class="wallet__icon-invoice">mdi-arrow-down-bold-circle</v-icon>
+              Invoice
+            </v-btn>
+            <v-btn
+              class="wallet__button"
+              color="primary"
+              outlined
+              :to="{ name: 'Swap', query: { wallet: currentWallet.address, currency: 'BTC' } }"
+            >
+              <v-icon class="wallet__icon-invoice">mdi-swap-vertical</v-icon>
+              Swap
+            </v-btn>
+            <v-btn class="wallet__button" color="primary" outlined>
+              <v-icon class="wallet__icon-invoice">mdi-arrow-up-bold-circle</v-icon>
+              Send
+            </v-btn>
+          </div>
+          <v-sheet elevation="4" class="mt-8 mb-2">
+            <v-tabs ref="tabs" v-model="tab" background-color="white" fixed-tabs>
+              <v-tab href="#all">All</v-tab>
+              <v-tab href="#confirmed">Confirmed</v-tab>
+              <v-tab href="#pending">Pending</v-tab>
+              <v-tab href="#invoices">Invoices</v-tab>
+            </v-tabs>
+          </v-sheet>
+          <v-tabs-items v-model="tab">
+            <v-slide-x-transition>
+              <v-tab-item v-show="tab" :key="tab" :value="tab">
+                <list-transactions :address="currentWallet.address" :filter-type="tab"></list-transactions>
+              </v-tab-item>
+            </v-slide-x-transition>
+          </v-tabs-items>
         </div>
-        <v-sheet elevation="4" class="mt-8 mb-2">
-          <v-tabs ref="tabs" v-model="tab" background-color="white" fixed-tabs>
-            <v-tab href="#all">All</v-tab>
-            <v-tab href="#confirmed">Confirmed</v-tab>
-            <v-tab href="#pending">Pending</v-tab>
-            <v-tab href="#invoices">Invoices</v-tab>
-          </v-tabs>
-        </v-sheet>
-        <v-tabs-items v-model="tab">
-          <v-slide-x-transition>
-            <v-tab-item v-show="tab" :key="tab" :value="tab">
-              <list-transactions :address="currentWallet.address" :filter-type="tab"></list-transactions>
-            </v-tab-item>
-          </v-slide-x-transition>
-        </v-tabs-items>
-      </div>
-      <div
-        class="wallet__side-menu"
-        :class="{
-          'wallet__side-menu--open-menu': open !== null
-        }"
-      >
-        <wallets-menu
-          :visible="open === 'share'"
-          :await-status="open === 'menu'"
-          :list="shareLinks"
-          tabindex="-1"
-          @closed="openMenu(null)"
+        <div
+          class="wallet__side-menu"
+          :class="{
+            'wallet__side-menu--open-menu': open !== null
+          }"
         >
-          <template #default="{ item }">
-            <share-link v-bind="item" @copy="copy" />
-          </template>
-        </wallets-menu>
-        <wallets-menu
-          :visible="open === 'menu'"
-          :await-status="open === 'share'"
-          :list="shareLinks"
-          tabindex="-1"
-          @closed="openMenu(null)"
-        >
-          <template #default="{ item }"> {{ item.name }} </template>
-        </wallets-menu>
+          <wallets-menu
+            :visible="open === 'share'"
+            :await-status="open === 'menu'"
+            :list="shareLinks"
+            tabindex="-1"
+            @closed="openMenu(null)"
+          >
+            <template #default="{ item }">
+              <share-link v-bind="item" @copy="copy" />
+            </template>
+          </wallets-menu>
+          <wallets-menu
+            :visible="open === 'menu'"
+            :await-status="open === 'share'"
+            :list="shareLinks"
+            tabindex="-1"
+            @closed="openMenu(null)"
+          >
+            <template #default="{ item }"> {{ item.name }} </template>
+          </wallets-menu>
+        </div>
       </div>
     </div>
+    <invoice-form :visible="invoice" @back="invoice = false"></invoice-form>
   </div>
 </template>
 
 <script>
 import HeaderWallet from '@/components/Wallets/HeaderWallet.vue'
 import WalletsMenu from '@/components/Wallets/WalletsMenu.vue'
+import InvoiceForm from '@/components/Wallets/InvoiceForm.vue'
 import ListTransactions from '@/components/Wallets/ListTransactions.vue'
 import ShareLink from '@/components/Wallets/ShareLink.vue'
 import SvgIcon from '@/components/SvgIcon.vue'
@@ -96,7 +106,8 @@ export default {
     WalletsMenu,
     ListTransactions,
     ShareLink,
-    SvgIcon
+    SvgIcon,
+    InvoiceForm
   },
   props: {
     wallet: {
@@ -109,7 +120,8 @@ export default {
       tab: 'all',
       open: null,
       show: false,
-      tooltipTimer: undefined
+      tooltipTimer: undefined,
+      invoice: false
     }
   },
   computed: {
@@ -191,9 +203,16 @@ export default {
 </script>
 
 <style lang="scss">
+.wallet-wrapper {
+  position: relative;
+  height: 100%;
+}
 .wallet {
   height: 100%;
   background: $--white;
+  &--block-scroll {
+    overflow: hidden;
+  }
   &__content {
     position: relative;
     width: 100%;
@@ -278,9 +297,6 @@ export default {
   }
   &__button {
     margin: 0 16px;
-    @include tablet {
-      display: none;
-    }
   }
   &__icon-invoice {
     transform: rotate(45deg);
