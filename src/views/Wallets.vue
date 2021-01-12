@@ -68,7 +68,6 @@
         Выберите кошелек для получения дополнительной информации
       </div>
     </template>
-    <invoice-form :visible="invoiceFormVisible" @back="invoiceFormVisible = false"></invoice-form>
     <v-speed-dial v-model="fab" bottom left direction="top" transition="slide-y-reverse-transition">
       <template #activator>
         <v-btn v-model="fab" color="blue darken-2" dark fab>
@@ -99,7 +98,6 @@ import { GET_ACCOUNT_ID } from '@/store/modules/Wallets'
 import PageLayout from '@/layouts/PageLayout/index.vue'
 import SvgIcon from '@/components/SvgIcon.vue'
 import HeaderList from '@/components/Wallets/HeaderList.vue'
-import InvoiceForm from '@/components/Wallets/InvoiceForm.vue'
 import Wallet from './Wallet.vue'
 
 export default {
@@ -108,7 +106,6 @@ export default {
     SvgIcon,
     PageLayout,
     HeaderList,
-    InvoiceForm,
     WalletInfo: Wallet
   },
   data() {
