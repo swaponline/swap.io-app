@@ -7,13 +7,12 @@
         </v-btn>
         <h3>Invoice Form</h3>
       </header>
-      <v-text-field :value="address" disabled outlined label="Your wallet"></v-text-field>
-      <v-text-field outlined label="Amount">
+      <v-text-field :value="address" disabled outlined label="Your wallet">
         <template #append>
-          <v-select class="py-0 my-0 mx-0" :items="[1, 2, 3, 4, 5]"></v-select>
+          <v-icon>mdi-bitcoin</v-icon>
         </template>
       </v-text-field>
-      <v-text-field outlined label="Your contact (email or @nickname)"></v-text-field>
+      <v-text-field outlined label="Bill to"></v-text-field>
       <div class="invoice-form__items">
         <h3>Invoice Items</h3>
         <v-row>
@@ -33,6 +32,27 @@
           </v-col>
         </v-row>
       </div>
+      <div v-if="type.id === 1">
+        <v-row v-for="field in amountFields" :key="field.id">
+          <v-col cols="9" class="pr-0">
+            <v-text-field v-model="field.description" outlined label="Description"></v-text-field>
+          </v-col>
+          <v-col cols="3" class="pl-0">
+            <v-text-field v-model="field.amount" type="number" min="0" outlined label="Amount">
+              <template #append-outer>
+                <v-icon @click="removeField(field)">mdi-close</v-icon>
+              </template>
+            </v-text-field>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="12">
+            <v-btn color="blue" block text @click="addAmountField">
+              <span class="text-left flex-grow-1">+ Add Another Item</span>
+            </v-btn>
+          </v-col>
+        </v-row>
+      </div>
       <v-row v-if="type.id !== 1">
         <v-col class="invoice-form__field" cols="8">
           <v-text-field outlined :label="type.label" :placeholder="type.label"></v-text-field>
@@ -40,8 +60,10 @@
         <v-col class="invoice-form__field" cols="4">
           <v-text-field outlined label="Price"></v-text-field>
         </v-col>
+        <v-col cols="12">
+          <v-textarea outlined label="Description"></v-textarea>
+        </v-col>
       </v-row>
-      <v-textarea outlined label="Comment"></v-textarea>
       <div class="d-flex justify-end">
         <v-btn class="mr-2" type="button" @click="back">Cancel</v-btn>
         <v-btn type="submit">Confirm</v-btn>
@@ -69,6 +91,7 @@ export default {
   },
   data() {
     return {
+      amountFields: [{ id: 1, description: null, amount: null }],
       share: false,
       currency: 'USD',
       type: { id: 1, label: 'Amount only' },
@@ -92,6 +115,16 @@ export default {
     back() {
       this.share = false
       this.$emit('back')
+    },
+    addAmountField() {
+      const lastField = this.amountFields[this.amountFields.length - 1]
+      const id = lastField ? lastField.id + 1 : 1
+      this.amountFields.push({ id, description: null, amount: null })
+    },
+    removeField(field) {
+      if (field) {
+        this.amountFields.splice(this.amountFields.indexOf(field), 1)
+      }
     }
   }
 }
