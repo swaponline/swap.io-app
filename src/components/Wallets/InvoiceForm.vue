@@ -32,12 +32,15 @@
           </v-col>
         </v-row>
       </div>
-      <div v-if="type.id === 1">
+      <div>
         <v-row v-for="field in amountFields" :key="field.id">
-          <v-col cols="9" class="pr-0">
+          <v-col class="invoice-form__field-description" :cols="type.id === 1 ? 9 : 7">
             <v-text-field v-model="field.description" outlined label="Description"></v-text-field>
           </v-col>
-          <v-col cols="3" class="pl-0">
+          <v-col v-if="type.id !== 1" cols="2" class="invoice-form__field-quantity">
+            <v-text-field v-model="field.quantity" outlined :label="type.label"></v-text-field>
+          </v-col>
+          <v-col cols="3" class="invoice-form__field-amount">
             <v-text-field v-model="field.amount" type="number" min="0" outlined label="Amount">
               <template #append-outer>
                 <v-icon @click="removeField(field)">mdi-close</v-icon>
@@ -53,15 +56,9 @@
           </v-col>
         </v-row>
       </div>
-      <v-row v-if="type.id !== 1">
-        <v-col class="invoice-form__field" cols="8">
-          <v-text-field outlined :label="type.label" :placeholder="type.label"></v-text-field>
-        </v-col>
-        <v-col class="invoice-form__field" cols="4">
-          <v-text-field outlined label="Price"></v-text-field>
-        </v-col>
-        <v-col cols="12">
-          <v-textarea outlined label="Description"></v-textarea>
+      <v-row>
+        <v-col cols="12" class="d-flex">
+          <h3 class="text-right flex-grow-1">Amount: {{ summ }}</h3>
         </v-col>
       </v-row>
       <div class="d-flex justify-end">
@@ -91,7 +88,7 @@ export default {
   },
   data() {
     return {
-      amountFields: [{ id: 1, description: null, amount: null }],
+      amountFields: [{ id: 1, description: null, quantity: null, amount: null }],
       share: false,
       currency: 'USD',
       type: { id: 1, label: 'Amount only' },
@@ -106,6 +103,11 @@ export default {
   computed: {
     address() {
       return this.$route.query.wallet
+    },
+    summ() {
+      return this.amountFields.reduce((summ, el) => {
+        return summ + +el.amount
+      }, 0)
     }
   },
   methods: {
@@ -119,7 +121,7 @@ export default {
     addAmountField() {
       const lastField = this.amountFields[this.amountFields.length - 1]
       const id = lastField ? lastField.id + 1 : 1
-      this.amountFields.push({ id, description: null, amount: null })
+      this.amountFields.push({ id, description: null, quantity: null, amount: null })
     },
     removeField(field) {
       if (field) {
@@ -150,6 +152,43 @@ export default {
   &__field {
     @include tablet {
       flex-basis: 100%;
+      max-width: 100%;
+    }
+  }
+  &__field-description {
+    padding-right: 0;
+    @include tablet {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      padding-right: 12px;
+      flex-basis: 100%;
+      max-width: 100%;
+      &:before {
+        content: '';
+        width: 25%;
+        position: absolute;
+        top: 0;
+        height: 1px;
+        background: rgba($color: $--black, $alpha: 0.2);
+      }
+    }
+  }
+  &__field-quantity {
+    padding-left: 0;
+    padding-right: 0;
+    @include tablet {
+      padding-left: 12px;
+      flex-basis: 50%;
+      max-width: 50%;
+    }
+  }
+  &__field-amount {
+    padding-left: 0;
+    @include tablet {
+      padding-left: 12px;
+      flex-basis: 50%;
+      flex-grow: 1;
       max-width: 100%;
     }
   }
