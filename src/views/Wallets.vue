@@ -17,10 +17,9 @@
                 <svg-icon class="wallets-layout__icon" name="btc" />
               </v-list-item-icon>
               <v-list-item-content>
-                <v-list-item-title class="d-flex mr-4">
-                  {{ wallet.name }}
-                  <v-spacer />
-                  {{ wallet.value }}
+                <v-list-item-title class="d-flex mr-4 justify-space-between">
+                  <div>{{ wallet.name }}</div>
+                  <div>{{ wallet.value }}</div>
                 </v-list-item-title>
               </v-list-item-content>
             </v-list-item>

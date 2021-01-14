@@ -205,7 +205,12 @@ export default {
 <style lang="scss">
 .wallet-wrapper {
   position: relative;
-  height: 100%;
+  height: calc(100vh - 40px);
+  height: calc(var(--vh, 1vh) * 100 - 40px);
+  @include tablet {
+    height: calc(100vh - 96px);
+    height: calc(var(--vh, 1vh) * 100 -96px);
+  }
 }
 .wallet {
   height: 100%;
@@ -219,9 +224,11 @@ export default {
     display: flex;
     overflow: hidden;
     height: calc(100vh - 104px);
+    height: calc(var(--vh, 1vh) * 100 - 104px);
     @include tablet {
       flex-direction: column;
       height: calc(100vh - 152px);
+      height: calc(var(--vh, 1vh) * 100 - 152px);
     }
   }
   &__info {

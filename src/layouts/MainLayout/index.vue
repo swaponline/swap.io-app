@@ -28,7 +28,8 @@ export default {
   }
   &__page {
     display: flex;
-    height: calc(100% - 40px);
+    height: calc(100vh - 40px);
+    height: calc(var(--vh, 1vh) * 100 - 40px);
     max-width: $--max-content-size;
     margin: auto;
   }

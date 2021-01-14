@@ -11,7 +11,9 @@
         class="navigation-drawer__list-item pb-2 mb-0"
       >
         <v-list-item-icon class="navigation-drawer__list-icon mr-0 mb-4 ml-0">
-          <v-icon :class="`navigation-drawer__icon--${item.modificator}`">{{ item.icon }}</v-icon>
+          <v-icon class="navigation-drawer__icon" :class="`navigation-drawer__icon--${item.modificator}`">{{
+            item.icon
+          }}</v-icon>
           {{ item.title }}
         </v-list-item-icon>
       </v-list-item>
@@ -58,6 +60,7 @@ export default {
     flex-direction: column;
   }
   &__icon {
+    min-height: 24px;
     &--rotate {
       transform: rotate(45deg);
     }
