@@ -23,7 +23,12 @@
                 </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
-            <v-list-group v-else class="wallets-layout__wallet-item">
+            <v-list-group
+              v-else
+              class="wallets-layout__wallet-item"
+              color="purple"
+              active-class="wallets-layout__active-list-group"
+            >
               <template #activator>
                 <v-list-item-icon class="wallets-layout__icon-wrapper mr-4">
                   <svg-icon class="wallets-layout__icon" name="btc" />
@@ -38,6 +43,7 @@
                 v-for="(subWallet, i) in wallet.subWallets"
                 :key="i"
                 link
+                color="purple"
                 exact
                 :to="{ name: 'Wallets', query: { wallet: subWallet.address } }"
               >
@@ -165,6 +171,9 @@ export default {
     width: 20px;
     height: 20px;
     fill: $--white;
+  }
+  &__active-list-group {
+    color: rgba($--black, 0.87);
   }
   .v-speed-dial {
     position: absolute;
