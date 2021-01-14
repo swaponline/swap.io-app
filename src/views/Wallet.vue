@@ -87,14 +87,14 @@
         </div>
       </div>
     </div>
-    <invoice-form :visible="invoice" @back="invoice = false"></invoice-form>
+    <invoice-block :visible="invoice" @back="invoice = false"></invoice-block>
   </div>
 </template>
 
 <script>
 import HeaderWallet from '@/components/Wallets/HeaderWallet.vue'
 import WalletsMenu from '@/components/Wallets/WalletsMenu.vue'
-import InvoiceForm from '@/components/Wallets/InvoiceForm.vue'
+import InvoiceBlock from '@/components/Wallets/InvoiceBlock.vue'
 import ListTransactions from '@/components/Wallets/ListTransactions.vue'
 import ShareLink from '@/components/Wallets/ShareLink.vue'
 import SvgIcon from '@/components/SvgIcon.vue'
@@ -107,7 +107,7 @@ export default {
     ListTransactions,
     ShareLink,
     SvgIcon,
-    InvoiceForm
+    InvoiceBlock
   },
   props: {
     wallet: {
