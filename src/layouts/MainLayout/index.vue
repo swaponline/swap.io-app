@@ -21,14 +21,12 @@ export default {
 
 <style lang="scss">
 .main-layout {
-  min-height: 100vh;
   min-height: calc(var(--vh, 1vh) * 100);
   &__header {
     min-height: 40px;
   }
   &__page {
     display: flex;
-    height: calc(100vh - 40px);
     height: calc(var(--vh, 1vh) * 100 - 40px);
     max-width: $--max-content-size;
     margin: auto;
@@ -36,7 +34,6 @@ export default {
 }
 @include tablet {
   .main-layout {
-    min-height: calc(100vh - var(--navigation-drawer-mobile-height));
     min-height: calc(var(--vh, 1vh) * 100 - var(--navigation-drawer-mobile-height));
     &__page {
       flex-direction: column;
