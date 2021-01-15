@@ -37,7 +37,7 @@
               <v-icon class="wallet__icon-invoice">mdi-swap-vertical</v-icon>
               Swap
             </v-btn>
-            <v-btn class="wallet__button" color="primary" outlined>
+            <v-btn class="wallet__button" color="primary" outlined @click="send = true">
               <v-icon class="wallet__icon-invoice">mdi-arrow-up-bold-circle</v-icon>
               Send
             </v-btn>
@@ -87,7 +87,8 @@
         </div>
       </div>
     </div>
-    <invoice-block :visible="invoice" @back="invoice = false"></invoice-block>
+    <invoice-block :visible="invoice" @close="invoice = false"></invoice-block>
+    <send-block :visible="send" @close="send = false"></send-block>
   </div>
 </template>
 
@@ -95,6 +96,7 @@
 import HeaderWallet from '@/components/Wallets/HeaderWallet.vue'
 import WalletsMenu from '@/components/Wallets/WalletsMenu.vue'
 import InvoiceBlock from '@/components/Wallets/InvoiceBlock.vue'
+import SendBlock from '@/components/Wallets/SendBlock.vue'
 import ListTransactions from '@/components/Wallets/ListTransactions.vue'
 import ShareLink from '@/components/Wallets/ShareLink.vue'
 import SvgIcon from '@/components/SvgIcon.vue'
@@ -107,7 +109,8 @@ export default {
     ListTransactions,
     ShareLink,
     SvgIcon,
-    InvoiceBlock
+    InvoiceBlock,
+    SendBlock
   },
   props: {
     wallet: {
@@ -121,7 +124,8 @@ export default {
       open: null,
       show: false,
       tooltipTimer: undefined,
-      invoice: false
+      invoice: false,
+      send: false
     }
   },
   computed: {

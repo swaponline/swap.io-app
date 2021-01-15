@@ -1,7 +1,7 @@
 <template>
   <form class="invoice-form" @submit.prevent="$emit('submit')">
     <header class="d-flex mb-2 align-center">
-      <v-btn large icon class="mr-3" @click="back">
+      <v-btn large icon class="mr-3" @click="close">
         <v-icon>mdi-arrow-left</v-icon>
       </v-btn>
       <h3>Invoice Form</h3>
@@ -45,7 +45,7 @@
         <v-text-field v-model="field.quantity" outlined :label="type.labelQuantity"></v-text-field>
       </v-col>
       <v-col :cols="type.id === 1 ? 5 : 3" class="invoice-form__field-amount">
-        <v-text-field v-model="field.amount" type="number" min="0" outlined :label="type.labelItemPrice">
+        <v-text-field v-model="field.amount" type="number" min="0" step="any" outlined :label="type.labelItemPrice">
           <template #append-outer>
             <v-icon @click="removeField(field)">mdi-close</v-icon>
           </template>
@@ -63,7 +63,7 @@
       </v-col>
     </v-row>
     <div class="d-flex justify-end">
-      <v-btn class="mr-2" type="button" @click="back">Cancel</v-btn>
+      <v-btn class="mr-2" type="button" @click="close">Cancel</v-btn>
       <v-btn class="mr-2" type="button" @click="preview">Preview</v-btn>
       <v-btn type="submit">Confirm</v-btn>
     </div>
@@ -99,8 +99,8 @@ export default {
     }
   },
   methods: {
-    back() {
-      this.$emit('back')
+    close() {
+      this.$emit('close')
     },
     preview() {
       this.$emit('preview', {
