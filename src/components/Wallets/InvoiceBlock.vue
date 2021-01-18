@@ -1,6 +1,11 @@
 <template>
   <transition-translate>
-    <invoice-form v-if="visible && viewBlock === 'form'" @submit="viewBlock = 'share'" @preview="showPreview">
+    <invoice-form
+      v-if="visible && viewBlock === 'form'"
+      @submit="viewBlock = 'share'"
+      @preview="showPreview"
+      @close="close"
+    >
     </invoice-form>
     <invoice-share v-else-if="visible && viewBlock === 'share'" @close="close"></invoice-share>
     <invoice-preview
