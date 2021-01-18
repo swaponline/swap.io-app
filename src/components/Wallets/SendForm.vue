@@ -6,12 +6,10 @@
       </v-btn>
       <h3>Send form</h3>
     </header>
-    <div class="send-form__hint">
-      <div>У вас в кошельке: {{ currentWallet.value }}</div>
-      <div>Комиссия: {{ commission }}</div>
-      <div>Максимальнрая сумма отправки: {{ maxAmount }}</div>
-    </div>
     <v-row>
+      <v-col cols="12">
+        <div class="send-form__hint mb-6">У вас в кошельке: {{ currentWallet.value }}</div>
+      </v-col>
       <v-col cols="12">
         <v-text-field :value="address" disabled outlined label="Your wallet">
           <template #append>
@@ -19,43 +17,65 @@
           </template>
         </v-text-field>
       </v-col>
+      <v-col v-if="feeVisible" cols="12">
+        <v-text-field
+          v-model="commission"
+          :hint="'Рекомендуемая комиссия: ' + recommendedCommission"
+          outlined
+          label="Transition fee"
+        >
+        </v-text-field>
+      </v-col>
     </v-row>
-    <v-row v-for="recepient in recipients" :key="recepient.id" class="send-form__recepient">
+    <v-row v-if="textareaVisible">
+      <v-col cols="12">
+        <v-textarea
+          v-model="listRecipient"
+          outlined
+          :hint="'Остаток: ' + (maxAmount - regexpSumm)"
+          label="Send to"
+          placeholder="Enter a list of outputs in the 'Pay to' field.
+One output per line.
+Format: address, amount"
+        ></v-textarea>
+      </v-col>
+    </v-row>
+    <v-row v-else class="send-form__recipient">
       <v-col lg="8" cols="12">
-        <v-text-field v-model="recepient.wallet" required outlined label="Send to"></v-text-field>
+        <v-text-field v-model="recipient.wallet" required outlined label="Send to"></v-text-field>
       </v-col>
       <v-col lg="4" cols="12">
         <v-text-field
-          v-model="recepient.amount"
-          :max="recepient.maxAmount"
+          v-model="recipient.amount"
+          :max="maxAmount"
           type="number"
           step="any"
           min="0"
+          :hint="'max: ' + maxAmount"
           required
           outlined
           label="Amount"
-          @focus="updateMaxAmount(recepient.id)"
         >
-          <template #append-outer>
-            <v-icon @click="removeRecepient(recepient)">mdi-close</v-icon>
-          </template>
         </v-text-field>
       </v-col>
     </v-row>
     <v-row>
       <v-col cols="12">
-        <v-btn color="blue" block text @click="addRecepient">
-          <span class="text-left flex-grow-1">+ Add recipient</span>
+        <v-btn color="blue" block text @click="textareaVisible = !textareaVisible">
+          <span class="text-left flex-grow-1">{{ textareaVisible ? 'Single recipient' : 'Multple recipients' }}</span>
         </v-btn>
       </v-col>
-      <v-col cols="12" class="text-right">
-        <span>Сумма: {{ totalAmount }}</span>
+      <v-col cols="12" class="d-flex align-center justify-end">
+        <a class="d-flex align-center justify-end" @click="feeVisible = true">
+          Transaction fee: {{ commission }} BTC ($2.32) Edit <v-icon class="ml-1 mb-1" size="15">mdi-pencil</v-icon>
+        </a>
       </v-col>
-      <v-col cols="12" class="text-right">
-        <span>Остаток: {{ maxAmount - totalAmount }}</span>
+      <v-col v-if="recipient.amount" cols="12" class="d-flex align-center justify-end">
+        Total balance change: {{ recipient.amount }} BTC ($38,002.32)
       </v-col>
       <v-col cols="12" class="d-flex justify-end">
         <v-btn @click="close">Cancel</v-btn>
+
         <v-btn class="ml-4" type="submit">Send</v-btn>
       </v-col>
     </v-row>
@@ -68,7 +88,11 @@ export default {
   data() {
     return {
       commission: 0.545,
-      recipients: [{ id: 1, wallet: null, amount: null }]
+      recommendedCommission: 0.545,
+      recipient: [{ wallet: null, amount: null }],
+      textareaVisible: false,
+      feeVisible: false,
+      listRecipient: ''
     }
   },
   computed: {
@@ -84,13 +108,16 @@ export default {
       }
       return {}
     },
-    totalAmount() {
-      return this.recipients.reduce((acc, el) => {
-        return acc + +el.amount
-      }, 0)
-    },
     maxAmount() {
       return (this.currentWallet.value * 10 ** 18 - this.commission * 10 ** 18) / 10 ** 18
+    },
+    regexpSumm() {
+      const field = `${this.listRecipient} `
+      const arr = [...field.matchAll(/,\s*\d+\.?\d*\s/g)]
+      return arr.reduce((acc, el) => {
+        const amount = el[0].slice(1).trim()
+        return acc + +amount
+      }, 0)
     }
   },
   methods: {
@@ -99,20 +126,6 @@ export default {
     },
     close() {
       this.$emit('close')
-    },
-    addRecepient() {
-      const lastRecipient = this.recipients[this.recipients.length - 1]
-      const id = lastRecipient ? lastRecipient.id + 1 : 1
-      this.recipients.push({ id, wallet: null, amount: null, maxAmount: null })
-    },
-    removeRecepient(recipient) {
-      if (recipient) {
-        this.recipients.splice(this.recipients.indexOf(recipient), 1)
-      }
-    },
-    updateMaxAmount(id) {
-      const rec = this.recipients.find(el => el.id === id)
-      rec.maxAmount = this.maxAmount - this.totalAmount + +rec.amount
     }
   }
 }
@@ -149,7 +162,7 @@ export default {
       }
     }
   }
-  &__recepient {
+  &__recipient {
     position: relative;
     justify-content: center;
     @include tablet {
