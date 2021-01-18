@@ -2,7 +2,7 @@
   <transition-translate>
     <invoice-form v-if="visible && viewBlock === 'form'" @submit="viewBlock = 'share'" @preview="showPreview">
     </invoice-form>
-    <invoice-share v-else-if="visible && viewBlock === 'share'" @close="back"></invoice-share>
+    <invoice-share v-else-if="visible && viewBlock === 'share'" @close="close"></invoice-share>
     <invoice-preview
       v-else-if="visible && viewBlock === 'preview'"
       v-bind="invoice"
@@ -37,9 +37,9 @@ export default {
     }
   },
   methods: {
-    back() {
+    close() {
       this.viewBlock = 'form'
-      this.$emit('back')
+      this.$emit('close')
     },
     showPreview(invoice) {
       this.viewBlock = 'preview'
