@@ -4,7 +4,7 @@
       v-if="currentWallet.address"
       class="wallet"
       :class="{
-        'wallet--block-scroll': invoice
+        'wallet--block-scroll': invoice || send
       }"
     >
       <header-wallet :address="currentWallet.address" :name="currentWallet.name" @openMenu="openMenu" />
@@ -211,13 +211,17 @@ export default {
   position: relative;
   height: calc(var(--vh, 1vh) * 100 - 40px);
   @include tablet {
-    height: calc(var(--vh, 1vh) * 100 -96px);
+    height: calc(var(--vh, 1vh) * 100 - 96px);
   }
 }
 .wallet {
   height: 100%;
   background: $--white;
+  transition: 0.5s;
+  transform: translateX(0);
   &--block-scroll {
+    position: absolute;
+    transform: translateX(-100vw);
     overflow: hidden;
   }
   &__content {

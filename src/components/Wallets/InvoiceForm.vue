@@ -75,7 +75,7 @@ export default {
   name: 'InvoiceForm',
   data() {
     return {
-      contact: null,
+      contact: '1jajci12jj2jcia0cj',
       amountFields: [{ id: 1, description: null, quantity: null, amount: null }],
       currency: 'USD',
       type: { id: 1, label: 'Amount only', labelItemPrice: 'Amount' },
@@ -141,7 +141,8 @@ export default {
   padding: 10px 15px;
   @include tablet {
     padding: 10px 5px;
-    width: 100vw;
+    width: 100%;
+    height: calc(var(--vh, 1vh) * 100 - 40px);
   }
   &__field {
     @include tablet {

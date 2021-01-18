@@ -157,7 +157,8 @@ export default {
   padding: 10px 15px;
   @include tablet {
     padding: 10px 10px;
-    width: 100vw;
+    width: 100%;
+    height: calc(var(--vh, 1vh) * 100 - 40px);
   }
   &__header {
     display: flex;

@@ -97,6 +97,8 @@ export default {
   display: flex;
   flex-direction: column;
   @include tablet {
+    width: 100%;
+    height: calc(var(--vh, 1vh) * 100 - 40px);
   }
   &__header {
     display: flex;

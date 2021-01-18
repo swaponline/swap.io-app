@@ -32,11 +32,13 @@ export default {
     position: relative;
     height: 100%;
     width: 30%;
+    z-index: 1;
   }
   &__more-info-block {
     position: relative;
     height: 100%;
     width: 70%;
+    z-index: 0;
   }
 }
 @include tablet {
