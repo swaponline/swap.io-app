@@ -81,7 +81,7 @@
     </v-row>
     <v-row class="invoice-preview__buttons justify-end">
       <v-btn class="invoice-preview__button" @click="$emit('close')">Cancel</v-btn>
-      <v-btn class="invoice-preview__button">Confirm</v-btn>
+      <v-btn class="invoice-preview__button" @click="$emit('submit')">Confirm</v-btn>
     </v-row>
   </div>
 </template>
