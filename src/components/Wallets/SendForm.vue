@@ -146,7 +146,9 @@ export default {
   padding: 10px 15px;
   @include tablet {
     padding: 10px 5px;
-    width: 100vw;
+    width: 100%;
+    max-width: 100vw;
+    height: calc(var(--vh, 1vh) * 100 - 40px);
   }
   &__hint {
     background: rgba($--black, 0.08);

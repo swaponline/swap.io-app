@@ -81,7 +81,7 @@
     </v-row>
     <v-row class="invoice-preview__buttons justify-end">
       <v-btn class="invoice-preview__button" @click="$emit('close')">Cancel</v-btn>
-      <v-btn class="invoice-preview__button">Confirm</v-btn>
+      <v-btn class="invoice-preview__button" @click="$emit('submit')">Confirm</v-btn>
     </v-row>
   </div>
 </template>
@@ -157,7 +157,8 @@ export default {
   padding: 10px 15px;
   @include tablet {
     padding: 10px 10px;
-    width: 100vw;
+    width: 100%;
+    height: calc(var(--vh, 1vh) * 100 - 40px);
   }
   &__header {
     display: flex;

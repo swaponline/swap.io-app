@@ -153,6 +153,7 @@ export default {
     flex-direction: column;
     border-right: 1px solid $--grey;
     overflow-y: auto;
+    background: $--white;
   }
   &__currnecy {
     color: rgba($color: $--white, $alpha: 0.5);

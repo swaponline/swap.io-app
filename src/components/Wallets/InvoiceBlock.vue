@@ -2,7 +2,8 @@
   <transition-translate>
     <invoice-form
       v-if="visible && viewBlock === 'form'"
-      @submit="viewBlock = 'share'"
+      :class="reverseForm ? 'reverse' : ''"
+      @submit="submit('form')"
       @preview="showPreview"
       @close="close"
     >
@@ -11,7 +12,12 @@
     <invoice-preview
       v-else-if="visible && viewBlock === 'preview'"
       v-bind="invoice"
-      @close="viewBlock = 'form'"
+      :class="reversePreview ? 'reverse' : ''"
+      @close="
+        viewBlock = 'form'
+        oldBlock = 'preview'
+      "
+      @submit="submit('preview')"
     ></invoice-preview>
   </transition-translate>
 </template>
@@ -38,20 +44,45 @@ export default {
   },
   data() {
     return {
-      viewBlock: 'form'
+      viewBlock: 'form',
+      oldBlock: ''
+    }
+  },
+  computed: {
+    reverseForm() {
+      return this.oldBlock === 'form' || this.oldBlock === 'preview'
+    },
+    reversePreview() {
+      return this.oldBlock === 'preview'
     }
   },
   methods: {
-    close() {
+    async close() {
+      this.oldBlock = ''
+      await this.$nextTick()
       this.viewBlock = 'form'
       this.$emit('close')
     },
-    showPreview(invoice) {
+    async showPreview(invoice) {
+      this.oldBlock = 'form'
+      await this.$nextTick()
       this.viewBlock = 'preview'
       this.invoice = invoice
+    },
+    async submit(block) {
+      this.oldBlock = block
+      await this.$nextTick()
+      this.viewBlock = 'share'
     }
   }
 }
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.reverse {
+  &.translate-enter,
+  &.translate-leave-to {
+    transform: translateX(-100vw);
+  }
+}
+</style>
