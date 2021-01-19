@@ -1,5 +1,5 @@
 <template>
-  <v-speed-dial v-model="fab" bottom left direction="top" transition="slide-y-reverse-transition">
+  <v-speed-dial v-model="fab" class="main-actions" bottom left direction="top" transition="slide-y-reverse-transition">
     <template #activator>
       <v-btn v-model="fab" color="blue darken-2" dark fab>
         <v-icon v-if="fab">
@@ -10,8 +10,11 @@
         </v-icon>
       </v-btn>
     </template>
-    <v-btn fab dark small color="indigo">
-      <v-icon>mdi-swap-horizontal</v-icon>
+    <v-btn fab dark small color="indigo" class="main-actions__button--rotate" @click="$emit('activeForm', 'invoice')">
+      <v-icon>mdi-arrow-up-circle</v-icon>
+    </v-btn>
+    <v-btn fab dark small color="indigo" class="main-actions__button--rotate" @click="$emit('activeForm', 'send')">
+      <v-icon>mdi-arrow-down-circle</v-icon>
     </v-btn>
     <v-btn fab dark small color="blue" @click="$emit('activeForm', 'user')">
       <v-icon>mdi-account-plus</v-icon>
@@ -33,4 +36,12 @@ export default {
 }
 </script>
 
-<style></style>
+<style lang="scss">
+.main-actions {
+  &__button {
+    &--rotate {
+      transform: rotate(45deg);
+    }
+  }
+}
+</style>
