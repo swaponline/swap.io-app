@@ -1,5 +1,5 @@
 <template>
-  <div class="invoice-preview">
+  <transition-inner class="invoice-preview">
     <header class="invoice-preview__header">
       <v-btn icon @click="$emit('close')">
         <v-icon size="30">mdi-arrow-left</v-icon>
@@ -83,7 +83,7 @@
       <v-btn class="invoice-preview__button" @click="$emit('close')">Back</v-btn>
       <v-btn class="invoice-preview__button" @click="$emit('submit')">Confirm</v-btn>
     </v-row>
-  </div>
+  </transition-inner>
 </template>
 
 <script>
@@ -144,21 +144,9 @@ export default {
 
 <style lang="scss">
 .invoice-preview {
-  position: absolute;
-  z-index: $--z-index-high;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  max-width: calc(var(--max-content-size) - var(--navigation-drawer-desktop-width));
-  overflow-x: hidden;
-  overflow-y: auto;
-  background: $--white;
   padding: 10px 15px;
   @include tablet {
     padding: 10px 10px;
-    width: 100%;
-    height: calc(var(--vh, 1vh) * 100 - 40px);
   }
   &__header {
     display: flex;

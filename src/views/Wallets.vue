@@ -67,33 +67,20 @@
         enter-active-class="wallets-layout__animation-active"
         leave-active-class="wallets-layout__animation-active"
       >
-        <wallet-info v-if="queryWallet" :key="queryWallet" :wallet="queryWallet" @invoice="invoiceFormVisible = true" />
+        <wallet-info
+          v-if="queryWallet && activeForm === null"
+          :key="queryWallet"
+          :wallet="queryWallet"
+          @invoice="invoiceFormVisible = true"
+        />
+        <div v-else class="wallets-more-block">
+          <span v-if="activeForm === null">Выберите кошелек для получения дополнительной информации</span>
+          <create-wallet-form :visible="activeForm === 'wallet'" @close="activeForm = null"></create-wallet-form>
+          <create-user-form :visible="activeForm === 'user'" @close="activeForm = null"></create-user-form>
+        </div>
       </transition>
-      <div v-if="!queryWallet">
-        Выберите кошелек для получения дополнительной информации
-      </div>
     </template>
-    <v-speed-dial v-model="fab" bottom left direction="top" transition="slide-y-reverse-transition">
-      <template #activator>
-        <v-btn v-model="fab" color="blue darken-2" dark fab>
-          <v-icon v-if="fab">
-            mdi-close
-          </v-icon>
-          <v-icon v-else>
-            mdi-plus
-          </v-icon>
-        </v-btn>
-      </template>
-      <v-btn fab dark small color="red">
-        <v-icon>mdi-wallet</v-icon>
-      </v-btn>
-      <v-btn fab dark small color="indigo">
-        <v-icon>mdi-swap-horizontal</v-icon>
-      </v-btn>
-      <v-btn fab dark small color="green">
-        <v-icon>mdi-wallet</v-icon>
-      </v-btn>
-    </v-speed-dial>
+    <main-actions @activeForm="activeForm = $event"></main-actions>
   </page-layout>
 </template>
 
@@ -103,6 +90,9 @@ import { GET_ACCOUNT_ID } from '@/store/modules/Wallets'
 import PageLayout from '@/layouts/PageLayout/index.vue'
 import SvgIcon from '@/components/SvgIcon.vue'
 import HeaderList from '@/components/Wallets/HeaderList.vue'
+import MainActions from '@/components/Wallets/MainActions.vue'
+import CreateWalletForm from '@/components/Wallets/CreateWalletForm.vue'
+import CreateUserForm from '@/components/Wallets/CreateUserForm.vue'
 import Wallet from './Wallet.vue'
 
 export default {
@@ -111,12 +101,15 @@ export default {
     SvgIcon,
     PageLayout,
     HeaderList,
-    WalletInfo: Wallet
+    MainActions,
+    WalletInfo: Wallet,
+    CreateWalletForm,
+    CreateUserForm
   },
   data() {
     return {
-      fab: false,
-      invoiceFormVisible: false
+      invoiceFormVisible: false,
+      activeForm: null
     }
   },
   computed: {
