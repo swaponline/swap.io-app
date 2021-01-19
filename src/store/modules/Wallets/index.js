@@ -154,6 +154,6 @@ export default {
     }
   },
   mutations: {
-    ...pickCommonMutations([SET_MODEL, SET_LIST])
+    ...pickCommonMutations([SET_MODEL])
   }
 }
