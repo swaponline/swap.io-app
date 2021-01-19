@@ -70,6 +70,7 @@ export default {
       this.openMenu = !this.openMenu
     },
     setAccount(id) {
+      this.$router.push({ name: 'Wallets', query: null })
       this.actionSetAccount(id)
       this.openMenu = false
     },
