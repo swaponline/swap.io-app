@@ -134,7 +134,7 @@ export default {
     },
     currentWallet() {
       if (this.wallet && this.siblingList) {
-        return this.siblingList.find(el => el.address === this.wallet)
+        return this.siblingList.find(el => el.address === this.wallet) || {}
       }
       return {}
     },

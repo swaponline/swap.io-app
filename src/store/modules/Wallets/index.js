@@ -1,16 +1,18 @@
-import { SET_MODEL } from '@/store/common/mutations.types'
+import { SET_MODEL, SET_LIST } from '@/store/common/mutations.types'
 import { pickCommonMutations } from '@/store/common/mutations'
 
 export const MODULE_NAME = 'Wallets'
 export const SET_ACCOUNT_ID = 'SET_ACCOUNT_ID'
 export const GET_ACCOUNT_ID = 'GET_ACCOUNT_ID'
+export const CREATE_NEW_USER = 'CREATE_NEW_USER'
+export const CREATE_NEW_WALLET = 'CREATE_NEW_WALLET'
 
 export default {
   state: {
     model: {
       accountId: null
     },
-    list: [
+    list: JSON.parse(window.localStorage.getItem('list')) || [
       {
         id: 'iasduah415fni1j832jh8rjnfimda0m',
         name: 'Vasilii',
@@ -107,6 +109,48 @@ export default {
     [SET_ACCOUNT_ID]({ commit }, accountId) {
       window.localStorage.setItem('accountId', accountId)
       commit(SET_MODEL, { model: { accountId } })
+    },
+    [CREATE_NEW_WALLET]({ state, commit, getters }, wallet) {
+      const user = getters.currentAccount
+      let newWallet
+      const userWallet = user.list.find(w => w.name === wallet.currency)
+      if (userWallet) {
+        newWallet = {
+          name: wallet.name,
+          value: 0,
+          address: `0x${Date.now()}`
+        }
+        userWallet.subWallets.push(newWallet)
+      } else {
+        newWallet = {
+          name: wallet.currency,
+          value: 0,
+          icon: wallet.currency.toLowerCase(),
+          subWallets: [
+            {
+              name: wallet.name,
+              value: 0,
+              address: `0x${Date.now()}`
+            }
+          ]
+        }
+        user.list.push(newWallet)
+      }
+
+      commit(SET_LIST, { list: [...state.list] })
+      window.localStorage.setItem('list', JSON.stringify(state.list))
+    },
+    [CREATE_NEW_USER]({ state, commit }, user) {
+      const newUser = {
+        id: `${user.id}`,
+        name: user.name,
+        list: []
+      }
+      commit(SET_LIST, { list: [...state.list, newUser] })
+      window.localStorage.setItem('list', JSON.stringify(state.list))
+
+      commit(SET_MODEL, { model: { accountId: `${user.id}` } })
+      window.localStorage.setItem('accountId', `${user.id}`)
     }
   },
   mutations: {

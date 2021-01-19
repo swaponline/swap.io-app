@@ -1,5 +1,5 @@
 <template>
-  <div class="invoice-shared">
+  <transition-inner class="invoice-shared">
     <header class="invoice-shared__header">
       <h2>Invoice {Номер счета}</h2>
       <v-btn icon @click="$emit('close')">
@@ -38,7 +38,7 @@
         </v-btn>
       </div>
     </div>
-  </div>
+  </transition-inner>
 </template>
 
 <script>
@@ -83,23 +83,9 @@ export default {
 
 <style lang="scss">
 .invoice-shared {
-  position: absolute;
-  z-index: $--z-index-high;
-  width: 100%;
-  top: 0;
-  left: 0;
-  height: 100%;
-  max-width: calc(var(--max-content-size) - var(--navigation-drawer-desktop-width));
-  overflow-x: hidden;
-  overflow-y: auto;
-  background: $--white;
   padding: 10px 15px;
   display: flex;
   flex-direction: column;
-  @include tablet {
-    width: 100%;
-    height: calc(var(--vh, 1vh) * 100 - 40px);
-  }
   &__header {
     display: flex;
     padding: 10px 20px;
