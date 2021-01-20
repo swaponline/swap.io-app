@@ -1,5 +1,5 @@
 <template>
-  <transition-block class="send-form">
+  <transition-inner class="send-form">
     <form @submit.prevent="submit">
       <header class="d-flex mb-2 align-center">
         <v-btn large icon class="mr-3" @click="close">
@@ -81,7 +81,7 @@ Format: address, amount"
         </v-col>
       </v-row>
     </form>
-  </transition-block>
+  </transition-inner>
 </template>
 
 <script>
