@@ -72,11 +72,17 @@ export default {
   },
   methods: {
     async showForm(name) {
+      if (!this.queryWallet) {
+        this.$router.push({ name: 'Wallets', query: { wallet: null } })
+      }
       this.reverseClass = true
       await this.$nextTick()
       this.activeForm = name
     },
     closeForm() {
+      if (!this.queryWallet) {
+        this.$router.push({ name: 'Wallets' })
+      }
       this.activeForm = null
     }
   }

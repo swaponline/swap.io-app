@@ -8,14 +8,7 @@ export default [
       {
         path: '/wallet',
         name: 'Wallets',
-        component: () => import(/* webpackChunkName: 'Wallets' */ '@/views/Wallets.vue'),
-        children: [
-          {
-            path: '/wallet/:nameWallet',
-            name: 'Wallet',
-            component: () => import(/* webpackChunkName: 'Wallet' */ '@/views/Wallet.vue')
-          }
-        ]
+        component: () => import(/* webpackChunkName: 'Wallets' */ '@/views/Wallets.vue')
       },
       {
         path: '/swap',

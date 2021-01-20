@@ -15,7 +15,7 @@ export default {
   name: 'PageLayout',
   computed: {
     isQueryWallet() {
-      return !!this.$route.query.wallet
+      return this.$route.query.wallet !== undefined
     }
   }
 }
