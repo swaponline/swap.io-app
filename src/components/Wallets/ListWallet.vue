@@ -1,6 +1,5 @@
 <template>
-  <div class="list-wallet__list">
-    <header-list />
+  <div class="list-wallet">
     <v-list class="py-0">
       <v-list-item v-for="wallet in wallets" :key="wallet.name" class="px-0">
         <v-list-item
@@ -9,7 +8,7 @@
           exact
           color="purple"
           class="list-wallet__wallet-item"
-          :to="{ name: 'Wallets', query: { wallet: wallet.subWallets[0].address } }"
+          :to="{ name: 'Wallet', params: { nameWallet: wallet.subWallets[0].address } }"
         >
           <v-list-item-icon class="list-wallet__icon-wrapper mr-4">
             <svg-icon class="list-wallet__icon" name="btc" />
@@ -43,7 +42,7 @@
             link
             color="purple"
             exact
-            :to="{ name: 'Wallets', query: { wallet: subWallet.address } }"
+            :to="{ name: 'Wallet', params: { nameWallet: subWallet.address } }"
           >
             <v-list-item-content>
               <v-list-item-title class="d-flex mr-4">
@@ -64,13 +63,11 @@
 import { mapActions } from 'vuex'
 import { GET_ACCOUNT_ID } from '@/store/modules/Wallets'
 import SvgIcon from '@/components/SvgIcon.vue'
-import HeaderList from '@/components/Wallets/HeaderList.vue'
 
 export default {
   name: 'ListWallet',
   components: {
-    SvgIcon,
-    HeaderList
+    SvgIcon
   },
   computed: {
     wallets() {
@@ -90,6 +87,16 @@ export default {
 
 <style lang="scss">
 .list-wallet {
+  position: relative;
+  max-width: 305px;
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: $--white;
+  border-right: 1px solid $--grey;
+  border-radius: 12px 12px 0 0;
+  overflow-y: hidden;
   &__wallet-item {
     width: 100%;
     border-bottom: 1px solid rgba($color: $--black, $alpha: 0.2);
@@ -100,15 +107,6 @@ export default {
   }
   &__active-list-group {
     color: rgba($--black, 0.87);
-  }
-  &__list {
-    position: relative;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    border-right: 1px solid $--grey;
-    overflow-y: auto;
-    background: $--white;
   }
   &__icon-wrapper {
     display: flex;
