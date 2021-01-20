@@ -9,11 +9,21 @@
       </header>
       <v-row>
         <v-col cols="12">
-          <v-text-field :value="address" disabled outlined label="Your wallet">
+          <v-text-field v-if="address" :value="address" disabled outlined label="Your wallet">
             <template #append>
               <v-icon>mdi-bitcoin</v-icon>
             </template>
           </v-text-field>
+          <v-select
+            v-else
+            v-model="selectAddress"
+            :items="wallets"
+            item-text="address"
+            item-value="address"
+            label="Your wallet"
+            outlined
+          >
+          </v-select>
         </v-col>
         <v-col cols="12">
           <v-text-field v-model="contact" required outlined label="Bill to"></v-text-field>
@@ -86,10 +96,14 @@ export default {
         { id: 2, label: 'Hourly', labelQuantity: 'Hours', labelItemPrice: 'Rate' },
         { id: 3, label: 'Quantity', labelQuantity: 'Quantity', labelItemPrice: 'Item price' }
       ],
-      currencies: ['USD', 'BTC', 'ETH']
+      currencies: ['USD', 'BTC', 'ETH'],
+      selectAddress: null
     }
   },
   computed: {
+    wallets() {
+      return this.$store.getters.siblingList
+    },
     summ() {
       return this.amountFields.reduce((summ, el) => {
         const quantity = this.type.id !== 1 ? el.quantity : 1
@@ -99,6 +113,9 @@ export default {
     address() {
       return this.$route.query.wallet
     }
+  },
+  created() {
+    this.selectAddress = this.address
   },
   methods: {
     close() {

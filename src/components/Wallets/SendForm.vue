@@ -12,11 +12,21 @@
           <div class="send-form__hint mb-6">У вас в кошельке: {{ currentWallet.value }}</div>
         </v-col>
         <v-col cols="12">
-          <v-text-field :value="address" disabled outlined label="Your wallet">
+          <v-text-field v-if="address" :value="address" disabled outlined label="Your wallet">
             <template #append>
               <v-icon>mdi-bitcoin</v-icon>
             </template>
           </v-text-field>
+          <v-select
+            v-else
+            v-model="selectAddress"
+            :items="wallets"
+            item-text="address"
+            item-value="address"
+            label="Your wallet"
+            outlined
+          >
+          </v-select>
         </v-col>
         <v-col v-if="feeVisible" cols="12">
           <v-text-field
@@ -94,10 +104,14 @@ export default {
       recipient: [{ wallet: null, amount: null }],
       textareaVisible: false,
       feeVisible: false,
-      listRecipient: ''
+      listRecipient: '',
+      selectAddress: null
     }
   },
   computed: {
+    wallets() {
+      return this.$store.getters.siblingList
+    },
     address() {
       return this.$route.query.wallet
     },
@@ -121,6 +135,9 @@ export default {
         return acc + +amount
       }, 0)
     }
+  },
+  created() {
+    this.selectAddress = this.address
   },
   methods: {
     submit() {
