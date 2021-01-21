@@ -11,9 +11,14 @@ export default [
         component: () => import(/* webpackChunkName: 'Wallets' */ '@/layouts/WalletLayout'),
         children: [
           {
-            path: '/wallet/:nameWallet',
+            path: '/wallet/:walletAddress',
             name: 'Wallet',
             component: () => import(/* webpackChunkName: 'Wallet' */ '@/views/Wallets/Wallet.vue')
+          },
+          {
+            path: '/invoice/:walletAddress?',
+            name: 'Invoice',
+            component: () => import(/* webpackChunkName: 'Wallet' */ '@/components/Wallets/InvoiceBlock.vue')
           }
         ]
       },

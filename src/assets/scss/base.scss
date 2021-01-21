@@ -45,6 +45,9 @@ ul {
 html {
   overflow-y: auto;
 }
+.v-application {
+  font-family: $--font-base;
+}
 .v-application--wrap {
   // также можно использовать -webkit-fill-available
   min-height: calc(var(--vh, 1vh) * 100);

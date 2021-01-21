@@ -19,7 +19,7 @@ export default {
   },
   computed: {
     currentRouter() {
-      return this.$route.params.nameWallet
+      return this.$route.params.walletAddress
     }
   }
 }

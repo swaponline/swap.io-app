@@ -1,16 +1,16 @@
 <template>
   <transition-translate>
     <invoice-form
-      v-if="visible && viewBlock === 'form'"
+      v-if="viewBlock === 'form'"
       :class="reverseForm ? 'reverse' : ''"
       @submit="submit('form')"
       @preview="showPreview"
       @close="close"
     >
     </invoice-form>
-    <invoice-share v-else-if="visible && viewBlock === 'share'" @close="close"></invoice-share>
+    <invoice-share v-else-if="viewBlock === 'share'" @close="close"></invoice-share>
     <invoice-preview
-      v-else-if="visible && viewBlock === 'preview'"
+      v-else-if="viewBlock === 'preview'"
       v-bind="invoice"
       :class="reversePreview ? 'reverse' : ''"
       @close="

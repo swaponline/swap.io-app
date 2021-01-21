@@ -9,18 +9,20 @@
       color="#000000"
       slider-size="2"
     >
-      <v-tab v-for="tab in tabs" :key="tab.id" :href="`#${tab.id}`">{{ tab.label }}</v-tab>
+      <v-tab v-for="tab in tabs" :key="tab">{{ tab }}</v-tab>
     </v-tabs>
     <div class="transactions__horizontal-line"></div>
     <v-tabs-items v-model="activeTab">
-      <v-slide-x-reverse-transition>
-        <v-tab-item v-show="activeTab" :key="activeTab" :value="activeTab">
-          <list-transactions
-            :address="this.$route.params.nameWallet"
-            :filter-type="filterType.label"
-          ></list-transactions>
-        </v-tab-item>
-      </v-slide-x-reverse-transition>
+      <v-tab-item v-for="tab in tabs" :key="tab">
+        <list-transactions
+          ref="transaction"
+          class="transactions__list"
+          :class="isCompressedWallet ? 'transactions__list--stretch' : ''"
+          :address="currentAddress"
+          :filter-type="tab"
+          @compressedWallet="$emit('compressedWallet')"
+        ></list-transactions>
+      </v-tab-item>
     </v-tabs-items>
   </div>
 </template>
@@ -33,30 +35,22 @@ export default {
   components: {
     ListTransactions
   },
+  props: {
+    isCompressedWallet: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
-      activeTab: 1,
-      tabs: [
-        {
-          id: 1,
-          label: 'All'
-        },
-        {
-          id: 2,
-          label: 'Confirmed'
-        },
-        {
-          id: 3,
-          label: 'Pending'
-        },
-        {
-          id: 4,
-          label: 'Invoices'
-        }
-      ]
+      activeTab: null,
+      tabs: ['all', 'confirmed', 'pending', 'invoices']
     }
   },
   computed: {
+    currentAddress() {
+      return this.$route.params.walletAddress
+    },
     filterType() {
       return this.tabs.find(tab => tab.id === +this.activeTab)
     },
@@ -65,7 +59,7 @@ export default {
     },
     currentWallet() {
       if (this.wallet && this.siblingList) {
-        return this.siblingList.find(el => el.address === this.$route.params.nameWallet) || {}
+        return this.siblingList.find(el => el.address === this.$route.params.walletAddress) || {}
       }
       return {}
     }
@@ -79,6 +73,10 @@ export default {
   background: $--white;
   overflow: hidden;
   border-radius: 12px 12px 0 0;
+  &__list {
+    height: 100%;
+    overflow: auto;
+  }
   &__tabs {
     position: relative;
     z-index: 1;
@@ -88,6 +86,14 @@ export default {
     height: 2px;
     background: #e5e5e5;
     margin-top: -2px;
+  }
+  &__list {
+    max-height: calc(var(--vh, 1vh) * 100 - 430px);
+    overflow-x: hidden;
+    overflow-y: auto;
+    &--stretch {
+      max-height: calc(var(--vh, 1vh) * 100 - 330px);
+    }
   }
 }
 </style>

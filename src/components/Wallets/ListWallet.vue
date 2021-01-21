@@ -8,7 +8,7 @@
           exact
           color="purple"
           class="list-wallet__wallet-item"
-          :to="{ name: 'Wallet', params: { nameWallet: wallet.subWallets[0].address } }"
+          :to="{ name: 'Wallet', params: { walletAddress: wallet.subWallets[0].address } }"
         >
           <v-list-item-icon class="list-wallet__icon-wrapper mr-4">
             <svg-icon class="list-wallet__icon" name="btc" />
@@ -42,7 +42,7 @@
             link
             color="purple"
             exact
-            :to="{ name: 'Wallet', params: { nameWallet: subWallet.address } }"
+            :to="{ name: 'Wallet', params: { walletAddress: subWallet.address } }"
           >
             <v-list-item-content>
               <v-list-item-title class="d-flex mr-4">
