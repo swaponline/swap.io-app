@@ -22,3 +22,17 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+#app {
+  height: calc(var(--vh, 1vh) * 100);
+  width: 100%;
+  max-width: 100vw;
+  overflow: hidden;
+  background: linear-gradient(287deg, #033dff 0%, #ff7ac6 24%, #ffff00 100%);
+  @include small-height {
+    min-height: calc(var(--vh, 1vh) * 100);
+    height: 100%;
+  }
+}
+</style>

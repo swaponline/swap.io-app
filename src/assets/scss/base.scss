@@ -1,6 +1,7 @@
 @import 'vars';
 @import 'media';
 @import '~normalize.css';
+@import 'stylesheet';
 
 * {
   box-sizing: border-box;
@@ -43,6 +44,9 @@ ul {
 // Переопределяем стили vuetify
 html {
   overflow-y: auto;
+}
+.v-application {
+  font-family: $--font-base;
 }
 .v-application--wrap {
   // также можно использовать -webkit-fill-available

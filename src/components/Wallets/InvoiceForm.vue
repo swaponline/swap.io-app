@@ -1,12 +1,12 @@
 <template>
   <transition-inner class="invoice-form">
-    <form @submit.prevent="$emit('submit')">
-      <header class="d-flex mb-2 align-center">
-        <v-btn large icon class="mr-3" @click="close">
-          <v-icon>mdi-arrow-left</v-icon>
-        </v-btn>
-        <h3>Invoice Form</h3>
-      </header>
+    <header class="invoice-form__header">
+      <v-btn large icon class="mr-3" @click="close">
+        <v-icon>mdi-arrow-left</v-icon>
+      </v-btn>
+      <h3>Invoice Form</h3>
+    </header>
+    <form class="invoice-form__form" @submit.prevent="$emit('submit')">
       <v-row>
         <v-col cols="12">
           <v-text-field v-if="address" :value="address" disabled outlined label="Your wallet">
@@ -24,6 +24,9 @@
             outlined
           >
           </v-select>
+        </v-col>
+        <v-col cols="12">
+          <v-text-field v-model="contact" required outlined label="Bill to"></v-text-field>
         </v-col>
         <v-col cols="12">
           <v-text-field v-model="contact" required outlined label="Bill to"></v-text-field>
@@ -111,7 +114,7 @@ export default {
       }, 0)
     },
     address() {
-      return this.$route.query.wallet
+      return this.$route.params.walletAddress
     }
   },
   created() {
@@ -147,9 +150,27 @@ export default {
 
 <style lang="scss">
 .invoice-form {
-  padding: 10px 15px;
-  @include tablet {
-    padding: 10px 5px;
+  max-height: calc(100% - 110px);
+  @include small-height {
+    max-height: none;
+  }
+  &__header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    background: $--white;
+    @include tablet {
+      padding: 10px 5px;
+    }
+  }
+  &__form {
+    padding: 0 15px 10px;
+    @include tablet {
+      padding: 0 5px 10px;
+    }
   }
   &__field {
     @include tablet {

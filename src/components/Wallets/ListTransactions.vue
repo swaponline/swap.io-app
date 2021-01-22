@@ -1,5 +1,5 @@
 <template>
-  <v-expansion-panels>
+  <v-expansion-panels ref="transaction" class="list-transaction">
     <div v-for="transaction in transactions" :key="transaction.date" class="list-transaction__block">
       <v-subheader class="list-transaction__title">{{ transaction.date }}</v-subheader>
       <transaction-item
@@ -42,10 +42,15 @@ export default {
       required: true
     }
   },
+  data() {
+    return {
+      scrollTop: 0
+    }
+  },
   computed: {
     ...mapGetters(['listTransactionsSortByDate']),
     transactions() {
-      return this.listTransactionsSortByDate(this.$route.query.wallet)
+      return this.listTransactionsSortByDate(this.address)
     },
     list() {
       return [
@@ -70,13 +75,20 @@ export default {
       ]
     }
   },
-  created() {
+  mounted() {
+    this.$refs.transaction.$el.addEventListener('scroll', this.eventScroll)
     this.actionGetTransaction()
+  },
+  beforeDestroy() {
+    this.$refs.transaction.$el.removeEventListener('scroll', this.eventeventScroll)
   },
   methods: {
     ...mapActions({
       actionGetTransaction: GET_TRANSACTIONS
-    })
+    }),
+    eventScroll() {
+      this.$emit('compressedWallet')
+    }
   }
 }
 </script>

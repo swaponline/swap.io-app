@@ -18,14 +18,12 @@ export default {
   height: 100%;
   top: 0;
   left: 0;
-  max-width: calc(var(--max-content-size) - var(--navigation-drawer-desktop-width));
   overflow-x: hidden;
   overflow-y: auto;
   background: $--white;
   @include tablet {
     width: 100%;
     max-width: 100vw;
-    height: calc(var(--vh, 1vh) * 100 - 96px);
   }
 }
 </style>
