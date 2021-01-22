@@ -94,6 +94,13 @@ export default {
     &--stretch {
       max-height: calc(var(--vh, 1vh) * 100 - 330px);
     }
+    @include small-height {
+      max-height: none;
+      height: 100%;
+      &--stretch {
+        max-height: none;
+      }
+    }
   }
 }
 </style>

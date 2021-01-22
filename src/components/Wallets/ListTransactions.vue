@@ -95,10 +95,6 @@ export default {
 
 <style lang="scss">
 .list-transaction {
-  @include small-height {
-    max-height: none;
-    height: 100%;
-  }
   &__block {
     flex-grow: 1;
     width: 100%;
