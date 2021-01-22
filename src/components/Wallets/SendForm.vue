@@ -167,16 +167,15 @@ export default {
   overflow: hidden;
   background: $--white;
   &__inner {
-    position: absolute;
-    z-index: 1000;
     width: 100%;
     height: 100%;
-    top: 0;
-    left: 0;
     overflow-x: hidden;
     overflow-y: auto;
     background: $--white;
     max-height: calc(100% - 110px);
+    @include small-height {
+      max-height: none;
+    }
     @include tablet {
       width: 100%;
       max-width: 100vw;

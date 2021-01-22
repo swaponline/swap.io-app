@@ -147,6 +147,9 @@ export default {
 <style lang="scss">
 .invoice-preview {
   max-height: calc(100% - 110px);
+  @include small-height {
+    max-height: none;
+  }
   &__header {
     position: sticky;
     top: 0;
