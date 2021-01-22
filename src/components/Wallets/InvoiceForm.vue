@@ -114,7 +114,7 @@ export default {
       }, 0)
     },
     address() {
-      return this.$route.query.wallet
+      return this.$route.params.walletAddress
     }
   },
   created() {

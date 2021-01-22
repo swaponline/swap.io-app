@@ -23,9 +23,9 @@
       <svg-icon class="wallet-info__icon-copy" name="copy"></svg-icon>
     </button>
     <div class="wallet-info__buttons">
-      <v-btn :to="{ name: 'Invoice' }" depressed class="wallet-info__button">Invoice</v-btn>
+      <v-btn :to="{ name: 'Invoice', params: { walletAddress } }" depressed class="wallet-info__button">Invoice</v-btn>
       <v-btn depressed class="wallet-info__button">Swap</v-btn>
-      <v-btn :to="{ name: 'Send' }" depressed class="wallet-info__button">Send</v-btn>
+      <v-btn :to="{ name: 'Send', params: { walletAddress } }" depressed class="wallet-info__button">Send</v-btn>
     </div>
   </div>
 </template>
@@ -47,6 +47,11 @@ export default {
   data() {
     return {
       show: false
+    }
+  },
+  computed: {
+    walletAddress() {
+      return this.$route.params.walletAddress
     }
   },
   methods: {

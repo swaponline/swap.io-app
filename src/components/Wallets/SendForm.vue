@@ -121,7 +121,7 @@ export default {
       return this.$store.getters.siblingList
     },
     address() {
-      return this.$route.query.wallet
+      return this.$route.params.walletAddress
     },
     siblingList() {
       return this.$store.getters.siblingList
