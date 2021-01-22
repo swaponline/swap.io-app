@@ -24,7 +24,6 @@ export default {
   @include tablet {
     width: 100%;
     max-width: 100vw;
-    height: calc(var(--vh, 1vh) * 100 - 96px);
   }
 }
 </style>

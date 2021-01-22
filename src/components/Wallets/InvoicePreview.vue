@@ -6,83 +6,85 @@
       </v-btn>
       <h3>Back</h3>
     </header>
-    <v-row>
-      <v-col cols="12">
-        <h2 class="invoice-preview__title">
-          <div>Invoice {number invoice}</div>
-          <div>Date: {{ date }}</div>
-        </h2>
-      </v-col>
-      <v-col lg="6" cols="12">
+    <div class="invoice-preview__content">
+      <v-row>
         <v-col cols="12">
-          <h3>From:</h3>
+          <h2 class="invoice-preview__title">
+            <div>Invoice {number invoice}</div>
+            <div>Date: {{ date }}</div>
+          </h2>
         </v-col>
-        <v-col cols="12">
-          <div>User: {{ currentAccount.name }}</div>
-          <div>Wallet: {{ currentWallet.name }}</div>
-          <div>Wallet address: {{ address }}</div>
+        <v-col lg="6" cols="12">
+          <v-col cols="12">
+            <h3>From:</h3>
+          </v-col>
+          <v-col cols="12">
+            <div>User: {{ currentAccount.name }}</div>
+            <div>Wallet: {{ currentWallet.name }}</div>
+            <div>Wallet address: {{ address }}</div>
+          </v-col>
         </v-col>
-      </v-col>
-      <v-col lg="6" cols="12">
-        <v-col cols="12">
-          <h3>Bill to:</h3>
+        <v-col lg="6" cols="12">
+          <v-col cols="12">
+            <h3>Bill to:</h3>
+          </v-col>
+          <v-col cols="12">
+            <div>Invoice was sent to profile: {{ contact }}</div>
+          </v-col>
         </v-col>
-        <v-col cols="12">
-          <div>Invoice was sent to profile: {{ contact }}</div>
+      </v-row>
+      <v-row class="invoice-preview__horizontal-line"></v-row>
+      <v-simple-table class="mt-4">
+        <thead>
+          <tr>
+            <th class="invoice-preview__table-head invoice-preview__table-head--description text-left">
+              Description
+            </th>
+            <th
+              v-if="type.labelQuantity"
+              class="invoice-preview__table-head invoice-preview__table-head--quantity text-left"
+            >
+              {{ type.labelQuantity }}
+            </th>
+            <th class="invoice-preview__table-head invoice-preview__table-head--amount text-left">
+              {{ type.labelItemPrice }}
+            </th>
+            <th
+              v-if="type.labelQuantity"
+              class="invoice-preview__table-head invoice-preview__table-head--amount text-left"
+            >
+              Amount
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="item in amountFields" :key="item.id">
+            <td>{{ item.description }}</td>
+            <td v-if="type.labelQuantity">{{ item.quantity }}</td>
+            <td>{{ item.amount }}</td>
+            <td v-if="type.labelQuantity">{{ item.amount * item.quantity }}</td>
+          </tr>
+        </tbody>
+      </v-simple-table>
+      <v-row class="justify-end">
+        <v-col lg="3" md="5" xs="12" cols="7" class="d-flex">
+          <h3 class="text-right flex-grow-1">
+            <div class="invoice-preview__total">
+              <h4 v-if="type.labelQuantity" class="text-right flex-grow-1 d-flex justify-space-between">
+                Total {{ type.labelQuantity }}: <span>{{ summQuantity }}</span>
+              </h4>
+            </div>
+            <div class="invoice-preview__total mt-1 d-flex justify-space-between">
+              Total Amount: <span class="invoice-preview__currency">{{ summ }} {{ currency }}</span>
+            </div>
+          </h3>
         </v-col>
-      </v-col>
-    </v-row>
-    <v-row class="invoice-preview__horizontal-line"></v-row>
-    <v-simple-table class="mt-4">
-      <thead>
-        <tr>
-          <th class="invoice-preview__table-head invoice-preview__table-head--description text-left">
-            Description
-          </th>
-          <th
-            v-if="type.labelQuantity"
-            class="invoice-preview__table-head invoice-preview__table-head--quantity text-left"
-          >
-            {{ type.labelQuantity }}
-          </th>
-          <th class="invoice-preview__table-head invoice-preview__table-head--amount text-left">
-            {{ type.labelItemPrice }}
-          </th>
-          <th
-            v-if="type.labelQuantity"
-            class="invoice-preview__table-head invoice-preview__table-head--amount text-left"
-          >
-            Amount
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="item in amountFields" :key="item.id">
-          <td>{{ item.description }}</td>
-          <td v-if="type.labelQuantity">{{ item.quantity }}</td>
-          <td>{{ item.amount }}</td>
-          <td v-if="type.labelQuantity">{{ item.amount * item.quantity }}</td>
-        </tr>
-      </tbody>
-    </v-simple-table>
-    <v-row class="justify-end">
-      <v-col lg="3" md="5" xs="12" cols="7" class="d-flex">
-        <h3 class="text-right flex-grow-1">
-          <div class="invoice-preview__total">
-            <h4 v-if="type.labelQuantity" class="text-right flex-grow-1 d-flex justify-space-between">
-              Total {{ type.labelQuantity }}: <span>{{ summQuantity }}</span>
-            </h4>
-          </div>
-          <div class="invoice-preview__total mt-1 d-flex justify-space-between">
-            Total Amount: <span class="invoice-preview__currency">{{ summ }} {{ currency }}</span>
-          </div>
-        </h3>
-      </v-col>
-    </v-row>
-    <v-row class="invoice-preview__buttons justify-end">
-      <v-btn class="invoice-preview__button" @click="$emit('close')">Back</v-btn>
-      <v-btn class="invoice-preview__button" @click="$emit('submit')">Confirm</v-btn>
-    </v-row>
+      </v-row>
+      <v-row class="invoice-preview__buttons justify-end">
+        <v-btn class="invoice-preview__button" @click="$emit('close')">Back</v-btn>
+        <v-btn class="invoice-preview__button" @click="$emit('submit')">Confirm</v-btn>
+      </v-row>
+    </div>
   </transition-inner>
 </template>
 
@@ -144,15 +146,26 @@ export default {
 
 <style lang="scss">
 .invoice-preview {
-  padding: 10px 15px;
-  @include tablet {
-    padding: 10px 10px;
-  }
+  max-height: calc(100% - 110px);
   &__header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
     display: flex;
     align-items: center;
+    padding: 10px 15px;
+    background: $--white;
     h3 {
       margin-left: 12px;
+    }
+    @include tablet {
+      padding: 10px 5px;
+    }
+  }
+  &__content {
+    padding: 0 15px 10px;
+    @include tablet {
+      padding: 0 5px 10px;
     }
   }
   &__title {
