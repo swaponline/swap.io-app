@@ -18,7 +18,6 @@ export default {
   height: 100%;
   top: 0;
   left: 0;
-  max-width: calc(var(--max-content-size) - var(--navigation-drawer-desktop-width));
   overflow-x: hidden;
   overflow-y: auto;
   background: $--white;

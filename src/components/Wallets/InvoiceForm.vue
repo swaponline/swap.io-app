@@ -1,12 +1,12 @@
 <template>
   <transition-inner class="invoice-form">
+    <header class="d-flex mb-2 align-center">
+      <v-btn large icon class="mr-3" @click="close">
+        <v-icon>mdi-arrow-left</v-icon>
+      </v-btn>
+      <h3>Invoice Form</h3>
+    </header>
     <form @submit.prevent="$emit('submit')">
-      <header class="d-flex mb-2 align-center">
-        <v-btn large icon class="mr-3" @click="close">
-          <v-icon>mdi-arrow-left</v-icon>
-        </v-btn>
-        <h3>Invoice Form</h3>
-      </header>
       <v-row>
         <v-col cols="12">
           <v-text-field v-if="address" :value="address" disabled outlined label="Your wallet">
@@ -24,6 +24,9 @@
             outlined
           >
           </v-select>
+        </v-col>
+        <v-col cols="12">
+          <v-text-field v-model="contact" required outlined label="Bill to"></v-text-field>
         </v-col>
         <v-col cols="12">
           <v-text-field v-model="contact" required outlined label="Bill to"></v-text-field>

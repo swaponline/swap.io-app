@@ -3,15 +3,16 @@ export default [
     path: '/',
     name: 'MainLayout',
     component: () => import(/* webpackChunkName: 'MainLayout' */ '@/layouts/LayoutRedesign'),
-    redirect: { name: 'Wallets' },
+    redirect: { name: 'Wallet' },
     children: [
       {
         path: '/wallet',
         name: 'Wallets',
         component: () => import(/* webpackChunkName: 'Wallets' */ '@/layouts/WalletLayout'),
+        redirect: { name: 'Wallet' },
         children: [
           {
-            path: '/wallet/:walletAddress',
+            path: '/wallet/:walletAddress?',
             name: 'Wallet',
             component: () => import(/* webpackChunkName: 'Wallet' */ '@/views/Wallets/Wallet.vue')
           },
@@ -19,6 +20,11 @@ export default [
             path: '/invoice/:walletAddress?',
             name: 'Invoice',
             component: () => import(/* webpackChunkName: 'Wallet' */ '@/components/Wallets/InvoiceBlock.vue')
+          },
+          {
+            path: '/send/:walletAddress?',
+            name: 'Send',
+            component: () => import(/* webpackChunkName: 'Wallet' */ '@/components/Wallets/SendForm.vue')
           }
         ]
       },

@@ -1,5 +1,5 @@
 <template>
-  <transition-inner class="send-form">
+  <div class="send-form">
     <form @submit.prevent="submit">
       <header class="d-flex mb-2 align-center">
         <v-btn large icon class="mr-3" @click="close">
@@ -91,7 +91,7 @@ Format: address, amount"
         </v-col>
       </v-row>
     </form>
-  </transition-inner>
+  </div>
 </template>
 
 <script>
@@ -107,6 +107,10 @@ export default {
       listRecipient: '',
       selectAddress: null
     }
+  },
+  beforeRouteLeave(to, from, next) {
+    Object.assign(to.meta, { back: true })
+    next()
   },
   computed: {
     wallets() {
@@ -144,7 +148,7 @@ export default {
       this.close()
     },
     close() {
-      this.$emit('close')
+      this.$router.back()
     }
   }
 }
@@ -152,7 +156,13 @@ export default {
 
 <style lang="scss">
 .send-form {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px 12px 0 0;
   padding: 10px 15px;
+  background: $--white;
+  overflow: hidden;
   @include tablet {
     padding: 10px 5px;
   }

@@ -23,9 +23,9 @@
       <svg-icon class="wallet-info__icon-copy" name="copy"></svg-icon>
     </button>
     <div class="wallet-info__buttons">
-      <v-btn depressed class="wallet-info__button">Invoice</v-btn>
+      <v-btn :to="{ name: 'Invoice' }" depressed class="wallet-info__button">Invoice</v-btn>
       <v-btn depressed class="wallet-info__button">Swap</v-btn>
-      <v-btn depressed class="wallet-info__button">Send</v-btn>
+      <v-btn :to="{ name: 'Send' }" depressed class="wallet-info__button">Send</v-btn>
     </div>
   </div>
 </template>
@@ -51,7 +51,6 @@ export default {
   },
   methods: {
     stretchWallet() {
-      console.log(1234)
       this.$emit('stretchWallet')
     },
     copy() {

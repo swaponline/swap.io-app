@@ -31,7 +31,7 @@ export default {
         {
           id: 2,
           label: 'Swap',
-          to: { name: 'Swap' }
+          to: { name: 'Invoice' }
         },
         {
           id: 3,

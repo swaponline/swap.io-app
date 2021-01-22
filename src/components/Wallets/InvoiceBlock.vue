@@ -1,25 +1,20 @@
 <template>
-  <transition-translate>
-    <invoice-form
-      v-if="viewBlock === 'form'"
-      :class="reverseForm ? 'reverse' : ''"
-      @submit="submit('form')"
-      @preview="showPreview"
-      @close="close"
-    >
-    </invoice-form>
-    <invoice-share v-else-if="viewBlock === 'share'" @close="close"></invoice-share>
-    <invoice-preview
-      v-else-if="viewBlock === 'preview'"
-      v-bind="invoice"
-      :class="reversePreview ? 'reverse' : ''"
-      @close="
-        viewBlock = 'form'
-        oldBlock = 'preview'
-      "
-      @submit="submit('preview')"
-    ></invoice-preview>
-  </transition-translate>
+  <div class="invoice-block">
+    <transition-translate :reverse="reverseForm">
+      <invoice-form v-if="viewBlock === 'form'" @submit="submit('form')" @preview="showPreview" @close="close">
+      </invoice-form>
+      <invoice-preview
+        v-if="viewBlock === 'preview'"
+        v-bind="invoice"
+        @close="
+          oldBlock = 'preview'
+          viewBlock = 'form'
+        "
+        @submit="submit('preview')"
+      ></invoice-preview>
+      <invoice-share v-if="viewBlock === 'share'" @close="close"></invoice-share>
+    </transition-translate>
+  </div>
 </template>
 
 <script>
@@ -50,18 +45,19 @@ export default {
   },
   computed: {
     reverseForm() {
-      return this.oldBlock === 'form' || this.oldBlock === 'preview'
-    },
-    reversePreview() {
       return this.oldBlock === 'preview'
     }
+  },
+  beforeRouteLeave(to, from, next) {
+    Object.assign(to.meta, { back: true })
+    next()
   },
   methods: {
     async close() {
       this.oldBlock = ''
       await this.$nextTick()
       this.viewBlock = 'form'
-      this.$emit('close')
+      this.$router.back()
     },
     async showPreview(invoice) {
       this.oldBlock = 'form'
@@ -79,10 +75,12 @@ export default {
 </script>
 
 <style lang="scss">
-.reverse {
-  &.translate-enter,
-  &.translate-leave-to {
-    transform: translateX(-100vw);
-  }
+.invoice-block {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  border-radius: 12px 12px 0 0;
+  overflow: hidden;
+  background: $--white;
 }
 </style>

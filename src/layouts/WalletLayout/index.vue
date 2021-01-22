@@ -1,25 +1,33 @@
 <template>
   <div class="wallet-layout">
     <list-wallet class="wallet-layout__list-wallet"></list-wallet>
-    <router-view v-if="currentRouter" :key="currentRouter"></router-view>
-    <div v-else class="wallet-layout__info-block">
-      <div>Logo</div>
-      <div>Выберите кошелек</div>
+    <div class="wallet-layout__router">
+      <transition-translate :reverse="metaBack">
+        <router-view :key="currentRoute"></router-view>
+      </transition-translate>
     </div>
   </div>
 </template>
 
 <script>
+import TransitionTranslate from '@/components/Transitions/Translate.vue'
 import ListWallet from '@/components/Wallets/ListWallet.vue'
 
 export default {
   name: 'WalletLayout',
   components: {
+    TransitionTranslate,
     ListWallet
   },
   computed: {
-    currentRouter() {
+    currentRoute() {
+      return this.$route.name + JSON.stringify(this.$route.params) + JSON.stringify(this.$route.query)
+    },
+    walletParam() {
       return this.$route.params.walletAddress
+    },
+    metaBack() {
+      return this.$route.meta.back
     }
   }
 }
@@ -32,17 +40,11 @@ export default {
   &__list-wallet {
     margin-right: 20px;
   }
-  &__info-block {
-    height: 25%;
-    min-height: 250px;
-    width: 50%;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border-radius: 12px;
-    background: $--white;
+  &__router {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
   }
 }
 </style>
