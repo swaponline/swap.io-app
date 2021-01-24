@@ -1,27 +1,32 @@
 <template>
   <div class="wallet-info" :class="compressed ? 'wallet-info--compressed' : ''" @click="stretchWallet">
     <svg-icon class="wallet-info__background-icon" name="background-btc"></svg-icon>
+    <div class="wallet-info__optional-buttons">
+      <v-btn icon class="wallet-info__optional-button">
+        <svg-icon name="share" class="wallet-info__icon"></svg-icon>
+      </v-btn>
+      <v-btn icon class="wallet-info__optional-button">
+        <svg-icon name="settings" class="wallet-info__icon"></svg-icon>
+      </v-btn>
+    </div>
     <header class="wallet-info__header">
       <div>
         <span class="wallet-info__crypto-value">0.200332btc</span>
         <span class="wallet-info__fiat-value">3000.04$</span>
       </div>
-      <div class="wallet-info__optional-buttons">
-        <v-btn icon class="wallet-info__optional-button">
-          <svg-icon name="share" class="wallet-info__icon"></svg-icon>
-        </v-btn>
-        <v-btn icon class="wallet-info__optional-button">
-          <svg-icon name="settings" class="wallet-info__icon"></svg-icon>
-        </v-btn>
-      </div>
     </header>
-    <v-tooltip v-model="show" top :open-on-hover="false" activator="#copyAdress">
-      <span>Copied</span>
-    </v-tooltip>
-    <button id="copyAdress" class="wallet-info__address" tabindex="-1" @click="copy">
-      1C9Uae6kyDtPo4ykzd5AJaLzLEZSpEbP3y
-      <svg-icon class="wallet-info__icon-copy" name="copy"></svg-icon>
-    </button>
+    <div class="wallet-info__address">
+      <v-tooltip v-model="show" top :open-on-hover="false" activator="#copyAdress">
+        <span>Copied</span>
+      </v-tooltip>
+      <button id="copyAdress" class="wallet-info__address" depressed tabindex="-1" @click="copy">
+        1C9Uae6kyDtPo4ykzd5AJaLzLEZSpEbP3y
+        <svg-icon class="wallet-info__icon-copy" name="copy"></svg-icon>
+      </button>
+      <button class="wallet-info__address" icon @click="copy">
+        <svg-icon class="wallet-info__icon-copy" name="qrcode"></svg-icon>
+      </button>
+    </div>
     <div class="wallet-info__buttons">
       <v-btn :to="{ name: 'Invoice', params: { walletAddress } }" depressed class="wallet-info__button">Invoice</v-btn>
       <v-btn depressed class="wallet-info__button">Swap</v-btn>
@@ -84,7 +89,7 @@ export default {
 .wallet-info {
   outline: none;
   position: relative;
-  padding: 20px 30px 25px 25px;
+  padding: 20px 25px 25px;
   overflow: hidden;
   background: $--white;
   height: 250px;
@@ -93,16 +98,17 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  align-items: flex-start;
 
-  --display-value: block;
   --icon-opacity: 0;
-  --height-button-address: 30px;
+  --margin-button-address: 0;
+  --height-header: 70px;
   --backgroun-icon-bottom: 0;
   &--compressed {
-    height: 150px;
+    height: 140px;
 
-    --display-value: inline;
-    --height-button-address: 0;
+    --margin-button-address: 22px;
+    --height-header: 0;
     --backgroun-icon-bottom: -50px;
   }
   &:hover {
@@ -120,15 +126,22 @@ export default {
   &__header {
     display: flex;
     justify-content: space-between;
+    overflow: hidden;
+    transition: 0.5s;
+    max-height: var(--height-header);
+  }
+  &__optional-buttons {
+    position: absolute;
+    right: 25px;
   }
   &__crypto-value {
-    display: var(--display-value);
+    display: block;
     font-weight: $--font-weight-bold;
     font-size: $--font-size-extra-title;
     margin-right: 15px;
   }
   &__fiat-value {
-    display: var(--display-value);
+    display: block;
     font-weight: $--font-weight-semi-bold;
     font-size: $--font-size-medium;
     color: $--grey;
@@ -142,15 +155,11 @@ export default {
     height: 23px;
   }
   &__address {
-    margin: var(--height-button-address) 0;
-    max-height: var(--height-button-address);
-    flex-grow: 1;
+    margin: 0 0 var(--margin-button-address);
     display: flex;
     align-items: center;
     font-size: $--font-size-small-subtitle;
     outline: none;
-    overflow: hidden;
-    transition: 0.5s;
   }
   &__icon-copy {
     margin-left: 11px;
