@@ -73,6 +73,10 @@ export default {
   background: $--white;
   overflow: hidden;
   border-radius: 12px 12px 0 0;
+
+  @include tablet {
+    border-radius: 0;
+  }
   &__list {
     height: 100%;
     overflow: auto;
@@ -91,14 +95,22 @@ export default {
     max-height: calc(var(--vh, 1vh) * 100 - 430px);
     overflow-x: hidden;
     overflow-y: auto;
+    @include tablet {
+    }
     &--stretch {
       max-height: calc(var(--vh, 1vh) * 100 - 330px);
+      @include tablet {
+        max-height: calc(var(--vh, 1vh) * 100 - 268px);
+      }
     }
     @include small-height {
       max-height: none;
       height: 100%;
       &--stretch {
         max-height: none;
+        @include tablet {
+          max-height: calc(var(--vh, 1vh) * 100 - 268px);
+        }
       }
     }
   }

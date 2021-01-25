@@ -87,6 +87,11 @@ export default {
 
 <style lang="scss">
 .wallet-info {
+  --icon-opacity: 0;
+  --margin-button-address: 0;
+  --height-header: 70px;
+  --backgroun-icon-bottom: 0;
+
   outline: none;
   position: relative;
   padding: 20px 25px 25px;
@@ -100,16 +105,27 @@ export default {
   justify-content: space-between;
   align-items: flex-start;
 
-  --icon-opacity: 0;
-  --margin-button-address: 0;
-  --height-header: 70px;
-  --backgroun-icon-bottom: 0;
-  &--compressed {
-    height: 140px;
+  @include tablet {
+    height: 220px;
+    padding: 20px 15px;
+    margin: 8px 8px;
+  }
 
+  &--compressed {
     --margin-button-address: 22px;
     --height-header: 0;
     --backgroun-icon-bottom: -50px;
+
+    height: 140px;
+    cursor: pointer;
+
+    @include tablet {
+      height: 60px;
+      border-radius: 12px 12px 0 0;
+      padding: 20px 15px 5px;
+      margin: 10px 12px 0;
+      box-shadow: inset 0px -3px 5px -1px rgba(0, 0, 0, 0.2);
+    }
   }
   &:hover {
     --icon-opacity: 1;
@@ -122,6 +138,9 @@ export default {
     height: 250px;
     transition: 0.5s;
     pointer-events: none;
+    @include tablet {
+      opacity: 0;
+    }
   }
   &__header {
     display: flex;
@@ -133,6 +152,9 @@ export default {
   &__optional-buttons {
     position: absolute;
     right: 25px;
+    @include tablet {
+      top: 15px;
+    }
   }
   &__crypto-value {
     display: block;
@@ -167,6 +189,9 @@ export default {
     height: 29px;
     transition: 0.3s;
     opacity: var(--icon-opacity);
+    @include tablet {
+      display: none;
+    }
   }
   &__button {
     margin-right: 11px;
@@ -174,6 +199,10 @@ export default {
     font-weight: $--font-weight-bold;
     font-size: $--font-size-medium !important;
     min-width: 144px;
+  }
+  &__buttons {
+    overflow: hidden;
+    max-height: var(--height-header);
   }
 }
 </style>

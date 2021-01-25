@@ -46,15 +46,19 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
+  position: relative;
   overflow: hidden;
   &__main-info {
-    width: 100%;
+    width: auto;
   }
   &__transaction {
     margin-top: 20px;
     flex-grow: 1;
     height: 50%;
     transition: 0.5s;
+    @include tablet {
+      margin-top: 0px;
+    }
   }
   &__info-block {
     height: 25%;

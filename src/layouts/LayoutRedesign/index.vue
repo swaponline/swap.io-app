@@ -1,7 +1,8 @@
 <template>
   <div class="main-layout">
     <main-header class="main-layout__main-header"></main-header>
-    <router-view class="main-layout__router-view"></router-view>
+    <router-view></router-view>
+    <main-layout-tabs class="main-layout__tabs"></main-layout-tabs>
   </div>
 </template>
 
@@ -9,11 +10,13 @@
 import { mapActions } from 'vuex'
 import { GET_ACCOUNT_ID } from '@/store/modules/Wallets'
 import MainHeader from './components/MainHeader.vue'
+import MainLayoutTabs from './components/Tabs.vue'
 
 export default {
   name: 'MainLayout',
   components: {
-    MainHeader
+    MainHeader,
+    MainLayoutTabs
   },
   mounted() {
     this.actionGetAccountId()
@@ -33,8 +36,14 @@ export default {
   height: 100%;
   margin: 0 auto;
   overflow: hidden;
-  &__router-view {
-    margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+  &__tabs {
+    display: none;
+    @include tablet {
+      display: block;
+      flex-grow: 0;
+    }
   }
 }
 </style>

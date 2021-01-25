@@ -1,11 +1,7 @@
 <template>
   <div class="main-header">
     <div class="main-header__logo">Logo</div>
-    <v-tabs fixed-tabs height="85" color="#000000" slider-color="#000000" slider-size="4">
-      <v-tab v-for="tab in tabs" :key="tab.id" :to="tab.to" class="main-header__tab">
-        {{ tab.label }}
-      </v-tab>
-    </v-tabs>
+    <main-header-tabs class="main-header__tabs"></main-header-tabs>
     <div class="main-header__profile">
       <button class="main-header__profile">
         <div class="main-header__avatar">
@@ -18,33 +14,12 @@
 </template>
 
 <script>
+import MainHeaderTabs from './Tabs.vue'
+
 export default {
   name: 'MainHeader',
-  data() {
-    return {
-      tabs: [
-        {
-          id: 1,
-          label: 'Wallets',
-          to: { name: 'Wallets' }
-        },
-        {
-          id: 2,
-          label: 'Swap',
-          to: { name: 'Invoice' }
-        },
-        {
-          id: 3,
-          label: 'History',
-          to: { name: 'History' }
-        },
-        {
-          id: 4,
-          label: 'Settings',
-          to: { name: 'Settings' }
-        }
-      ]
-    }
+  components: {
+    MainHeaderTabs
   },
   computed: {
     currentAccount() {
@@ -65,26 +40,22 @@ export default {
 <style lang="scss">
 .main-header {
   width: 100%;
+  min-height: 85px;
   display: flex;
   background: #ffffff;
   box-shadow: 0px 0px 20px rgba(17, 17, 17, 0.02);
   border-radius: 0px 0px 12px 12px;
   overflow: hidden;
+  justify-content: space-between;
+  @include tablet {
+    min-height: 80px;
+  }
   &__logo {
     min-width: 305px;
     margin-right: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-  &__tab {
-    max-width: 175px;
-    margin: 0 0;
-    font-weight: $--font-weight-semi-bold;
-    font-size: $--font-size-small-subtitle;
-    line-height: 27px;
-    letter-spacing: 0.01em;
-    text-transform: none;
   }
   &__profile {
     min-width: 175px;
@@ -105,6 +76,11 @@ export default {
     background: white;
     border-radius: 50%;
     margin-right: 20px;
+  }
+  &__tabs {
+    @include tablet {
+      display: none;
+    }
   }
 }
 </style>
