@@ -23,7 +23,7 @@
         1C9Uae6kyDtPo4ykzd5AJaLzLEZSpEbP3y
         <svg-icon class="wallet-info__icon-copy" name="copy"></svg-icon>
       </button>
-      <button class="wallet-info__address" icon @click="copy">
+      <button class="wallet-info__address" icon>
         <svg-icon class="wallet-info__icon-copy" name="qrcode"></svg-icon>
       </button>
     </div>

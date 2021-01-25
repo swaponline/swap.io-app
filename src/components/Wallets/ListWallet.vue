@@ -1,16 +1,15 @@
 <template>
   <div class="list-wallet">
     <v-list class="py-0">
-      <v-list-item v-for="wallet in wallets" :key="wallet.name" class="px-0">
+      <v-list-item v-for="wallet in wallets" :key="wallet.name" class="list-wallet__wallet-item px-0">
         <v-list-item
           v-if="wallet.subWallets.length === 1"
           link
           exact
-          color="purple"
-          class="list-wallet__wallet-item"
+          class="list-wallet__group"
           :to="{ name: 'Wallet', params: { walletAddress: wallet.subWallets[0].address } }"
         >
-          <v-list-item-icon class="list-wallet__icon-wrapper mr-4">
+          <v-list-item-icon class="list-wallet__icon-wrapper">
             <svg-icon class="list-wallet__icon" name="btc" />
           </v-list-item-icon>
           <v-list-item-content>
@@ -20,14 +19,9 @@
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-group
-          v-else
-          class="list-wallet__wallet-item"
-          color="purple"
-          active-class="list-wallet__active-list-group"
-        >
+        <v-list-group v-else class="list-wallet__group" color="purple" active-class="list-wallet__active-list-group">
           <template #activator>
-            <v-list-item-icon class="list-wallet__icon-wrapper mr-4">
+            <v-list-item-icon class="list-wallet__icon-wrapper">
               <svg-icon class="list-wallet__icon" name="btc" />
             </v-list-item-icon>
             <v-list-item-title class="d-flex">
@@ -40,11 +34,11 @@
             v-for="(subWallet, i) in wallet.subWallets"
             :key="i"
             link
-            color="purple"
             exact
+            class="list-wallet__item"
             :to="{ name: 'Wallet', params: { walletAddress: subWallet.address } }"
           >
-            <v-list-item-content>
+            <v-list-item-content class="list-wallet__item-content">
               <v-list-item-title class="d-flex mr-4">
                 {{ subWallet.name }}
                 <v-spacer />
@@ -98,8 +92,35 @@ export default {
   border-radius: 12px 12px 0 0;
   overflow-y: hidden;
   &__wallet-item {
+    justify-content: center;
+    &:after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      width: calc(100% - 30px);
+      min-height: 1px;
+      background: rgba($--black, 0.1);
+    }
+  }
+  &__group {
     width: 100%;
-    border-bottom: 1px solid rgba($color: $--black, $alpha: 0.2);
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 8px 10px;
+  }
+  &__item {
+    min-height: 40px;
+    margin: 0 10px;
+    border-radius: 12px;
+    overflow: hidden;
+    &:before {
+      z-index: 0;
+      background: $--black;
+    }
+  }
+  &__item-content {
+    position: relative;
+    padding: 0 0;
   }
   &__currnecy {
     color: rgba($color: $--white, $alpha: 0.5);
@@ -113,13 +134,13 @@ export default {
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    min-width: 38px;
-    height: 38px;
-    background: $--grey;
+    min-width: 45px;
+    height: 45px;
+    margin: 15px 16px 15px 0 !important;
   }
   &__icon {
-    width: 20px;
-    height: 20px;
+    width: 45px;
+    height: 45px;
     fill: $--white;
   }
 }
