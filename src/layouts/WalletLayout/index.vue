@@ -65,7 +65,9 @@ export default {
     position: relative;
     height: 100%;
     width: 100%;
+    overflow: hidden;
     @include tablet {
+      overflow: visible;
       position: absolute;
       transform: translateX(0);
       transition: 0.5s;

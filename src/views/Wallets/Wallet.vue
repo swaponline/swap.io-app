@@ -64,9 +64,9 @@ export default {
       &:after {
         position: absolute;
         content: '';
-        height: 500px;
+        height: 324px;
         width: 100%;
-        bottom: 66.5%;
+        top: -80px;
         background: rgba($--black, 0.45);
         transition: 0.5s;
         z-index: 2;
@@ -74,7 +74,7 @@ export default {
       }
       &--stretch {
         &:after {
-          bottom: 90%;
+          height: 152px;
           opacity: 1;
         }
       }

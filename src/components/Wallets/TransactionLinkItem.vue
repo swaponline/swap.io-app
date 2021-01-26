@@ -1,6 +1,6 @@
 <template>
   <v-list-item to="/" class="item-link-transaction px-1">
-    <v-list-item-content class="item-link-transaction__icon-block flex-grow-0 mr-1">
+    <div class="item-link-transaction__time">
       <v-icon
         class="item-link-transaction__icon lighten-1"
         background="white"
@@ -10,65 +10,44 @@
       >
         mdi-arrow-bottom-left
       </v-icon>
-      <h3 class="item-link-transaction__time">{{ `${hours}:${minutes}` }}</h3>
-    </v-list-item-content>
-
-    <v-list-item-content class="text-left">
-      <v-list-item-title class="item-link-transaction__title">
-        <span class="item-link-transaction__status">CONFIRMED</span>
-      </v-list-item-title>
-      <v-list-item-subtitle>
-        <span class="item-link-transaction__descr">
-          {{ comment }}
-        </span>
-      </v-list-item-subtitle>
-    </v-list-item-content>
-
-    <v-list-item-action class="flex-grow-0 mr-1">
+      <span>{{ `${hours}:${minutes}` }}</span>
+    </div>
+    <div class="item-link-transaction__main-info">
+      <transaction-description v-model="comment"></transaction-description>
+      <span>CONFIRMED</span>
+    </div>
+    <div
+      class="item-link-transaction__value"
+      :class="{
+        'item-link-transaction__value--send': !isReceived
+      }"
+    >
       <v-tooltip top>
         <template v-slot:activator="{ on }">
-          <v-list-item-title class="item-link-transaction__title justify-end" v-on="on">
-            <span class="item-link-transaction__crypto-currency">{{ currency }}</span>
-            <h3
-              class="item-link-transaction__value"
-              :class="{
-                'item-link-transaction__value--send': !isReceived
-              }"
-            >
-              {{ computedValue }}
-            </h3>
-          </v-list-item-title>
+          <span v-on="on">
+            {{ computedValue }}
+          </span>
         </template>
         <span>Balance change</span>
       </v-tooltip>
-      <v-list-item-subtitle>
-        <h3 class="item-link-transaction__subtitle">
-          <v-tooltip top>
-            <template v-slot:activator="{ on }">
-              <span class="item-link-transaction__value-in-usd" v-on="on">~${{ valueInUsd }}</span>
-            </template>
-            <span> USD Equivalent of transaction amount @ {{ rateValue.toFixed(2) }} USD/ETH)</span>
-          </v-tooltip>
-        </h3>
-      </v-list-item-subtitle>
-    </v-list-item-action>
-
-    <v-list-item-action class="flex-grow-0 mr-1 ml-2 mt-0 item-link-transaction__balance">
-      <v-list-item-subtitle class="item-link-transaction__subtitle">
-        <v-tooltip top>
-          <template v-slot:activator="{ on }">
-            <span class="item-link-transaction__balance-value" v-on="on">{{ currentBalance }}</span>
-          </template>
-          <span>Balance after transaction</span>
-        </v-tooltip>
-      </v-list-item-subtitle>
-    </v-list-item-action>
+      <v-tooltip top>
+        <template v-slot:activator="{ on }">
+          <span class="item-link-transaction__value-in-usd" v-on="on">~${{ valueInUsd }}</span>
+        </template>
+        <span> USD Equivalent of transaction amount @ {{ rateValue.toFixed(2) }} USD/ETH)</span>
+      </v-tooltip>
+    </div>
   </v-list-item>
 </template>
 
 <script>
+import TransactionDescription from './TransactionDescription.vue'
+
 export default {
   name: 'ItemLinkTransaction',
+  components: {
+    TransactionDescription
+  },
   props: {
     journal: {
       type: Array,
@@ -166,144 +145,67 @@ export default {
     }
   },
   mounted() {
-    this.comment = this.description || this.isReceived ? `From: ${this.from}` : `To: ${this.to}`
+    this.comment =
+      this.description || this.isReceived ? `From: ***${this.from.slice(-4)}` : `To: ***${this.to.slice(-4)}`
   }
 }
 </script>
 
 <style lang="scss">
 .item-link-transaction {
-  align-items: center;
-  border-bottom: 1px solid rgba($color: $--black, $alpha: 0.12);
-  border-top: 1px solid rgba($color: $--black, $alpha: 0.12);
-  text-decoration: none;
-  &[aria-expended] {
-    margin: 0 0;
-  }
+  display: flex;
+  border-bottom: 1px solid rgba($color: $--black, $alpha: 0.05);
+  border-top: 1px solid rgba($color: $--black, $alpha: 0.05);
+  margin: 0 10px;
+  padding: 16px 0;
   &:after {
-    border: none;
+    display: none;
   }
   &:before {
-    box-shadow: none;
+    display: none;
   }
-  &__title {
-    display: flex;
-    align-items: center;
-    font-size: $--font-size-medium;
-    font-weight: $--font-weight-bold;
-    width: 100%;
-    overflow: visible;
-    @include tablet {
-      font-size: $--font-size-base;
-    }
-    @include phone {
-      font-size: $--font-size-small;
-    }
-  }
-  &__status {
-    display: inline-block;
-    text-transform: uppercase;
-    background: $--light-blue;
-    font-size: $--font-size-small;
-    font-weight: $--font-weight-medium;
-    color: $--blue;
-    border-radius: $--small-border-radius;
-    padding: 4px 8px;
+  &__header {
+    padding: 0 0;
+    min-height: 80px;
   }
   &__time {
-    font-weight: $--font-weight-bold;
-    color: $--grey;
-    text-align: center;
+    flex: 0 !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 5px;
     font-size: $--font-size-small;
+    line-height: 16px;
+    font-weight: $--font-weight-medium;
   }
-  &__crypto-currency {
-    color: $--grey;
-    text-transform: uppercase;
-    @include tablet {
-      font-size: $--font-size-base;
-    }
-    @include phone {
-      font-size: $--font-size-small;
-    }
+  &__main-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 10px;
+    font-weight: $--font-weight-semi-bold;
+    font-size: $--font-size-small;
+    color: $--green;
   }
   &__value {
-    color: $--salad;
-    text-transform: uppercase;
-    margin-left: 16px;
+    flex: 0 !important;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    font-weight: $--font-weight-semi-bold;
+    font-size: $--font-size-extra-small-subtitle;
+    color: $--green;
     &--send {
       color: $--red;
     }
-    @include tablet {
-      font-size: 1.5em;
-    }
-  }
-  &__subtitle {
-    display: flex;
-    align-items: center;
-    height: 100%;
-    width: 100%;
-    color: $--grey;
-    font-size: $--font-size-base;
-    @include tablet {
-      font-size: $--font-size-base;
-    }
-    @include phone {
-      font-size: $--font-size-small;
-    }
   }
   &__value-in-usd {
-    margin-left: 5px;
-  }
-  &__icon-block {
-    min-width: 50px;
-  }
-  &__icon {
-    &--send {
-      transform: rotate(180deg);
-    }
-  }
-  &__descr {
-    display: flex;
-    font-size: $--font-size-base;
-    line-height: 15px;
-  }
-  &__input-descr {
-    outline: none;
-    border: none;
+    margin-top: 4px;
+    font-size: $--font-size-small;
+    line-height: 16px;
     color: $--black;
-    width: 100%;
-    @include tablet {
-      overflow: hidden;
-      font-size: $--font-size-base;
-    }
-    @include phone {
-      font-size: $--font-size-small;
-    }
-  }
-  &__button-descr {
-    font-size: $--font-size-small;
-    line-height: 15px;
-    background: rgba($color: $--blue, $alpha: 0.2);
-    padding: 2px 2px;
-  }
-  &__balance {
-    height: 100%;
-    margin-bottom: 20px;
-    @include tablet {
-      display: none;
-    }
-  }
-  &__balance-title {
-    font-size: $--font-size-small;
-    width: 100%;
-    text-align: center;
-    color: $--grey;
-  }
-  &__balance-value {
-    color: $--grey;
-    font-size: $--font-size-medium;
-    width: 100%;
-    text-align: center;
   }
 }
 </style>

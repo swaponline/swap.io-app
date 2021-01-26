@@ -1,7 +1,7 @@
 <template>
   <v-expansion-panel class="item-transaction my-0">
     <v-expansion-panel-header class="item-transaction__header px-1">
-      <v-list-item-content class="flex-grow-0 mr-1">
+      <div class="item-transaction__time">
         <v-icon
           class="item-transaction__icon lighten-1"
           background="white"
@@ -11,65 +11,41 @@
         >
           mdi-arrow-bottom-left
         </v-icon>
-        <h3 class="item-transaction__time">{{ `${hours}:${minutes}` }}</h3>
-      </v-list-item-content>
-
-      <v-list-item-content class="text-left">
-        <v-list-item-title class="item-transaction__title">
-          <span class="item-transaction__status">CONFIRMED</span>
-        </v-list-item-title>
-        <v-list-item-subtitle>
-          <form class="item-transaction__descr" @submit.prevent="addComment">
-            <input
-              v-model="comment"
-              type="text"
-              class="item-transaction__input-descr"
-              @keyup.space.prevent
-              @click.stop
-            />
-          </form>
-        </v-list-item-subtitle>
-      </v-list-item-content>
-
-      <v-list-item-action class="flex-grow-0 mr-1">
+        <span>{{ `${hours}:${minutes}` }}</span>
+      </div>
+      <div class="item-transaction__main-info">
+        <transaction-description v-model="comment"></transaction-description>
+        <span>CONFIRMED</span>
+      </div>
+      <div
+        class="item-transaction__value"
+        :class="{
+          'item-transaction__value--send': !isReceived
+        }"
+      >
         <v-tooltip top>
           <template v-slot:activator="{ on }">
-            <v-list-item-title class="item-transaction__title justify-end" v-on="on">
-              <span class="item-transaction__crypto-currency">{{ currency }}</span>
-              <h3
-                class="item-transaction__value"
-                :class="{
-                  'item-transaction__value--send': !isReceived
-                }"
-              >
-                {{ computedValue }}
-              </h3>
-            </v-list-item-title>
+            <span v-on="on">
+              {{ computedValue }}
+            </span>
           </template>
           <span>Balance change</span>
         </v-tooltip>
-        <v-list-item-subtitle>
-          <h3 class="item-transaction__subtitle">
-            <v-tooltip top>
-              <template v-slot:activator="{ on }">
-                <span class="item-transaction__value-in-usd" v-on="on">~${{ valueInUsd }}</span>
-              </template>
-              <span> USD Equivalent of transaction amount @ {{ rateValue.toFixed(2) }} USD/ETH)</span>
-            </v-tooltip>
-          </h3>
-        </v-list-item-subtitle>
-      </v-list-item-action>
-
-      <v-list-item-action class="flex-grow-0 mr-1 ml-2 mt-0 item-transaction__balance">
-        <v-list-item-subtitle class="item-transaction__subtitle">
-          <v-tooltip top>
-            <template v-slot:activator="{ on }">
-              <span class="item-transaction__balance-value" v-on="on">{{ currentBalance }}</span>
-            </template>
-            <span>Balance after transaction</span>
-          </v-tooltip>
-        </v-list-item-subtitle>
-      </v-list-item-action>
+        <v-tooltip top>
+          <template v-slot:activator="{ on }">
+            <span class="item-transaction__value-in-usd" v-on="on">~${{ valueInUsd }}</span>
+          </template>
+          <span> USD Equivalent of transaction amount @ {{ rateValue.toFixed(2) }} USD/ETH)</span>
+        </v-tooltip>
+      </div>
+      <div class="item-transaction__amount">
+        <v-tooltip top>
+          <template v-slot:activator="{ on }">
+            <span class="item-transaction__balance-value" v-on="on">{{ currentBalance }}</span>
+          </template>
+          <span>Balance after transaction</span>
+        </v-tooltip>
+      </div>
     </v-expansion-panel-header>
 
     <v-expansion-panel-content class="item-transaction__expansion">
@@ -90,8 +66,13 @@
 </template>
 
 <script>
+import TransactionDescription from './TransactionDescription.vue'
+
 export default {
   name: 'ItemTransaction',
+  components: {
+    TransactionDescription
+  },
   props: {
     journal: {
       type: Array,
@@ -134,7 +115,8 @@ export default {
   },
   data() {
     return {
-      comment: ''
+      comment: '',
+      inputShow: false
     }
   },
   computed: {
@@ -190,168 +172,73 @@ export default {
   },
   mounted() {
     this.comment = this.description || this.isReceived ? `From: ${this.from}` : `To: ${this.to}`
-  },
-  methods: {
-    addComment() {
-      this.description = this.comment || undefined
-      if (this.comment === '') {
-        this.comment = this.description
-      }
-    }
   }
 }
 </script>
 
 <style lang="scss">
 .item-transaction {
-  border-bottom: 1px solid rgba($color: $--black, $alpha: 0.12);
-  border-top: 1px solid rgba($color: $--black, $alpha: 0.12);
-  &[aria-expended] {
-    margin: 0 0;
-  }
+  border-bottom: 1px solid rgba($color: $--black, $alpha: 0.05);
+  border-top: 1px solid rgba($color: $--black, $alpha: 0.05);
+  margin: 0 20px;
   &:after {
-    border: none;
+    display: none;
   }
   &:before {
-    box-shadow: none;
+    display: none;
   }
   &__header {
-    padding: 0 0;
-  }
-  &__title {
-    display: flex;
-    align-items: center;
-    font-size: $--font-size-medium;
-    font-weight: $--font-weight-bold;
-    width: 100%;
-    overflow: visible;
-    @include tablet {
-      font-size: $--font-size-base;
-    }
-    @include phone {
-      font-size: $--font-size-small;
-    }
-  }
-  &__status {
-    display: inline-block;
-    text-transform: uppercase;
-    background: $--light-blue;
-    font-size: $--font-size-small;
-    font-weight: $--font-weight-medium;
-    color: $--blue;
-    border-radius: $--small-border-radius;
-    padding: 4px 8px;
+    padding: 16px 0;
   }
   &__time {
-    font-weight: $--font-weight-bold;
-    color: $--grey;
-    text-align: center;
+    flex: 0 !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 5px;
     font-size: $--font-size-small;
+    line-height: 16px;
+    font-weight: $--font-weight-medium;
   }
-  &__crypto-currency {
-    color: $--grey;
-    text-transform: uppercase;
-    @include tablet {
-      font-size: $--font-size-base;
-    }
-    @include phone {
-      font-size: $--font-size-small;
-    }
+  &__main-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 10px;
+    font-weight: $--font-weight-semi-bold;
+    font-size: $--font-size-extra-small;
+    color: $--green;
   }
   &__value {
-    color: $--salad;
-    text-transform: uppercase;
-    margin-left: 16px;
+    flex: 0 !important;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    font-weight: $--font-weight-semi-bold;
+    font-size: $--font-size-extra-small-subtitle;
+    color: $--green;
+    line-height: 25px;
     &--send {
       color: $--red;
     }
-    @include tablet {
-      font-size: 1.5em;
-    }
-  }
-  &__subtitle {
-    display: flex;
-    align-items: center;
-    height: 100%;
-    width: 100%;
-    color: $--grey;
-    font-size: $--font-size-base;
-    @include tablet {
-      font-size: $--font-size-base;
-    }
-    @include phone {
-      font-size: $--font-size-small;
-    }
   }
   &__value-in-usd {
-    margin-left: 5px;
-  }
-  &__icon {
-    &--send {
-      transform: rotate(180deg);
-    }
-  }
-  &__descr {
-    display: flex;
-    font-size: $--font-size-base;
-    line-height: 15px;
-  }
-  &__input-descr {
-    outline: none;
-    border: none;
-    color: $--black;
-    width: 100%;
-    @include tablet {
-      overflow: hidden;
-      font-size: $--font-size-base;
-    }
-    @include phone {
-      font-size: $--font-size-small;
-    }
-  }
-  &__button-descr {
+    margin-top: 4px;
     font-size: $--font-size-small;
-    line-height: 15px;
-    background: rgba($color: $--blue, $alpha: 0.2);
-    padding: 2px 2px;
+    line-height: 16px;
+    color: $--black;
   }
-  &__balance {
-    height: 100%;
-    margin-bottom: 20px;
+  &__amount {
+    flex: 0 !important;
+    margin: 0 15px;
+    align-self: stretch;
+    font-size: $--font-size-extra-small-subtitle;
+    line-height: 25px;
+    color: rgba($color: $--black, $alpha: 0.3);
     @include tablet {
       display: none;
     }
-  }
-  &__balance-title {
-    font-size: $--font-size-small;
-    width: 100%;
-    text-align: center;
-    color: $--grey;
-  }
-  &__balance-value {
-    color: $--grey;
-    font-size: $--font-size-medium;
-    width: 100%;
-    text-align: center;
-  }
-  &__expansion {
-    .v-expansion-panel-content__wrap {
-      padding: 0 10px 10px;
-      font-size: $--font-size-base;
-      word-break: break-word;
-      @include tablet {
-        font-size: $--font-size-base;
-      }
-      @include phone {
-        font-size: $--font-size-small;
-      }
-    }
-  }
-  &__hash {
-    display: block;
-  }
-  &__entry-value {
-    white-space: nowrap;
   }
 }
 </style>

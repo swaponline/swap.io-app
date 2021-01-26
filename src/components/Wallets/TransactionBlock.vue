@@ -84,6 +84,12 @@ export default {
   &__tabs {
     position: relative;
     z-index: 1;
+    @include tablet {
+      padding: 0 40px;
+    }
+    @include phone {
+      padding: 0 0;
+    }
   }
   &__horizontal-line {
     width: 100%;
@@ -98,7 +104,10 @@ export default {
     &--stretch {
       max-height: calc(var(--vh, 1vh) * 100 - 330px);
       @include tablet {
-        max-height: calc(var(--vh, 1vh) * 100 - 268px);
+        max-height: calc(var(--vh, 1vh) * 100 - 380px);
+      }
+      @include phone {
+        max-height: calc(var(--vh, 1vh) * 100 - 272px);
       }
     }
     @include small-height {
@@ -107,7 +116,10 @@ export default {
       &--stretch {
         max-height: none;
         @include tablet {
-          max-height: calc(var(--vh, 1vh) * 100 - 268px);
+          max-height: calc(var(--vh, 1vh) * 100 - 380px);
+        }
+        @include phone {
+          max-height: calc(var(--vh, 1vh) * 100 - 272px);
         }
       }
     }

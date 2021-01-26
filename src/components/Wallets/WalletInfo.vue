@@ -135,6 +135,7 @@ export default {
       border-radius: 12px 12px 0 0;
       height: 60px;
       margin: 12px 12px 0;
+      padding: 20px 15px 0;
       box-shadow: inset 0px -3px 5px -1px rgba(0, 0, 0, 0.2);
     }
   }
