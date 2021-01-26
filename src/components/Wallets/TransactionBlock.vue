@@ -73,6 +73,10 @@ export default {
   background: $--white;
   overflow: hidden;
   border-radius: 12px 12px 0 0;
+
+  @include tablet {
+    border-radius: 0;
+  }
   &__list {
     height: 100%;
     overflow: auto;
@@ -80,6 +84,12 @@ export default {
   &__tabs {
     position: relative;
     z-index: 1;
+    @include tablet {
+      padding: 0 40px;
+    }
+    @include phone {
+      padding: 0 0;
+    }
   }
   &__horizontal-line {
     width: 100%;
@@ -93,12 +103,24 @@ export default {
     overflow-y: auto;
     &--stretch {
       max-height: calc(var(--vh, 1vh) * 100 - 330px);
+      @include tablet {
+        max-height: calc(var(--vh, 1vh) * 100 - 380px);
+      }
+      @include phone {
+        max-height: calc(var(--vh, 1vh) * 100 - 272px);
+      }
     }
     @include small-height {
       max-height: none;
       height: 100%;
       &--stretch {
         max-height: none;
+        @include tablet {
+          max-height: calc(var(--vh, 1vh) * 100 - 380px);
+        }
+        @include phone {
+          max-height: calc(var(--vh, 1vh) * 100 - 272px);
+        }
       }
     }
   }

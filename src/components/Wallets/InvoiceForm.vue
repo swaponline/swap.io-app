@@ -28,9 +28,6 @@
         <v-col cols="12">
           <v-text-field v-model="contact" required outlined label="Bill to"></v-text-field>
         </v-col>
-        <v-col cols="12">
-          <v-text-field v-model="contact" required outlined label="Bill to"></v-text-field>
-        </v-col>
       </v-row>
       <div class="invoice-form__items">
         <h3>Invoice Items</h3>

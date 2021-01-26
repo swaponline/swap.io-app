@@ -87,7 +87,6 @@ import HeaderWallet from '@/components/Wallets/HeaderWallet.vue'
 import WalletsMenu from '@/components/Wallets/WalletsMenu.vue'
 import ListTransactions from '@/components/Wallets/ListTransactions.vue'
 import ShareLink from '@/components/Wallets/ShareLink.vue'
-import SvgIcon from '@/components/SvgIcon.vue'
 
 export default {
   name: 'Wallet',
@@ -95,8 +94,7 @@ export default {
     HeaderWallet,
     WalletsMenu,
     ListTransactions,
-    ShareLink,
-    SvgIcon
+    ShareLink
   },
   props: {
     wallet: {
@@ -320,15 +318,6 @@ export default {
         overflow-x: hidden;
         width: 100%;
       }
-    }
-  }
-}
-@include tablet {
-  // Переопределим некоторые стили для vuetify
-  // уберем левый отступ у вкладок на маленьких устройствах
-  .v-slide-group__prev {
-    &--disabled {
-      display: none !important;
     }
   }
 }

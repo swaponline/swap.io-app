@@ -3,6 +3,7 @@
     <wallet-info class="wallet__main-info" :compressed="compressed" @stretchWallet="compressed = false"></wallet-info>
     <transaction-block
       class="wallet__transaction"
+      :class="compressed ? 'wallet__transaction--stretch' : ''"
       :is-compressed-wallet="compressed"
       @compressedWallet="compressed = true"
     ></transaction-block>
@@ -46,16 +47,40 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  position: relative;
   &__main-info {
-    width: 100%;
+    width: auto;
   }
   &__transaction {
     margin-top: 20px;
     flex-grow: 1;
     height: 50%;
     transition: 0.5s;
+
+    @include tablet {
+      margin-top: 0px;
+    }
+    @include phone {
+      &:after {
+        position: absolute;
+        content: '';
+        height: 324px;
+        width: 100%;
+        top: -80px;
+        background: rgba($--black, 0.45);
+        transition: 0.5s;
+        z-index: 2;
+        opacity: 0;
+      }
+      &--stretch {
+        &:after {
+          height: 152px;
+          opacity: 1;
+        }
+      }
+    }
   }
+
   &__info-block {
     height: 25%;
     min-height: 250px;

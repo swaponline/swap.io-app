@@ -1,37 +1,29 @@
 <template>
-  <div>
-    <v-toolbar class="header-list" color="purple">
-      <v-btn class="header-list__button ml-0" icon @click="openAccountMenu">
-        <img height="48" width="48" class="header-list__avatar" :src="getSrcAvatar(currentAccountName)" alt="avatar" />
-      </v-btn>
-      <span class="header-list__name">{{ currentAccountName }}</span>
-      <v-spacer></v-spacer>
-      <v-toolbar-items class="header-list__summ align-center">
-        <span>{{ balance }}</span>
-      </v-toolbar-items>
-    </v-toolbar>
-    <div
-      class="header-list__extension"
-      :style="openMenu ? styleParams : ''"
-      :class="{
-        'header-list__extension--visible': openMenu
-      }"
-    >
-      <v-list class="py-0">
-        <v-list-item v-for="account in accounts" :key="account.id" @click="setAccount(account.id)">
-          <img
-            height="48"
-            width="48"
-            class="header-list__avatar-item"
-            :src="getSrcAvatar(account.name)"
-            alt="avatar-item"
-            loading="lazy"
-          />
-          <span>{{ account.name }}</span>
-        </v-list-item>
-      </v-list>
-    </div>
-  </div>
+  <v-expansion-panels v-model="panels" class="header-list-wrapper">
+    <v-expansion-panel class="header-list">
+      <v-expansion-panel-header class="header-list__expansion-button">
+        <v-avatar height="50" width="50" min-width="50" class="header-list__avatar">
+          <img height="45" width="45" :src="getSrcAvatar(currentAccountName)" alt="avatar" />
+        </v-avatar>
+        <span class="header-list__name">{{ currentAccountName }}</span>
+      </v-expansion-panel-header>
+      <v-expansion-panel-content>
+        <v-list class="header-list__list-account py-0">
+          <v-list-item v-for="account in accounts" :key="account.id" @click="setAccount(account.id)">
+            <img
+              height="48"
+              width="48"
+              class="header-list__avatar-item"
+              :src="getSrcAvatar(account.name)"
+              alt="avatar-item"
+              loading="lazy"
+            />
+            <span>{{ account.name }}</span>
+          </v-list-item>
+        </v-list>
+      </v-expansion-panel-content>
+    </v-expansion-panel>
+  </v-expansion-panels>
 </template>
 
 <script>
@@ -42,7 +34,7 @@ export default {
   name: 'HeaderList',
   data() {
     return {
-      openMenu: false
+      panels: []
     }
   },
   computed: {
@@ -50,7 +42,7 @@ export default {
       return this.$store.getters.walletsSumm
     },
     styleParams() {
-      return `max-height: ${48 * this.accounts.length}px;`
+      return `height: ${48 * this.accounts.length}px; overflow: auto;`
     },
     accounts() {
       return this.$store.state[WALLETS_MODULE].list
@@ -66,13 +58,10 @@ export default {
     ...mapActions({
       actionSetAccount: SET_ACCOUNT_ID
     }),
-    openAccountMenu() {
-      this.openMenu = !this.openMenu
-    },
     setAccount(id) {
       this.$router.push({ name: 'Wallets', query: null })
       this.actionSetAccount(id)
-      this.openMenu = false
+      this.panels = []
     },
     getSrcAvatar(name) {
       return `https://identicon-api.herokuapp.com/${name}/96?format=png`
@@ -82,36 +71,45 @@ export default {
 </script>
 
 <style lang="scss">
-.header-list {
-  font-size: 18px;
-  max-height: 64px;
-  &__summ {
-    color: $--white;
-    font-weight: 500;
+.header-list-wrapper {
+  width: auto;
+  display: none;
+  @include tablet {
+    display: flex;
+    margin: 20px 40px;
   }
-  &__extension {
-    overflow: hidden;
-    max-height: 0;
-    transition: 0.5s;
-    background: yellow;
-    &--visible {
-      height: auto;
-      // @include tablet {
-      //   min-height: calc(100vh - 152px) !important;
-      // }
+  @include phone {
+    margin: 8px;
+  }
+}
+.header-list {
+  border-radius: 12px !important;
+  &__expansion-button {
+    margin: 0;
+    padding: 0 15px;
+    min-height: 80px;
+    background: $--white;
+    border-radius: 12px;
+
+    @include phone {
+      min-height: 70px;
     }
   }
   &__avatar {
-    background: white;
-    border-radius: 50%;
+    margin-right: 12px;
+    flex: 0 !important;
+    height: 50px;
+    width: 50px;
+  }
+  &__list-account {
+    margin: 0 -24px -6px;
   }
   &__name {
-    margin-left: 10px;
-    color: $--white;
+    font-weight: $--font-weight-medium;
+    font-size: $--font-size-extra-small-subtitle;
   }
   &__avatar-item {
     border-radius: 50%;
-    margin-right: 15px;
   }
 }
 </style>

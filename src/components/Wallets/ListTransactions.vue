@@ -1,5 +1,5 @@
 <template>
-  <v-expansion-panels ref="transaction" class="list-transaction">
+  <v-expansion-panels ref="transaction" class="list-transaction" accordion>
     <div v-for="transaction in transactions" :key="transaction.date" class="list-transaction__block">
       <v-subheader class="list-transaction__title">{{ transaction.date }}</v-subheader>
       <transaction-item
@@ -98,6 +98,14 @@ export default {
   &__block {
     flex-grow: 1;
     width: 100%;
+    @include tablet {
+      margin: 0 40px;
+      width: calc(100% - 80px);
+    }
+    @include phone {
+      margin: 0 0;
+      width: 100%;
+    }
   }
   &__title {
     width: 100%;
