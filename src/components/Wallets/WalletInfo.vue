@@ -39,13 +39,8 @@
 </template>
 
 <script>
-import SvgIcon from '@/components/SvgIcon.vue'
-
 export default {
   name: 'WalletInfo',
-  components: {
-    SvgIcon
-  },
   props: {
     compressed: {
       type: Boolean,

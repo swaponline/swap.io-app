@@ -57,14 +57,12 @@
 import { mapActions } from 'vuex'
 import { GET_ACCOUNT_ID } from '@/store/modules/Wallets'
 
-import SvgIcon from '@/components/SvgIcon.vue'
 import HeaderList from './HeaderList.vue'
 
 export default {
   name: 'ListWallet',
   components: {
-    HeaderList,
-    SvgIcon
+    HeaderList
   },
   computed: {
     wallets() {

@@ -87,7 +87,6 @@ import HeaderWallet from '@/components/Wallets/HeaderWallet.vue'
 import WalletsMenu from '@/components/Wallets/WalletsMenu.vue'
 import ListTransactions from '@/components/Wallets/ListTransactions.vue'
 import ShareLink from '@/components/Wallets/ShareLink.vue'
-import SvgIcon from '@/components/SvgIcon.vue'
 
 export default {
   name: 'Wallet',
@@ -95,8 +94,7 @@ export default {
     HeaderWallet,
     WalletsMenu,
     ListTransactions,
-    ShareLink,
-    SvgIcon
+    ShareLink
   },
   props: {
     wallet: {
