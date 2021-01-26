@@ -323,13 +323,4 @@ export default {
     }
   }
 }
-@include tablet {
-  // Переопределим некоторые стили для vuetify
-  // уберем левый отступ у вкладок на маленьких устройствах
-  .v-slide-group__prev {
-    &--disabled {
-      display: none !important;
-    }
-  }
-}
 </style>

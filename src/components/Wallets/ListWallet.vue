@@ -1,6 +1,7 @@
 <template>
   <div class="list-wallet">
-    <v-list class="py-0">
+    <header-list></header-list>
+    <v-list class="list-wallet__main-list py-0">
       <v-list-item v-for="wallet in wallets" :key="wallet.name" class="list-wallet__wallet-item px-0">
         <v-list-item
           v-if="wallet.subWallets.length === 1"
@@ -49,18 +50,20 @@
         </v-list-group>
       </v-list-item>
     </v-list>
-    <v-spacer />
   </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
 import { GET_ACCOUNT_ID } from '@/store/modules/Wallets'
+
 import SvgIcon from '@/components/SvgIcon.vue'
+import HeaderList from './HeaderList.vue'
 
 export default {
   name: 'ListWallet',
   components: {
+    HeaderList,
     SvgIcon
   },
   computed: {
@@ -87,10 +90,14 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
-  background: $--white;
   border-right: 1px solid $--grey;
   border-radius: 12px 12px 0 0;
   overflow-y: hidden;
+  &__main-list {
+    height: 100%;
+    background: $--white;
+    border-radius: 12px 12px 0 0 !important;
+  }
   &__wallet-item {
     justify-content: center;
     &:after {
@@ -113,6 +120,9 @@ export default {
     margin: 0 10px;
     border-radius: 12px;
     overflow: hidden;
+    &:first-child {
+      margin-top: 5px;
+    }
     &:before {
       z-index: 0;
       background: $--black;

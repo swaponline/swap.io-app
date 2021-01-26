@@ -56,6 +56,10 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+    @include tablet {
+      min-width: 0;
+      flex-grow: 1;
+    }
   }
   &__profile {
     min-width: 175px;

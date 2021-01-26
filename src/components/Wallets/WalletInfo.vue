@@ -15,16 +15,19 @@
         <span class="wallet-info__fiat-value">3000.04$</span>
       </div>
     </header>
-    <div class="wallet-info__address">
+    <div class="wallet-info__address-wrapper">
       <v-tooltip v-model="show" top :open-on-hover="false" activator="#copyAdress">
         <span>Copied</span>
       </v-tooltip>
-      <button id="copyAdress" class="wallet-info__address" depressed tabindex="-1" @click="copy">
-        1C9Uae6kyDtPo4ykzd5AJaLzLEZSpEbP3y
+      <button id="copyAdress" class="wallet-info__button-copy" depressed tabindex="-1" @click="copy">
+        <span class="wallet-info__address">1C9Uae6kyDtPo4ykzd5AJaLzLEZSpEbP3y</span>
+        <!-- <span class="wallet-info__address wallet-info__address--tablet">
+          ***{{ '1C9Uae6kyDtPo4ykzd5AJaLzLEZSpEbP3y'.slice(-4) }}
+        </span> -->
         <svg-icon class="wallet-info__icon-copy" name="copy"></svg-icon>
       </button>
-      <button class="wallet-info__address" icon>
-        <svg-icon class="wallet-info__icon-copy" name="qrcode"></svg-icon>
+      <button class="wallet-info__button-qrcode" icon>
+        <svg-icon class="wallet-info__icon-qrcode" name="qrcode"></svg-icon>
       </button>
     </div>
     <div class="wallet-info__buttons">
@@ -90,7 +93,7 @@ export default {
   --icon-opacity: 0;
   --margin-button-address: 0;
   --height-header: 70px;
-  --backgroun-icon-bottom: 0;
+  --backgroun-icon-top: -30%;
 
   outline: none;
   position: relative;
@@ -108,22 +111,30 @@ export default {
   @include tablet {
     height: 220px;
     padding: 20px 15px;
-    margin: 8px 8px;
+    margin: 20px 40px;
+  }
+
+  @include phone {
+    margin: 12px;
   }
 
   &--compressed {
     --margin-button-address: 22px;
     --height-header: 0;
-    --backgroun-icon-bottom: -50px;
+    --backgroun-icon-top: -70%;
 
     height: 140px;
     cursor: pointer;
 
     @include tablet {
-      height: 60px;
+      padding: 20px 15px;
+      margin: 20px 40px;
+    }
+
+    @include phone {
       border-radius: 12px 12px 0 0;
-      padding: 20px 15px 5px;
-      margin: 10px 12px 0;
+      height: 60px;
+      margin: 12px 12px 0;
       box-shadow: inset 0px -3px 5px -1px rgba(0, 0, 0, 0.2);
     }
   }
@@ -132,13 +143,22 @@ export default {
   }
   &__background-icon {
     position: absolute;
-    right: -25%;
-    bottom: var(--backgroun-icon-bottom);
-    width: 100%;
-    height: 250px;
+    z-index: 0;
+    right: -15%;
+    top: var(--backgroun-icon-top);
+    width: 500px;
+    height: 500px;
+    transform: rotate(-30deg);
     transition: 0.5s;
     pointer-events: none;
+
     @include tablet {
+      width: 370px;
+      height: 370px;
+      top: -15%;
+      right: -15%;
+    }
+    @include phone {
       opacity: 0;
     }
   }
@@ -148,6 +168,9 @@ export default {
     overflow: hidden;
     transition: 0.5s;
     max-height: var(--height-header);
+    @include phone {
+      max-height: 100px;
+    }
   }
   &__optional-buttons {
     position: absolute;
@@ -161,6 +184,11 @@ export default {
     font-weight: $--font-weight-bold;
     font-size: $--font-size-extra-title;
     margin-right: 15px;
+    line-height: 41px;
+    @include tablet {
+      font-size: $--font-size-subtitle;
+      line-height: 33px;
+    }
   }
   &__fiat-value {
     display: block;
@@ -176,21 +204,71 @@ export default {
     width: 18px;
     height: 23px;
   }
-  &__address {
+  &__address-wrapper {
+    position: relative;
+    z-index: 1;
+    display: flex;
     margin: 0 0 var(--margin-button-address);
+    overflow: hidden;
+    transition: 0.3s;
+    @include phone {
+      margin: 0 0;
+      max-height: var(--height-header);
+    }
+  }
+  &__address {
+    @include tablet {
+      font-size: $--font-size-medium;
+    }
+  }
+  &__button-qrcode {
+    outline: none;
+    border-left: 1px solid $--grey;
+    transition: 0.3s;
+    opacity: var(--icon-opacity);
+    font-size: $--font-size-small-subtitle;
+    line-height: 29px;
+    @include tablet {
+      display: none;
+    }
+  }
+  &__button-copy {
+    outline: none;
     display: flex;
     align-items: center;
+    text-transform: none;
     font-size: $--font-size-small-subtitle;
-    outline: none;
+    font-weight: $--font-weight-regular;
+    line-height: 29px;
+    min-width: 144px;
+    @include tablet {
+      border-bottom: 1px solid rgba($color: $--black, $alpha: 0.05);
+      border-top: 1px solid rgba($color: $--black, $alpha: 0.05);
+    }
+  }
+  &__icon-qrcode {
+    margin: 0 11px;
+    width: 14px;
+    height: 14px;
+    @include tablet {
+      display: none;
+    }
   }
   &__icon-copy {
-    margin-left: 11px;
-    width: 22px;
-    height: 29px;
+    margin: 0 11px;
+    width: 14px;
+    height: 14px;
     transition: 0.3s;
     opacity: var(--icon-opacity);
     @include tablet {
       display: none;
+    }
+  }
+  &__buttons {
+    overflow: hidden;
+    max-height: 70px;
+    @include phone {
+      max-height: var(--height-header);
     }
   }
   &__button {
@@ -199,10 +277,11 @@ export default {
     font-weight: $--font-weight-bold;
     font-size: $--font-size-medium !important;
     min-width: 144px;
-  }
-  &__buttons {
-    overflow: hidden;
-    max-height: var(--height-header);
+    @include tablet {
+      width: calc(33.3% - 6px);
+      margin: 0 3px;
+      padding: 0 12px !important;
+    }
   }
 }
 </style>
