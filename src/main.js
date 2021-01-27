@@ -6,13 +6,14 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import { i18n, loadLanguageAsync } from './i18n'
+import { getLanguage } from './utils/storage'
 import '@/assets/scss/base.scss'
 
 Vue.config.productionTip = false
 Vue.component('TransitionInner', TransitionInner)
 Vue.component('SvgIcon', SvgIcon)
 
-const lang = window.localStorage.getItem('lang') || 'en'
+const lang = getLanguage()
 loadLanguageAsync(lang).then(() => {
   /* eslint-disable vue/require-name-property */
   new Vue({

@@ -29,7 +29,6 @@ export function loadLanguageAsync(param) {
   }
 
   return apiLang(lang).then(data => {
-    console.log(data)
     i18n.setLocaleMessage(lang, data.message.default)
     languages = data.languages
     loadedLanguages.push(lang)
