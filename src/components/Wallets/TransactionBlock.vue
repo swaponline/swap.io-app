@@ -102,7 +102,7 @@ export default {
     overflow-x: hidden;
     overflow-y: auto;
     &--stretch {
-      max-height: calc(var(--vh, 1vh) * 100 - 330px);
+      max-height: calc(var(--vh, 1vh) * 100 - 320px);
       @include tablet {
         max-height: calc(var(--vh, 1vh) * 100 - 380px);
       }
