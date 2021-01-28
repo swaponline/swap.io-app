@@ -41,9 +41,9 @@ export default {
 <style lang="scss">
 .tabs {
   background: $--white;
-  padding: 0 40px;
 
   @include tablet {
+    padding: 0 40px;
     border-top: 1px solid $--grey;
   }
 

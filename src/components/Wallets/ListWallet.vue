@@ -1,6 +1,8 @@
 <template>
   <div class="list-wallet">
-    <header-list></header-list>
+    <match-media v-slot="{ desktop }">
+      <profile-list v-if="!desktop"></profile-list>
+    </match-media>
     <v-list class="list-wallet__main-list py-0">
       <v-list-item v-for="wallet in wallets" :key="wallet.name" class="list-wallet__wallet-item px-0">
         <v-list-item
@@ -57,12 +59,14 @@
 import { mapActions } from 'vuex'
 import { GET_ACCOUNT_ID } from '@/store/modules/Wallets'
 
-import HeaderList from './HeaderList.vue'
+import { MatchMedia } from 'vue-component-media-queries'
+import ProfileList from './ProfileList.vue'
 
 export default {
   name: 'ListWallet',
   components: {
-    HeaderList
+    ProfileList,
+    MatchMedia
   },
   computed: {
     wallets() {
@@ -88,7 +92,6 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
-  border-right: 1px solid $--grey;
   border-radius: 12px 12px 0 0;
   overflow-y: hidden;
   &__main-list {

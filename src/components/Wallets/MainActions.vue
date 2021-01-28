@@ -1,7 +1,7 @@
 <template>
   <v-speed-dial v-model="fab" class="main-actions" bottom left direction="top" transition="slide-y-reverse-transition">
     <template #activator>
-      <v-btn v-model="fab" color="blue darken-2" dark fab x-large>
+      <v-btn v-model="fab" color="main-actions__open-button blue darken-2" dark fab>
         <v-icon v-if="fab">
           mdi-close
         </v-icon>
@@ -38,6 +38,14 @@ export default {
 
 <style lang="scss">
 .main-actions {
+  &__open-button {
+    min-width: 75px;
+    min-height: 75px;
+    @include phone {
+      min-width: 65px;
+      min-height: 65px;
+    }
+  }
   &__button {
     &--rotate {
       transform: rotate(45deg);

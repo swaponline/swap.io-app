@@ -1,25 +1,26 @@
 <template>
   <div class="main-header">
     <div class="main-header__logo">Logo</div>
-    <main-header-tabs class="main-header__tabs"></main-header-tabs>
-    <div class="main-header__profile">
-      <button class="main-header__profile">
-        <div class="main-header__avatar">
-          <img height="50" width="50" :src="getSrcAvatar(currentAccountName)" alt="avatar" />
-        </div>
-        {{ currentAccountName }}
-      </button>
-    </div>
+    <match-media v-slot="{ desktop }" class="d-flex flex-grow-1">
+      <main-header-tabs v-if="desktop" class="main-header__tabs"></main-header-tabs>
+      <div v-if="desktop" class="main-header__profile">
+        <profile-list></profile-list>
+      </div>
+    </match-media>
   </div>
 </template>
 
 <script>
+import { MatchMedia } from 'vue-component-media-queries'
+import ProfileList from '@/components/Wallets/ProfileList.vue'
 import MainHeaderTabs from './Tabs.vue'
 
 export default {
   name: 'MainHeader',
   components: {
-    MainHeaderTabs
+    ProfileList,
+    MainHeaderTabs,
+    MatchMedia
   },
   computed: {
     currentAccount() {
@@ -45,7 +46,6 @@ export default {
   background: #ffffff;
   box-shadow: 0px 0px 20px rgba(17, 17, 17, 0.02);
   border-radius: 0px 0px 12px 12px;
-  overflow: hidden;
   justify-content: space-between;
   @include tablet {
     min-height: 80px;
