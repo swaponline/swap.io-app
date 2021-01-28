@@ -9,18 +9,21 @@
         <router-view :key="currentRoute"></router-view>
       </transition-translate>
     </div>
+    <main-actions></main-actions>
   </div>
 </template>
 
 <script>
 import TransitionTranslate from '@/components/Transitions/Translate.vue'
 import ListWallet from '@/components/Wallets/ListWallet.vue'
+import MainActions from '@/components/Wallets/MainActions.vue'
 
 export default {
   name: 'WalletLayout',
   components: {
     TransitionTranslate,
-    ListWallet
+    ListWallet,
+    MainActions
   },
   computed: {
     currentRoute() {

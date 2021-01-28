@@ -1,7 +1,7 @@
 <template>
   <v-speed-dial v-model="fab" class="main-actions" bottom left direction="top" transition="slide-y-reverse-transition">
     <template #activator>
-      <v-btn v-model="fab" color="blue darken-2" dark fab>
+      <v-btn v-model="fab" color="blue darken-2" dark fab x-large>
         <v-icon v-if="fab">
           mdi-close
         </v-icon>
@@ -10,30 +10,16 @@
         </v-icon>
       </v-btn>
     </template>
-    <v-btn
-      fab
-      dark
-      small
-      color="indigo"
-      class="main-actions__button--rotate"
-      @click="$emit('activeForm', 'send-block')"
-    >
+    <v-btn fab dark color="indigo" class="main-actions__button--rotate" @click="$emit('activeForm', 'send-block')">
       <v-icon>mdi-arrow-up-circle</v-icon>
     </v-btn>
-    <v-btn
-      fab
-      dark
-      small
-      color="indigo"
-      class="main-actions__button--rotate"
-      @click="$emit('activeForm', 'invoice-block')"
-    >
+    <v-btn fab dark color="indigo" class="main-actions__button--rotate" @click="$emit('activeForm', 'invoice-block')">
       <v-icon>mdi-arrow-down-circle</v-icon>
     </v-btn>
-    <v-btn fab dark small color="blue" @click="$emit('activeForm', 'create-user-form')">
+    <v-btn fab dark color="blue" @click="$emit('activeForm', 'create-user-form')">
       <v-icon>mdi-account-plus</v-icon>
     </v-btn>
-    <v-btn fab dark small color="green" @click="$emit('activeForm', 'create-wallet-form')">
+    <v-btn fab dark color="green" @click="$emit('activeForm', 'create-wallet-form')">
       <v-icon>mdi-wallet</v-icon>
     </v-btn>
   </v-speed-dial>
