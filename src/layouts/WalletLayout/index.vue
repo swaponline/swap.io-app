@@ -10,6 +10,8 @@
       </transition-translate>
     </div>
     <main-actions></main-actions>
+
+    <all-modals></all-modals>
   </div>
 </template>
 
@@ -17,13 +19,15 @@
 import TransitionTranslate from '@/components/Transitions/Translate.vue'
 import ListWallet from '@/components/Wallets/ListWallet.vue'
 import MainActions from '@/components/Wallets/MainActions.vue'
+import AllModals from '@/components/Wallets/AllModals.vue'
 
 export default {
   name: 'WalletLayout',
   components: {
     TransitionTranslate,
     ListWallet,
-    MainActions
+    MainActions,
+    AllModals
   },
   computed: {
     currentRoute() {

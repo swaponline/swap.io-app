@@ -8,7 +8,6 @@
       @compressedWallet="compressed = true"
       @deCompressedWallet="compressed = false"
     ></transaction-block>
-    <all-modals></all-modals>
   </div>
   <div v-else class="wallet__info-block">
     <div>Logo</div>
@@ -19,14 +18,12 @@
 <script>
 import WalletInfo from '@/components/Wallets/WalletInfo.vue'
 import TransactionBlock from '@/components/Wallets/TransactionBlock.vue'
-import AllModals from '@/components/Wallets/AllModals.vue'
 
 export default {
   name: 'Wallet',
   components: {
     TransactionBlock,
-    WalletInfo,
-    AllModals
+    WalletInfo
   },
   data() {
     return {

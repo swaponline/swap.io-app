@@ -1,10 +1,10 @@
 <template>
-  <div class="copy-menu">
+  <v-dialog :value="true" content-class="copy-menu">
     <div class="copy-menu__buttons">
       <v-btn depressed class="copy-menu__button" @click="copy">Copy</v-btn>
       <v-btn depressed class="copy-menu__button" @click="openQrModal">qr-code</v-btn>
     </div>
-  </div>
+  </v-dialog>
 </template>
 
 <script>
@@ -17,6 +17,9 @@ export default {
       type: String,
       default: ''
     }
+  },
+  mounted() {
+    this.visible = true
   },
   methods: {
     copy() {
@@ -32,18 +35,12 @@ export default {
 
 <style lang="scss">
 .copy-menu {
+  height: 100%;
   display: flex;
-  position: fixed;
-  height: calc(var(--vh, 1vh) * 100);
-  width: 100%;
-  background: rgba($--black, 0.4);
-  top: 0;
-  left: 0;
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
-  z-index: 9999;
-  padding: 20px 15px;
+  box-shadow: none;
 
   &__buttons {
     border-radius: 12px;

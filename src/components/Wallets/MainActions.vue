@@ -57,7 +57,7 @@ export default {
   @include tablet {
     position: fixed;
     bottom: 80px !important;
-    z-index: 9999;
+    z-index: 100;
     transition: 0.5s;
     &--wallet {
       transform: translate(100vw, 0);
