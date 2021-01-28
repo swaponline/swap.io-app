@@ -17,11 +17,13 @@ import { mapMutations } from 'vuex'
 import { CLOSE_MODAL, MODULE_NAME as MODALS_MODULE } from '@/store/modules/Modals'
 
 const CopyMenu = () => import(/* webpackChunkName: "CopyMenu" */ './CopyMenu.vue')
+const InvoiceBlock = () => import(/* webpackChunkName: "InvoiceBlock" */ './InvoiceBlock.vue')
 
 export default {
   name: 'AllModalsWallet',
   components: {
-    CopyMenu
+    CopyMenu,
+    InvoiceBlock
   },
   computed: {
     modals() {

@@ -7,28 +7,23 @@
       <h3>Invoice Form</h3>
     </header>
     <form class="invoice-form__form" @submit.prevent="$emit('submit')">
-      <v-row>
-        <v-col cols="12">
-          <v-text-field v-if="address" :value="address" disabled outlined label="Your wallet">
-            <template #append>
-              <v-icon>mdi-bitcoin</v-icon>
-            </template>
-          </v-text-field>
-          <v-select
-            v-else
-            v-model="selectAddress"
-            :items="wallets"
-            item-text="address"
-            item-value="address"
-            label="Your wallet"
-            outlined
-          >
-          </v-select>
-        </v-col>
-        <v-col cols="12">
-          <v-text-field v-model="contact" required outlined label="Bill to"></v-text-field>
-        </v-col>
-      </v-row>
+      <div class="invoice-form__field-wrapper">
+        <v-text-field v-if="address" :value="address" color="grey darken-1" disabled label="Your wallet">
+        </v-text-field>
+        <v-select
+          v-else
+          v-model="selectAddress"
+          :items="wallets"
+          item-text="address"
+          item-value="address"
+          label="Your wallet"
+          outlined
+        >
+        </v-select>
+      </div>
+      <div class="invoice-form__field-wrapper">
+        <v-text-field v-model="contact" color="grey darken-1" required label="Bill to"></v-text-field>
+      </div>
       <div class="invoice-form__items">
         <h3>Invoice Items</h3>
         <v-row>
@@ -206,6 +201,47 @@ export default {
       flex-basis: 50%;
       flex-grow: 1;
       max-width: 100%;
+    }
+  }
+  &__field-wrapper {
+    border: 1px solid black;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    min-height: 52px;
+    padding: 0 15px;
+    transition: 0.3s;
+    &:focus-within {
+      border-color: $--blue;
+    }
+    .v-input {
+      padding: 0 0;
+      transition: 0.2s;
+      &:focus-within {
+        margin-top: 15px;
+      }
+      &--is-label-active {
+        margin-top: 15px;
+      }
+      &__slot {
+        margin-bottom: 0 !important;
+        &::before {
+          display: none;
+        }
+        &::after {
+          display: none;
+        }
+        input {
+          outline: none !important;
+        }
+        label {
+          color: $--grey;
+        }
+      }
+    }
+
+    .v-text-field__details {
+      display: none;
     }
   }
 }

@@ -1,7 +1,13 @@
 <template>
-  <div class="invoice-block">
+  <v-dialog :value="true" content-class="invoice-block" transition="slide-x-reverse-transition">
     <transition-translate :reverse="reverseForm">
-      <invoice-form v-if="viewBlock === 'form'" @submit="submit('form')" @preview="showPreview" @close="close">
+      <invoice-form
+        v-if="viewBlock === 'form'"
+        :address="address"
+        @submit="submit('form')"
+        @preview="showPreview"
+        @close="close"
+      >
       </invoice-form>
       <invoice-preview
         v-if="viewBlock === 'preview'"
@@ -14,7 +20,7 @@
       ></invoice-preview>
       <invoice-share v-if="viewBlock === 'share'" @close="close"></invoice-share>
     </transition-translate>
-  </div>
+  </v-dialog>
 </template>
 
 <script>
@@ -32,9 +38,9 @@ export default {
     InvoiceShare
   },
   props: {
-    visible: {
-      type: Boolean,
-      default: false
+    address: {
+      type: String,
+      default: ''
     }
   },
   data() {
@@ -48,16 +54,12 @@ export default {
       return this.oldBlock === 'preview'
     }
   },
-  beforeRouteLeave(to, from, next) {
-    Object.assign(to.meta, { back: true })
-    next()
-  },
   methods: {
     async close() {
       this.oldBlock = ''
       await this.$nextTick()
       this.viewBlock = 'form'
-      this.$router.back()
+      this.$emit('close')
     },
     async showPreview(invoice) {
       this.oldBlock = 'form'
@@ -78,9 +80,12 @@ export default {
 .invoice-block {
   position: relative;
   height: 100%;
-  width: 100%;
-  border-radius: 12px 12px 0 0;
+  max-height: none !important;
+  width: 50%;
+  margin-left: auto;
+  border-radius: 0;
   overflow: hidden;
-  background: $--white;
+  background: #ffffff;
+  margin-right: 0;
 }
 </style>
