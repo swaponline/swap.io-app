@@ -46,6 +46,9 @@ export default {
     padding: 0 40px;
     border-top: 1px solid $--grey;
   }
+  @include phone {
+    padding: 0 0;
+  }
 
   &__item {
     min-height: 85px;

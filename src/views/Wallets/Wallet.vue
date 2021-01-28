@@ -75,6 +75,7 @@ export default {
         transition: 0.5s;
         z-index: 2;
         opacity: 0;
+        pointer-events: none;
       }
       &--stretch {
         &:after {

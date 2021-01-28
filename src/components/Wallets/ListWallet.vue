@@ -94,6 +94,9 @@ export default {
   flex-direction: column;
   border-radius: 12px 12px 0 0;
   overflow-y: hidden;
+  @include tablet {
+    max-width: none;
+  }
   &__main-list {
     height: 100%;
     background: $--white;
