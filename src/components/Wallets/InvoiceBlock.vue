@@ -87,5 +87,8 @@ export default {
   overflow: hidden;
   background: $--white;
   margin-right: 0;
+  @include tablet {
+    width: 100%;
+  }
 }
 </style>
