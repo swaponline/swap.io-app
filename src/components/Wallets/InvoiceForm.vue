@@ -45,7 +45,7 @@
         <div v-if="type.id !== 1" class="invoice-form__field-wrapper flex-grow-0">
           <v-text-field v-model="field.quantity" :label="type.labelQuantity"></v-text-field>
         </div>
-        <div class="invoice-form__field-wrapper flex-grow-0">
+        <div class="invoice-form__field-wrapper invoice-form__field-wrapper--outer-icon flex-grow-0">
           <v-text-field v-model="field.amount" type="number" min="0" step="any" :label="type.labelItemPrice">
           </v-text-field>
         </div>
@@ -144,24 +144,16 @@ export default {
   @include small-height {
     max-height: none;
   }
-  &__header {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    display: flex;
-    align-items: center;
-    padding: 10px 15px;
-    background: $--white;
-    @include tablet {
-      padding: 10px 5px;
-    }
-  }
   &__form {
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    padding: 0 60px 40px;
-    min-height: calc(100% - 65px);
+    padding: 25px 60px 40px;
+    height: 100%;
+
+    @include tablet {
+      padding: 0 10px 20px;
+    }
     .row {
       flex-grow: 0;
     }
@@ -169,33 +161,12 @@ export default {
       width: 100% !important;
       flex-basis: 100% !important;
     }
-    @include tablet {
-      padding: 0 5px 10px;
-    }
   }
   &__subtitle {
     margin: 20px 8px 25px;
     width: 100%;
     font-weight: $--font-weight-semi-bold;
     font-size: $--font-size-small-subtitle;
-  }
-  &__field-description {
-    @include tablet {
-      position: relative;
-      display: flex;
-      justify-content: center;
-      padding-right: 12px;
-      flex-basis: 100%;
-      max-width: 100%;
-      &:before {
-        content: '';
-        width: 25%;
-        position: absolute;
-        top: 0;
-        height: 1px;
-        background: rgba($color: $--black, $alpha: 0.2);
-      }
-    }
   }
   &__field-wrapper {
     border: 1px solid $--black;
@@ -210,6 +181,13 @@ export default {
     margin: 0 8px 25px;
     &:focus-within {
       border-color: $--blue;
+    }
+
+    @include tablet {
+      width: 100%;
+      &--outer-icon {
+        width: 80%;
+      }
     }
     // переопределим стили vuetify
     .v-input {
@@ -255,6 +233,11 @@ export default {
     max-height: 52px;
     &:focus-within {
       border-color: $--blue;
+    }
+
+    @include tablet {
+      width: 100%;
+      flex-basis: 100% !important;
     }
     // переопределим стили vuetify
     .v-select__selections {
