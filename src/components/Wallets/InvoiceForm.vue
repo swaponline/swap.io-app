@@ -3,7 +3,7 @@
     <form class="invoice-form__form" @submit.prevent="$emit('submit')">
       <v-row>
         <h3 class="invoice-form__subtitle">Invoice Form</h3>
-        <div v-if="!address" class="invoice-form__field-wrapper w-100">
+        <div v-if="address" class="invoice-form__field-wrapper w-100">
           <v-text-field :value="address" color="grey" disabled label="Your wallet"> </v-text-field>
         </div>
         <v-select
