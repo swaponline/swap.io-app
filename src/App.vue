@@ -33,8 +33,16 @@ export default {
   },
   methods: {
     resize() {
-      const vh = window.innerHeight * 0.01
+      let vh
+      if (window.innerWidth > 1920) {
+        // Правим высоту, чтобы было на весь экран без скролла
+        // По сути делим на то число, на которе зумим в css
+        vh = (window.innerHeight * 0.01) / ((window.innerWidth * 0.01) / 18)
+      } else {
+        vh = window.innerHeight * 0.01
+      }
       document.documentElement.style.setProperty('--vh', `${vh}px`)
+
       const vw = window.innerWidth * 0.01
       document.documentElement.style.setProperty('--vw', `${vw}`)
     }

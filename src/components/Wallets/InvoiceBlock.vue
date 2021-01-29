@@ -81,11 +81,11 @@ export default {
   position: relative;
   height: 100%;
   max-height: none !important;
-  width: 50%;
+  width: 40%;
   margin-left: auto;
   border-radius: 0;
   overflow: hidden;
-  background: #ffffff;
+  background: $--white;
   margin-right: 0;
 }
 </style>
