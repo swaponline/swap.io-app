@@ -43,7 +43,7 @@ export default {
   width: 100%;
   min-height: 85px;
   display: flex;
-  background: #ffffff;
+  background: $--white;
   box-shadow: 0px 0px 20px rgba(17, 17, 17, 0.02);
   border-radius: 0px 0px 12px 12px;
   justify-content: space-between;

@@ -32,7 +32,7 @@
     <div class="wallet-info__buttons">
       <v-btn depressed class="wallet-info__button" @click="openInvoiceBlock">Invoice</v-btn>
       <v-btn depressed class="wallet-info__button">Swap</v-btn>
-      <v-btn :to="{ name: 'Send', params: { walletAddress } }" depressed class="wallet-info__button">Send</v-btn>
+      <v-btn depressed class="wallet-info__button" @click="openSendForm">Send</v-btn>
     </div>
   </div>
 </template>
@@ -41,7 +41,7 @@
 import copy from '@/utils/copy'
 import { mapMutations } from 'vuex'
 import { ADD_MODAL } from '@/store/modules/Modals'
-import { COPY_MENU, INVOICE_BLOCK } from '@/store/modules/Modals/names'
+import { COPY_MENU, INVOICE_BLOCK, SEND_FORM } from '@/store/modules/Modals/names'
 
 export default {
   name: 'WalletInfo',
@@ -105,6 +105,14 @@ export default {
     openInvoiceBlock() {
       this.mutationAddModal({
         name: INVOICE_BLOCK,
+        info: {
+          address: this.walletAddress
+        }
+      })
+    },
+    openSendForm() {
+      this.mutationAddModal({
+        name: SEND_FORM,
         info: {
           address: this.walletAddress
         }

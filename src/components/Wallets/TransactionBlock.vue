@@ -96,7 +96,7 @@ export default {
   &__horizontal-line {
     width: 100%;
     height: 2px;
-    background: #e5e5e5;
+    background: $--light-grey;
     margin-top: -2px;
   }
   &__list {
