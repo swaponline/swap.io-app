@@ -1,5 +1,5 @@
 <template>
-  <div class="wallet-info" :class="compressed ? 'wallet-info--compressed' : ''" @click="stretchWallet">
+  <div class="wallet-info" :class="compressed ? 'wallet-info--compressed' : ''" @click="uncompressWallet">
     <svg-icon class="wallet-info__background-icon" name="background-btc"></svg-icon>
     <div class="wallet-info__optional-buttons">
       <v-btn icon class="wallet-info__optional-button">
@@ -16,16 +16,15 @@
       </div>
     </header>
     <div class="wallet-info__address-wrapper">
-      <v-tooltip v-model="show" top :open-on-hover="false" activator="#copyAdress">
+      <v-tooltip v-model="copyTooltip.value" top :open-on-hover="false" class="wallet-info__tooltip">
+        <template #activator="{ on }">
+          <button class="wallet-info__button-copy" depressed tabindex="-1" @click="copy">
+            <span class="wallet-info__address">1C9Uae6kyDtPo4ykzd5AJaLzLEZSpEbP3y</span>
+            <svg-icon class="wallet-info__icon-copy" name="copy" v-on="on"></svg-icon>
+          </button>
+        </template>
         <span>Copied</span>
       </v-tooltip>
-      <button id="copyAdress" class="wallet-info__button-copy" depressed tabindex="-1" @click="copy">
-        <span class="wallet-info__address">1C9Uae6kyDtPo4ykzd5AJaLzLEZSpEbP3y</span>
-        <!-- <span class="wallet-info__address wallet-info__address--tablet">
-          ***{{ '1C9Uae6kyDtPo4ykzd5AJaLzLEZSpEbP3y'.slice(-4) }}
-        </span> -->
-        <svg-icon class="wallet-info__icon-copy" name="copy"></svg-icon>
-      </button>
       <button class="wallet-info__button-qrcode" icon>
         <svg-icon class="wallet-info__icon-qrcode" name="qrcode"></svg-icon>
       </button>
@@ -39,8 +38,14 @@
 </template>
 
 <script>
+import copy from '@/utils/copy'
+import { mapMutations } from 'vuex'
+import { ADD_MODAL } from '@/store/modules/Modals'
+import { COPY_MENU } from '@/store/modules/Modals/names'
+
 export default {
   name: 'WalletInfo',
+  inject: ['mediaQueries'],
   props: {
     compressed: {
       type: Boolean,
@@ -49,7 +54,10 @@ export default {
   },
   data() {
     return {
-      show: false
+      copyTooltip: {
+        value: false,
+        timer: 0
+      }
     }
   },
   computed: {
@@ -57,27 +65,42 @@ export default {
       return this.$route.params.walletAddress
     }
   },
+  beforeDestroy() {
+    clearTimeout(this.copyTooltip.timer)
+  },
   methods: {
-    stretchWallet() {
-      this.$emit('stretchWallet')
+    ...mapMutations({
+      mutationAddModal: ADD_MODAL
+    }),
+    uncompressWallet() {
+      this.$emit('uncompress-wallet')
     },
     copy() {
-      if (navigator && navigator.clipboard) {
-        navigator.clipboard
-          .writeText(this.wallet)
+      if (this.mediaQueries.desktop) {
+        copy(this.walletAddress)
           .then(() => {
-            this.show = true
-            if (this.tooltipTimer) {
-              clearTimeout(this.tooltipTimer)
+            this.copyTooltip.value = true
+            if (this.copyTooltip.timer) {
+              clearTimeout(this.copyTooltip.timer)
             }
-            this.tooltipTimer = setTimeout(() => {
-              this.show = false
+            this.copyTooltip.timer = setTimeout(() => {
+              this.copyTooltip.value = false
             }, 1500)
           })
           .catch(err => {
             console.log('Значение не скопировано', err)
           })
+      } else {
+        this.openCopyMenu()
       }
+    },
+    openCopyMenu() {
+      this.mutationAddModal({
+        name: COPY_MENU,
+        info: {
+          address: this.walletAddress
+        }
+      })
     }
   }
 }
@@ -207,9 +230,15 @@ export default {
     margin: 0 0 var(--margin-button-address);
     overflow: hidden;
     transition: 0.3s;
+
     @include phone {
       margin: 0 0;
       max-height: var(--height-header);
+    }
+  }
+  &__tooltip {
+    @include tablet {
+      display: none;
     }
   }
   &__address {

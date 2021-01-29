@@ -20,7 +20,9 @@
           :class="isCompressedWallet ? 'transactions__list--stretch' : ''"
           :address="currentAddress"
           :filter-type="tab"
-          @compressedWallet="$emit('compressedWallet')"
+          :is-compressed-wallet="isCompressedWallet"
+          @compress-wallet="$emit('compress-wallet')"
+          @uncompress-wallet="$emit('uncompress-wallet')"
         ></list-transactions>
       </v-tab-item>
     </v-tabs-items>

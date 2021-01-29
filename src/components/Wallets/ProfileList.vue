@@ -1,19 +1,24 @@
 <template>
-  <v-expansion-panels v-model="panels" class="header-list-wrapper">
-    <v-expansion-panel class="header-list">
-      <v-expansion-panel-header class="header-list__expansion-button">
-        <v-avatar height="50" width="50" min-width="50" class="header-list__avatar">
+  <v-expansion-panels v-model="panels" class="profile-list">
+    <v-expansion-panel class="profile-list__inner">
+      <v-expansion-panel-header class="profile-list__header" :hide-actions="isDesktop">
+        <v-avatar height="50" width="50" min-width="50" class="profile-list__avatar">
           <img height="45" width="45" :src="getSrcAvatar(currentAccountName)" alt="avatar" />
         </v-avatar>
-        <span class="header-list__name">{{ currentAccountName }}</span>
+        <span class="profile-list__name">{{ currentAccountName }}</span>
       </v-expansion-panel-header>
       <v-expansion-panel-content>
-        <v-list class="header-list__list-account py-0">
-          <v-list-item v-for="account in accounts" :key="account.id" @click="setAccount(account.id)">
+        <v-list class="profile-list__list-account py-0">
+          <v-list-item
+            v-for="account in accounts"
+            :key="account.id"
+            class="profile-list__list-item"
+            @click="setAccount(account.id)"
+          >
             <img
               height="48"
               width="48"
-              class="header-list__avatar-item"
+              class="profile-list__avatar-item"
               :src="getSrcAvatar(account.name)"
               alt="avatar-item"
               loading="lazy"
@@ -31,24 +36,28 @@ import { mapActions } from 'vuex'
 import { MODULE_NAME as WALLETS_MODULE, SET_ACCOUNT_ID } from '@/store/modules/Wallets'
 
 export default {
-  name: 'HeaderList',
+  name: 'ProfileList',
+  inject: ['mediaQueries'],
   data() {
     return {
       panels: []
     }
   },
   computed: {
+    isDesktop() {
+      return this.mediaQueries.desktop
+    },
     balance() {
       return this.$store.getters.walletsSumm
     },
     styleParams() {
       return `height: ${48 * this.accounts.length}px; overflow: auto;`
     },
-    accounts() {
-      return this.$store.state[WALLETS_MODULE].list
-    },
     currentAccount() {
       return this.$store.getters.currentAccount
+    },
+    accounts() {
+      return this.$store.state[WALLETS_MODULE].list.filter(el => el.id !== this.currentAccount.id)
     },
     currentAccountName() {
       return this.currentAccount.name
@@ -71,26 +80,37 @@ export default {
 </script>
 
 <style lang="scss">
-.header-list-wrapper {
+.profile-list {
   width: auto;
-  display: none;
+  display: flex;
+  overflow: visible;
+  max-height: 80px;
+  min-width: 150px;
+
   @include tablet {
-    display: flex;
     margin: 20px 40px;
   }
   @include phone {
     margin: 8px;
   }
-}
-.header-list {
-  border-radius: 12px !important;
-  &__expansion-button {
+  &__inner {
+    border-radius: 12px !important;
+    &.v-item--active {
+      box-shadow: 0px 4px 20px rgba(17, 17, 17, 0.1);
+    }
+    &::before {
+      display: none;
+      @include tablet {
+        display: block;
+      }
+    }
+  }
+  &__header {
     margin: 0;
-    padding: 0 15px;
+    padding: 0 25px;
     min-height: 80px;
     background: $--white;
     border-radius: 12px;
-
     @include phone {
       min-height: 70px;
     }
@@ -104,12 +124,16 @@ export default {
   &__list-account {
     margin: 0 -24px -6px;
   }
+  &__list-item {
+    padding: 0 25px;
+  }
   &__name {
     font-weight: $--font-weight-medium;
     font-size: $--font-size-extra-small-subtitle;
   }
   &__avatar-item {
     border-radius: 50%;
+    margin-right: 12px;
   }
 }
 </style>

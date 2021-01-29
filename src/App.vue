@@ -1,12 +1,29 @@
 <template>
   <v-app id="app">
-    <router-view />
+    <media-query-provider :queries="queries">
+      <router-view />
+    </media-query-provider>
   </v-app>
 </template>
 
 <script>
+import { MediaQueryProvider } from 'vue-component-media-queries'
+
+const queries = {
+  desktop: '(min-width: 1280px)',
+  tablet: '(min-width: 481px) and (max-width: 1280px)',
+  phone: '(max-width: 480px)'
+}
 export default {
   name: 'App',
+  components: {
+    MediaQueryProvider
+  },
+  data() {
+    return {
+      queries
+    }
+  },
   mounted() {
     window.addEventListener('resize', this.resize)
     this.resize()

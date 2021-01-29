@@ -1,7 +1,10 @@
 <template>
   <v-expansion-panels ref="transaction" class="list-transaction" accordion>
     <div v-for="transaction in transactions" :key="transaction.date" class="list-transaction__block">
-      <v-subheader class="list-transaction__title">{{ transaction.date }}</v-subheader>
+      <v-subheader ref="headers" class="list-transaction__title">
+        <h4>{{ transaction.date }}</h4>
+        <v-btn class="list-transaction__up-button" depressed @click="unCompressWallet">UP</v-btn>
+      </v-subheader>
       <transaction-item
         v-for="item in transaction.list"
         :key="item.hash"
@@ -40,11 +43,6 @@ export default {
     address: {
       type: String,
       required: true
-    }
-  },
-  data() {
-    return {
-      scrollTop: 0
     }
   },
   computed: {
@@ -86,8 +84,27 @@ export default {
     ...mapActions({
       actionGetTransaction: GET_TRANSACTIONS
     }),
-    eventScroll() {
-      this.$emit('compressedWallet')
+    eventScroll(e) {
+      if (window.innerWidth < 480 && this.$refs.headers && this.$refs.headers.length > 0) {
+        this.$refs.headers.forEach(el => {
+          const domEl = el.$el
+          if (domEl.offsetTop <= e.target.scrollTop) {
+            domEl.classList.add('sticky')
+          } else {
+            domEl.classList.remove('sticky')
+          }
+        })
+      }
+      this.$emit('compress-wallet')
+    },
+    unCompressWallet() {
+      if (this.$refs.headers && this.$refs.headers.length > 0) {
+        this.$refs.headers.forEach(el => {
+          const domEl = el.$el
+          domEl.classList.remove('sticky')
+        })
+      }
+      this.$emit('uncompress-wallet')
     }
   }
 }
@@ -95,6 +112,7 @@ export default {
 
 <style lang="scss">
 .list-transaction {
+  position: relative;
   &__block {
     flex-grow: 1;
     width: 100%;
@@ -110,6 +128,21 @@ export default {
   &__title {
     width: 100%;
     text-align: left;
+    z-index: 1000;
+    background: $--white;
+    top: 0;
+    display: flex;
+    justify-content: space-between;
+    &.sticky {
+      position: sticky;
+      .list-transaction__up-button {
+        display: inline-block;
+      }
+    }
+  }
+  &__up-button {
+    display: none;
+    border-radius: 12px;
   }
   &__item {
     @include tablet {

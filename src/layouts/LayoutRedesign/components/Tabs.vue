@@ -40,19 +40,26 @@ export default {
 
 <style lang="scss">
 .tabs {
+  background: $--white;
+
+  @include tablet {
+    padding: 0 40px;
+    border-top: 1px solid $--grey;
+  }
+  @include phone {
+    padding: 0 0;
+  }
+
   &__item {
     min-height: 85px;
     max-width: 175px;
-    margin: 0 0;
+    margin: 0 0 !important;
     font-weight: $--font-weight-semi-bold;
     font-size: $--font-size-small-subtitle;
     line-height: 27px;
     letter-spacing: 0.01em;
     text-transform: none;
-  }
-  @include tablet {
-    border-top: 1px solid $--grey;
-    &__item {
+    @include tablet {
       max-width: none;
       min-height: 70px;
     }
