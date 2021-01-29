@@ -1,5 +1,5 @@
 <template>
-  <div class="wallet-info" :class="compressed ? 'wallet-info--compressed' : ''" @click="stretchWallet">
+  <div class="wallet-info" :class="compressed ? 'wallet-info--compressed' : ''" @click="uncompressWallet">
     <svg-icon class="wallet-info__background-icon" name="background-btc"></svg-icon>
     <div class="wallet-info__optional-buttons">
       <v-btn icon class="wallet-info__optional-button">
@@ -72,19 +72,19 @@ export default {
     ...mapMutations({
       mutationAddModal: ADD_MODAL
     }),
-    stretchWallet() {
-      this.$emit('stretchWallet')
+    uncompressWallet() {
+      this.$emit('uncompress-wallet')
     },
     copy() {
       if (this.mediaQueries.desktop) {
-        copy(this.walletAddress, this.copyTooltip)
+        copy(this.walletAddress)
           .then(() => {
-            this.show = true
-            if (this.tooltipTimer) {
-              clearTimeout(this.tooltipTimer)
+            this.copyTooltip.value = true
+            if (this.copyTooltip.timer) {
+              clearTimeout(this.copyTooltip.timer)
             }
-            this.tooltipTimer = setTimeout(() => {
-              this.show = false
+            this.copyTooltip.timer = setTimeout(() => {
+              this.copyTooltip.value = false
             }, 1500)
           })
           .catch(err => {

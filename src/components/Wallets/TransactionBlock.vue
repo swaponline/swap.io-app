@@ -21,8 +21,8 @@
           :address="currentAddress"
           :filter-type="tab"
           :is-compressed-wallet="isCompressedWallet"
-          @compressedWallet="$emit('compressedWallet')"
-          @deCompressedWallet="$emit('deCompressedWallet')"
+          @compress-wallet="$emit('compress-wallet')"
+          @uncompress-wallet="$emit('uncompress-wallet')"
         ></list-transactions>
       </v-tab-item>
     </v-tabs-items>

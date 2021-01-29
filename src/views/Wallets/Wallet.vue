@@ -1,12 +1,16 @@
 <template>
   <div v-if="walletParam" class="wallet">
-    <wallet-info class="wallet__main-info" :compressed="compressed" @stretchWallet="compressed = false"></wallet-info>
+    <wallet-info
+      class="wallet__main-info"
+      :compressed="compressed"
+      @uncompress-wallet="compressed = false"
+    ></wallet-info>
     <transaction-block
       class="wallet__transaction"
       :class="compressed ? 'wallet__transaction--stretch' : ''"
       :is-compressed-wallet="compressed"
-      @compressedWallet="compressed = true"
-      @deCompressedWallet="compressed = false"
+      @compress-wallet="compressed = true"
+      @uncompress-wallet="compressed = false"
     ></transaction-block>
   </div>
   <div v-else class="wallet__info-block">

@@ -3,7 +3,7 @@
     <div v-for="transaction in transactions" :key="transaction.date" class="list-transaction__block">
       <v-subheader ref="headers" class="list-transaction__title">
         <h4>{{ transaction.date }}</h4>
-        <v-btn class="list-transaction__up-button" depressed @click="deCompressedWallet">UP</v-btn>
+        <v-btn class="list-transaction__up-button" depressed @click="unCompressWallet">UP</v-btn>
       </v-subheader>
       <transaction-item
         v-for="item in transaction.list"
@@ -95,16 +95,16 @@ export default {
           }
         })
       }
-      this.$emit('compressedWallet')
+      this.$emit('compress-wallet')
     },
-    deCompressedWallet() {
+    unCompressWallet() {
       if (this.$refs.headers && this.$refs.headers.length > 0) {
         this.$refs.headers.forEach(el => {
           const domEl = el.$el
           domEl.classList.remove('sticky')
         })
       }
-      this.$emit('deCompressedWallet')
+      this.$emit('uncompress-wallet')
     }
   }
 }
