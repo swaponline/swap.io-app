@@ -1,113 +1,136 @@
 <template>
-  <div class="send-form">
-    <div class="send-form__inner">
-      <header class="send-form__header">
-        <v-btn large icon class="mr-3" @click="close">
-          <v-icon>mdi-arrow-left</v-icon>
-        </v-btn>
-        <h3>Send form</h3>
-      </header>
-      <form class="send-form__form" @submit.prevent="submit">
-        <v-row>
-          <v-col cols="12">
-            <div class="send-form__hint mb-6">У вас в кошельке: {{ currentWallet.value }}</div>
-          </v-col>
-          <v-col cols="12">
-            <v-text-field v-if="address" :value="address" disabled outlined label="Your wallet">
-              <template #append>
-                <v-icon>mdi-bitcoin</v-icon>
-              </template>
-            </v-text-field>
-            <v-select
-              v-else
-              v-model="selectAddress"
-              :items="wallets"
-              item-text="address"
-              item-value="address"
-              label="Your wallet"
-              outlined
-            >
-            </v-select>
-          </v-col>
-          <v-col v-if="feeVisible" cols="12">
-            <v-text-field
-              v-model="commission"
-              :hint="'Рекомендуемая комиссия: ' + recommendedCommission"
-              outlined
-              label="Transition fee"
-            >
-            </v-text-field>
-          </v-col>
-        </v-row>
-        <v-row v-if="textareaVisible">
-          <v-col cols="12">
-            <v-textarea
-              v-model="listRecipient"
-              outlined
-              :hint="'Остаток: ' + (maxAmount - regexpSumm)"
-              label="Send to"
-              placeholder="Enter a list of outputs in the 'Pay to' field.
-One output per line.
-Format: address, amount"
-            ></v-textarea>
-          </v-col>
-        </v-row>
-        <v-row v-else class="send-form__recipient">
-          <v-col lg="8" cols="12">
-            <v-text-field v-model="recipient.wallet" required outlined label="Send to"></v-text-field>
-          </v-col>
-          <v-col lg="4" cols="12">
-            <v-text-field
-              v-model="recipient.amount"
-              :max="maxAmount"
-              type="number"
-              step="any"
-              min="0"
-              :hint="'max: ' + maxAmount"
-              required
-              outlined
-              label="Amount"
-            >
-            </v-text-field>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col cols="12">
-            <v-btn color="blue" block text @click="textareaVisible = !textareaVisible">
-              <span class="text-left flex-grow-1">{{
-                textareaVisible ? 'Single recipient' : 'Multple recipients'
-              }}</span>
-            </v-btn>
-          </v-col>
-          <v-col cols="12" class="d-flex align-center justify-end">
-            <a class="d-flex align-center justify-end" @click="feeVisible = true">
-              Transaction fee: {{ commission }} BTC ($2.32) Edit <v-icon class="ml-1 mb-1" size="15">mdi-pencil</v-icon>
-            </a>
-          </v-col>
-          <v-col v-if="recipient.amount" cols="12" class="d-flex align-center justify-end">
-            Total balance change: {{ recipient.amount }} BTC ($38,002.32)
-          </v-col>
-          <v-col cols="12" class="d-flex justify-end">
-            <v-btn @click="close">Cancel</v-btn>
+  <form-wrapper value persistent class="send-form" @input="close">
+    <form class="send-form__form" @submit.prevent="submit">
+      <v-row>
+        <h3 class="send-form__subtitle">
+          <span>Send Form</span>
+          <v-btn icon @click="close"><v-icon>mdi-close</v-icon></v-btn>
+        </h3>
 
-            <v-btn class="ml-4" type="submit">Send</v-btn>
-          </v-col>
+        <form-text-field v-if="address" :value="address" disabled label="Your wallet">
+          <template #append>
+            <v-icon>mdi-bitcoin</v-icon>
+          </template>
+        </form-text-field>
+        <form-selector
+          v-else
+          v-model="selectAddress"
+          :items="wallets"
+          item-text="address"
+          item-value="address"
+          label="Your wallet"
+          outlined
+        >
+        </form-selector>
+
+        <h3 class="send-form__subtitle">
+          <span>Balance: 2312 BTC</span>
+        </h3>
+
+        <form-text-field
+          v-if="feeEdit"
+          v-model="commission"
+          :hint="'Рекомендуемая комиссия: ' + recommendedCommission"
+          label="Transition fee"
+        >
+        </form-text-field>
+
+        <v-row v-if="multipleRecepients" class="send-form__row">
+          <v-textarea
+            v-model="listRecipient"
+            outlined
+            :hint="'Остаток: ' + (maxAmount - regexpSumm)"
+            class="send-form__multiple-list rounded-lg"
+            placeholder="Enter a list of outputs in the 'Pay to' field.
+  One output per line.
+  Format: address, amount"
+          ></v-textarea>
         </v-row>
-      </form>
-    </div>
-  </div>
+
+        <v-row v-else class="send-form__row">
+          <form-text-field
+            v-model="recipient.wallet"
+            required
+            label="Send to"
+            class="send-form__long-field"
+          ></form-text-field>
+
+          <form-text-field
+            v-model="recipient.amount"
+            :max="maxAmount"
+            type="number"
+            step="any"
+            min="0"
+            class="send-form__short-field"
+            :hint="'max: ' + maxAmount"
+            required
+            label="Amount"
+          >
+          </form-text-field>
+        </v-row>
+
+        <v-btn
+          class="send-form__add-button px-2"
+          color="blue"
+          block
+          text
+          @click="multipleRecepients = !multipleRecepients"
+        >
+          <span class="text-left flex-grow-1">{{
+            multipleRecepients ? 'Single recipient' : 'Multple recipients'
+          }}</span>
+        </v-btn>
+
+        <v-divider></v-divider>
+
+        <span class="send-form__results">
+          <span>Transaction fee: </span>
+          <span class="send-form__fee">
+            <v-btn icon small @click="feeEdit = true">
+              <svg-icon class="send-form__edit-icon" name="edit"></svg-icon>
+            </v-btn>
+            <span>${{ commission }}</span>
+          </span>
+        </span>
+      </v-row>
+
+      <v-row>
+        <span class="send-form__results">
+          <span>Total balance change: </span>
+          <span class="send-form__amount">
+            BTC {{ recipient.amount }}
+            <span>~$21</span>
+          </span>
+        </span>
+      </v-row>
+
+      <v-row class="mt-auto">
+        <v-btn class="send-form__button" depressed type="button" @click="close">Cancel</v-btn>
+        <v-btn class="send-form__button" depressed type="submit">Send</v-btn>
+      </v-row>
+    </form>
+  </form-wrapper>
 </template>
 
 <script>
+import FormWrapper from '../FormWrapper.vue'
+import FormTextField from '../FormTextField.vue'
+import FormSelector from '../FormSelector.vue'
+
 export default {
   name: 'SendForm',
+  components: {
+    FormWrapper,
+    FormTextField,
+    FormSelector
+  },
   data() {
     return {
       commission: 0.545,
       recommendedCommission: 0.545,
       recipient: [{ wallet: null, amount: null }],
-      textareaVisible: false,
-      feeVisible: false,
+      multipleRecepients: false,
+      feeEdit: false,
       listRecipient: '',
       selectAddress: null
     }
@@ -152,7 +175,7 @@ export default {
       this.close()
     },
     close() {
-      this.$router.back()
+      this.$emit('close')
     }
   }
 }
@@ -162,69 +185,119 @@ export default {
 .send-form {
   position: relative;
   height: 100%;
-  width: 100%;
-  border-radius: 12px 12px 0 0;
+  max-height: none !important;
+  width: 40%;
+  margin-left: auto;
+  border-radius: 0;
   overflow: hidden;
+  margin-right: 0;
   background: $--white;
-  &__inner {
-    width: 100%;
+  &__form {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 25px 50px 40px;
     height: 100%;
-    overflow-x: hidden;
-    overflow-y: auto;
-    background: $--white;
-    max-height: calc(100% - 110px);
-    @include small-height {
-      max-height: none;
-    }
+
     @include tablet {
-      width: 100%;
-      max-width: 100vw;
+      padding: 0 10px 20px;
+    }
+    .row {
+      flex-grow: 0;
     }
   }
-  &__header {
-    position: sticky;
-    top: 0;
-    z-index: 10;
+  &__row {
+    width: 100%;
+    margin: 0 0 !important;
+    flex-wrap: nowrap;
+    @include phone {
+      flex-wrap: wrap;
+    }
+  }
+  &__subtitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 8px 25px;
+    width: 100%;
+    font-weight: $--font-weight-semi-bold;
+    font-size: $--font-size-small-subtitle;
+  }
+  &__long-field {
+    flex-grow: 0;
+    width: 70%;
+    @include phone {
+      width: 100%;
+    }
+  }
+  &__short-field {
+    width: 30%;
+    @include phone {
+      width: 80%;
+    }
+  }
+  &__multiple-list {
+    margin: 0 8px 0 !important;
+    font-size: $--font-size-extra-small-subtitle;
+
+    --color-fieldset: $--black;
+    &:focus-within {
+      --color-fieldset: $--blue;
+    }
+    fieldset {
+      color: var(--color-fieldset) !important;
+      border-width: 1px !important;
+      legend {
+        width: 0 !important;
+      }
+    }
+  }
+  &__add-button {
+    font-weight: $--font-weight-bold;
+    text-transform: none;
+    flex-grow: 0;
+    margin-bottom: 35px;
+    span {
+      font-size: $--font-size-medium;
+    }
+  }
+  &__edit-icon {
+    height: 11px;
+    width: 11px;
+  }
+  &__results {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin: 15px 0 0;
+    padding: 0 8px;
+    flex-grow: 1;
+    font-weight: $--font-weight-semi-bold;
+    font-size: $--font-size-extra-small-subtitle;
+  }
+  &__fee {
     display: flex;
     align-items: center;
-    padding: 10px 15px;
-    background: $--white;
-    @include tablet {
-      padding: 10px 5px;
+    line-height: 21px;
+  }
+  &__amount {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-end;
+    span {
+      font-size: $--font-size-small;
+      line-height: 16px;
     }
   }
-  &__form {
-    padding: 0 15px 10px;
-    @include tablet {
-      padding: 0 5px 10px;
-    }
-  }
-  &__hint {
-    background: rgba($--black, 0.08);
-    border: 1px solid rgba($--black, 0.8);
-    border-radius: 16px;
-    width: 100%;
-    margin-bottom: 16px;
-    padding: 20px;
-    div {
-      margin-top: 10px;
-      &:first-of-type {
-        margin-top: 0;
-      }
-    }
-  }
-  &__recipient {
-    position: relative;
-    justify-content: center;
-    @include tablet {
-      &:before {
-        content: '';
-        width: 25%;
-        position: absolute;
-        top: 0;
-        height: 1px;
-        background: rgba($color: $--black, $alpha: 0.2);
-      }
+  &__button {
+    width: calc(50% - 16px);
+    border-radius: 8px;
+    margin: auto 8px;
+    min-height: 52px;
+    text-transform: none;
+    font-weight: $--font-weight-bold;
+    span {
+      font-size: $--font-size-medium;
     }
   }
 }

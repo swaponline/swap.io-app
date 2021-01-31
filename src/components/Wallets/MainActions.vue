@@ -10,27 +10,41 @@
         </v-icon>
       </v-btn>
     </template>
-    <v-btn fab dark color="indigo" class="main-actions__button--rotate" @click="$emit('activeForm', 'send-block')">
-      <v-icon>mdi-arrow-up-circle</v-icon>
-    </v-btn>
-    <v-btn fab dark color="indigo" class="main-actions__button--rotate" @click="$emit('activeForm', 'invoice-block')">
-      <v-icon>mdi-arrow-down-circle</v-icon>
+    <v-btn fab dark color="green" @click="$emit('activeForm', 'create-wallet-form')">
+      <v-icon>mdi-wallet</v-icon>
     </v-btn>
     <v-btn fab dark color="blue" @click="$emit('activeForm', 'create-user-form')">
       <v-icon>mdi-account-plus</v-icon>
     </v-btn>
-    <v-btn fab dark color="green" @click="$emit('activeForm', 'create-wallet-form')">
-      <v-icon>mdi-wallet</v-icon>
+    <v-btn fab dark color="indigo" class="main-actions__button--rotate" @click="openInvoiceBlock">
+      <v-icon>mdi-arrow-down-circle</v-icon>
+    </v-btn>
+    <v-btn fab dark color="indigo" class="main-actions__button--rotate" @click="openSendForm">
+      <v-icon>mdi-arrow-up-circle</v-icon>
     </v-btn>
   </v-speed-dial>
 </template>
 
 <script>
+import { INVOICE_FORM, SEND_FORM } from '@/store/modules/Modals/names'
+
 export default {
   name: 'MainActions',
   data() {
     return {
       fab: false
+    }
+  },
+  methods: {
+    openInvoiceBlock() {
+      this.openModal({
+        name: INVOICE_FORM
+      })
+    },
+    openSendForm() {
+      this.openModal({
+        name: SEND_FORM
+      })
     }
   }
 }

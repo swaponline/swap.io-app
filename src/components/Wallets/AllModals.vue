@@ -17,14 +17,14 @@ import { mapMutations } from 'vuex'
 import { CLOSE_MODAL, MODULE_NAME as MODALS_MODULE } from '@/store/modules/Modals'
 
 const CopyMenu = () => import(/* webpackChunkName: "CopyMenu" */ './CopyMenu.vue')
-const InvoiceBlock = () => import(/* webpackChunkName: "InvoiceBlock" */ './InvoiceBlock.vue')
+const InvoiceForm = () => import(/* webpackChunkName: "InvoiceForm" */ './InvoiceForm.vue')
 const SendForm = () => import(/* webpackChunkName: "SendForm" */ './SendForm.vue')
 
 export default {
   name: 'AllModalsWallet',
   components: {
     CopyMenu,
-    InvoiceBlock,
+    InvoiceForm,
     SendForm
   },
   computed: {

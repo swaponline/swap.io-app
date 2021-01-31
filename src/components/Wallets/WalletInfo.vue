@@ -41,7 +41,7 @@
 import copy from '@/utils/copy'
 import { mapMutations } from 'vuex'
 import { ADD_MODAL } from '@/store/modules/Modals'
-import { COPY_MENU, INVOICE_BLOCK, SEND_FORM } from '@/store/modules/Modals/names'
+import { COPY_MENU, INVOICE_FORM, SEND_FORM } from '@/store/modules/Modals/names'
 
 export default {
   name: 'WalletInfo',
@@ -104,7 +104,7 @@ export default {
     },
     openInvoiceBlock() {
       this.mutationAddModal({
-        name: INVOICE_BLOCK,
+        name: INVOICE_FORM,
         info: {
           address: this.walletAddress
         }
