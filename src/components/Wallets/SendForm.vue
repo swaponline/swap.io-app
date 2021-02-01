@@ -70,9 +70,8 @@
         </v-row>
 
         <v-btn
-          class="send-form__add-button px-2"
+          class="send-form__multiple-button px-0"
           color="blue"
-          block
           text
           @click="multipleRecepients = !multipleRecepients"
         >
@@ -81,7 +80,7 @@
           }}</span>
         </v-btn>
 
-        <v-divider></v-divider>
+        <v-divider class="mx-2"></v-divider>
 
         <span class="send-form__results">
           <span>Transaction fee: </span>
@@ -252,11 +251,12 @@ export default {
       }
     }
   }
-  &__add-button {
+  &__multiple-button {
     font-weight: $--font-weight-bold;
     text-transform: none;
     flex-grow: 0;
-    margin-bottom: 35px;
+    margin: 0 8px 35px;
+    width: calc(100% - 16px);
     span {
       font-size: $--font-size-medium;
     }
