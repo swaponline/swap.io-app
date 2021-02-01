@@ -182,21 +182,12 @@ export default {
 
 <style lang="scss">
 .send-form {
-  position: relative;
-  height: 100%;
-  max-height: none !important;
-  width: 40%;
-  margin-left: auto;
-  border-radius: 0;
-  overflow: hidden;
-  margin-right: 0;
-  background: $--white;
   &__form {
     display: flex;
     flex-direction: column;
     align-items: stretch;
     padding: 25px 50px 40px;
-    height: 100%;
+    min-height: calc(var(--vh, 1vh) * 100);
 
     @include tablet {
       padding: 0 10px 20px;
@@ -269,7 +260,7 @@ export default {
     display: flex;
     justify-content: space-between;
     width: 100%;
-    margin: 15px 0 0;
+    margin: 15px 0 25px;
     padding: 0 8px;
     flex-grow: 1;
     font-weight: $--font-weight-semi-bold;
