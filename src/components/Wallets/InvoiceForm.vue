@@ -1,90 +1,109 @@
 <template>
-  <transition-inner class="invoice-form">
-    <header class="invoice-form__header">
-      <v-btn large icon class="mr-3" @click="close">
-        <v-icon>mdi-arrow-left</v-icon>
-      </v-btn>
-      <h3>Invoice Form</h3>
-    </header>
+  <form-wrapper value persistent class="invoice-form" @input="close">
     <form class="invoice-form__form" @submit.prevent="$emit('submit')">
       <v-row>
-        <v-col cols="12">
-          <v-text-field v-if="address" :value="address" disabled outlined label="Your wallet">
-            <template #append>
-              <v-icon>mdi-bitcoin</v-icon>
-            </template>
-          </v-text-field>
-          <v-select
-            v-else
-            v-model="selectAddress"
-            :items="wallets"
-            item-text="address"
-            item-value="address"
-            label="Your wallet"
-            outlined
-          >
-          </v-select>
-        </v-col>
-        <v-col cols="12">
-          <v-text-field v-model="contact" required outlined label="Bill to"></v-text-field>
-        </v-col>
+        <h3 class="invoice-form__subtitle">
+          <span>Invoice Form</span>
+          <v-btn icon @click="close"><v-icon>mdi-close</v-icon></v-btn>
+        </h3>
+
+        <form-text-field v-if="address" :value="address" disabled label="Your wallet" color="grey">
+          <template #append>
+            <v-icon>mdi-bitcoin</v-icon>
+          </template>
+        </form-text-field>
+
+        <form-selector
+          v-else
+          :items="wallets"
+          item-text="address"
+          item-value="address"
+          label="Your wallet"
+          outlined
+        ></form-selector>
+
+        <form-text-field v-model="contact" color="grey" required label="Bill to"></form-text-field>
+
+        <h3 class="invoice-form__subtitle">Invoice Items</h3>
+
+        <form-selector
+          v-model="type"
+          return-object
+          outlined
+          item-text="label"
+          item-value="id"
+          color="blue"
+          :items="types"
+        ></form-selector>
+
+        <form-selector v-model="currency" outlined color="blue" :items="currencies"></form-selector>
       </v-row>
-      <div class="invoice-form__items">
-        <h3>Invoice Items</h3>
-        <v-row>
-          <v-col class="invoice-form__field" cols="7">
-            <v-select
-              v-model="type"
-              return-object
-              item-text="label"
-              item-value="id"
-              outlined
-              class="invoice-form__type"
-              :items="types"
-            ></v-select>
-          </v-col>
-          <v-col class="invoice-form__field" cols="5">
-            <v-select v-model="currency" outlined class="invoice-form__currency" :items="currencies"></v-select>
-          </v-col>
-        </v-row>
-      </div>
-      <v-row v-for="field in amountFields" :key="field.id">
-        <v-col class="invoice-form__field-description" cols="7">
-          <v-text-field v-model="field.description" outlined label="Description"></v-text-field>
-        </v-col>
-        <v-col v-if="type.id !== 1" cols="2" class="invoice-form__field-quantity">
-          <v-text-field v-model="field.quantity" outlined :label="type.labelQuantity"></v-text-field>
-        </v-col>
-        <v-col :cols="type.id === 1 ? 5 : 3" class="invoice-form__field-amount">
-          <v-text-field v-model="field.amount" type="number" min="0" step="any" outlined :label="type.labelItemPrice">
-            <template #append-outer>
-              <v-icon @click="removeField(field)">mdi-close</v-icon>
-            </template>
-          </v-text-field>
-        </v-col>
+
+      <v-row v-for="field in amountFields" :key="field.id" class="invoice-form__row">
+        <form-text-field
+          v-model="field.description"
+          label="Description"
+          class="invoice-form__long-field"
+        ></form-text-field>
+
+        <form-text-field
+          v-if="type.id !== 1"
+          v-model="field.quantity"
+          :label="type.labelQuantity"
+          class="invoice-form__short-field"
+        ></form-text-field>
+
+        <form-text-field
+          v-model="field.amount"
+          type="number"
+          min="0"
+          step="any"
+          class="invoice-form__short-field"
+          :label="type.labelItemPrice"
+        ></form-text-field>
+
+        <v-btn
+          depressed
+          color="white"
+          class="invoice-form__remove-button px-0 mx-3 align-self-center"
+          min-width="20"
+          @click="removeField(field)"
+        >
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
       </v-row>
-      <v-row>
-        <v-col cols="12">
-          <v-btn color="blue" block text @click="addAmountField">
-            <span class="text-left flex-grow-1">+ Add Another Item</span>
-          </v-btn>
-        </v-col>
-        <v-col cols="12" class="d-flex">
-          <h3 class="text-right flex-grow-1">Amount: {{ summ }}</h3>
-        </v-col>
+
+      <v-btn class="invoice-form__add-button" color="blue" block text @click="addAmountField">
+        <span class="text-left flex-grow-1">+ Add Another Item</span>
+      </v-btn>
+
+      <v-divider></v-divider>
+
+      <span class="invoice-form__amount">
+        <span>Amount: </span>
+        <span>{{ summ }}</span>
+      </span>
+
+      <v-row class="mt-auto">
+        <v-btn class="invoice-form__button" depressed type="button" @click="close">Cancel</v-btn>
+        <v-btn class="invoice-form__button" depressed type="submit">Confirm</v-btn>
       </v-row>
-      <div class="d-flex justify-end">
-        <v-btn class="mr-2" type="button" @click="close">Cancel</v-btn>
-        <v-btn class="mr-2" type="button" @click="preview">Preview</v-btn>
-        <v-btn type="submit">Confirm</v-btn>
-      </div>
     </form>
-  </transition-inner>
+  </form-wrapper>
 </template>
 
 <script>
+import FormWrapper from '../FormWrapper.vue'
+import FormTextField from '../FormTextField.vue'
+import FormSelector from '../FormSelector.vue'
+
 export default {
   name: 'InvoiceForm',
+  components: {
+    FormWrapper,
+    FormTextField,
+    FormSelector
+  },
   data() {
     return {
       contact: 'as123asdfascd',
@@ -147,65 +166,81 @@ export default {
 
 <style lang="scss">
 .invoice-form {
-  max-height: calc(100% - 110px);
-  @include small-height {
-    max-height: none;
-  }
-  &__header {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    display: flex;
-    align-items: center;
-    padding: 10px 15px;
-    background: $--white;
-    @include tablet {
-      padding: 10px 5px;
-    }
-  }
   &__form {
-    padding: 0 15px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 25px 50px 40px;
+    height: 100%;
+
     @include tablet {
-      padding: 0 5px 10px;
+      padding: 0 10px 20px;
+    }
+    .row {
+      flex-grow: 0;
     }
   }
-  &__field {
-    @include tablet {
-      flex-basis: 100%;
-      max-width: 100%;
+  &__row {
+    flex-wrap: nowrap;
+    @include phone {
+      flex-wrap: wrap;
     }
   }
-  &__field-description {
-    @include tablet {
-      position: relative;
-      display: flex;
-      justify-content: center;
-      padding-right: 12px;
-      flex-basis: 100%;
-      max-width: 100%;
-      &:before {
-        content: '';
-        width: 25%;
-        position: absolute;
-        top: 0;
-        height: 1px;
-        background: rgba($color: $--black, $alpha: 0.2);
-      }
+  &__long-field {
+    flex-grow: 0;
+    width: 70%;
+    @include phone {
+      width: 100%;
     }
   }
-  &__field-quantity {
-    @include tablet {
-      padding-left: 12px;
-      flex-basis: 50%;
-      max-width: 50%;
+  &__short-field {
+    width: 30%;
+    @include phone {
+      width: 80%;
     }
   }
-  &__field-amount {
-    @include tablet {
-      padding-left: 12px;
-      flex-basis: 50%;
-      flex-grow: 1;
-      max-width: 100%;
+  &__subtitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 8px 25px;
+    width: 100%;
+    font-weight: $--font-weight-semi-bold;
+    font-size: $--font-size-small-subtitle;
+  }
+  &__remove-button {
+    margin-bottom: 25px;
+    &::before {
+      display: none;
+    }
+  }
+  &__add-button {
+    font-weight: $--font-weight-bold;
+    text-transform: none;
+    flex-grow: 0;
+    margin-bottom: 25px;
+    span {
+      font-size: $--font-size-medium;
+    }
+  }
+  &__amount {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin: 25px 0;
+    flex-grow: 1;
+    font-weight: $--font-weight-semi-bold;
+    font-size: $--font-size-small-subtitle;
+  }
+  &__button {
+    width: calc(50% - 16px);
+    border-radius: 8px;
+    margin: auto 8px;
+    min-height: 52px;
+    text-transform: none;
+    font-weight: $--font-weight-bold;
+    span {
+      font-size: $--font-size-medium;
     }
   }
 }

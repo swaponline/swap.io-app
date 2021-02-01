@@ -31,17 +31,17 @@ export default [
       {
         path: '/swap',
         name: 'Swap',
-        component: () => import(/* webpackChunkName: 'Wallet' */ '@/views/Wallets/Wallets.vue')
+        component: () => import(/* webpackChunkName: 'Wallet' */ '@/views/Wallets/Wallet.vue')
       },
       {
         path: '/history',
         name: 'History',
-        component: () => import(/* webpackChunkName: 'Wallet' */ '@/views/Wallets/Wallets.vue')
+        component: () => import(/* webpackChunkName: 'Wallet' */ '@/views/Wallets/Wallet.vue')
       },
       {
         path: '/settings',
         name: 'Settings',
-        component: () => import(/* webpackChunkName: 'Wallet' */ '@/views/Wallets/Wallets.vue')
+        component: () => import(/* webpackChunkName: 'Wallet' */ '@/views/Wallets/Wallet.vue')
       }
     ]
   }

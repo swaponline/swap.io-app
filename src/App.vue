@@ -10,7 +10,7 @@
 import { MediaQueryProvider } from 'vue-component-media-queries'
 
 const queries = {
-  desktop: '(min-width: 1280px)',
+  desktop: '(min-width: 1281px)',
   tablet: '(min-width: 481px) and (max-width: 1280px)',
   phone: '(max-width: 480px)'
 }
@@ -33,8 +33,18 @@ export default {
   },
   methods: {
     resize() {
-      const vh = window.innerHeight * 0.01
+      let vh
+      if (window.innerWidth > 1920) {
+        // Правим высоту, чтобы было на весь экран без скролла
+        // По сути делим на то число, на которе зумим в css
+        vh = (window.innerHeight * 0.01) / ((window.innerWidth * 0.01) / 18)
+      } else {
+        vh = window.innerHeight * 0.01
+      }
       document.documentElement.style.setProperty('--vh', `${vh}px`)
+
+      const vw = window.innerWidth * 0.01
+      document.documentElement.style.setProperty('--vw', `${vw}`)
     }
   }
 }
@@ -50,6 +60,11 @@ export default {
   @include small-height {
     min-height: calc(var(--vh, 1vh) * 100);
     height: 100%;
+  }
+}
+@media screen and (min-width: 1921px) {
+  #app {
+    zoom: calc(var(--vw) / 18);
   }
 }
 </style>
