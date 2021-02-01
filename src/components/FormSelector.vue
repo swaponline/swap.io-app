@@ -17,14 +17,14 @@ export default {
   margin: 0 8px 25px !important;
   flex-basis: 20% !important;
   max-height: 52px;
+  width: 100%;
+  @include phone {
+    margin: 0 5px 25px !important;
+  }
   &:focus-within {
     border-color: $--blue;
   }
 
-  @include phone {
-    width: 100%;
-    flex-basis: 100% !important;
-  }
   // переопределим стили vuetify
   .v-select__selections {
     padding: 0 0 !important;
@@ -41,6 +41,9 @@ export default {
   .v-input__slot {
     min-height: 52px !important;
     margin: 0 0;
+    @include phone {
+      padding: 0 8px !important;
+    }
   }
   .v-input__append-inner {
     margin-top: 15px !important;

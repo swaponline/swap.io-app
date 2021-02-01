@@ -29,7 +29,7 @@
 }
 
 @mixin small-height {
-  @media screen and (max-height: 640px) {
+  @media screen and (max-height: calc(100vw / 2.5)) {
     @content;
   }
 }

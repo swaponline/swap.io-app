@@ -52,8 +52,13 @@ export default {
   display: flex;
   position: relative;
   margin-top: 25px;
+  max-height: calc(var(--vh, 1vh) * 100);
+  overflow: hidden;
   @include tablet {
     margin-top: 0;
+  }
+  @include tablet {
+    overflow: visible;
   }
   &__list-wallet {
     margin-right: 20px;

@@ -1,11 +1,11 @@
 <template>
   <div>
-    <template>
+    <template v-for="(modal, index) in modals">
       <component
-        :is="info.name"
-        :key="info.name"
-        v-bind="info.info"
-        :value="info.show !== undefined ? info.show : true"
+        :is="modal.name"
+        :key="modal.name + index"
+        v-bind="modal.info"
+        :value="modal.show !== undefined ? modal.show : modal.name === info.name"
         @close="mutationCloseModal"
       />
     </template>
@@ -18,6 +18,7 @@ import { CLOSE_MODAL, MODULE_NAME as MODALS_MODULE } from '@/store/modules/Modal
 
 const CopyMenu = () => import(/* webpackChunkName: "CopyMenu" */ './CopyMenu.vue')
 const InvoiceForm = () => import(/* webpackChunkName: "InvoiceForm" */ './InvoiceForm.vue')
+const InvoicePreview = () => import(/* webpackChunkName: "InvoicePreview" */ './InvoicePreview.vue')
 const SendForm = () => import(/* webpackChunkName: "SendForm" */ './SendForm.vue')
 
 export default {
@@ -25,6 +26,7 @@ export default {
   components: {
     CopyMenu,
     InvoiceForm,
+    InvoicePreview,
     SendForm
   },
   computed: {

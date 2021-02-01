@@ -1,6 +1,6 @@
 <template>
-  <form-wrapper value persistent class="invoice-form" @input="close">
-    <form class="invoice-form__form" @submit.prevent="$emit('submit')">
+  <form-wrapper :value="value" persistent class="invoice-form" @input="close">
+    <form class="invoice-form__form" @submit.prevent="preview">
       <v-row>
         <h3 class="invoice-form__subtitle">
           <span>Invoice Form</span>
@@ -25,7 +25,9 @@
         <form-text-field v-model="contact" color="grey" required label="Bill to"></form-text-field>
 
         <h3 class="invoice-form__subtitle">Invoice Items</h3>
+      </v-row>
 
+      <v-row class="invoice-form__row">
         <form-selector
           v-model="type"
           return-object
@@ -33,10 +35,17 @@
           item-text="label"
           item-value="id"
           color="blue"
+          class="invoice-form__long-field"
           :items="types"
         ></form-selector>
 
-        <form-selector v-model="currency" outlined color="blue" :items="currencies"></form-selector>
+        <form-selector
+          v-model="currency"
+          outlined
+          color="blue"
+          :items="currencies"
+          class="invoice-form__short-field"
+        ></form-selector>
       </v-row>
 
       <v-row v-for="field in amountFields" :key="field.id" class="invoice-form__row">
@@ -65,7 +74,7 @@
         <v-btn
           depressed
           color="white"
-          class="invoice-form__remove-button px-0 mx-3 align-self-center"
+          class="invoice-form__remove-button align-self-center"
           min-width="20"
           @click="removeField(field)"
         >
@@ -73,15 +82,20 @@
         </v-btn>
       </v-row>
 
-      <v-btn class="invoice-form__add-button" color="blue" block text @click="addAmountField">
-        <span class="text-left flex-grow-1">+ Add Another Item</span>
-      </v-btn>
+      <v-row>
+        <v-btn class="invoice-form__add-button px-0" color="blue" text @click="addAmountField">
+          <span class="text-left flex-grow-1">+ Add Another Item</span>
+        </v-btn>
 
-      <v-divider></v-divider>
+        <v-divider class="mx-2"></v-divider>
+      </v-row>
 
       <span class="invoice-form__amount">
         <span>Amount: </span>
-        <span>{{ summ }}</span>
+        <span>
+          <span class="invoice-form__currency-name">USD</span>
+          {{ summ }}
+        </span>
       </span>
 
       <v-row class="mt-auto">
@@ -93,6 +107,10 @@
 </template>
 
 <script>
+import { INVOICE_PREVIEW } from '@/store/modules/Modals/names'
+import { ADD_MODAL } from '@/store/modules/Modals'
+
+import { mapMutations } from 'vuex'
 import FormWrapper from '../FormWrapper.vue'
 import FormTextField from '../FormTextField.vue'
 import FormSelector from '../FormSelector.vue'
@@ -103,6 +121,12 @@ export default {
     FormWrapper,
     FormTextField,
     FormSelector
+  },
+  props: {
+    value: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {
@@ -137,17 +161,23 @@ export default {
     this.selectAddress = this.address
   },
   methods: {
+    ...mapMutations({
+      mutationAddModal: ADD_MODAL
+    }),
     close() {
       this.$emit('close')
     },
     preview() {
-      this.$emit('preview', {
-        contact: this.contact,
-        type: this.type,
-        amountFields: this.amountFields,
-        currency: this.currency,
-        address: this.address,
-        summ: this.summ
+      this.mutationAddModal({
+        name: INVOICE_PREVIEW,
+        info: {
+          contact: this.contact,
+          type: this.type,
+          amountFields: this.amountFields,
+          currency: this.currency,
+          address: this.address,
+          summ: this.summ
+        }
       })
     },
     addAmountField() {
@@ -171,10 +201,13 @@ export default {
     flex-direction: column;
     align-items: stretch;
     padding: 25px 50px 40px;
-    height: 100%;
+    min-height: calc(var(--vh, 1vh) * 100);
 
     @include tablet {
-      padding: 0 10px 20px;
+      padding: 24px;
+    }
+    @include phone {
+      padding: 12px;
     }
     .row {
       flex-grow: 0;
@@ -182,21 +215,21 @@ export default {
   }
   &__row {
     flex-wrap: nowrap;
-    @include phone {
-      flex-wrap: wrap;
-    }
   }
   &__long-field {
-    flex-grow: 0;
-    width: 70%;
+    flex-grow: 1;
+    width: 65%;
     @include phone {
-      width: 100%;
+      margin: 0 5px 25px;
+      width: calc(56% - 10px);
     }
   }
   &__short-field {
-    width: 30%;
+    flex-grow: 0;
+    width: 35%;
     @include phone {
-      width: 80%;
+      margin: 0 5px 25px;
+      width: calc(35% - 10px);
     }
   }
   &__subtitle {
@@ -210,6 +243,10 @@ export default {
   }
   &__remove-button {
     margin-bottom: 25px;
+    padding: 0 0 !important;
+    @include phone {
+      margin-right: 8px;
+    }
     &::before {
       display: none;
     }
@@ -218,7 +255,8 @@ export default {
     font-weight: $--font-weight-bold;
     text-transform: none;
     flex-grow: 0;
-    margin-bottom: 25px;
+    margin: 0 8px 25px;
+    width: calc(100% - 16px);
     span {
       font-size: $--font-size-medium;
     }
@@ -226,8 +264,7 @@ export default {
   &__amount {
     display: flex;
     justify-content: space-between;
-    width: 100%;
-    margin: 25px 0;
+    margin: 25px -4px;
     flex-grow: 1;
     font-weight: $--font-weight-semi-bold;
     font-size: $--font-size-small-subtitle;
@@ -242,6 +279,9 @@ export default {
     span {
       font-size: $--font-size-medium;
     }
+  }
+  &__currency-name {
+    color: $--dark-grey;
   }
 }
 </style>
