@@ -1,6 +1,6 @@
 <template>
   <div class="form-text-field">
-    <v-text-field :value="value" v-bind="$attrs" v-on="allListeners">
+    <v-text-field v-bind="$attrs" v-on="$listeners">
       <template #append>
         <slot name="append"></slot>
       </template>
@@ -11,26 +11,7 @@
 <script>
 export default {
   name: 'FormTextField',
-  inheritAttrs: false,
-  props: {
-    value: {
-      type: [String, Number, null],
-      default: null
-    }
-  },
-  computed: {
-    allListeners() {
-      return {
-        ...this.$listeners,
-        input: this.input
-      }
-    }
-  },
-  methods: {
-    input(value) {
-      this.$emit('input', value)
-    }
-  }
+  inheritAttrs: false
 }
 </script>
 
@@ -46,6 +27,10 @@ export default {
   width: 100%;
   flex-grow: 1;
   margin: 0 8px 25px;
+  @include phone {
+    margin: 0 5px 25px;
+    padding: 0 14px;
+  }
   &:focus-within {
     border-color: $--blue;
   }
@@ -69,6 +54,11 @@ export default {
       }
       input {
         outline: none !important;
+
+        @include phone {
+          font-size: $--font-size-medium;
+        }
+
         &::-webkit-outer-spin-button,
         &::-webkit-inner-spin-button {
           -webkit-appearance: none;

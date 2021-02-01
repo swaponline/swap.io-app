@@ -1,30 +1,11 @@
 <template>
-  <v-select :value="value" v-bind="$attrs" class="form-selector" v-on="allListeners"></v-select>
+  <v-select v-bind="$attrs" class="form-selector" v-on="$listeners"></v-select>
 </template>
 
 <script>
 export default {
   name: 'FormSelector',
-  inheritAttrs: false,
-  props: {
-    value: {
-      type: [Object, Number, String, null],
-      default: null
-    }
-  },
-  computed: {
-    allListeners() {
-      return {
-        ...this.$listeners,
-        input: this.input
-      }
-    }
-  },
-  methods: {
-    input(value) {
-      this.$emit('input', value)
-    }
-  }
+  inheritAttrs: false
 }
 </script>
 

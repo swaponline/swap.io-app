@@ -27,6 +27,8 @@
 
 <script>
 import { INVOICE_FORM, SEND_FORM } from '@/store/modules/Modals/names'
+import { ADD_MODAL } from '@/store/modules/Modals'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'MainActions',
@@ -36,13 +38,16 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      mutationAddModal: ADD_MODAL
+    }),
     openInvoiceBlock() {
-      this.openModal({
+      this.mutationAddModal({
         name: INVOICE_FORM
       })
     },
     openSendForm() {
-      this.openModal({
+      this.mutationAddModal({
         name: SEND_FORM
       })
     }
