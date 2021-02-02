@@ -11,7 +11,23 @@
       <p class="invoice-preview__agent-info">
         <span>User: {{ currentAccount.name }}</span>
         <span>Wallet: {{ currentWallet.name }}</span>
-        <span>Wallet address: {{ address }}</span>
+        <span class="invoice-preview__wallet">
+          Wallet address: {{ formatAddress }}
+          <div class="invoice-preview__buttons">
+            <v-tooltip v-model="copyTooltip.value" top :open-on-hover="false" class="wallet-info__tooltip">
+              <template #activator="{ on }">
+                <button @click="copy">
+                  <svg-icon class="invoice-preview__icon-copy" name="copy" v-on="on"></svg-icon>
+                </button>
+              </template>
+              <span>Copied</span>
+            </v-tooltip>
+            <button>
+              <svg-icon class="invoice-preview__icon-qrcode" name="qrcode"></svg-icon>
+            </button>
+          </div>
+          <v-btn class="invoice-preview__show-button" depressed @click="showFullWallet">Show in full</v-btn>
+        </span>
       </p>
       <h3 class="invoice-preview__subtitle">Bill:</h3>
       <p class="invoice-preview__agent-info">
@@ -22,22 +38,16 @@
       <v-simple-table class="invoice-preview__table">
         <thead>
           <tr>
-            <th class="invoice-preview__table-head invoice-preview__table-head--description text-left px-0">
+            <th class="invoice-preview__table-head text-left">
               Description
             </th>
-            <th
-              v-if="type.labelQuantity"
-              class="invoice-preview__table-head invoice-preview__table-head--quantity text-right px-0"
-            >
-              {{ type.labelQuantity }}
+            <th v-if="type.labelQuantity" class="invoice-preview__table-head text-right">
+              {{ mediaQueries.phone && type.labelQuantity === 'Quantity' ? 'Qty' : type.labelQuantity }}
             </th>
-            <th class="invoice-preview__table-head invoice-preview__table-head--amount text-right px-0">
+            <th class="invoice-preview__table-head text-right">
               {{ type.labelItemPrice }}
             </th>
-            <th
-              v-if="type.labelQuantity"
-              class="invoice-preview__table-head invoice-preview__table-head--amount text-right px-0"
-            >
+            <th v-if="type.labelQuantity" class="invoice-preview__table-head text-right">
               Amount
             </th>
           </tr>
@@ -47,11 +57,11 @@
             <td class="invoice-preview__table-cell text-left">{{ item.description }}</td>
             <td v-if="type.labelQuantity" class="invoice-preview__table-cell text-right">{{ item.quantity }}</td>
             <td class="invoice-preview__table-cell text-right">
-              <span class="invoice-preview__currency-name">USD</span>
               {{ item.amount }}
             </td>
             <td v-if="type.labelQuantity" class="invoice-preview__table-cell text-right">
-              <span class="invoice-preview__currency-name">USD</span> {{ item.amount * item.quantity }}
+              <span v-if="!mediaQueries.phone" class="invoice-preview__currency-name">USD</span>
+              {{ item.amount * item.quantity }}
             </td>
           </tr>
         </tbody>
@@ -81,10 +91,15 @@
 </template>
 
 <script>
+import copy from '@/utils/copy'
+import { mapMutations } from 'vuex'
+import { ADD_MODAL } from '@/store/modules/Modals'
+import { COPY_MENU } from '@/store/modules/Modals/names'
 import FormWrapper from '../FormWrapper.vue'
 
 export default {
   name: 'InvoicePreview',
+  inject: ['mediaQueries'],
   components: {
     FormWrapper
   },
@@ -116,7 +131,21 @@ export default {
       required: true
     }
   },
+  data() {
+    return {
+      copyTooltip: {
+        value: false,
+        timer: 0
+      }
+    }
+  },
   computed: {
+    formatAddress() {
+      if (this.mediaQueries.desktop) {
+        return this.address
+      }
+      return `**${this.address.slice(-5)}`
+    },
     summQuantity() {
       return this.amountFields.reduce((acc, el) => {
         return acc + +el.quantity
@@ -138,9 +167,39 @@ export default {
       return this.$store.getters.currentAccount
     }
   },
+  beforeDestroy() {
+    clearTimeout(this.copyTooltip.timer)
+  },
   methods: {
+    ...mapMutations({
+      mutationAddModal: ADD_MODAL
+    }),
     close() {
       this.$emit('close')
+    },
+    showFullWallet() {
+      this.mutationAddModal({
+        name: COPY_MENU,
+        info: {
+          address: this.address,
+          showAddress: true
+        }
+      })
+    },
+    copy() {
+      copy(this.address)
+        .then(() => {
+          this.copyTooltip.value = true
+          if (this.copyTooltip.timer) {
+            clearTimeout(this.copyTooltip.timer)
+          }
+          this.copyTooltip.timer = setTimeout(() => {
+            this.copyTooltip.value = false
+          }, 1500)
+        })
+        .catch(err => {
+          console.log('Значение не скопировано', err)
+        })
     }
   }
 }
@@ -182,9 +241,24 @@ export default {
     font-size: $--font-size-medium;
     margin-bottom: 40px !important;
     span {
-      display: block;
       &:not(:last-child) {
         margin-bottom: 8px;
+      }
+    }
+  }
+  &__wallet {
+    display: flex;
+    align-items: flex-end;
+
+    @include tablet {
+      justify-content: space-between;
+    }
+
+    button {
+      text-transform: none;
+      font-weight: $--font-weight-bold;
+      span {
+        font-size: $--font-size-medium;
       }
     }
   }
@@ -195,12 +269,12 @@ export default {
     color: $--dark-grey !important;
     font-size: $--font-size-medium !important;
     border-width: 0px !important;
-    padding-bottom: 10px;
+    padding: 0 3px 10px !important;
   }
   &__table-cell {
     border-width: 0px !important;
     font-size: $--font-size-medium !important;
-    padding: 5px 0 !important;
+    padding: 5px 3px !important;
   }
   &__quantity {
     display: flex;
@@ -233,6 +307,43 @@ export default {
   }
   &__currency-name {
     color: $--dark-grey;
+  }
+  &__show-button {
+    display: none;
+    @include tablet {
+      display: inline-block;
+    }
+  }
+  &__buttons {
+    display: flex;
+    margin-bottom: 3px;
+    @include tablet {
+      display: none;
+    }
+
+    button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      outline: none;
+    }
+    :not(:last-child) {
+      border-right: 1px solid rgba($--dark-grey, 0.5);
+    }
+  }
+  &__icon-qrcode {
+    margin: 3px 11px;
+    width: 14px;
+    height: 14px;
+    @include tablet {
+      display: none;
+    }
+  }
+  &__icon-copy {
+    margin: 3px 11px;
+    width: 14px;
+    height: 14px;
+    transition: 0.3s;
   }
 }
 </style>

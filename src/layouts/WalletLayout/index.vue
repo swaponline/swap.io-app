@@ -57,8 +57,11 @@ export default {
   @include tablet {
     margin-top: 0;
   }
-  @include tablet {
+  @include phone {
     overflow: visible;
+  }
+  @include small-height {
+    max-height: none;
   }
   &__list-wallet {
     margin-right: 20px;
