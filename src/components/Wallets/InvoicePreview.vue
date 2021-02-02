@@ -84,7 +84,7 @@
 
       <v-row class="mt-auto">
         <v-btn class="invoice-form__button" depressed type="button" @click="close">Cancel</v-btn>
-        <v-btn class="invoice-form__button" depressed type="submit">Confirm</v-btn>
+        <v-btn class="invoice-form__button" depressed type="submit" @click="closeInvoice">Confirm</v-btn>
       </v-row>
     </div>
   </form-wrapper>
@@ -176,6 +176,9 @@ export default {
     }),
     close() {
       this.$emit('close')
+    },
+    closeInvoice() {
+      this.$emit('close-all')
     },
     showFullWallet() {
       this.mutationAddModal({

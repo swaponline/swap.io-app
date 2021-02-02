@@ -7,6 +7,7 @@
         v-bind="modal.info"
         :value="modal.show !== undefined ? modal.show : modal.name === info.name"
         @close="mutationCloseModal"
+        @close-all="mutationCloseAllModal"
       />
     </template>
   </div>
@@ -14,7 +15,7 @@
 
 <script>
 import { mapMutations } from 'vuex'
-import { CLOSE_MODAL, MODULE_NAME as MODALS_MODULE } from '@/store/modules/Modals'
+import { CLOSE_MODAL, CLOSE_ALL_MODAL, MODULE_NAME as MODALS_MODULE } from '@/store/modules/Modals'
 
 const CopyMenu = () => import(/* webpackChunkName: "CopyMenu" */ './CopyMenu.vue')
 const InvoiceForm = () => import(/* webpackChunkName: "InvoiceForm" */ './InvoiceForm.vue')
@@ -52,7 +53,8 @@ export default {
   },
   methods: {
     ...mapMutations({
-      mutationCloseModal: CLOSE_MODAL
+      mutationCloseModal: CLOSE_MODAL,
+      mutationCloseAllModal: CLOSE_ALL_MODAL
     })
   }
 }
