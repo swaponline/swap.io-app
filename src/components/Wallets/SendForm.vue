@@ -82,7 +82,7 @@
 
         <v-divider class="mx-2"></v-divider>
 
-        <span class="send-form__results">
+        <span class="send-form__results mt-6 mb-4">
           <span>Transaction fee: </span>
           <span class="send-form__fee">
             <v-btn icon small @click="feeEdit = true">
@@ -94,10 +94,10 @@
       </v-row>
 
       <v-row>
-        <span class="send-form__results">
+        <span class="send-form__results mb-6">
           <span>Total balance change: </span>
           <span class="send-form__amount">
-            BTC {{ recipient.amount }}
+            <span class="send-form__currency-name">BTC</span> {{ recipient.amount }}
             <span>~$21</span>
           </span>
         </span>
@@ -190,7 +190,10 @@ export default {
     min-height: calc(var(--vh, 1vh) * 100);
 
     @include tablet {
-      padding: 0 10px 20px;
+      padding: 24px;
+    }
+    @include phone {
+      padding: 12px;
     }
     .row {
       flex-grow: 0;
@@ -215,15 +218,17 @@ export default {
   }
   &__long-field {
     flex-grow: 0;
-    width: 70%;
+    width: 65%;
     @include phone {
-      width: 100%;
+      margin: 0 5px 25px;
+      width: calc(65% - 10px);
     }
   }
   &__short-field {
-    width: 30%;
+    width: 35%;
     @include phone {
-      width: 80%;
+      margin: 0 5px 25px;
+      width: calc(35% - 10px);
     }
   }
   &__multiple-list {
@@ -260,7 +265,6 @@ export default {
     display: flex;
     justify-content: space-between;
     width: 100%;
-    margin: 15px 0 25px;
     padding: 0 8px;
     flex-grow: 1;
     font-weight: $--font-weight-semi-bold;
@@ -290,6 +294,9 @@ export default {
     span {
       font-size: $--font-size-medium;
     }
+  }
+  &__currency-name {
+    color: $--dark-grey;
   }
 }
 </style>

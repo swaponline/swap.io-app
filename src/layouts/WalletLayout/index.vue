@@ -6,7 +6,7 @@
     ></list-wallet>
     <div class="wallet-layout__router" :class="showListWallet ? 'wallet-layout__router--hide' : ''">
       <transition-translate :reverse="metaBack">
-        <router-view :key="currentRoute"></router-view>
+        <router-view :key="currentRoute" class="wallet-layout__router-content"></router-view>
       </transition-translate>
     </div>
     <main-actions></main-actions>
@@ -23,6 +23,7 @@ import AllModals from '@/components/Wallets/AllModals.vue'
 
 export default {
   name: 'WalletLayout',
+  inject: ['mediaQueries'],
   components: {
     TransitionTranslate,
     ListWallet,
@@ -31,7 +32,10 @@ export default {
   },
   computed: {
     currentRoute() {
-      return this.$route.name + JSON.stringify(this.$route.params) + JSON.stringify(this.$route.query)
+      if (this.mediaQueries.desktop) {
+        return this.$route.name
+      }
+      return this.$route.name + JSON.stringify(this.$route.params)
     },
     walletParam() {
       return this.$route.params.walletAddress
@@ -52,8 +56,16 @@ export default {
   display: flex;
   position: relative;
   margin-top: 25px;
+  max-height: calc(var(--vh, 1vh) * 100);
+  overflow: hidden;
   @include tablet {
     margin-top: 0;
+  }
+  @include phone {
+    overflow: visible;
+  }
+  @include small-height {
+    max-height: none;
   }
   &__list-wallet {
     margin-right: 20px;
@@ -81,6 +93,14 @@ export default {
       &--hide {
         transform: translateX(100vw);
       }
+    }
+  }
+  &__router-content {
+    position: relative;
+    @include tablet {
+      // убираем анимацию оставляем только transition
+      transform: translateX(0) !important;
+      opacity: 1 !important;
     }
   }
 }

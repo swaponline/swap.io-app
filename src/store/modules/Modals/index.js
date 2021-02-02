@@ -1,5 +1,6 @@
 export const ADD_MODAL = 'ADD_MODAL'
 export const CLOSE_MODAL = 'CLOSE_MODAL'
+export const CLOSE_ALL_MODAL = 'CLOSE_ALL_MODAL'
 
 export const MODULE_NAME = 'Modals'
 
@@ -19,10 +20,15 @@ export default {
     },
     /**
      * Закрывает модальное окно и удаляет его со страницы
-     * @param {Number} id - ID модалки
      */
     [CLOSE_MODAL](state) {
       state.modals.pop()
+    },
+    /**
+     * Закрывает все модальные окна
+     */
+    [CLOSE_ALL_MODAL](state) {
+      state.modals = []
     }
   }
 }

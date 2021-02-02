@@ -85,6 +85,7 @@ export default {
   display: flex;
   overflow: visible;
   max-height: 80px;
+  min-height: 70px;
   min-width: 150px;
 
   @include tablet {

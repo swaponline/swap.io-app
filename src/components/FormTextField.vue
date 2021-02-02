@@ -29,7 +29,7 @@ export default {
   margin: 0 8px 25px;
   @include phone {
     margin: 0 5px 25px;
-    padding: 0 14px;
+    padding: 0 8px;
   }
   &:focus-within {
     border-color: $--blue;

@@ -98,6 +98,9 @@ export default {
     align-items: center;
     border-radius: 12px;
     background: $--white;
+    @include tablet {
+      display: none;
+    }
   }
 }
 </style>

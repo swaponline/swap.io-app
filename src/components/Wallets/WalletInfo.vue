@@ -18,14 +18,14 @@
     <div class="wallet-info__address-wrapper">
       <v-tooltip v-model="copyTooltip.value" top :open-on-hover="false" class="wallet-info__tooltip">
         <template #activator="{ on }">
-          <button class="wallet-info__button-copy" depressed tabindex="-1" @click="copy">
+          <button class="wallet-info__button-copy" tabindex="-1" @click="copy">
             <span class="wallet-info__address">1C9Uae6kyDtPo4ykzd5AJaLzLEZSpEbP3y</span>
             <svg-icon class="wallet-info__icon-copy" name="copy" v-on="on"></svg-icon>
           </button>
         </template>
         <span>Copied</span>
       </v-tooltip>
-      <button class="wallet-info__button-qrcode" icon>
+      <button class="wallet-info__button-qrcode">
         <svg-icon class="wallet-info__icon-qrcode" name="qrcode"></svg-icon>
       </button>
     </div>
