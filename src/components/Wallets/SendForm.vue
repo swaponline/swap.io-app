@@ -98,7 +98,7 @@
           <span>Total balance change: </span>
           <span class="send-form__amount">
             <span class="send-form__currency-name">BTC</span> {{ recipient.amount }}
-            <span>~$21</span>
+            <span><span class="send-form__currency-name">~USD</span> 21</span>
           </span>
         </span>
       </v-row>
