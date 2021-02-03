@@ -22,7 +22,12 @@
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-group v-else class="list-wallet__group" color="purple" active-class="list-wallet__active-list-group">
+        <v-list-group
+          v-else
+          class="list-wallet__group"
+          color="grey lighten-1"
+          active-class="list-wallet__active-list-group"
+        >
           <template #activator>
             <v-list-item-icon class="list-wallet__icon-wrapper">
               <svg-icon class="list-wallet__icon" name="btc" />
