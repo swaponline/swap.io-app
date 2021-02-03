@@ -1,6 +1,9 @@
 <template>
   <div class="main-header">
-    <div class="main-header__logo">Logo</div>
+    <div class="main-header__logo">
+      <svg-icon class="main-header__logo-icon" name="logo" />
+      <h2>Swap</h2>
+    </div>
     <match-media v-slot="{ desktop }" class="d-flex flex-grow-1">
       <main-header-tabs v-if="desktop" class="main-header__tabs"></main-header-tabs>
       <div v-if="desktop" class="main-header__profile">
@@ -54,11 +57,20 @@ export default {
     min-width: 305px;
     margin-right: 20px;
     display: flex;
-    justify-content: center;
     align-items: center;
     @include tablet {
       min-width: 0;
       flex-grow: 1;
+    }
+  }
+  &__logo-icon {
+    width: 48px;
+    height: 45px;
+    margin-right: 20px;
+    margin-left: 30px;
+    @include tablet {
+      width: 45px;
+      height: 42px;
     }
   }
   &__profile {
