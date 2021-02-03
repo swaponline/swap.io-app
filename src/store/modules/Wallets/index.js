@@ -18,7 +18,8 @@ export default {
         name: 'Vasilii',
         list: [
           {
-            name: 'BTC',
+            nameCurrency: 'BTC',
+            name: 'my Wallet',
             value: 0.056734,
             icon: 'btc',
             subWallets: [
@@ -30,7 +31,8 @@ export default {
             ]
           },
           {
-            name: 'ETH',
+            nameCurrency: 'ETH',
+            name: 'my multisig',
             value: 43.0561,
             subWallets: [
               {
@@ -51,7 +53,7 @@ export default {
             ]
           },
           {
-            name: 'USDT',
+            nameCurrency: 'USDT',
             value: 100.1,
             subWallets: [
               {
@@ -68,7 +70,7 @@ export default {
         name: 'Corporat',
         list: [
           {
-            name: 'ETH',
+            nameCurrency: 'ETH',
             value: 43.0561,
             subWallets: [
               {
