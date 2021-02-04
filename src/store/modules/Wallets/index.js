@@ -24,6 +24,7 @@ export default {
             icon: 'btc',
             subWallets: [
               {
+                nameCurrency: 'BTC',
                 name: 'Default',
                 value: 0.056734,
                 address: '1C9Uae6kyDtPo4ykzd5AJaLzLEZSpEbP3y'
@@ -36,16 +37,19 @@ export default {
             value: 43.0561,
             subWallets: [
               {
+                nameCurrency: 'ETH',
                 name: 'Default',
                 value: 40.0561,
                 address: '0xd19615f2Eab2ABfBF7ca16618b5eD43386374DD0'
               },
               {
+                nameCurrency: 'ETH',
                 name: 'Swaps',
                 value: 3.0,
                 address: '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D'
               },
               {
+                nameCurrency: 'ETH',
                 name: 'Expenses',
                 value: 0.0,
                 address: '0x7a250d5630B4cF539739dF2C5dAcb4c659F24882'
@@ -57,6 +61,7 @@ export default {
             value: 100.1,
             subWallets: [
               {
+                nameCurrency: 'USDT',
                 name: 'Default',
                 value: 100.1,
                 address: 'GUzPzmRhx5VgsYH3vZjGjLgtFQMHkJzyHU'
@@ -74,6 +79,7 @@ export default {
             value: 43.0561,
             subWallets: [
               {
+                nameCurrency: 'ETH',
                 name: 'Default',
                 value: 40.0561,
                 address: '0xd19615f2Eab2ABfBF7ca16618b5eD43386374DD0'

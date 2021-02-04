@@ -38,8 +38,13 @@ export default {
       return `svg-icon svg-icon--${this.name}`
     }
   },
-  async created() {
-    this.icon = await import(`@/assets/icons/${this.name}.svg`)
+  watch: {
+    name: {
+      immediate: true,
+      async handler(val) {
+        this.icon = await import(`@/assets/icons/${val}.svg`)
+      }
+    }
   }
 }
 </script>

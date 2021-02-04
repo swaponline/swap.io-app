@@ -1,7 +1,9 @@
 <template>
-  <div v-if="walletParam" class="wallet">
+  <div v-if="walletAddress" class="wallet">
     <wallet-info
+      v-if="currentWallet"
       class="wallet__main-info"
+      v-bind="currentWallet"
       :compressed="compressed"
       @uncompress-wallet="compressed = false"
     ></wallet-info>
@@ -34,13 +36,13 @@ export default {
       compressed: false
     }
   },
-  beforeRouteUpdate(to, from, next) {
-    Object.assign(to.meta, { back: false })
-    next()
-  },
   computed: {
-    walletParam() {
+    walletAddress() {
       return this.$route.params.walletAddress
+    },
+    currentWallet() {
+      console.log(this.$store.getters.siblingList, this.walletAddress)
+      return this.$store.getters.siblingList?.find(el => el.address === this.walletAddress)
     }
   }
 }
