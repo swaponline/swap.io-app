@@ -7,14 +7,14 @@
           <v-btn icon @click="close"><v-icon>mdi-close</v-icon></v-btn>
         </h3>
 
-        <form-text-field v-if="address" :value="address" disabled label="Your wallet" color="grey">
-          <template #append>
-            <v-icon>mdi-bitcoin</v-icon>
-          </template>
-        </form-text-field>
+        <p v-if="selectAddress" class="invoice-form__indent mb-8">
+          <span class="invoice-form__indent-title">Wallet balance:</span>
+          <span>{{ selectAddress }}</span>
+        </p>
 
         <form-selector
-          v-else
+          v-if="!address"
+          v-model="selectAddress"
           :items="wallets"
           item-text="address"
           item-value="address"
@@ -126,6 +126,10 @@ export default {
     value: {
       type: Boolean,
       default: false
+    },
+    address: {
+      type: String,
+      default: ''
     }
   },
   data() {
@@ -152,9 +156,6 @@ export default {
         const quantity = this.type.id !== 1 ? el.quantity : 1
         return summ + +el.amount * quantity
       }, 0)
-    },
-    address() {
-      return this.$route.params.walletAddress
     }
   },
   created() {
@@ -260,6 +261,18 @@ export default {
     span {
       font-size: $--font-size-medium;
     }
+  }
+  &__indent {
+    width: 100%;
+    margin: 8px;
+    color: $--black;
+    font-size: $--font-size-medium;
+    span {
+      display: block;
+    }
+  }
+  &__indent-title {
+    color: $--grey;
   }
   &__amount {
     display: flex;
