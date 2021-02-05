@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import SliderFee from './SliderFee.vue'
+import SliderFee from '../SliderFee.vue'
 
 export default {
   name: 'EditFee',

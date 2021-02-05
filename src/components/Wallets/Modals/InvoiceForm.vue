@@ -111,9 +111,9 @@ import { INVOICE_PREVIEW } from '@/store/modules/Modals/names'
 import { ADD_MODAL } from '@/store/modules/Modals'
 
 import { mapMutations } from 'vuex'
-import FormWrapper from '../FormWrapper.vue'
-import FormTextField from '../FormTextField.vue'
-import FormSelector from '../FormSelector.vue'
+import FormWrapper from '../../FormWrapper.vue'
+import FormTextField from '../../FormTextField.vue'
+import FormSelector from '../../FormSelector.vue'
 
 export default {
   name: 'InvoiceForm',

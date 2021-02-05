@@ -21,7 +21,9 @@ const CopyMenu = () => import(/* webpackChunkName: "CopyMenu" */ './CopyMenu.vue
 const InvoiceForm = () => import(/* webpackChunkName: "InvoiceForm" */ './InvoiceForm.vue')
 const InvoicePreview = () => import(/* webpackChunkName: "InvoicePreview" */ './InvoicePreview.vue')
 const SendForm = () => import(/* webpackChunkName: "SendForm" */ './SendForm.vue')
+const SendPreview = () => import(/* webpackChunkName: "SendPreview" */ './SendPreview.vue')
 const EditFee = () => import(/* webpackChunkName: "EditFee" */ './EditFee.vue')
+const ShareModal = () => import(/* webpackChunkName: "ShareModal" */ './ShareModal.vue')
 
 export default {
   name: 'AllModalsWallet',
@@ -30,7 +32,9 @@ export default {
     InvoiceForm,
     InvoicePreview,
     SendForm,
-    EditFee
+    SendPreview,
+    EditFee,
+    ShareModal
   },
   computed: {
     modals() {

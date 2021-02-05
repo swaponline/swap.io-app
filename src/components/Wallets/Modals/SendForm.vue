@@ -117,10 +117,10 @@ import { ADD_MODAL } from '@/store/modules/Modals'
 import { EDIT_FEE, SEND_PREVIEW } from '@/store/modules/Modals/names'
 
 import { mapMutations } from 'vuex'
-import FormWrapper from '../FormWrapper.vue'
-import FormTextField from '../FormTextField.vue'
-import FormSelector from '../FormSelector.vue'
-import SliderFee from './SliderFee.vue'
+import FormWrapper from '../../FormWrapper.vue'
+import FormTextField from '../../FormTextField.vue'
+import FormSelector from '../../FormSelector.vue'
+import SliderFee from '../SliderFee.vue'
 
 export default {
   name: 'SendForm',
