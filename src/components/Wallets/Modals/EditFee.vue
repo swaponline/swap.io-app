@@ -15,6 +15,9 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+import { EDIT_FEE } from '@/store/modules/Transactions'
+
 import SliderFee from '../SliderFee.vue'
 
 export default {
@@ -33,10 +36,6 @@ export default {
       type: Number,
       default: 0
     },
-    action: {
-      type: Function,
-      default() {}
-    },
     fee: {
       type: Number,
       default: 0
@@ -48,11 +47,14 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      actionEditFee: EDIT_FEE
+    }),
     close() {
       this.$emit('close')
     },
     submit() {
-      this.action(this.commission)
+      this.actionEditFee(this.commission)
       this.close()
     }
   }
