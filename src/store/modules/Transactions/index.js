@@ -1,14 +1,18 @@
 import Transaction from '@/api/swap.json'
-import { SET_LIST } from '@/store/common/mutations.types'
+import { SET_LIST, UPDATE_MODEL } from '@/store/common/mutations.types'
 import { getDate } from '@/utils/date'
 
 export const MODULE_NAME = 'Transactions'
 
 export const GET_TRANSACTIONS = 'GET_TRANSACTIONS'
+export const EDIT_FEE = 'EDIT_FEE'
 
 export default {
   state: {
-    list: []
+    list: [],
+    model: {
+      fee: 0
+    }
   },
   getters: {
     /**
@@ -41,6 +45,14 @@ export default {
     [GET_TRANSACTIONS]({ commit }) {
       const list = Transaction.sort((a, b) => b.timestamp - a.timestamp)
       commit(SET_LIST, { name: MODULE_NAME, list })
+    },
+    [EDIT_FEE]({ commit }, fee) {
+      commit(UPDATE_MODEL, {
+        name: MODULE_NAME,
+        model: {
+          fee
+        }
+      })
     }
   }
 }
