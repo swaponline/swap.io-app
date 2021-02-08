@@ -28,7 +28,7 @@
 <script>
 import { INVOICE_FORM, SEND_FORM } from '@/store/modules/Modals/names'
 import { ADD_MODAL } from '@/store/modules/Modals'
-import { mapActions } from 'vuex'
+import { mapMutations } from 'vuex'
 
 export default {
   name: 'MainActions',
@@ -38,7 +38,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions({
+    ...mapMutations({
       mutationAddModal: ADD_MODAL
     }),
     openInvoiceBlock() {

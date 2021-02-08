@@ -15,16 +15,6 @@ export default [
             path: '/wallet/:walletAddress?',
             name: 'Wallet',
             component: () => import(/* webpackChunkName: 'Wallet' */ '@/views/Wallets/Wallet.vue')
-          },
-          {
-            path: '/invoice/:walletAddress?',
-            name: 'Invoice',
-            component: () => import(/* webpackChunkName: 'Wallet' */ '@/components/Wallets/InvoiceBlock.vue')
-          },
-          {
-            path: '/send/:walletAddress?',
-            name: 'Send',
-            component: () => import(/* webpackChunkName: 'Wallet' */ '@/components/Wallets/SendForm.vue')
           }
         ]
       },

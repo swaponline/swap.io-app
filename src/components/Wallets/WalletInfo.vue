@@ -1,6 +1,6 @@
 <template>
   <div class="wallet-info" :class="compressed ? 'wallet-info--compressed' : ''" @click="uncompressWallet">
-    <svg-icon class="wallet-info__background-icon" name="background-btc"></svg-icon>
+    <svg-icon class="wallet-info__background-icon" :name="backgroundIconName"></svg-icon>
     <div class="wallet-info__optional-buttons">
       <v-btn icon class="wallet-info__optional-button">
         <svg-icon name="share" class="wallet-info__icon"></svg-icon>
@@ -19,7 +19,7 @@
       <v-tooltip v-model="copyTooltip.value" top :open-on-hover="false" class="wallet-info__tooltip">
         <template #activator="{ on }">
           <button class="wallet-info__button-copy" tabindex="-1" @click="copy">
-            <span class="wallet-info__address">1C9Uae6kyDtPo4ykzd5AJaLzLEZSpEbP3y</span>
+            <span class="wallet-info__address">{{ address }}</span>
             <svg-icon class="wallet-info__icon-copy" name="copy" v-on="on"></svg-icon>
           </button>
         </template>
@@ -50,6 +50,22 @@ export default {
     compressed: {
       type: Boolean,
       default: false
+    },
+    address: {
+      type: String,
+      required: true
+    },
+    name: {
+      type: String,
+      default: ''
+    },
+    value: {
+      type: Number,
+      default: 0
+    },
+    nameCurrency: {
+      type: String,
+      default: ''
     }
   },
   data() {
@@ -63,6 +79,9 @@ export default {
   computed: {
     walletAddress() {
       return this.$route.params.walletAddress
+    },
+    backgroundIconName() {
+      return `background-${this.nameCurrency.toLowerCase()}`
     }
   },
   beforeDestroy() {

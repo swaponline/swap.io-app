@@ -7,13 +7,18 @@
           <v-btn icon @click="close"><v-icon>mdi-close</v-icon></v-btn>
         </h3>
 
-        <form-text-field v-if="address" :value="address" disabled label="Your wallet">
-          <template #append>
-            <v-icon>mdi-bitcoin</v-icon>
-          </template>
-        </form-text-field>
+        <p v-if="selectAddress" class="send-form__indent">
+          <span class="send-form__indent-title">Wallet ID:</span>
+          <span>{{ selectAddress }}</span>
+        </p>
+
+        <p v-if="selectAddress" class="send-form__indent mb-8">
+          <span class="send-form__indent-title">Wallet balance:</span>
+          <span>39 BTC</span>
+        </p>
+
         <form-selector
-          v-else
+          v-if="!address"
           v-model="selectAddress"
           :items="wallets"
           item-text="address"
@@ -22,18 +27,6 @@
           outlined
         >
         </form-selector>
-
-        <h3 class="send-form__subtitle">
-          <span>Balance: 2312 BTC</span>
-        </h3>
-
-        <form-text-field
-          v-if="feeEdit"
-          v-model="commission"
-          :hint="'Рекомендуемая комиссия: ' + recommendedCommission"
-          label="Transition fee"
-        >
-        </form-text-field>
 
         <v-row v-if="multipleRecepients" class="send-form__row">
           <v-textarea
@@ -83,12 +76,20 @@
         <v-divider class="mx-2"></v-divider>
 
         <span class="send-form__results mt-6 mb-4">
-          <span>Transaction fee: </span>
-          <span class="send-form__fee">
-            <v-btn icon small @click="feeEdit = true">
+          <span class="mr-5 align-self-center">Transaction fee: </span>
+
+          <slider-fee v-if="editFee" v-model="fee" :recommended-fee="recommendedFee" v-bind="sliderParams"></slider-fee>
+
+          <span v-else class="send-form__fee">
+            <v-btn icon small @click="editFeeShow">
               <svg-icon class="send-form__edit-icon" name="edit"></svg-icon>
             </v-btn>
-            <span>${{ commission }}</span>
+            <v-tooltip top>
+              <template #activator="{on}">
+                <span v-on="on"> <span class="send-form__currency-name">USD </span>{{ fee }} </span>
+              </template>
+              <span>Recommended fee</span>
+            </v-tooltip>
           </span>
         </span>
       </v-row>
@@ -97,8 +98,8 @@
         <span class="send-form__results mb-6">
           <span>Total balance change: </span>
           <span class="send-form__amount">
-            <span class="send-form__currency-name">BTC</span> {{ recipient.amount }}
-            <span>~$21</span>
+            <span><span class="send-form__currency-name">BTC</span> {{ recipient.amount }}</span>
+            <span class="send-form__amount-fiat"><span class="send-form__currency-name">~USD</span> 21</span>
           </span>
         </span>
       </v-row>
@@ -112,50 +113,62 @@
 </template>
 
 <script>
-import FormWrapper from '../FormWrapper.vue'
-import FormTextField from '../FormTextField.vue'
-import FormSelector from '../FormSelector.vue'
+import { mapMutations } from 'vuex'
+import { ADD_MODAL } from '@/store/modules/Modals'
+import { EDIT_FEE, SEND_PREVIEW } from '@/store/modules/Modals/names'
+import { MODULE_NAME as TRANSACTIONS_MODULE } from '@/store/modules/Transactions'
+
+import FormWrapper from '../../FormWrapper.vue'
+import FormTextField from '../../FormTextField.vue'
+import FormSelector from '../../FormSelector.vue'
+import SliderFee from '../SliderFee.vue'
 
 export default {
   name: 'SendForm',
+  inject: ['mediaQueries'],
   components: {
     FormWrapper,
     FormTextField,
-    FormSelector
+    FormSelector,
+    SliderFee
+  },
+  props: {
+    address: {
+      type: String,
+      default: ''
+    }
   },
   data() {
     return {
-      commission: 0.545,
-      recommendedCommission: 0.545,
-      recipient: [{ wallet: null, amount: null }],
+      sliderParams: {
+        min: 0.1,
+        max: 1,
+        step: 0.001
+      },
+      fee: 0.545,
+      recommendedFee: 0.545,
+      recipient: { wallet: null, amount: null },
       multipleRecepients: false,
-      feeEdit: false,
+      editFee: false,
       listRecipient: '',
       selectAddress: null
     }
   },
-  beforeRouteLeave(to, from, next) {
-    Object.assign(to.meta, { back: true })
-    next()
-  },
   computed: {
+    storeFee() {
+      return this.$store.state[TRANSACTIONS_MODULE].model
+    },
     wallets() {
       return this.$store.getters.siblingList
     },
-    address() {
-      return this.$route.params.walletAddress
-    },
-    siblingList() {
-      return this.$store.getters.siblingList
-    },
     currentWallet() {
-      if (this.address && this.siblingList) {
-        return this.siblingList.find(el => el.address === this.address)
+      if (this.address && this.wallets) {
+        return this.wallets.find(el => el.address === this.address)
       }
       return {}
     },
     maxAmount() {
-      return (this.currentWallet.value * 10 ** 18 - this.commission * 10 ** 18) / 10 ** 18
+      return (this.currentWallet.value * 10 ** 18 - this.fee * 10 ** 18) / 10 ** 18
     },
     regexpSumm() {
       const field = `${this.listRecipient} `
@@ -166,15 +179,48 @@ export default {
       }, 0)
     }
   },
+  watch: {
+    storeFee: {
+      handler(val) {
+        this.fee = val
+      }
+    }
+  },
   created() {
     this.selectAddress = this.address
   },
   methods: {
+    ...mapMutations({
+      mutationAddModal: ADD_MODAL
+    }),
     submit() {
-      this.close()
+      this.mutationAddModal({
+        name: SEND_PREVIEW,
+        info: {
+          fee: this.fee,
+          recipient: this.recipient,
+          listRecipient: this.listRecipient,
+          address: this.selectAddress,
+          multipleRecepients: this.multipleRecepients
+        }
+      })
     },
     close() {
       this.$emit('close')
+    },
+    editFeeShow() {
+      if (!this.mediaQueries.desktop) {
+        this.mutationAddModal({
+          name: EDIT_FEE,
+          info: {
+            sliderParams: this.sliderParams,
+            recommendedFee: this.recommendedFee,
+            fee: this.fee
+          }
+        })
+      } else {
+        this.editFee = true
+      }
     }
   }
 }
@@ -216,6 +262,18 @@ export default {
     font-weight: $--font-weight-semi-bold;
     font-size: $--font-size-small-subtitle;
   }
+  &__indent {
+    width: 100%;
+    margin: 8px;
+    color: $--black;
+    font-size: $--font-size-medium;
+    span {
+      display: block;
+    }
+  }
+  &__indent-title {
+    color: $--grey;
+  }
   &__long-field {
     flex-grow: 0;
     width: 65%;
@@ -253,8 +311,9 @@ export default {
     flex-grow: 0;
     margin: 0 8px 35px;
     width: calc(100% - 16px);
-    span {
+    :last-child {
       font-size: $--font-size-medium;
+      line-height: 16px;
     }
   }
   &__edit-icon {
@@ -279,10 +338,10 @@ export default {
     display: inline-flex;
     flex-direction: column;
     align-items: flex-end;
-    span {
-      font-size: $--font-size-small;
-      line-height: 16px;
-    }
+  }
+  &__amount-fiat {
+    font-size: $--font-size-small;
+    line-height: 16px;
   }
   &__button {
     width: calc(50% - 16px);

@@ -81,7 +81,6 @@ export default {
 
 <style lang="scss">
 .profile-list {
-  width: auto;
   display: flex;
   overflow: visible;
   max-height: 80px;
@@ -89,6 +88,7 @@ export default {
   min-width: 150px;
 
   @include tablet {
+    width: auto;
     margin: 20px 40px;
   }
   @include phone {

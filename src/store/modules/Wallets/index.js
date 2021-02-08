@@ -1,5 +1,4 @@
 import { SET_MODEL, SET_LIST } from '@/store/common/mutations.types'
-import { pickCommonMutations } from '@/store/common/mutations'
 
 export const MODULE_NAME = 'Wallets'
 export const SET_ACCOUNT_ID = 'SET_ACCOUNT_ID'
@@ -18,11 +17,13 @@ export default {
         name: 'Vasilii',
         list: [
           {
-            name: 'BTC',
+            nameCurrency: 'BTC',
+            name: 'my Wallet',
             value: 0.056734,
             icon: 'btc',
             subWallets: [
               {
+                nameCurrency: 'BTC',
                 name: 'Default',
                 value: 0.056734,
                 address: '1C9Uae6kyDtPo4ykzd5AJaLzLEZSpEbP3y'
@@ -30,20 +31,24 @@ export default {
             ]
           },
           {
-            name: 'ETH',
+            nameCurrency: 'ETH',
+            name: 'my multisig',
             value: 43.0561,
             subWallets: [
               {
+                nameCurrency: 'ETH',
                 name: 'Default',
                 value: 40.0561,
                 address: '0xd19615f2Eab2ABfBF7ca16618b5eD43386374DD0'
               },
               {
+                nameCurrency: 'ETH',
                 name: 'Swaps',
                 value: 3.0,
                 address: '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D'
               },
               {
+                nameCurrency: 'ETH',
                 name: 'Expenses',
                 value: 0.0,
                 address: '0x7a250d5630B4cF539739dF2C5dAcb4c659F24882'
@@ -51,10 +56,11 @@ export default {
             ]
           },
           {
-            name: 'USDT',
+            nameCurrency: 'USDT',
             value: 100.1,
             subWallets: [
               {
+                nameCurrency: 'USDT',
                 name: 'Default',
                 value: 100.1,
                 address: 'GUzPzmRhx5VgsYH3vZjGjLgtFQMHkJzyHU'
@@ -68,10 +74,11 @@ export default {
         name: 'Corporat',
         list: [
           {
-            name: 'ETH',
+            nameCurrency: 'ETH',
             value: 43.0561,
             subWallets: [
               {
+                nameCurrency: 'ETH',
                 name: 'Default',
                 value: 40.0561,
                 address: '0xd19615f2Eab2ABfBF7ca16618b5eD43386374DD0'
@@ -104,11 +111,11 @@ export default {
   actions: {
     [GET_ACCOUNT_ID]({ state, commit }) {
       const accountId = window.localStorage.getItem('accountId') || state.list[0].id
-      commit(SET_MODEL, { model: { accountId } })
+      commit(SET_MODEL, { name: MODULE_NAME, model: { accountId } })
     },
     [SET_ACCOUNT_ID]({ commit }, accountId) {
       window.localStorage.setItem('accountId', accountId)
-      commit(SET_MODEL, { model: { accountId } })
+      commit(SET_MODEL, { name: MODULE_NAME, model: { accountId } })
     },
     [CREATE_NEW_WALLET]({ state, commit, getters }, wallet) {
       const user = getters.currentAccount
@@ -137,7 +144,7 @@ export default {
         user.list.push(newWallet)
       }
 
-      commit(SET_LIST, { list: [...state.list] })
+      commit(SET_LIST, { name: MODULE_NAME, list: [...state.list] })
       window.localStorage.setItem('list', JSON.stringify(state.list))
     },
     [CREATE_NEW_USER]({ state, commit }, user) {
@@ -146,14 +153,11 @@ export default {
         name: user.name,
         list: []
       }
-      commit(SET_LIST, { list: [...state.list, newUser] })
+      commit(SET_LIST, { name: MODULE_NAME, list: [...state.list, newUser] })
       window.localStorage.setItem('list', JSON.stringify(state.list))
 
-      commit(SET_MODEL, { model: { accountId: `${user.id}` } })
+      commit(SET_MODEL, { name: MODULE_NAME, model: { accountId: `${user.id}` } })
       window.localStorage.setItem('accountId', `${user.id}`)
     }
-  },
-  mutations: {
-    ...pickCommonMutations([SET_MODEL])
   }
 }

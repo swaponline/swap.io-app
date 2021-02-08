@@ -95,7 +95,7 @@ import copy from '@/utils/copy'
 import { mapMutations } from 'vuex'
 import { ADD_MODAL } from '@/store/modules/Modals'
 import { COPY_MENU } from '@/store/modules/Modals/names'
-import FormWrapper from '../FormWrapper.vue'
+import FormWrapper from '../../FormWrapper.vue'
 
 export default {
   name: 'InvoicePreview',
