@@ -1,71 +1,58 @@
 <template>
-  <v-expansion-panel class="item-transaction my-0">
-    <v-expansion-panel-header class="item-transaction__header px-1">
-      <div class="item-transaction__time">
-        <v-icon
-          class="item-transaction__icon lighten-1"
-          background="white"
-          :class="{
-            'item-transaction__icon--send': !isReceived
-          }"
-        >
-          mdi-arrow-bottom-left
-        </v-icon>
-        <span>{{ `${hours}:${minutes}` }}</span>
-      </div>
-      <div class="item-transaction__main-info">
-        <transaction-description v-model="comment"></transaction-description>
-        <span>CONFIRMED</span>
-      </div>
-      <div
-        class="item-transaction__value"
+  <v-card flat class="d-flex justify-space-between item-transaction" @click="openTransactionDetailsModal">
+    <div class="item-transaction__time">
+      <v-icon
+        class="item-transaction__icon lighten-1"
+        background="white"
         :class="{
-          'item-transaction__value--send': !isReceived
+          'item-transaction__icon--send': !isReceived
         }"
       >
-        <v-tooltip top>
-          <template v-slot:activator="{ on }">
-            <span v-on="on">
-              {{ computedValue }}
-            </span>
-          </template>
-          <span>Balance change</span>
-        </v-tooltip>
-        <v-tooltip top>
-          <template v-slot:activator="{ on }">
-            <span class="item-transaction__value-in-usd" v-on="on">~${{ valueInUsd }}</span>
-          </template>
-          <span> USD Equivalent of transaction amount @ {{ rateValue.toFixed(2) }} USD/ETH)</span>
-        </v-tooltip>
-      </div>
-      <div class="item-transaction__amount">
-        <v-tooltip top>
-          <template v-slot:activator="{ on }">
-            <span class="item-transaction__balance-value" v-on="on">{{ currentBalance }}</span>
-          </template>
-          <span>Balance after transaction</span>
-        </v-tooltip>
-      </div>
-    </v-expansion-panel-header>
-
-    <v-expansion-panel-content class="item-transaction__expansion">
-      <div class="text-left">
-        <span class="d-block">Transaction fee: {{ transactionFee }}</span>
-        <span class="item-transaction__hash">Hash: {{ hash }}</span>
-        <h3 class="d-block">Entries:</h3>
-        <span v-for="(entry, i) in entries.filter(el => !el.label)" :key="i" class="d-flex justify-space-between">
-          <span>
-            <span>{{ entry.value > 0 ? 'to: ' : 'from: ' }}</span>
-            <span>{{ entry.wallet }}</span>
+        mdi-arrow-bottom-left
+      </v-icon>
+      <span>{{ `${hours}:${minutes}` }}</span>
+    </div>
+    <div class="item-transaction__main-info">
+      <transaction-description v-model="comment"></transaction-description>
+      <span>CONFIRMED</span>
+    </div>
+    <div
+      class="item-transaction__value"
+      :class="{
+        'item-transaction__value--send': !isReceived
+      }"
+    >
+      <v-tooltip top>
+        <template v-slot:activator="{ on }">
+          <span v-on="on">
+            {{ computedValue }}
           </span>
-          <span class="item-transaction__entry-value">{{ (entry.value / 10 ** decimal).toFixed(currentDecimal) }}</span>
-        </span>
-      </div>
-    </v-expansion-panel-content>
-  </v-expansion-panel>
+        </template>
+        <span>Balance change</span>
+      </v-tooltip>
+      <v-tooltip top>
+        <template v-slot:activator="{ on }">
+          <span class="item-transaction__value-in-usd" v-on="on">~${{ valueInUsd }}</span>
+        </template>
+        <span> USD Equivalent of transaction amount @ {{ rateValue.toFixed(2) }} USD/ETH)</span>
+      </v-tooltip>
+    </div>
+    <div class="item-transaction__amount">
+      <v-tooltip top>
+        <template v-slot:activator="{ on }">
+          <span class="item-transaction__balance-value" v-on="on">{{ currentBalance }}</span>
+        </template>
+        <span>Balance after transaction</span>
+      </v-tooltip>
+    </div>
+  </v-card>
 </template>
 
 <script>
+import { ADD_MODAL } from '@/store/modules/Modals'
+import { TRANSACTION_DETAILS } from '@/store/modules/Modals/names'
+import { mapMutations } from 'vuex'
+
 import TransactionDescription from './TransactionDescription.vue'
 
 export default {
@@ -172,14 +159,26 @@ export default {
   },
   mounted() {
     this.comment = this.description || this.isReceived ? `From: ${this.from}` : `To: ${this.to}`
+  },
+  methods: {
+    ...mapMutations({
+      mutationAddModal: ADD_MODAL
+    }),
+    // мб перенесем выше в родительский компонент чтобы данные было проще прокинуть
+    openTransactionDetailsModal() {
+      this.mutationAddModal({
+        name: TRANSACTION_DETAILS
+      })
+    }
   }
 }
 </script>
 
 <style lang="scss">
 .item-transaction {
-  border-bottom: 1px solid rgba($color: $--black, $alpha: 0.05);
-  border-top: 1px solid rgba($color: $--black, $alpha: 0.05);
+  border-bottom: 1px solid rgba($color: $--black, $alpha: 0.05) !important;
+  border-top: 1px solid rgba($color: $--black, $alpha: 0.05) !important;
+  padding: 20px 0;
   margin: 0 20px;
   &:after {
     display: none;
@@ -203,6 +202,7 @@ export default {
   }
   &__main-info {
     display: flex;
+    flex-grow: 1;
     flex-direction: column;
     justify-content: center;
     padding: 0 10px;

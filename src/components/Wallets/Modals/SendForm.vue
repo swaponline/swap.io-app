@@ -1,5 +1,5 @@
 <template>
-  <form-wrapper value persistent class="send-form" @input="close">
+  <modal-wrapper value persistent class="send-form" @input="close">
     <form class="send-form__form" @submit.prevent="submit">
       <v-row>
         <h3 class="send-form__subtitle">
@@ -109,7 +109,7 @@
         <v-btn class="send-form__button" depressed type="submit">Send</v-btn>
       </v-row>
     </form>
-  </form-wrapper>
+  </modal-wrapper>
 </template>
 
 <script>
@@ -118,7 +118,7 @@ import { ADD_MODAL } from '@/store/modules/Modals'
 import { EDIT_FEE, SEND_PREVIEW } from '@/store/modules/Modals/names'
 import { MODULE_NAME as TRANSACTIONS_MODULE } from '@/store/modules/Transactions'
 
-import FormWrapper from '../../FormWrapper.vue'
+import ModalWrapper from '../../ModalWrapper.vue'
 import FormTextField from '../../FormTextField.vue'
 import FormSelector from '../../FormSelector.vue'
 import SliderFee from '../SliderFee.vue'
@@ -127,7 +127,7 @@ export default {
   name: 'SendForm',
   inject: ['mediaQueries'],
   components: {
-    FormWrapper,
+    ModalWrapper,
     FormTextField,
     FormSelector,
     SliderFee

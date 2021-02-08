@@ -24,6 +24,7 @@ const SendForm = () => import(/* webpackChunkName: "SendForm" */ './SendForm.vue
 const SendPreview = () => import(/* webpackChunkName: "SendPreview" */ './SendPreview.vue')
 const EditFee = () => import(/* webpackChunkName: "EditFee" */ './EditFee.vue')
 const ShareModal = () => import(/* webpackChunkName: "ShareModal" */ './ShareModal.vue')
+const TransactionDetails = () => import(/* webpackChunkName: "TransactionDetails" */ './TransactionDetails.vue')
 
 export default {
   name: 'AllModalsWallet',
@@ -34,7 +35,8 @@ export default {
     SendForm,
     SendPreview,
     EditFee,
-    ShareModal
+    ShareModal,
+    TransactionDetails
   },
   computed: {
     modals() {

@@ -1,5 +1,5 @@
 <template>
-  <form-wrapper value persistent class="send-preview" @input="close">
+  <modal-wrapper value persistent class="send-preview" @input="close">
     <div class="send-preview__inner">
       <header class="send-preview__title">
         <v-btn color="black" icon @click="close">
@@ -19,7 +19,7 @@
       </p>
 
       <span class="send-preview__results mt-6 mb-4">
-        <span class="mr-5 align-self-center">Transaction fee: </span>
+        <span class="mr-5">Transaction fee: </span>
         <span class="send-preview__fee">
           <span><span class="send-preview__currency-name">USD </span>{{ fee }}</span>
         </span>
@@ -29,16 +29,16 @@
         <v-btn class="send-preview__button" depressed @click="confirm">Confirm</v-btn>
       </v-row>
     </div>
-  </form-wrapper>
+  </modal-wrapper>
 </template>
 
 <script>
-import FormWrapper from '../../FormWrapper.vue'
+import ModalWrapper from '../../ModalWrapper.vue'
 
 export default {
   name: 'SendPreview',
   components: {
-    FormWrapper
+    ModalWrapper
   },
   props: {
     address: {
@@ -104,6 +104,7 @@ export default {
   &__results {
     display: flex;
     justify-content: space-between;
+    align-items: flex-start;
     width: 100%;
     padding: 0 8px;
     flex-grow: 1;

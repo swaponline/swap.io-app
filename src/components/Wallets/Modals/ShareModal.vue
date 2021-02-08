@@ -1,5 +1,5 @@
 <template>
-  <form-wrapper value class="share-modal" @input="close">
+  <modal-wrapper value class="share-modal" @input="close">
     <div class="share-modal__inner">
       <h3 class="share-modal__subtitle">
         <span>Share</span>
@@ -48,19 +48,19 @@
         </v-tooltip>
       </p>
     </div>
-  </form-wrapper>
+  </modal-wrapper>
 </template>
 
 <script>
 import Copy from '@/utils/copy'
 
 import SvgIcon from '@/components/SvgIcon.vue'
-import FormWrapper from '../../FormWrapper.vue'
+import ModalWrapper from '../../ModalWrapper.vue'
 
 export default {
   name: 'ShareModal',
   components: {
-    FormWrapper,
+    ModalWrapper,
     SvgIcon
   },
   props: {

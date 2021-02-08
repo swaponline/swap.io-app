@@ -2,7 +2,7 @@
   <v-dialog
     :value="value"
     v-bind="$attrs"
-    content-class="form-wrapper"
+    content-class="modal-wrapper"
     transition="slide-x-reverse-transition"
     v-on="$listeners"
   >
@@ -12,7 +12,7 @@
 
 <script>
 export default {
-  name: 'FormWrapper',
+  name: 'ModalWrapper',
   inheritAttrs: false,
   props: {
     value: {
@@ -24,7 +24,7 @@ export default {
 </script>
 
 <style lang="scss">
-.form-wrapper {
+.modal-wrapper {
   position: relative;
   height: 100%;
   max-height: calc(var(--vh, 1vh) * 100) !important;
