@@ -1,9 +1,8 @@
 import Transaction from '@/api/swap.json'
 import { SET_LIST } from '@/store/common/mutations.types'
-import { pickCommonMutations } from '@/store/common/mutations'
 import { getDate } from '@/utils/date'
 
-export const MODULE_NAME = 'Transaction'
+export const MODULE_NAME = 'Transactions'
 
 export const GET_TRANSACTIONS = 'GET_TRANSACTIONS'
 
@@ -41,10 +40,7 @@ export default {
   actions: {
     [GET_TRANSACTIONS]({ commit }) {
       const list = Transaction.sort((a, b) => b.timestamp - a.timestamp)
-      commit(SET_LIST, { list })
+      commit(SET_LIST, { name: MODULE_NAME, list })
     }
-  },
-  mutations: {
-    ...pickCommonMutations([SET_LIST])
   }
 }

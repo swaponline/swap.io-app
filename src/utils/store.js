@@ -1,6 +1,6 @@
 import * as type from '@/store/common/mutations.types'
 
-function throwError(commit, title, message) {
+export function throwError(commit, title, message) {
   return error => {
     const status = error && error.response ? error.response.status : 0
     const payload = {
@@ -15,4 +15,24 @@ function throwError(commit, title, message) {
   }
 }
 
-export default throwError
+export function getStateProperty(state, ref) {
+  if (!ref) {
+    throw Error(`State ref empty: ${ref}`)
+  }
+
+  const path = Array.isArray(ref) ? ref : ref.split('.')
+  let property = state
+
+  // eslint-disable-next-line no-constant-condition
+  while (true) {
+    const propKey = path.shift()
+    if (!propKey || !property[propKey]) break
+    property = property[propKey]
+  }
+
+  if (property === state) {
+    throw Error(`State property not found: ${ref}`)
+  }
+
+  return property
+}

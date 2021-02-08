@@ -1,42 +1,45 @@
-import * as type from '@/store/common/mutations.types'
+import Vue from 'vue'
+import { getStateProperty } from '@/utils/store'
+import * as _ from './mutations.types'
 
-const mutationsMap = {
-  [type.LOADING]: state => {
-    state.loading = true
+export default {
+  [_.SET_ERROR]: (state, error) => {
+    state.error = error
   },
-  [type.LOADED]: state => {
-    state.loading = false
+  [_.LOADING]: (state, name) => {
+    const property = getStateProperty(state, name)
+    property.loading = true
   },
-  [type.SET_MODEL]: (state, { model }) => {
-    state.model = model
+  [_.LOADED]: (state, name) => {
+    const property = getStateProperty(state, name)
+    property.loading = false
   },
-  [type.UPDATE_MODEL]: (state, { model }) => {
-    state.model = { ...state.model, ...model }
+  [_.SET_MODEL]: (state, { name, model }) => {
+    const property = getStateProperty(state, name)
+    Vue.set(property, 'model', model)
   },
-  [type.SET_ERROR]: (state, errors) => {
-    state.error = errors
+  [_.UPDATE_MODEL]: (state, { name, model }) => {
+    const property = getStateProperty(state, name)
+    property.model = { ...property.model, ...model }
   },
-  [type.SET_LIST]: (state, { list }) => {
-    state.list = list
+  [_.SET_LIST]: (state, { name, list }) => {
+    const property = getStateProperty(state, name)
+    Vue.set(property, 'list', list)
   },
-  [type.SET_PARAMS]: (state, { params }) => {
-    state.params = params
+  [_.ADD_LIST_ITEMS]: (state, { name, list }) => {
+    const property = getStateProperty(state, name)
+    property.list = property.list.concat(list)
   },
-  [type.UPDATE_PARAMS]: (state, { params }) => {
-    state.params = { ...state.params, ...params }
+  [_.UPDATE_LIST_ITEM]: (state, { name, index, value }) => {
+    const property = getStateProperty(state, name)
+    Object.assign(property.list[index], value)
+  },
+  [_.SET_PARAMS]: (state, { name, params }) => {
+    const property = getStateProperty(state, name)
+    Vue.set(property, 'params', params)
+  },
+  [_.UPDATE_PARAMS]: (state, { name, params }) => {
+    const property = getStateProperty(state, name)
+    property.params = { ...property.params, ...params }
   }
 }
-
-export function pickCommonMutations(mutationNames) {
-  return mutationNames.reduce((mutations, mutationName) => {
-    if (mutationsMap[mutationName]) {
-      return {
-        ...mutations,
-        [mutationName]: mutationsMap[mutationName]
-      }
-    }
-    return mutations
-  }, {})
-}
-
-export default { pickCommonMutations }

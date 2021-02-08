@@ -1,5 +1,4 @@
 import { SET_MODEL, SET_LIST } from '@/store/common/mutations.types'
-import { pickCommonMutations } from '@/store/common/mutations'
 
 export const MODULE_NAME = 'Wallets'
 export const SET_ACCOUNT_ID = 'SET_ACCOUNT_ID'
@@ -112,11 +111,11 @@ export default {
   actions: {
     [GET_ACCOUNT_ID]({ state, commit }) {
       const accountId = window.localStorage.getItem('accountId') || state.list[0].id
-      commit(SET_MODEL, { model: { accountId } })
+      commit(SET_MODEL, { name: MODULE_NAME, model: { accountId } })
     },
     [SET_ACCOUNT_ID]({ commit }, accountId) {
       window.localStorage.setItem('accountId', accountId)
-      commit(SET_MODEL, { model: { accountId } })
+      commit(SET_MODEL, { name: MODULE_NAME, model: { accountId } })
     },
     [CREATE_NEW_WALLET]({ state, commit, getters }, wallet) {
       const user = getters.currentAccount
@@ -145,7 +144,7 @@ export default {
         user.list.push(newWallet)
       }
 
-      commit(SET_LIST, { list: [...state.list] })
+      commit(SET_LIST, { name: MODULE_NAME, list: [...state.list] })
       window.localStorage.setItem('list', JSON.stringify(state.list))
     },
     [CREATE_NEW_USER]({ state, commit }, user) {
@@ -154,14 +153,11 @@ export default {
         name: user.name,
         list: []
       }
-      commit(SET_LIST, { list: [...state.list, newUser] })
+      commit(SET_LIST, { name: MODULE_NAME, list: [...state.list, newUser] })
       window.localStorage.setItem('list', JSON.stringify(state.list))
 
-      commit(SET_MODEL, { model: { accountId: `${user.id}` } })
+      commit(SET_MODEL, { name: MODULE_NAME, model: { accountId: `${user.id}` } })
       window.localStorage.setItem('accountId', `${user.id}`)
     }
-  },
-  mutations: {
-    ...pickCommonMutations([SET_MODEL])
   }
 }
