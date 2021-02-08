@@ -1,5 +1,5 @@
 <template>
-  <form-wrapper :value="value" persistent class="invoice-form" @input="close">
+  <modal-wrapper :value="value" persistent class="invoice-form" @input="close">
     <form class="invoice-form__form" @submit.prevent="preview">
       <v-row>
         <h3 class="invoice-form__subtitle">
@@ -103,7 +103,7 @@
         <v-btn class="invoice-form__button" depressed type="submit">Confirm</v-btn>
       </v-row>
     </form>
-  </form-wrapper>
+  </modal-wrapper>
 </template>
 
 <script>
@@ -111,14 +111,14 @@ import { INVOICE_PREVIEW } from '@/store/modules/Modals/names'
 import { ADD_MODAL } from '@/store/modules/Modals'
 
 import { mapMutations } from 'vuex'
-import FormWrapper from '../../FormWrapper.vue'
+import ModalWrapper from '../../ModalWrapper.vue'
 import FormTextField from '../../FormTextField.vue'
 import FormSelector from '../../FormSelector.vue'
 
 export default {
   name: 'InvoiceForm',
   components: {
-    FormWrapper,
+    ModalWrapper,
     FormTextField,
     FormSelector
   },

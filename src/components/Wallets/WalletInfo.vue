@@ -25,7 +25,7 @@
         </template>
         <span>Copied</span>
       </v-tooltip>
-      <button class="wallet-info__button-qrcode">
+      <button class="wallet-info__button-qrcode" @click="openShareModal">
         <svg-icon class="wallet-info__icon-qrcode" name="qrcode"></svg-icon>
       </button>
     </div>
@@ -41,7 +41,7 @@
 import copy from '@/utils/copy'
 import { mapMutations } from 'vuex'
 import { ADD_MODAL } from '@/store/modules/Modals'
-import { COPY_MENU, INVOICE_FORM, SEND_FORM } from '@/store/modules/Modals/names'
+import { COPY_MENU, INVOICE_FORM, SEND_FORM, SHARE_MODAL } from '@/store/modules/Modals/names'
 
 export default {
   name: 'WalletInfo',
@@ -118,6 +118,15 @@ export default {
         name: COPY_MENU,
         info: {
           address: this.walletAddress
+        }
+      })
+    },
+    openShareModal() {
+      this.mutationAddModal({
+        name: SHARE_MODAL,
+        info: {
+          type: 'wallet',
+          data: this.walletAddress
         }
       })
     },

@@ -1,5 +1,5 @@
 <template>
-  <form-wrapper value persistent class="invoice-preview" @input="close">
+  <modal-wrapper value persistent class="invoice-preview" @input="close">
     <div class="invoice-preview__inner">
       <header class="invoice-preview__title">
         <v-btn color="black" icon @click="close">
@@ -87,7 +87,7 @@
         <v-btn class="invoice-form__button" depressed type="submit" @click="closeInvoice">Confirm</v-btn>
       </v-row>
     </div>
-  </form-wrapper>
+  </modal-wrapper>
 </template>
 
 <script>
@@ -95,13 +95,13 @@ import copy from '@/utils/copy'
 import { mapMutations } from 'vuex'
 import { ADD_MODAL } from '@/store/modules/Modals'
 import { COPY_MENU } from '@/store/modules/Modals/names'
-import FormWrapper from '../../FormWrapper.vue'
+import ModalWrapper from '../../ModalWrapper.vue'
 
 export default {
   name: 'InvoicePreview',
   inject: ['mediaQueries'],
   components: {
-    FormWrapper
+    ModalWrapper
   },
   props: {
     type: {
