@@ -113,10 +113,11 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
 import { ADD_MODAL } from '@/store/modules/Modals'
 import { EDIT_FEE, SEND_PREVIEW } from '@/store/modules/Modals/names'
+import { MODULE_NAME as TRANSACTIONS_MODULE } from '@/store/modules/Transactions'
 
-import { mapMutations } from 'vuex'
 import FormWrapper from '../../FormWrapper.vue'
 import FormTextField from '../../FormTextField.vue'
 import FormSelector from '../../FormSelector.vue'
@@ -154,6 +155,9 @@ export default {
     }
   },
   computed: {
+    storeFee() {
+      return this.$store.state[TRANSACTIONS_MODULE].model
+    },
     wallets() {
       return this.$store.getters.siblingList
     },
@@ -164,7 +168,6 @@ export default {
       return {}
     },
     maxAmount() {
-      console.log((this.currentWallet.value * 10 ** 18 - this.fee * 10 ** 18) / 10 ** 18)
       return (this.currentWallet.value * 10 ** 18 - this.fee * 10 ** 18) / 10 ** 18
     },
     regexpSumm() {
@@ -174,6 +177,13 @@ export default {
         const amount = el[0].slice(1).trim()
         return acc + +amount
       }, 0)
+    }
+  },
+  watch: {
+    storeFee: {
+      handler(val) {
+        this.fee = val
+      }
     }
   },
   created() {
@@ -205,10 +215,7 @@ export default {
           info: {
             sliderParams: this.sliderParams,
             recommendedFee: this.recommendedFee,
-            fee: this.fee,
-            action: e => {
-              this.fee = e
-            }
+            fee: this.fee
           }
         })
       } else {
