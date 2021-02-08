@@ -38,7 +38,6 @@ export default {
   },
   computed: {
     modals() {
-      console.log(this.$store.state[MODALS_MODULE].modals)
       return this.$store.state[MODALS_MODULE].modals
     },
     info() {
