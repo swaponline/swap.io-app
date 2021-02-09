@@ -11,9 +11,8 @@
       </div>
 
       <div v-if="isSystemShared" class="share-modal__buttons">
-        <v-btn depressed class="share-modal__share-button" @click="systemShare">
-          Share
-        </v-btn>
+        <v-btn class="share-modal__button" depressed @click="close">Cancel</v-btn>
+        <v-btn class="share-modal__button" depressed @click="systemShare">Share</v-btn>
       </div>
 
       <div v-else class="share-modal__buttons">
@@ -179,6 +178,18 @@ export default {
     @include tablet {
       order: 4;
       margin: 30px 0;
+      margin-top: auto;
+    }
+  }
+  &__button {
+    width: calc(50% - 16px);
+    border-radius: 8px;
+    margin: auto 8px;
+    min-height: 52px;
+    text-transform: none;
+    font-weight: $--font-weight-bold;
+    span {
+      font-size: $--font-size-medium;
     }
   }
   &__social-button {
