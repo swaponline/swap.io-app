@@ -33,6 +33,9 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
+import { TOGGLE_MODAL } from '@/store/modules/Modals'
+
 import ModalWrapper from '../../ModalWrapper.vue'
 
 export default {
@@ -51,7 +54,11 @@ export default {
     }
   },
   methods: {
+    ...mapMutations({
+      mutationToggleModal: TOGGLE_MODAL
+    }),
     close() {
+      this.mutationToggleModal({ id: `send${this.address}`, show: true })
       this.$emit('close')
     },
     confirm() {

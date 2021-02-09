@@ -1,5 +1,5 @@
 <template>
-  <modal-wrapper value persistent class="send-form" @input="close">
+  <modal-wrapper :value="value" class="send-form" @input="hide">
     <form class="send-form__form" @submit.prevent="submit">
       <v-row>
         <h3 class="send-form__subtitle">
@@ -133,6 +133,10 @@ export default {
     SliderFee
   },
   props: {
+    value: {
+      type: Boolean,
+      required: true
+    },
     address: {
       type: String,
       default: ''
@@ -194,6 +198,7 @@ export default {
       mutationAddModal: ADD_MODAL
     }),
     submit() {
+      this.hide()
       this.mutationAddModal({
         name: SEND_PREVIEW,
         info: {
@@ -207,6 +212,9 @@ export default {
     },
     close() {
       this.$emit('close')
+    },
+    hide() {
+      this.$emit('toggle', false)
     },
     editFeeShow() {
       if (!this.mediaQueries.desktop) {

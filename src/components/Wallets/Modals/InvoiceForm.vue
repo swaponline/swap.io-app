@@ -1,6 +1,6 @@
 <template>
-  <modal-wrapper :value="value" persistent class="invoice-form" @input="close">
-    <form class="invoice-form__form" @submit.prevent="preview">
+  <modal-wrapper :value="value" class="invoice-form" @input="hide">
+    <form class="invoice-form__form" @submit.prevent="submit">
       <v-row>
         <h3 class="invoice-form__subtitle">
           <span>Invoice Form</span>
@@ -165,10 +165,14 @@ export default {
     ...mapMutations({
       mutationAddModal: ADD_MODAL
     }),
+    hide() {
+      this.$emit('toggle', false)
+    },
     close() {
       this.$emit('close')
     },
-    preview() {
+    submit() {
+      this.hide()
       this.mutationAddModal({
         name: INVOICE_PREVIEW,
         info: {

@@ -84,7 +84,7 @@
 
       <v-row class="mt-auto">
         <v-btn class="invoice-form__button" depressed type="button" @click="close">Cancel</v-btn>
-        <v-btn class="invoice-form__button" depressed type="submit" @click="closeInvoice">Confirm</v-btn>
+        <v-btn class="invoice-form__button" depressed type="submit" @click="confirm">Confirm</v-btn>
       </v-row>
     </div>
   </modal-wrapper>
@@ -93,7 +93,7 @@
 <script>
 import copy from '@/utils/copy'
 import { mapMutations } from 'vuex'
-import { ADD_MODAL } from '@/store/modules/Modals'
+import { ADD_MODAL, TOGGLE_MODAL } from '@/store/modules/Modals'
 import { COPY_MENU } from '@/store/modules/Modals/names'
 import ModalWrapper from '../../ModalWrapper.vue'
 
@@ -172,12 +172,14 @@ export default {
   },
   methods: {
     ...mapMutations({
-      mutationAddModal: ADD_MODAL
+      mutationAddModal: ADD_MODAL,
+      mutationToggleModal: TOGGLE_MODAL
     }),
     close() {
+      this.mutationToggleModal({ id: `invoice${this.address}`, show: true })
       this.$emit('close')
     },
-    closeInvoice() {
+    confirm() {
       this.$emit('close-all')
     },
     showFullWallet() {
