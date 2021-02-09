@@ -176,9 +176,10 @@ export default {
     border-top: 1px solid $--light-grey;
     border-bottom: 1px solid $--light-grey;
     @include tablet {
+      border-color: transparent;
       order: 4;
-      margin: 30px 0;
-      margin-top: auto;
+      padding: 0 0;
+      margin: auto 0 0;
     }
   }
   &__button {
