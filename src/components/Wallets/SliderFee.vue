@@ -29,6 +29,9 @@
       :value="value"
       hide-details
       single-line
+      :max="max"
+      :min="min"
+      :step="step"
       type="number"
       class="slider-fee__field"
       @input="$emit('input', $event)"
