@@ -24,7 +24,7 @@
 
       <form-indent v-if="status" title="Status" :text="status"> </form-indent>
 
-      <show-more-details :entries="entries"></show-more-details>
+      <show-more-details :entries="entries" :decimal="decimal" :current-decimal="currentDecimal"></show-more-details>
 
       <v-divider class="transaction-details__divider"></v-divider>
 
@@ -95,6 +95,14 @@ export default {
     fee: {
       type: [Number, String],
       required: true
+    },
+    decimal: {
+      type: Number,
+      default: 1
+    },
+    currentDecimal: {
+      type: Number,
+      default: 1
     },
     entries: {
       type: Array,

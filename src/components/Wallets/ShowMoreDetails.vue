@@ -8,7 +8,7 @@
         <div class="show-more-details__entries">
           <div v-for="(entry, index) in entries" :key="index" class="show-more-details__entry">
             <form-indent title="Wallet:" :text="entry.wallet"></form-indent>
-            <form-indent title="Value:" :text="entry.value + ' BTC'"></form-indent>
+            <form-indent title="Value:" :text="getValue(entry.value) + ' BTC'"></form-indent>
           </div>
         </div>
       </v-expansion-panel-content>
@@ -28,6 +28,22 @@ export default {
     entries: {
       type: Array,
       default: () => []
+    },
+    currentDecimal: {
+      type: Number,
+      default: 1
+    },
+    decimal: {
+      type: Number,
+      default: 1
+    }
+  },
+  created() {
+    console.log(this.currentDecimal)
+  },
+  methods: {
+    getValue(value) {
+      return (value * 10 ** (this.decimal * -1)).toFixed(this.currentDecimal)
     }
   }
 }

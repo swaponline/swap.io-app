@@ -171,7 +171,9 @@ export default {
         info: {
           hash: this.hash,
           fee: this.transactionFee,
-          entries: this.entries
+          entries: this.entries,
+          decimal: this.decimal,
+          currentDecimal: this.currentDecimal
         }
       })
     }
