@@ -43,11 +43,11 @@ export default {
     },
     confirmButtonLabel: {
       type: String,
-      default: ''
+      default: 'Confirm'
     },
     cancelButtonLabel: {
       type: String,
-      default: ''
+      default: 'Cancel'
     },
     title: {
       type: String,

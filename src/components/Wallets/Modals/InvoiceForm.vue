@@ -1,13 +1,5 @@
 <template>
-  <modal-wrapper
-    :value="value"
-    cancel-button-label="Cancel"
-    confirm-button-label="Confirm"
-    title="Invoice form"
-    @input="hide"
-    @submit="submit"
-    @cancel="close"
-  >
+  <modal-wrapper :value="value" title="Invoice form" @input="hide" @submit="submit" @cancel="close">
     <div class="invoice-form">
       <form-indent v-if="selectAddress" title="Wallet balance:" :text="selectAddress" class="mb-8" />
 

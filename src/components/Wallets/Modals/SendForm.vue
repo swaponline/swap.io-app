@@ -1,7 +1,6 @@
 <template>
   <modal-wrapper
     :value="value"
-    cancel-button-label="Cancel"
     confirm-button-label="Send"
     title="Send form"
     @input="hide"
@@ -189,7 +188,6 @@ export default {
     submit() {
       this.hide()
       const recipients = this.multipleRecepients ? this.getRecipients() : [this.recipient]
-      console.log(recipients)
       this.mutationAddModal({
         name: SEND_PREVIEW,
         info: {

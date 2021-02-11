@@ -42,6 +42,7 @@
         </form-indent>
       </div>
     </div>
+    <template #footer> <div></div></template>
   </modal-wrapper>
 </template>
 

@@ -1,13 +1,5 @@
 <template>
-  <modal-wrapper
-    value
-    persistent
-    cancel-button-label="Cancel"
-    confirm-button-label="Confirm"
-    @input="close"
-    @cancel="close"
-    @submit="confirm"
-  >
+  <modal-wrapper value persistent cancel-button-label="Back" @input="close" @cancel="close" @submit="confirm">
     <template #header>
       <header class="send-preview__title">
         <v-btn color="black" icon @click="close">
