@@ -176,13 +176,14 @@ export default {
         })
     },
     editFeeShow() {
+      console.log(123)
       if (!this.mediaQueries.desktop) {
         this.mutationAddModal({
           name: EDIT_FEE,
           info: {
             sliderParams: this.sliderParams,
-            recommendedFee: this.recommendedFee,
-            fee: this.fee
+            recommendedFee: +this.recommendedFee,
+            fee: +this.fee
           }
         })
       } else {

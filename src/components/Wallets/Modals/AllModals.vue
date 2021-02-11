@@ -3,7 +3,7 @@
     <template v-for="(modal, index) in modals">
       <component
         :is="modal.name"
-        :key="modal.id + index"
+        :key="modal.name + index"
         v-bind="modal.info"
         :value="modal.show !== undefined ? modal.show : true"
         @close="mutationCloseModal(modal.id)"
@@ -41,6 +41,7 @@ export default {
   },
   computed: {
     modals() {
+      console.log(this.$store.state[MODALS_MODULE].modals)
       return this.$store.state[MODALS_MODULE].modals
     }
   },

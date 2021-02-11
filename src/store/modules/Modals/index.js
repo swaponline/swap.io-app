@@ -47,7 +47,11 @@ export default {
      */
     [CLOSE_MODAL](state, id) {
       const modalIndex = state.modals.findIndex(m => m.id === id)
-      state.modals.splice(modalIndex, 1)
+      if (modalIndex) {
+        state.modals.splice(modalIndex, 1)
+      } else {
+        state.modals.pop()
+      }
     },
     /**
      * Закрывает все модальные окна
