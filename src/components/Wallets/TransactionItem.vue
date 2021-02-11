@@ -167,7 +167,12 @@ export default {
     // мб перенесем выше в родительский компонент чтобы данные было проще прокинуть
     openTransactionDetailsModal() {
       this.mutationAddModal({
-        name: TRANSACTION_DETAILS
+        name: TRANSACTION_DETAILS,
+        info: {
+          hash: this.hash,
+          fee: this.transactionFee,
+          entries: this.entries
+        }
       })
     }
   }

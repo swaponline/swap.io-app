@@ -18,7 +18,12 @@ export default {
      * @param {Object} modal.info - payload
      */
     [ADD_MODAL](state, modal) {
-      const stateModal = state.modals.find(m => m.id === modal.id)
+      const stateModal = state.modals.find(m => {
+        if (modal.id) {
+          return m.id === modal.id
+        }
+        return m.name === modal.name
+      })
       if (stateModal) {
         stateModal.show = true
       } else {

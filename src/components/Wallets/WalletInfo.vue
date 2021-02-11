@@ -133,7 +133,7 @@ export default {
     openInvoiceBlock() {
       this.mutationAddModal({
         name: INVOICE_FORM,
-        id: `invoice${this.walletAddress}`,
+        id: `${INVOICE_FORM + this.walletAddress}`,
         show: true,
         info: {
           address: this.walletAddress
@@ -143,7 +143,7 @@ export default {
     openSendForm() {
       this.mutationAddModal({
         name: SEND_FORM,
-        id: `send${this.walletAddress}`,
+        id: `${SEND_FORM + this.walletAddress}`,
         show: true,
         info: {
           address: this.walletAddress

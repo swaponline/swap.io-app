@@ -1,7 +1,7 @@
 <template>
-  <v-dialog :value="true" content-class="copy-menu" @click:outside="close">
+  <v-dialog :value="value" content-class="copy-menu" @click:outside="close">
     <div class="copy-menu__buttons">
-      <div class="copy-menu__address">{{ address }}</div>
+      <div v-if="showAddress" class="copy-menu__address">{{ address }}</div>
       <v-btn color="white" depressed class="copy-menu__button" @click="copy">Copy</v-btn>
       <v-btn color="white" depressed class="copy-menu__button" @click="openQrModal">qr-code</v-btn>
     </div>
@@ -21,10 +21,11 @@ export default {
     showAddress: {
       type: Boolean,
       default: false
+    },
+    value: {
+      type: Boolean,
+      default: false
     }
-  },
-  mounted() {
-    this.visible = true
   },
   methods: {
     copy() {

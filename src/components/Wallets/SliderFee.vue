@@ -86,8 +86,12 @@ export default {
   flex-grow: 1;
   align-items: center;
   &__slider {
+    margin: 0 20px;
     position: relative;
     align-items: center;
+    .v-slider {
+      margin: 0 0;
+    }
     .v-slider__track-container {
       background: $--grey;
       div {
@@ -122,7 +126,7 @@ export default {
     background: $--purple;
   }
   &__field {
-    margin: 0 0 0 8px;
+    margin: 0 0;
     min-height: 40px;
     width: 100px;
     max-width: 100px;

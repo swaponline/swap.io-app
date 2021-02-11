@@ -65,6 +65,7 @@ export default {
   }
   &__main-list {
     height: 100%;
+    overflow: auto;
     background: $--white;
     border-radius: 12px 12px 0 0 !important;
     @include tablet {

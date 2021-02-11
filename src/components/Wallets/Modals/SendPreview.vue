@@ -1,47 +1,70 @@
 <template>
-  <modal-wrapper value persistent class="send-preview" @input="close">
-    <div class="send-preview__inner">
+  <modal-wrapper
+    value
+    persistent
+    cancel-button-label="Cancel"
+    confirm-button-label="Confirm"
+    @input="close"
+    @cancel="close"
+    @submit="confirm"
+  >
+    <template #header>
       <header class="send-preview__title">
         <v-btn color="black" icon @click="close">
           <v-icon size="30">mdi-chevron-left</v-icon>
         </v-btn>
-        <h3>Invoice { number invoice }</h3>
+        <h3>Transaction confirm</h3>
       </header>
+    </template>
+    <div class="send-preview">
+      <form-indent v-if="address" title="From:" :text="address" class="send-preview__from-indent"> </form-indent>
 
-      <p v-if="address" class="send-preview__indent">
-        <span class="send-preview__indent-title">Wallet ID:</span>
-        <span>{{ address }}</span>
-      </p>
+      <div class="send-preview__recipients">
+        <div v-for="recipient in recipients" :key="recipient.address" class="send-preview__recipient">
+          <form-indent title="To:">
+            <span>{{ recipient.address }}</span>
+          </form-indent>
+          <form-indent title="Amount:">
+            <span>{{ recipient.amount }} <span class="send-preview__currency-name">USD </span></span>
+          </form-indent>
+        </div>
+      </div>
 
-      <p v-if="address" class="send-preview__indent mb-8">
-        <span class="send-preview__indent-title">Wallet balance:</span>
-        <span>39 BTC</span>
-      </p>
+      <v-divider class="send-preview__divider"></v-divider>
 
-      <span class="send-preview__results mt-6 mb-4">
+      <span class="send-preview__results">
         <span class="mr-5">Transaction fee: </span>
         <span class="send-preview__fee">
-          <span><span class="send-preview__currency-name">USD </span>{{ fee }}</span>
+          <span>
+            <span class="send-preview__currency-name">USD </span>
+            {{ fee }}
+          </span>
         </span>
       </span>
-      <v-row class="mt-auto">
-        <v-btn class="send-preview__button" depressed @click="close">Cancel</v-btn>
-        <v-btn class="send-preview__button" depressed @click="confirm">Confirm</v-btn>
-      </v-row>
+
+      <span class="send-preview__results">
+        <span class="mr-5">Total balance change: </span>
+        <span class="send-preview__fee">
+          <span><span class="send-preview__currency-name">USD </span>39</span>
+        </span>
+      </span>
     </div>
   </modal-wrapper>
 </template>
 
 <script>
 import { mapMutations } from 'vuex'
-import { TOGGLE_MODAL } from '@/store/modules/Modals'
+import { ADD_MODAL } from '@/store/modules/Modals'
+import { SEND_FORM } from '@/store/modules/Modals/names'
 
 import ModalWrapper from '../../ModalWrapper.vue'
+import FormIndent from '../../FormIndent.vue'
 
 export default {
   name: 'SendPreview',
   components: {
-    ModalWrapper
+    ModalWrapper,
+    FormIndent
   },
   props: {
     address: {
@@ -51,14 +74,18 @@ export default {
     fee: {
       type: Number,
       required: true
+    },
+    recipients: {
+      type: Array,
+      default: () => []
     }
   },
   methods: {
     ...mapMutations({
-      mutationToggleModal: TOGGLE_MODAL
+      mutationAddModal: ADD_MODAL
     }),
     close() {
-      this.mutationToggleModal({ id: `send${this.address}`, show: true })
+      this.mutationAddModal({ id: `${SEND_FORM + this.address}` })
       this.$emit('close')
     },
     confirm() {
@@ -70,51 +97,50 @@ export default {
 
 <style lang="scss">
 .send-preview {
-  &__inner {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    padding: 25px 40px 40px;
+  p {
     margin: 0 0;
-    min-height: calc(var(--vh, 1vh) * 100);
-
-    @include tablet {
-      padding: 24px;
-    }
-    @include phone {
-      padding: 12px;
-    }
-    .row {
-      flex-grow: 0;
-    }
   }
   &__title {
     display: flex;
     align-items: center;
-    margin: 20px -10px 25px;
-    width: auto;
+    margin: 0 -12px 25px;
     font-weight: $--font-weight-semi-bold;
     font-size: $--font-size-small-subtitle;
   }
-  &__indent {
-    width: 100%;
-    margin: 8px;
-    color: $--black;
-    font-size: $--font-size-medium;
-    span {
-      display: block;
+  &__recipients {
+    padding: 8px 0 13px;
+  }
+  &__recipient {
+    position: relative;
+    padding: 12px 0;
+    &:not(:first-child) {
+      &::before {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 1px;
+        content: '';
+        display: block;
+        background: rgba($--black, 0.12);
+      }
+    }
+    > p {
+      margin: 0 0;
+      &:first-of-type {
+        margin-bottom: 12px;
+      }
     }
   }
-  &__indent-title {
-    color: $--grey;
+  &__divider {
+    margin-bottom: 25px;
   }
   &__results {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     width: 100%;
-    padding: 0 8px;
-    flex-grow: 1;
+    padding: 0 0;
+    margin-bottom: 10px;
     font-weight: $--font-weight-semi-bold;
     font-size: $--font-size-extra-small-subtitle;
   }
@@ -123,16 +149,8 @@ export default {
     align-items: center;
     line-height: 21px;
   }
-  &__button {
-    width: calc(50% - 16px);
-    border-radius: 8px;
-    margin: auto 8px;
-    min-height: 52px;
-    text-transform: none;
-    font-weight: $--font-weight-bold;
-    span {
-      font-size: $--font-size-medium;
-    }
+  &__currency-name {
+    color: $--dark-grey;
   }
 }
 </style>

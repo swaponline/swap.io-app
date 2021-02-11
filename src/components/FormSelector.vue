@@ -14,13 +14,10 @@ export default {
   border-radius: 8px;
   border: 1px solid $--black;
   color: $--blue !important;
-  margin: 0 8px 25px !important;
+  margin-bottom: 25px !important;
   flex-basis: 20% !important;
   max-height: 52px;
   width: 100%;
-  @include phone {
-    margin: 0 5px 25px !important;
-  }
   &:focus-within {
     border-color: $--blue;
   }
