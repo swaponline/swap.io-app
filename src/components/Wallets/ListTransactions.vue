@@ -12,13 +12,6 @@
         :address="address"
         class="list-transaction__item"
       />
-      <transaction-link-item
-        v-for="item in transaction.list"
-        :key="item.hash + 'link'"
-        v-bind="item"
-        :address="address"
-        class="list-transaction__item-link"
-      />
     </div>
   </v-expansion-panels>
 </template>
@@ -27,13 +20,11 @@
 import { GET_TRANSACTIONS } from '@/store/modules/Transactions'
 import { mapActions, mapGetters } from 'vuex'
 import TransactionItem from './TransactionItem.vue'
-import TransactionLinkItem from './TransactionLinkItem.vue'
 
 export default {
   name: 'ListTransactions',
   components: {
-    TransactionItem,
-    TransactionLinkItem
+    TransactionItem
   },
   props: {
     filterType: {
@@ -143,17 +134,6 @@ export default {
   &__up-button {
     display: none;
     border-radius: 12px;
-  }
-  &__item {
-    @include tablet {
-      display: none;
-    }
-  }
-  &__item-link {
-    display: none;
-    @include tablet {
-      display: flex;
-    }
   }
 }
 </style>

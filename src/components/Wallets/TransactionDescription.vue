@@ -11,7 +11,7 @@
       @blur="inputShow = false"
       @input="$emit('input', $event.target.value)"
     />
-    <button v-show="!inputShow" type="button" class="transaction-description__butoon-show" @click.stop="showInput">
+    <button v-show="!inputShow" type="button" class="transaction-description__button-show" @click.stop="showInput">
       <span>{{ value }}<svg-icon class="transaction-description__edit-icon" name="edit"></svg-icon></span>
     </button>
   </form>
@@ -57,7 +57,9 @@ export default {
     }
   }
   &__button-show {
-    width: fit-content;
+    text-align: left;
+    word-break: break-all;
+    outline: none;
   }
   &__edit-icon {
     margin-left: 8px;

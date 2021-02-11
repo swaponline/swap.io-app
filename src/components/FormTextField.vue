@@ -26,9 +26,9 @@ export default {
   transition: 0.3s;
   width: 100%;
   flex-grow: 1;
-  margin: 0 8px 25px;
+  margin-bottom: 25px;
+  flex-grow: 0;
   @include phone {
-    margin: 0 5px 25px;
     padding: 0 8px;
   }
   &:focus-within {

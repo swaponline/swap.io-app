@@ -1,19 +1,13 @@
 <template>
-  <modal-wrapper value class="share-modal" @input="close">
-    <div class="share-modal__inner">
-      <h3 class="share-modal__subtitle">
-        <span>Share</span>
-        <v-btn icon @click="close"><v-icon>mdi-close</v-icon></v-btn>
-      </h3>
-
+  <modal-wrapper value title="Share" @input="close" @cancel="close">
+    <div class="share-modal">
       <div class="share-modal__qr-image">
         <img :src="qrCodeSrc" />
       </div>
 
       <div v-if="isSystemShared" class="share-modal__buttons">
-        <v-btn depressed class="share-modal__share-button" @click="systemShare">
-          Share
-        </v-btn>
+        <v-btn class="share-modal__button" depressed @click="close">Cancel</v-btn>
+        <v-btn class="share-modal__button" depressed @click="systemShare">Share</v-btn>
       </div>
 
       <div v-else class="share-modal__buttons">
@@ -22,32 +16,33 @@
         </button>
       </div>
 
-      <p class="share-modal__indent">
-        <span>{{ type === 'wallet' ? 'Wallet ID:' : 'Hash:' }}</span>
-        <v-tooltip v-model="copyDataTooltip.value" top :open-on-hover="false" class="wallet-info__tooltip">
-          <template #activator="{ on }">
-            <button class="share-modal__copy-button" @click="copy(data, 'copyDataTooltip')">
-              {{ data }}
-              <svg-icon name="copy" v-on="on" />
-            </button>
-          </template>
-          <span>Copied</span>
-        </v-tooltip>
-      </p>
+      <div class="share-modal__info">
+        <form-indent :title="type === 'wallet' ? 'Wallet ID:' : 'Hash:'">
+          <v-tooltip v-model="copyDataTooltip.value" top :open-on-hover="false">
+            <template #activator="{ on }">
+              <button class="share-modal__copy-button" @click="copy(data, 'copyDataTooltip')">
+                {{ data }}
+                <svg-icon name="copy" v-on="on" />
+              </button>
+            </template>
+            <span>Copied</span>
+          </v-tooltip>
+        </form-indent>
 
-      <p class="share-modal__indent">
-        <span>Link to {{ type }}:</span>
-        <v-tooltip v-model="copyUrlTooltip.value" top :open-on-hover="false" class="wallet-info__tooltip">
-          <template #activator="{ on }">
-            <button class="share-modal__copy-button" @click="copy(shareUrl, 'copyUrlTooltip')">
-              {{ shareUrl }}
-              <svg-icon name="copy" v-on="on" />
-            </button>
-          </template>
-          <span>Copied</span>
-        </v-tooltip>
-      </p>
+        <form-indent :title="`Link to ${type}:`">
+          <v-tooltip v-model="copyUrlTooltip.value" top :open-on-hover="false">
+            <template #activator="{ on }">
+              <button class="share-modal__copy-button" @click="copy(shareUrl, 'copyUrlTooltip')">
+                {{ shareUrl }}
+                <svg-icon name="copy" v-on="on" />
+              </button>
+            </template>
+            <span>Copied</span>
+          </v-tooltip>
+        </form-indent>
+      </div>
     </div>
+    <template #footer> <div></div></template>
   </modal-wrapper>
 </template>
 
@@ -56,11 +51,13 @@ import Copy from '@/utils/copy'
 
 import SvgIcon from '@/components/SvgIcon.vue'
 import ModalWrapper from '../../ModalWrapper.vue'
+import FormIndent from '../../FormIndent.vue'
 
 export default {
   name: 'ShareModal',
   components: {
     ModalWrapper,
+    FormIndent,
     SvgIcon
   },
   props: {
@@ -133,26 +130,6 @@ export default {
 
 <style lang="scss">
 .share-modal {
-  &__inner {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    padding: 25px 50px 40px;
-    min-height: calc(var(--vh, 1vh) * 100);
-
-    @include phone {
-      padding: 20px;
-    }
-  }
-  &__subtitle {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 20px 8px 25px;
-    width: 100%;
-    font-weight: $--font-weight-semi-bold;
-    font-size: $--font-size-small-subtitle;
-  }
   &__qr-image {
     display: flex;
     align-items: center;
@@ -177,8 +154,24 @@ export default {
     border-top: 1px solid $--light-grey;
     border-bottom: 1px solid $--light-grey;
     @include tablet {
+      border-color: transparent;
       order: 4;
-      margin: 30px 0;
+      padding: 0 0;
+      margin: auto 0 0;
+    }
+  }
+  &__info {
+    margin-top: 25px;
+  }
+  &__button {
+    width: calc(50% - 16px);
+    border-radius: 8px;
+    margin: auto 8px;
+    min-height: 52px;
+    text-transform: none;
+    font-weight: $--font-weight-bold;
+    span {
+      font-size: $--font-size-medium;
     }
   }
   &__social-button {
@@ -211,7 +204,7 @@ export default {
     }
   }
   &__copy-button {
-    width: 100%;
+    width: auto;
     outline: none;
     color: $--black;
     font-size: $--font-size-extra-small-subtitle;

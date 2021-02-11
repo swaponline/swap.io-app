@@ -1,33 +1,23 @@
 <template>
-  <modal-wrapper :value="value" persistent class="invoice-form" @input="close">
-    <form class="invoice-form__form" @submit.prevent="preview">
-      <v-row>
-        <h3 class="invoice-form__subtitle">
-          <span>Invoice Form</span>
-          <v-btn icon @click="close"><v-icon>mdi-close</v-icon></v-btn>
-        </h3>
+  <modal-wrapper :value="value" title="Invoice form" @input="hide" @submit="submit" @cancel="close">
+    <div class="invoice-form">
+      <form-indent v-if="selectAddress" title="Wallet balance:" :text="selectAddress" class="mb-8" />
 
-        <p v-if="selectAddress" class="invoice-form__indent mb-8">
-          <span class="invoice-form__indent-title">Wallet balance:</span>
-          <span>{{ selectAddress }}</span>
-        </p>
+      <form-selector
+        v-if="!address"
+        v-model="selectAddress"
+        :items="wallets"
+        item-text="address"
+        item-value="address"
+        label="Your wallet"
+        outlined
+      ></form-selector>
 
-        <form-selector
-          v-if="!address"
-          v-model="selectAddress"
-          :items="wallets"
-          item-text="address"
-          item-value="address"
-          label="Your wallet"
-          outlined
-        ></form-selector>
+      <form-text-field v-model="contact" color="grey" required label="Bill to"></form-text-field>
 
-        <form-text-field v-model="contact" color="grey" required label="Bill to"></form-text-field>
+      <h3 class="invoice-form__subtitle">Invoice Items</h3>
 
-        <h3 class="invoice-form__subtitle">Invoice Items</h3>
-      </v-row>
-
-      <v-row class="invoice-form__row">
+      <div class="d-flex">
         <form-selector
           v-model="type"
           return-object
@@ -46,9 +36,9 @@
           :items="currencies"
           class="invoice-form__short-field"
         ></form-selector>
-      </v-row>
+      </div>
 
-      <v-row v-for="field in amountFields" :key="field.id" class="invoice-form__row">
+      <div v-for="field in amountFields" :key="field.id" class="d-flex">
         <form-text-field
           v-model="field.description"
           label="Description"
@@ -80,15 +70,13 @@
         >
           <v-icon>mdi-close</v-icon>
         </v-btn>
-      </v-row>
+      </div>
 
-      <v-row>
-        <v-btn class="invoice-form__add-button px-0" color="blue" text @click="addAmountField">
-          <span class="text-left flex-grow-1">+ Add Another Item</span>
-        </v-btn>
+      <v-btn class="invoice-form__add-button px-0" color="blue" text @click="addAmountField">
+        <span class="text-left flex-grow-1">+ Add Another Item</span>
+      </v-btn>
 
-        <v-divider class="mx-2"></v-divider>
-      </v-row>
+      <v-divider></v-divider>
 
       <span class="invoice-form__amount">
         <span>Amount: </span>
@@ -97,12 +85,7 @@
           {{ summ }}
         </span>
       </span>
-
-      <v-row class="mt-auto">
-        <v-btn class="invoice-form__button" depressed type="button" @click="close">Cancel</v-btn>
-        <v-btn class="invoice-form__button" depressed type="submit">Confirm</v-btn>
-      </v-row>
-    </form>
+    </div>
   </modal-wrapper>
 </template>
 
@@ -114,13 +97,15 @@ import { mapMutations } from 'vuex'
 import ModalWrapper from '../../ModalWrapper.vue'
 import FormTextField from '../../FormTextField.vue'
 import FormSelector from '../../FormSelector.vue'
+import FormIndent from '../../FormIndent.vue'
 
 export default {
   name: 'InvoiceForm',
   components: {
     ModalWrapper,
     FormTextField,
-    FormSelector
+    FormSelector,
+    FormIndent
   },
   props: {
     value: {
@@ -165,10 +150,14 @@ export default {
     ...mapMutations({
       mutationAddModal: ADD_MODAL
     }),
+    hide() {
+      this.$emit('toggle', false)
+    },
     close() {
       this.$emit('close')
     },
-    preview() {
+    submit() {
+      this.hide()
       this.mutationAddModal({
         name: INVOICE_PREVIEW,
         info: {
@@ -197,56 +186,24 @@ export default {
 
 <style lang="scss">
 .invoice-form {
-  &__form {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    padding: 25px 50px 40px;
-    min-height: calc(var(--vh, 1vh) * 100);
-
-    @include tablet {
-      padding: 24px;
-    }
-    @include phone {
-      padding: 12px;
-    }
-    .row {
-      flex-grow: 0;
-    }
-  }
-  &__row {
-    flex-wrap: nowrap;
-  }
   &__long-field {
     flex-grow: 1;
     width: 65%;
-    @include phone {
-      margin: 0 5px 25px;
-      width: calc(56% - 10px);
-    }
   }
   &__short-field {
     flex-grow: 0;
     width: 35%;
+    margin-left: 16px !important;
     @include phone {
-      margin: 0 5px 25px;
-      width: calc(35% - 10px);
+      margin-left: 8px !important;
     }
-  }
-  &__subtitle {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 20px 8px 25px;
-    width: 100%;
-    font-weight: $--font-weight-semi-bold;
-    font-size: $--font-size-small-subtitle;
   }
   &__remove-button {
     margin-bottom: 25px;
+    margin-left: 16px;
     padding: 0 0 !important;
-    @include phone {
-      margin-right: 8px;
+    @include tablet {
+      margin-left: 8px !important;
     }
     &::before {
       display: none;
@@ -256,40 +213,20 @@ export default {
     font-weight: $--font-weight-bold;
     text-transform: none;
     flex-grow: 0;
-    margin: 0 8px 25px;
-    width: calc(100% - 16px);
+    margin-bottom: 25px;
+    width: 100%;
     span {
       font-size: $--font-size-medium;
     }
   }
-  &__indent {
-    width: 100%;
-    margin: 8px;
-    color: $--black;
-    font-size: $--font-size-medium;
-    span {
-      display: block;
-    }
-  }
-  &__indent-title {
-    color: $--grey;
-  }
   &__amount {
     display: flex;
     justify-content: space-between;
-    margin: 25px -4px;
-    flex-grow: 1;
+    margin: 25px 0;
     font-weight: $--font-weight-semi-bold;
-    font-size: $--font-size-small-subtitle;
-  }
-  &__button {
-    width: calc(50% - 16px);
-    border-radius: 8px;
-    margin: auto 8px;
-    min-height: 52px;
-    text-transform: none;
-    font-weight: $--font-weight-bold;
-    span {
+    font-size: $--font-size-extra-small-subtitle;
+    @include phone {
+      margin: 20px 0;
       font-size: $--font-size-medium;
     }
   }

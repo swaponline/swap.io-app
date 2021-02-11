@@ -3,10 +3,11 @@
     <template v-for="(modal, index) in modals">
       <component
         :is="modal.name"
-        :key="modal.name + index"
+        :key="modal.id + index"
         v-bind="modal.info"
-        :value="modal.show !== undefined ? modal.show : modal.name === info.name"
-        @close="mutationCloseModal"
+        :value="modal.show !== undefined ? modal.show : true"
+        @close="mutationCloseModal(modal.id)"
+        @toggle="toggle(modal.id, $event)"
         @close-all="mutationCloseAllModal"
       />
     </template>
@@ -15,7 +16,7 @@
 
 <script>
 import { mapMutations } from 'vuex'
-import { CLOSE_MODAL, CLOSE_ALL_MODAL, MODULE_NAME as MODALS_MODULE } from '@/store/modules/Modals'
+import { CLOSE_MODAL, CLOSE_ALL_MODAL, TOGGLE_MODAL, MODULE_NAME as MODALS_MODULE } from '@/store/modules/Modals'
 
 const CopyMenu = () => import(/* webpackChunkName: "CopyMenu" */ './CopyMenu.vue')
 const InvoiceForm = () => import(/* webpackChunkName: "InvoiceForm" */ './InvoiceForm.vue')
@@ -41,9 +42,6 @@ export default {
   computed: {
     modals() {
       return this.$store.state[MODALS_MODULE].modals
-    },
-    info() {
-      return this.modals[this.modals.length - 1] || {}
     }
   },
   mounted() {
@@ -62,8 +60,12 @@ export default {
   methods: {
     ...mapMutations({
       mutationCloseModal: CLOSE_MODAL,
-      mutationCloseAllModal: CLOSE_ALL_MODAL
-    })
+      mutationCloseAllModal: CLOSE_ALL_MODAL,
+      mutationToggleModal: TOGGLE_MODAL
+    }),
+    toggle(id, show) {
+      this.mutationToggleModal({ id, show })
+    }
   }
 }
 </script>

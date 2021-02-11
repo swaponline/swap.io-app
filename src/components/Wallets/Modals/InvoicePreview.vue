@@ -1,20 +1,23 @@
 <template>
-  <modal-wrapper value persistent class="invoice-preview" @input="close">
-    <div class="invoice-preview__inner">
+  <modal-wrapper value persistent cancel-button-label="Back" @input="close" @cancel="close" @submit="confirm">
+    <template #header>
       <header class="invoice-preview__title">
         <v-btn color="black" icon @click="close">
           <v-icon size="30">mdi-chevron-left</v-icon>
         </v-btn>
         <h3>Invoice { number invoice }</h3>
       </header>
+    </template>
+
+    <div class="invoice-preview">
       <h3 class="invoice-preview__subtitle">From:</h3>
       <p class="invoice-preview__agent-info">
         <span>User: {{ currentAccount.name }}</span>
         <span>Wallet: {{ currentWallet.name }}</span>
         <span class="invoice-preview__wallet">
           Wallet address: {{ formatAddress }}
-          <div class="invoice-preview__buttons">
-            <v-tooltip v-model="copyTooltip.value" top :open-on-hover="false" class="wallet-info__tooltip">
+          <span class="invoice-preview__wallet-buttons">
+            <v-tooltip v-model="copyTooltip.value" top :open-on-hover="false">
               <template #activator="{ on }">
                 <button @click="copy">
                   <svg-icon class="invoice-preview__icon-copy" name="copy" v-on="on"></svg-icon>
@@ -22,19 +25,22 @@
               </template>
               <span>Copied</span>
             </v-tooltip>
+
             <button>
               <svg-icon class="invoice-preview__icon-qrcode" name="qrcode"></svg-icon>
             </button>
-          </div>
+          </span>
+
           <v-btn class="invoice-preview__show-button" depressed @click="showFullWallet">Show in full</v-btn>
         </span>
       </p>
+
       <h3 class="invoice-preview__subtitle">Bill:</h3>
       <p class="invoice-preview__agent-info">
         <span>Invoice was sent to profile: {{ contact }}</span>
       </p>
-      <h3 class="invoice-preview__subtitle">Invoice items:</h3>
 
+      <h3 class="invoice-preview__subtitle">Invoice items:</h3>
       <v-simple-table class="invoice-preview__table">
         <thead>
           <tr>
@@ -81,11 +87,6 @@
           {{ summ }}
         </span>
       </span>
-
-      <v-row class="mt-auto">
-        <v-btn class="invoice-form__button" depressed type="button" @click="close">Cancel</v-btn>
-        <v-btn class="invoice-form__button" depressed type="submit" @click="closeInvoice">Confirm</v-btn>
-      </v-row>
     </div>
   </modal-wrapper>
 </template>
@@ -94,7 +95,8 @@
 import copy from '@/utils/copy'
 import { mapMutations } from 'vuex'
 import { ADD_MODAL } from '@/store/modules/Modals'
-import { COPY_MENU } from '@/store/modules/Modals/names'
+import { INVOICE_FORM, COPY_MENU } from '@/store/modules/Modals/names'
+
 import ModalWrapper from '../../ModalWrapper.vue'
 
 export default {
@@ -175,9 +177,10 @@ export default {
       mutationAddModal: ADD_MODAL
     }),
     close() {
+      this.mutationAddModal({ id: `${INVOICE_FORM + this.address}` })
       this.$emit('close')
     },
-    closeInvoice() {
+    confirm() {
       this.$emit('close-all')
     },
     showFullWallet() {
@@ -210,29 +213,10 @@ export default {
 
 <style lang="scss">
 .invoice-preview {
-  &__inner {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    padding: 25px 40px 40px;
-    margin: 0 0;
-    min-height: calc(var(--vh, 1vh) * 100);
-
-    @include tablet {
-      padding: 24px;
-    }
-    @include phone {
-      padding: 12px;
-    }
-    .row {
-      flex-grow: 0;
-    }
-  }
   &__title {
     display: flex;
     align-items: center;
-    margin: 20px -10px 25px;
-    width: auto;
+    margin: 0 -12px 25px;
     font-weight: $--font-weight-semi-bold;
     font-size: $--font-size-small-subtitle;
   }
@@ -244,9 +228,7 @@ export default {
     font-size: $--font-size-medium;
     margin-bottom: 40px !important;
     span {
-      &:not(:last-child) {
-        margin-bottom: 8px;
-      }
+      display: flex;
     }
   }
   &__wallet {
@@ -255,14 +237,7 @@ export default {
 
     @include tablet {
       justify-content: space-between;
-    }
-
-    button {
-      text-transform: none;
-      font-weight: $--font-weight-bold;
-      span {
-        font-size: $--font-size-medium;
-      }
+      align-items: center;
     }
   }
   &__table {
@@ -297,28 +272,22 @@ export default {
     font-weight: $--font-weight-semi-bold;
     font-size: $--font-size-small-subtitle;
   }
-  &__button {
-    width: calc(50% - 16px);
-    border-radius: 8px;
-    margin: auto 8px;
-    min-height: 52px;
-    text-transform: none;
-    font-weight: $--font-weight-bold;
-    span {
-      font-size: $--font-size-medium;
-    }
-  }
   &__currency-name {
     color: $--dark-grey;
   }
   &__show-button {
     display: none;
+    text-transform: none;
+    font-weight: $--font-weight-bold;
+    span {
+      font-size: $--font-size-medium;
+    }
     @include tablet {
-      display: inline-block;
+      display: inline-flex;
     }
   }
-  &__buttons {
-    display: flex;
+  &__wallet-buttons {
+    display: inline-flex;
     margin-bottom: 3px;
     @include tablet {
       display: none;
