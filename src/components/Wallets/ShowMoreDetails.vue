@@ -38,9 +38,6 @@ export default {
       default: 1
     }
   },
-  created() {
-    console.log(this.currentDecimal)
-  },
   methods: {
     getValue(value) {
       return (value * 10 ** (this.decimal * -1)).toFixed(this.currentDecimal)

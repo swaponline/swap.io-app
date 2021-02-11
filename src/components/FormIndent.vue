@@ -32,7 +32,7 @@ export default {
   word-break: break-all;
 
   @include phone {
-    font-size: $--font-size-base;
+    font-size: $--font-size-medium;
     line-height: 19px;
   }
 
@@ -47,7 +47,6 @@ export default {
 
     @include phone {
       line-height: 19px;
-      font-size: $--font-size-base;
     }
   }
 }
