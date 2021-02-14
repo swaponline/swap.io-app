@@ -75,12 +75,14 @@ export default {
     }),
     openInvoiceBlock() {
       this.mutationAddModal({
-        name: INVOICE_FORM
+        name: INVOICE_FORM,
+        show: true
       })
     },
     openSendForm() {
       this.mutationAddModal({
-        name: SEND_FORM
+        name: SEND_FORM,
+        show: true
       })
     }
   }

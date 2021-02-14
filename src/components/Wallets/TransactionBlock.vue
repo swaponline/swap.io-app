@@ -9,7 +9,7 @@
       color="#000000"
       slider-size="2"
     >
-      <v-tab v-for="tab in tabs" :key="tab">{{ tab }}</v-tab>
+      <v-tab v-for="tab in tabs" :key="tab" class="transactions__tab">{{ tab }}</v-tab>
     </v-tabs>
     <div class="transactions__horizontal-line"></div>
     <v-tabs-items v-model="activeTab">
@@ -91,6 +91,18 @@ export default {
     }
     @include phone {
       padding: 0 0;
+      > div:first-child {
+        height: 40px;
+      }
+    }
+  }
+  &__tab {
+    padding: 0 0;
+    min-width: 80px;
+    font-weight: $--font-weight-semi-bold;
+    @include phone {
+      width: 25%;
+      font-size: $--font-size-small;
     }
   }
   &__horizontal-line {
@@ -109,7 +121,7 @@ export default {
         max-height: calc(var(--vh, 1vh) * 100 - 380px);
       }
       @include phone {
-        max-height: calc(var(--vh, 1vh) * 100 - 272px);
+        max-height: calc(var(--vh, 1vh) * 100 - 248px);
       }
     }
     @include small-height {

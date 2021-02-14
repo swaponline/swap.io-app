@@ -1,14 +1,17 @@
 <template>
-  <modal-wrapper value persistent cancel-button-label="Back" @input="close" @cancel="close" @submit="confirm">
-    <template #header>
-      <header class="invoice-preview__title">
-        <v-btn color="black" icon @click="close">
-          <v-icon size="30">mdi-chevron-left</v-icon>
-        </v-btn>
-        <h3>Invoice { number invoice }</h3>
-      </header>
-    </template>
-
+  <modal-wrapper
+    value
+    persistent
+    back-icon
+    hide-overlay
+    modificator="flat"
+    :transition="false"
+    title="Invoice confirm"
+    cancel-button-label="Back"
+    @input="close"
+    @cancel="close"
+    @submit="confirm"
+  >
     <div class="invoice-preview">
       <h3 class="invoice-preview__subtitle">From:</h3>
       <p class="invoice-preview__agent-info">
@@ -63,6 +66,7 @@
             <td class="invoice-preview__table-cell text-left">{{ item.description }}</td>
             <td v-if="type.labelQuantity" class="invoice-preview__table-cell text-right">{{ item.quantity }}</td>
             <td class="invoice-preview__table-cell text-right">
+              <span v-if="!mediaQueries.phone" class="invoice-preview__currency-name">USD</span>
               {{ item.amount }}
             </td>
             <td v-if="type.labelQuantity" class="invoice-preview__table-cell text-right">
@@ -213,13 +217,6 @@ export default {
 
 <style lang="scss">
 .invoice-preview {
-  &__title {
-    display: flex;
-    align-items: center;
-    margin: 0 -12px 25px;
-    font-weight: $--font-weight-semi-bold;
-    font-size: $--font-size-small-subtitle;
-  }
   &__subtitle {
     margin-bottom: 10px;
     font-size: $--font-size-extra-small-subtitle;

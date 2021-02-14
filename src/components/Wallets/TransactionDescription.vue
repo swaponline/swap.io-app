@@ -1,5 +1,5 @@
 <template>
-  <form class="transaction-description">
+  <form class="transaction-description" @submit.prevent="inputShow = false">
     <input
       v-show="inputShow"
       ref="input"

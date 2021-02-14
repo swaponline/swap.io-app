@@ -2,14 +2,19 @@
   <v-dialog
     :value="value"
     v-bind="$attrs"
-    content-class="modal-wrapper"
-    transition="slide-x-reverse-transition"
+    :content-class="`modal-wrapper modal-wrapper--${modificator}`"
+    :transition="transition"
     v-on="$listeners"
   >
     <form class="modal-wrapper__inner" @submit.prevent="$emit('submit')">
       <slot name="header">
-        <header v-if="title" class="modal-wrapper__title">
-          <h3>{{ title }}</h3>
+        <header v-if="title" class="modal-wrapper__title" :class="{ 'modal-wrapper__title--with-back': backIcon }">
+          <h3>
+            <v-btn v-if="backIcon" color="black" icon @click="cancel">
+              <v-icon size="30">mdi-chevron-left</v-icon>
+            </v-btn>
+            {{ title }}
+          </h3>
           <v-btn icon @click="cancel">
             <v-icon>mdi-close</v-icon>
           </v-btn>
@@ -52,6 +57,18 @@ export default {
     title: {
       type: String,
       default: ''
+    },
+    modificator: {
+      type: String,
+      default: ''
+    },
+    backIcon: {
+      type: Boolean,
+      default: false
+    },
+    transition: {
+      type: [String, Boolean],
+      default: 'slide-x-reverse-transition'
     }
   },
   methods: {
@@ -73,6 +90,11 @@ export default {
   overflow: auto;
   background: $--white;
   margin-right: 0;
+
+  &--flat {
+    box-shadow: none;
+  }
+
   @include tablet {
     width: 100%;
   }
@@ -95,6 +117,13 @@ export default {
     width: 100%;
     font-weight: $--font-weight-semi-bold;
     font-size: $--font-size-small-subtitle;
+    &--with-back {
+      margin: 0 -12px 25px;
+      h3 {
+        display: flex;
+        align-items: center;
+      }
+    }
   }
   &__footer {
     margin: 0 -8px;
