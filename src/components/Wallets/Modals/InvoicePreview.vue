@@ -19,7 +19,7 @@
         <span>Wallet: {{ currentWallet.name }}</span>
         <span class="invoice-preview__wallet">
           Wallet address: {{ formatAddress }}
-          <span class="invoice-preview__wallet-buttons">
+          <div class="invoice-preview__wallet-buttons">
             <v-tooltip v-model="copyTooltip.value" top :open-on-hover="false">
               <template #activator="{ on }">
                 <button @click="copy">
@@ -32,7 +32,7 @@
             <button>
               <svg-icon class="invoice-preview__icon-qrcode" name="qrcode"></svg-icon>
             </button>
-          </span>
+          </div>
 
           <v-btn class="invoice-preview__show-button" depressed @click="showFullWallet">Show in full</v-btn>
         </span>

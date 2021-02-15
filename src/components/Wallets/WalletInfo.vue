@@ -254,7 +254,7 @@ export default {
   &__crypto-value {
     display: block;
     font-weight: $--font-weight-bold;
-    font-size: $--font-size-extra-title;
+    font-size: $--font-size-title;
     margin-right: 15px;
     line-height: 41px;
     @include tablet {
