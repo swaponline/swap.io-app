@@ -52,6 +52,7 @@ export default {
   justify-content: space-between;
   @include tablet {
     min-height: 80px;
+    border-radius: 0px;
   }
   &__logo {
     min-width: 305px;
