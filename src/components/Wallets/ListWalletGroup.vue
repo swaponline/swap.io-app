@@ -7,7 +7,7 @@
       <v-list-item-title class="list-wallet-group__header">
         <span>{{ nameCurrency }} </span>
         <span>{{ value }}</span>
-        <span class="list-wallet-group__name">{{ name }}</span>
+        <span class="list-wallet-group__name">{{ subWallets.length }} wallet</span>
       </v-list-item-title>
     </template>
     <v-list-item
