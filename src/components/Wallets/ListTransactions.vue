@@ -74,7 +74,7 @@ export default {
     this.actionGetTransaction()
   },
   beforeDestroy() {
-    this.$refs.transaction.removeEventListener('scroll', this.eventeventScroll)
+    this.$refs.transaction.removeEventListener('scroll', this.eventScroll)
   },
   methods: {
     ...mapActions({
