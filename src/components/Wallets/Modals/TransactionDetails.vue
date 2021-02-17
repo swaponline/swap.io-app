@@ -1,7 +1,6 @@
 <template>
   <modal-wrapper
     value
-    persistent
     cancel-button-label="Cancel"
     confirm-button-label="Share"
     title="Transaction details"
@@ -176,7 +175,6 @@ export default {
         })
     },
     editFeeShow() {
-      console.log(123)
       if (!this.mediaQueries.desktop) {
         this.mutationAddModal({
           name: EDIT_FEE,

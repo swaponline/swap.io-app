@@ -1,9 +1,8 @@
 <template>
-  <v-expansion-panels ref="transaction" class="list-transaction" accordion>
+  <div ref="transaction" class="list-transaction" :class="isCompressedWallet ? 'list-transaction--stretch' : ''">
     <div v-for="transaction in transactions" :key="transaction.date" class="list-transaction__block">
       <v-subheader ref="headers" class="list-transaction__title">
         <h4>{{ transaction.date }}</h4>
-        <v-btn class="list-transaction__up-button" depressed @click="unCompressWallet">UP</v-btn>
       </v-subheader>
       <transaction-item
         v-for="item in transaction.list"
@@ -13,7 +12,8 @@
         class="list-transaction__item"
       />
     </div>
-  </v-expansion-panels>
+    <v-btn class="list-transaction__up-button" depressed @click="unCompressWallet">UP</v-btn>
+  </div>
 </template>
 
 <script>
@@ -23,6 +23,7 @@ import TransactionItem from './TransactionItem.vue'
 
 export default {
   name: 'ListTransactions',
+  inject: ['mediaQueries'],
   components: {
     TransactionItem
   },
@@ -34,6 +35,10 @@ export default {
     address: {
       type: String,
       required: true
+    },
+    isCompressedWallet: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -65,18 +70,18 @@ export default {
     }
   },
   mounted() {
-    this.$refs.transaction.$el.addEventListener('scroll', this.eventScroll)
+    this.$refs.transaction.addEventListener('scroll', this.eventScroll)
     this.actionGetTransaction()
   },
   beforeDestroy() {
-    this.$refs.transaction.$el.removeEventListener('scroll', this.eventeventScroll)
+    this.$refs.transaction.removeEventListener('scroll', this.eventScroll)
   },
   methods: {
     ...mapActions({
       actionGetTransaction: GET_TRANSACTIONS
     }),
     eventScroll(e) {
-      if (window.innerWidth < 480 && this.$refs.headers && this.$refs.headers.length > 0) {
+      if (this.mediaQueries.phone && this.$refs.headers && this.$refs.headers.length > 0) {
         this.$refs.headers.forEach(el => {
           const domEl = el.$el
           if (domEl.offsetTop <= e.target.scrollTop) {
@@ -103,7 +108,12 @@ export default {
 
 <style lang="scss">
 .list-transaction {
-  position: relative;
+  --button-display: none;
+  &--stretch {
+    @include phone {
+      --button-display: inline-flex;
+    }
+  }
   &__block {
     flex-grow: 1;
     width: 100%;
@@ -119,21 +129,22 @@ export default {
   &__title {
     width: 100%;
     text-align: left;
-    z-index: 1000;
+    z-index: 100;
     background: $--white;
     top: 0;
     display: flex;
     justify-content: space-between;
     &.sticky {
       position: sticky;
-      .list-transaction__up-button {
-        display: inline-block;
-      }
     }
   }
   &__up-button {
-    display: none;
+    display: var(--button-display);
     border-radius: 12px;
+    position: absolute;
+    z-index: 200;
+    right: 10px;
+    top: 5px;
   }
 }
 </style>

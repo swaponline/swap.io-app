@@ -1,5 +1,5 @@
 <template>
-  <v-dialog :value="value" content-class="copy-menu" @click:outside="close">
+  <v-dialog :value="value" content-class="copy-menu" transition="slide-y-reverse-transition" @click:outside="close">
     <div class="copy-menu__buttons">
       <div v-if="showAddress" class="copy-menu__address">{{ address }}</div>
       <v-btn color="white" depressed class="copy-menu__button" @click="copy">Copy</v-btn>

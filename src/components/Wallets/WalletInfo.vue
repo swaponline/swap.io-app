@@ -182,6 +182,7 @@ export default {
 
   @include phone {
     margin: 12px;
+    padding: 12px 11px;
   }
 
   &--compressed {
@@ -245,11 +246,15 @@ export default {
     @include tablet {
       top: 15px;
     }
+    @include phone {
+      top: 12px;
+      right: 11px;
+    }
   }
   &__crypto-value {
     display: block;
     font-weight: $--font-weight-bold;
-    font-size: $--font-size-extra-title;
+    font-size: $--font-size-title;
     margin-right: 15px;
     line-height: 41px;
     @include tablet {
@@ -314,6 +319,7 @@ export default {
     font-weight: $--font-weight-regular;
     line-height: 29px;
     min-width: 144px;
+    word-break: break-all;
     @include tablet {
       border-bottom: 1px solid rgba($color: $--black, $alpha: 0.05);
       border-top: 1px solid rgba($color: $--black, $alpha: 0.05);
@@ -341,6 +347,7 @@ export default {
     overflow: hidden;
     max-height: 70px;
     @include phone {
+      width: 100%;
       max-height: var(--height-header);
     }
   }

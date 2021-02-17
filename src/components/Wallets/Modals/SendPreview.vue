@@ -1,13 +1,17 @@
 <template>
-  <modal-wrapper value persistent cancel-button-label="Back" @input="close" @cancel="close" @submit="confirm">
-    <template #header>
-      <header class="send-preview__title">
-        <v-btn color="black" icon @click="close">
-          <v-icon size="30">mdi-chevron-left</v-icon>
-        </v-btn>
-        <h3>Transaction confirm</h3>
-      </header>
-    </template>
+  <modal-wrapper
+    value
+    back-icon
+    persistent
+    hide-overlay
+    modificator="flat"
+    :transition="false"
+    title="Transaction confirm"
+    cancel-button-label="Back"
+    @input="close"
+    @cancel="close"
+    @submit="confirm"
+  >
     <div class="send-preview">
       <form-indent v-if="address" title="From:" :text="address" class="send-preview__from-indent"> </form-indent>
 
@@ -91,13 +95,6 @@ export default {
 .send-preview {
   p {
     margin: 0 0;
-  }
-  &__title {
-    display: flex;
-    align-items: center;
-    margin: 0 -12px 25px;
-    font-weight: $--font-weight-semi-bold;
-    font-size: $--font-size-small-subtitle;
   }
   &__recipients {
     padding: 8px 0 13px;

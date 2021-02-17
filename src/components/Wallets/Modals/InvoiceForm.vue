@@ -157,7 +157,6 @@ export default {
       this.$emit('close')
     },
     submit() {
-      this.hide()
       this.mutationAddModal({
         name: INVOICE_PREVIEW,
         info: {

@@ -20,7 +20,7 @@ export default {
         {
           id: 2,
           label: 'Swap',
-          to: { name: 'Wallets' }
+          to: { name: 'Swap' }
         },
         {
           id: 3,
@@ -53,6 +53,7 @@ export default {
   &__item {
     min-height: 85px;
     max-width: 175px;
+    min-width: 80px;
     margin: 0 0 !important;
     font-weight: $--font-weight-semi-bold;
     font-size: $--font-size-small-subtitle;
@@ -60,8 +61,16 @@ export default {
     letter-spacing: 0.01em;
     text-transform: none;
     @include tablet {
+      font-size: $--font-size-subtitle;
       max-width: none;
-      min-height: 70px;
+      min-height: 80px;
+    }
+    @include phone {
+      padding: 0 0;
+      font-weight: $--font-weight-semi-bold;
+      font-size: $--font-size-base;
+      max-width: none;
+      min-height: 55px;
     }
   }
 }
