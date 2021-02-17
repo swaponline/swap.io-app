@@ -110,7 +110,9 @@ export default {
 .list-transaction {
   --button-display: none;
   &--stretch {
-    --button-display: inline-flex;
+    @include phone {
+      --button-display: inline-flex;
+    }
   }
   &__block {
     flex-grow: 1;
