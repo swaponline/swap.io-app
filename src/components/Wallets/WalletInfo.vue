@@ -2,7 +2,7 @@
   <div class="wallet-info" :class="compressed ? 'wallet-info--compressed' : ''" @click="uncompressWallet">
     <svg-icon class="wallet-info__background-icon" :name="backgroundIconName"></svg-icon>
     <div class="wallet-info__optional-buttons">
-      <v-btn icon class="wallet-info__optional-button">
+      <v-btn icon class="wallet-info__optional-button" @click="openShareModal">
         <svg-icon name="share" class="wallet-info__icon"></svg-icon>
       </v-btn>
       <v-btn icon class="wallet-info__optional-button">

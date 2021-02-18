@@ -10,6 +10,10 @@
 
 <script>
 import copy from '@/utils/copy'
+import { mapMutations } from 'vuex'
+
+import { SHARE_MODAL } from '@/store/modules/Modals/names'
+import { ADD_MODAL } from '@/store/modules/Modals'
 
 export default {
   name: 'CopyMenu',
@@ -28,12 +32,22 @@ export default {
     }
   },
   methods: {
+    ...mapMutations({
+      mutationAddModal: ADD_MODAL
+    }),
     copy() {
       copy(this.address)
       this.close()
     },
     openQrModal() {
       this.close()
+      this.mutationAddModal({
+        name: SHARE_MODAL,
+        info: {
+          type: 'wallet',
+          data: this.address
+        }
+      })
     },
     close() {
       this.$emit('close')

@@ -47,7 +47,7 @@ export default {
      */
     [CLOSE_MODAL](state, id) {
       const modalIndex = state.modals.findIndex(m => m.id === id)
-      if (modalIndex) {
+      if (modalIndex > -1) {
         state.modals.splice(modalIndex, 1)
       } else {
         state.modals.pop()

@@ -18,14 +18,15 @@
 import { mapMutations } from 'vuex'
 import { CLOSE_MODAL, CLOSE_ALL_MODAL, TOGGLE_MODAL, MODULE_NAME as MODALS_MODULE } from '@/store/modules/Modals'
 
-const CopyMenu = () => import(/* webpackChunkName: "CopyMenu" */ './CopyMenu.vue')
-const InvoiceForm = () => import(/* webpackChunkName: "InvoiceForm" */ './InvoiceForm.vue')
+import CopyMenu from './CopyMenu.vue'
+import InvoiceForm from './InvoiceForm.vue'
+import SendForm from './SendForm.vue'
+import TransactionDetails from './TransactionDetails.vue'
+
 const InvoicePreview = () => import(/* webpackChunkName: "InvoicePreview" */ './InvoicePreview.vue')
-const SendForm = () => import(/* webpackChunkName: "SendForm" */ './SendForm.vue')
 const SendPreview = () => import(/* webpackChunkName: "SendPreview" */ './SendPreview.vue')
 const EditFee = () => import(/* webpackChunkName: "EditFee" */ './EditFee.vue')
 const ShareModal = () => import(/* webpackChunkName: "ShareModal" */ './ShareModal.vue')
-const TransactionDetails = () => import(/* webpackChunkName: "TransactionDetails" */ './TransactionDetails.vue')
 
 export default {
   name: 'AllModalsWallet',
@@ -41,7 +42,6 @@ export default {
   },
   computed: {
     modals() {
-      console.log(this.$store.state[MODALS_MODULE].modals)
       return this.$store.state[MODALS_MODULE].modals
     }
   },
