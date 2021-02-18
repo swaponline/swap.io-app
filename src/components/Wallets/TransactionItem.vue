@@ -168,12 +168,14 @@ export default {
     openTransactionDetailsModal() {
       this.mutationAddModal({
         name: TRANSACTION_DETAILS,
+        id: this.hash,
         info: {
           hash: this.hash,
           fee: this.transactionFee,
           entries: this.entries,
           decimal: this.decimal,
-          currentDecimal: this.currentDecimal
+          currentDecimal: this.currentDecimal,
+          journal: this.journal
         }
       })
     }

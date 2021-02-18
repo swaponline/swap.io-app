@@ -21,7 +21,7 @@ export default [
       {
         path: '/swap',
         name: 'Swap',
-        component: () => import(/* webpackChunkName: 'Wallet' */ '@/views/Wallets/Wallet.vue')
+        component: () => import(/* webpackChunkName: 'SecretPhrase' */ '@/views/Profile/SecurityInfo.vue')
       },
       {
         path: '/history',
