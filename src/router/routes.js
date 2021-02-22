@@ -26,7 +26,7 @@ export default [
       {
         path: '/history',
         name: 'History',
-        component: () => import(/* webpackChunkName: 'Wallet' */ '@/views/Wallets/Wallet.vue')
+        component: () => import(/* webpackChunkName: 'Wallet' */ '@/views/Profile/SecretPhrase.vue')
       },
       {
         path: '/settings',
