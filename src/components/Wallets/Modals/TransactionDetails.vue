@@ -21,9 +21,19 @@
         </v-tooltip>
       </form-indent>
 
-      <form-indent v-if="status" title="Status" :text="status"> </form-indent>
+      <form-indent v-if="status" title="Status">
+        <span :class="status === 'send' ? 'transaction-details__send-status' : ''">
+          {{ status }}
+          <pending-loader v-if="status === 'pending'" />
+        </span>
+      </form-indent>
 
-      <show-more-details :entries="entries" :decimal="decimal" :current-decimal="currentDecimal"></show-more-details>
+      <show-more-details
+        :entries="entries"
+        :decimal="decimal"
+        :current-decimal="currentDecimal"
+        :journal="journal"
+      ></show-more-details>
 
       <v-divider class="transaction-details__divider"></v-divider>
 
@@ -72,6 +82,7 @@ import ModalWrapper from '@/components/ModalWrapper.vue'
 import FormIndent from '@/components/FormIndent.vue'
 import SliderFee from '@/components/Wallets/SliderFee.vue'
 import ShowMoreDetails from '@/components/Wallets/ShowMoreDetails.vue'
+import PendingLoader from '@/components/Loader.vue'
 
 export default {
   name: 'TransactionDetails',
@@ -80,7 +91,8 @@ export default {
     ModalWrapper,
     FormIndent,
     ShowMoreDetails,
-    SliderFee
+    SliderFee,
+    PendingLoader
   },
   props: {
     hash: {
@@ -106,6 +118,12 @@ export default {
     entries: {
       type: Array,
       default: () => []
+    },
+    journal: {
+      type: Array,
+      default() {
+        return []
+      }
     }
   },
   data() {
@@ -235,6 +253,9 @@ export default {
   }
   &__currency-name {
     color: $--dark-grey;
+  }
+  &__send-status {
+    color: $--green;
   }
 }
 </style>

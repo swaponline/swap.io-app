@@ -31,10 +31,14 @@ export default {
     }
   },
   methods: {
-    skip() {},
+    skip() {
+      this.$router.push({ name: 'SecretPhrase' })
+    },
     next(id) {
       if (id < infoBlocks.length) {
         this.currentBlock = id + 1
+      } else {
+        this.skip()
       }
     },
     back(id) {

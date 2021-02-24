@@ -1,8 +1,20 @@
 <template>
-  <v-expansion-panels class="show-more-details">
+  <v-expansion-panels v-model="showMore" class="show-more-details">
     <v-expansion-panel class="show-more-details__inner">
       <v-expansion-panel-header class="show-more-details__header" expand-icon="mdi-chevron-down">
-        Show entries
+        <span class="show-more-details__header-content">
+          <span>Show entries</span>
+          <span v-if="journal.length > 0" class="show-more-details__categories">
+            <span
+              v-for="category in categories"
+              :key="category"
+              class="show-more-details__category"
+              :class="{ 'show-more-details__category--select': selectCategory === category }"
+              @click="select($event, category)"
+              >{{ category }}</span
+            >
+          </span>
+        </span>
       </v-expansion-panel-header>
       <v-expansion-panel-content class="show-more-details__content">
         <div class="show-more-details__entries">
@@ -36,11 +48,28 @@ export default {
     decimal: {
       type: Number,
       default: 1
+    },
+    journal: {
+      type: Array,
+      default: () => []
+    }
+  },
+  data() {
+    return {
+      showMore: undefined,
+      selectCategory: 'ALL',
+      categories: ['ALL', 'BTC', 'ETH']
     }
   },
   methods: {
     getValue(value) {
       return (value * 10 ** (this.decimal * -1)).toFixed(this.currentDecimal)
+    },
+    select(e, category) {
+      if (this.showMore !== undefined) {
+        e.stopPropagation()
+      }
+      this.selectCategory = category
     }
   }
 }
@@ -61,8 +90,33 @@ export default {
     font-weight: $--font-weight-semi-bold;
     font-size: $--font-size-medium;
     border: none;
+    &:focus::before {
+      opacity: 0 !important;
+    }
     .v-icon {
       color: $--purple !important;
+    }
+  }
+  &__header-content {
+    display: flex;
+    align-items: center;
+  }
+  &__categories {
+    display: inline-flex;
+    margin: 0 5px;
+    font-weight: $--font-weight-semi-bold;
+    font-size: $--font-size-base;
+    line-height: 19px;
+  }
+  &__category {
+    margin: 0 5px;
+    padding: 2px 8px;
+    display: flex;
+    align-items: center;
+    background: $--light-grey;
+    color: $--dark-grey;
+    &--select {
+      color: $--purple;
     }
   }
   &__content {
