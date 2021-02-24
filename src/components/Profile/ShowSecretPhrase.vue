@@ -5,7 +5,7 @@
       <span v-for="(word, i) in words" :key="word + i" class="show-secret-phrase__word"> {{ i + 1 }}. {{ word }} </span>
     </div>
     <div class="show-secret-phrase__buttons">
-      <v-btn class="show-secret-phrase__button" depressed>Back</v-btn>
+      <v-btn class="show-secret-phrase__button" depressed @click="$emit('back')">Back</v-btn>
       <v-btn class="show-secret-phrase__button" depressed @click="$emit('next')">Next</v-btn>
     </div>
   </div>

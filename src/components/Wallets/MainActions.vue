@@ -21,15 +21,7 @@
     >
       <v-icon>mdi-wallet</v-icon>
     </v-btn>
-    <v-btn
-      fab
-      dark
-      color="blue"
-      class="main-actions__button"
-      height="auto"
-      width="auto"
-      @click="$emit('activeForm', 'create-user-form')"
-    >
+    <v-btn fab dark :to="{ name: 'SecurityInfo' }" color="blue" class="main-actions__button" height="auto" width="auto">
       <v-icon>mdi-account-plus</v-icon>
     </v-btn>
     <v-btn
