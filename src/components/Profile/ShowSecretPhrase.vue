@@ -1,11 +1,18 @@
 <template>
   <div class="show-secret-phrase">
-    <header class="show-secret-phrase__title">Your secret phrase</header>
+    <header class="show-secret-phrase__header">
+      Your secret phrase
+      <v-btn class="show-secret-phrase__back-button" large icon @click="$emit('back')">
+        <v-icon>mdi-chevron-left</v-icon>
+      </v-btn>
+    </header>
     <div class="show-secret-phrase__words">
       <span v-for="(word, i) in words" :key="word + i" class="show-secret-phrase__word"> {{ i + 1 }}. {{ word }} </span>
     </div>
     <div class="show-secret-phrase__buttons">
-      <v-btn class="show-secret-phrase__button" depressed @click="$emit('back')">Back</v-btn>
+      <v-btn class="show-secret-phrase__button show-secret-phrase__button--hide-tablet" depressed @click="$emit('back')"
+        >Back</v-btn
+      >
       <v-btn class="show-secret-phrase__button" depressed @click="$emit('next')">Next</v-btn>
     </div>
   </div>
@@ -35,15 +42,25 @@ export default {
   @include tablet {
     padding: 20px 20px;
   }
-  &__title {
+  &__header {
+    position: relative;
     width: 100%;
-    text-align: center;
     font-weight: $--font-weight-semi-bold;
     font-size: $--font-size-extra-title;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     @include tablet {
       width: 100%;
-      text-align: left;
       font-size: $--font-size-subtitle;
+    }
+  }
+  &__back-button {
+    position: absolute;
+    display: none;
+    left: -12px;
+    @include tablet {
+      display: inline-block;
     }
   }
   &__words {
@@ -86,6 +103,9 @@ export default {
     @include tablet {
       width: 100%;
       margin-bottom: 10px;
+      &--hide-tablet {
+        display: none;
+      }
     }
   }
 }
