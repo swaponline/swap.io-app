@@ -8,6 +8,7 @@
 
 <script>
 import { MediaQueryProvider } from 'vue-component-media-queries'
+import { MODULE_NAME as PROFILE_MODULE } from '@/store/modules/Profile'
 
 const queries = {
   desktop: '(min-width: 1281px)',
@@ -22,6 +23,18 @@ export default {
   data() {
     return {
       queries
+    }
+  },
+  computed: {
+    background() {
+      return this.$store.state[PROFILE_MODULE].model.background
+    }
+  },
+  watch: {
+    background: {
+      handler(val) {
+        document.getElementById('app').style.background = val
+      }
     }
   },
   mounted() {
