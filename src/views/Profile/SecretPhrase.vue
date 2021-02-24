@@ -1,13 +1,8 @@
 <template>
   <div class="secret-phrase">
     <div class="secret-phrase__inner">
-      <show-secret-phrase
-        v-if="!isWritePhrase"
-        :words="words"
-        @next="isWritePhrase = true"
-        @back="routerBack"
-      ></show-secret-phrase>
-      <input-secret-phrase v-else :words="words" @input="sendPhrase" @back="back"></input-secret-phrase>
+      <show-secret-phrase v-if="!isWritePhrase" :words="words" @next="isWritePhrase = true"></show-secret-phrase>
+      <input-secret-phrase v-else :words="words" @back="back"></input-secret-phrase>
     </div>
   </div>
 </template>
@@ -42,18 +37,10 @@ export default {
     ...mapActions({
       actionGetRandomWords: GET_RANDOM_WORDS
     }),
-    sendPhrase(value) {
-      if (value === this.words) {
-        console.log('Фраза Соответствует')
-      }
-    },
     back() {
       this.actionGetRandomWords().then(() => {
         this.isWritePhrase = false
       })
-    },
-    routerBack() {
-      this.$router.push({ name: 'SecurityInfo' })
     }
   }
 }

@@ -2,7 +2,7 @@
   <div class="show-secret-phrase">
     <header class="show-secret-phrase__header">
       Your secret phrase
-      <v-btn class="show-secret-phrase__back-button" large icon @click="$emit('back')">
+      <v-btn class="show-secret-phrase__back-button" large icon @click="back">
         <v-icon>mdi-chevron-left</v-icon>
       </v-btn>
     </header>
@@ -10,7 +10,7 @@
       <span v-for="(word, i) in words" :key="word + i" class="show-secret-phrase__word"> {{ i + 1 }}. {{ word }} </span>
     </div>
     <div class="show-secret-phrase__buttons">
-      <v-btn class="show-secret-phrase__button show-secret-phrase__button--hide-tablet" depressed @click="$emit('back')"
+      <v-btn class="show-secret-phrase__button show-secret-phrase__button--hide-tablet" depressed @click="back"
         >Back</v-btn
       >
       <v-btn class="show-secret-phrase__button" depressed @click="$emit('next')">Next</v-btn>
@@ -25,6 +25,11 @@ export default {
     words: {
       type: Array,
       default: () => []
+    }
+  },
+  methods: {
+    back() {
+      this.$router.push({ name: 'SecurityInfo' })
     }
   }
 }

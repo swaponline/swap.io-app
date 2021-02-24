@@ -47,7 +47,7 @@ export default {
   created() {
     const array = [...this.words]
     let i = 0
-    while (i < 0) {
+    while (i < 6) {
       const index = this.randomInteger(0, array.length - 1)
       if (array[index]) {
         array[index] = ''
@@ -66,7 +66,6 @@ export default {
       this.wordsWrapper.splice(index, 1, value)
     },
     create() {
-      console.log(this.isDisabledCreate)
       if (this.isDisabledCreate) {
         this.$router.push({ name: 'ChooseStyle' })
       }
