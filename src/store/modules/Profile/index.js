@@ -9,7 +9,7 @@ export default {
   state: {
     list: [],
     model: {
-      background: '#B9B9B9',
+      background: 'linear-gradient(287deg, #033dff 0%, #ff7ac6 24%, #ffff00 100%)',
       color: '#6144E5'
     }
   },
