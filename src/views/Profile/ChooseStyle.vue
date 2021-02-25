@@ -69,10 +69,8 @@ export default {
           color
         })
       }
-      console.log(this.cardColors)
     },
     setBackground() {
-      console.log(this.selectGradient)
       this.actionSetUsersColors(this.selectGradient)
     },
     getGradient(color) {
