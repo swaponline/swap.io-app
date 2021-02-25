@@ -1,7 +1,7 @@
 <template>
   <div class="main-header">
     <div class="main-header__logo">
-      <svg-icon class="main-header__logo-icon" name="logo" />
+      <svg-icon class="main-header__logo-icon" name="logo" :style="`fill: ${iconColor}`" />
       <h2>Swap</h2>
     </div>
     <match-media v-slot="{ desktop }" class="d-flex flex-grow-1">
@@ -16,6 +16,7 @@
 <script>
 import { MatchMedia } from 'vue-component-media-queries'
 import ProfileList from '@/components/Wallets/ProfileList.vue'
+import { MODULE_NAME as PROFILE_MODULE } from '@/store/modules/Profile'
 import MainHeaderTabs from './Tabs.vue'
 
 export default {
@@ -31,6 +32,9 @@ export default {
     },
     currentAccountName() {
       return this.currentAccount.name
+    },
+    iconColor() {
+      return this.$store.state[PROFILE_MODULE].model.color
     }
   },
   methods: {
@@ -59,6 +63,7 @@ export default {
     margin-right: 20px;
     display: flex;
     align-items: center;
+    color: $--purple;
     @include tablet {
       min-width: 0;
       flex-grow: 1;
@@ -69,6 +74,7 @@ export default {
     height: 45px;
     margin-right: 20px;
     margin-left: 30px;
+    fill: $--purple;
     @include tablet {
       width: 45px;
       height: 42px;

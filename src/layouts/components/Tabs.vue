@@ -40,6 +40,7 @@ export default {
 
 <style lang="scss">
 .tabs {
+  margin-top: auto;
   background: $--white;
 
   @include tablet {

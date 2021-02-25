@@ -1,45 +1,53 @@
 <template>
   <div class="main-layout">
-    <v-toolbar color="purple" flat class="main-layout__header" height="auto"></v-toolbar>
-    <div class="main-layout__page">
-      <navigation-drawer class="main-layout__navbar"></navigation-drawer>
-      <router-view></router-view>
-    </div>
+    <main-header class="main-layout__main-header"></main-header>
+    <router-view></router-view>
+    <match-media v-slot="{ desktop }">
+      <main-layout-tabs v-if="!desktop" class="main-layout__tabs"></main-layout-tabs>
+    </match-media>
   </div>
 </template>
 
 <script>
-import NavigationDrawer from './Components/NavigationDrawer.vue'
+import { mapActions } from 'vuex'
+import { GET_ACCOUNT_ID } from '@/store/modules/Wallets'
+
+import { MatchMedia } from 'vue-component-media-queries'
+import MainHeader from '../components/MainHeader.vue'
+import MainLayoutTabs from '../components/Tabs.vue'
 
 export default {
   name: 'MainLayout',
   components: {
-    NavigationDrawer
+    MainHeader,
+    MainLayoutTabs,
+    MatchMedia
+  },
+  mounted() {
+    this.actionGetAccountId()
+  },
+  methods: {
+    ...mapActions({
+      actionGetAccountId: GET_ACCOUNT_ID
+    })
   }
 }
 </script>
 
 <style lang="scss">
 .main-layout {
-  min-height: calc(var(--vh, 1vh) * 100);
-  &__header {
-    min-height: 40px;
-  }
-  &__page {
-    display: flex;
-    height: calc(var(--vh, 1vh) * 100 - 40px);
-    max-width: $--max-content-size;
-    margin: auto;
-  }
-}
-@include tablet {
-  .main-layout {
-    min-height: calc(var(--vh, 1vh) * 100 - var(--navigation-drawer-mobile-height));
-    &__page {
-      flex-direction: column;
-    }
-    &__navbar {
-      order: 2;
+  width: 100%;
+  max-width: 1280px;
+  height: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  &__tabs {
+    display: none;
+    @include tablet {
+      display: block;
+      flex-grow: 0;
     }
   }
 }
