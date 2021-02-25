@@ -1,5 +1,5 @@
 <template>
-  <v-app id="app">
+  <v-app id="app" :style="`background: ${background}`">
     <media-query-provider :queries="queries">
       <router-view />
     </media-query-provider>
@@ -28,13 +28,6 @@ export default {
   computed: {
     background() {
       return this.$store.state[PROFILE_MODULE].model.background
-    }
-  },
-  watch: {
-    background: {
-      handler(val) {
-        document.getElementById('app').style.background = val
-      }
     }
   },
   mounted() {

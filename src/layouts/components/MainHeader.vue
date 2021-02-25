@@ -1,7 +1,7 @@
 <template>
   <div class="main-header">
     <div class="main-header__logo">
-      <svg-icon ref="logo" class="main-header__logo-icon" name="logo" />
+      <svg-icon class="main-header__logo-icon" name="logo" :style="`fill: ${iconColor}`" />
       <h2>Swap</h2>
     </div>
     <match-media v-slot="{ desktop }" class="d-flex flex-grow-1">
@@ -35,13 +35,6 @@ export default {
     },
     iconColor() {
       return this.$store.state[PROFILE_MODULE].model.color
-    }
-  },
-  watch: {
-    iconColor: {
-      handler(val) {
-        this.$refs.logo.$el.style.fill = val
-      }
     }
   },
   methods: {
