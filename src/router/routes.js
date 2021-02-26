@@ -18,11 +18,11 @@ export default [
           }
         ]
       },
-      // {
-      //   path: '/swap',
-      //   name: 'Swap',
-      //   component: () => import(/* webpackChunkName: 'Swap' */ '@/views/Swap')
-      // },
+      {
+        path: '/swap',
+        name: 'Swap',
+        component: () => import(/* webpackChunkName: 'Swap' */ '@/views/Swap')
+      },
       {
         path: '/history',
         name: 'History',
