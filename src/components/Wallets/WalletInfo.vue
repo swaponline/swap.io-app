@@ -30,9 +30,9 @@
       </button>
     </div>
     <div class="wallet-info__buttons">
-      <v-btn depressed class="wallet-info__button" @click="openInvoiceBlock">Invoice</v-btn>
-      <v-btn depressed class="wallet-info__button">Swap</v-btn>
-      <v-btn depressed class="wallet-info__button" @click="openSendForm">Send</v-btn>
+      <swap-button class="wallet-info__button" @click="openInvoiceBlock">Invoice</swap-button>
+      <swap-button class="wallet-info__button">Swap</swap-button>
+      <swap-button class="wallet-info__button" @click="openSendForm">Send</swap-button>
     </div>
   </div>
 </template>
@@ -172,7 +172,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: stretch;
 
   @include tablet {
     height: 220px;
@@ -345,18 +345,18 @@ export default {
   }
   &__buttons {
     overflow: hidden;
+    width: auto;
     max-height: 70px;
+    margin: 0 -6px;
     @include phone {
       width: 100%;
       max-height: var(--height-header);
     }
   }
   &__button {
-    margin-right: 11px;
-    text-transform: none;
-    font-weight: $--font-weight-bold;
-    font-size: $--font-size-medium !important;
-    min-width: 144px;
+    min-height: 42px;
+    margin: 0 6px;
+    min-width: 144px !important;
     @include tablet {
       width: calc(33.3% - 6px);
       margin: 0 3px;

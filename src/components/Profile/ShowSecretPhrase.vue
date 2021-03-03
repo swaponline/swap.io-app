@@ -10,10 +10,10 @@
       <span v-for="(word, i) in words" :key="word + i" class="show-secret-phrase__word"> {{ i + 1 }}. {{ word }} </span>
     </div>
     <div class="show-secret-phrase__buttons">
-      <v-btn class="show-secret-phrase__button show-secret-phrase__button--hide-tablet" depressed @click="back"
-        >Back</v-btn
-      >
-      <v-btn class="show-secret-phrase__button" depressed @click="$emit('next')">Next</v-btn>
+      <swap-button class="show-secret-phrase__button show-secret-phrase__button--hide-tablet" @click="back">
+        Back
+      </swap-button>
+      <swap-button class="show-secret-phrase__button" @click="$emit('next')">Next</swap-button>
     </div>
   </div>
 </template>
@@ -29,7 +29,7 @@ export default {
   },
   methods: {
     back() {
-      this.$router.push({ name: 'SecurityInfo' })
+      this.$router.push({ name: 'ChooseStyle' })
     }
   }
 }
@@ -96,15 +96,7 @@ export default {
   }
   &__button {
     margin: 0 5px;
-    min-height: 48px;
-    width: 174px;
-    text-transform: none;
-    border-radius: 8px;
-    display: flex;
-    > span {
-      font-weight: $--font-weight-semi-bold;
-      font-size: $--font-size-extra-small-subtitle;
-    }
+    min-width: 174px !important;
     @include tablet {
       width: 100%;
       margin-bottom: 10px;

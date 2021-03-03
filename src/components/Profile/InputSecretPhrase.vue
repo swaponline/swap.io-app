@@ -16,8 +16,10 @@
       </div>
     </div>
     <div class="input-secret-phrase__buttons">
-      <v-btn class="input-secret-phrase__button" depressed @click="$emit('back')">Back</v-btn>
-      <v-btn class="input-secret-phrase__button" :disabled="!isDisabledCreate" depressed @click="create">Create</v-btn>
+      <swap-button class="input-secret-phrase__button" @click="$emit('back')">Back</swap-button>
+      <swap-button class="input-secret-phrase__button" :disabled="!isDisabledCreate" @click="create">
+        Create
+      </swap-button>
     </div>
   </div>
 </template>
@@ -135,15 +137,7 @@ export default {
   }
   &__button {
     margin: 0 5px;
-    min-height: 48px;
-    width: 174px;
-    text-transform: none;
-    border-radius: 8px;
-    display: flex;
-    > span {
-      font-weight: $--font-weight-semi-bold;
-      font-size: $--font-size-extra-small-subtitle;
-    }
+    min-width: 174px !important;
     @include tablet {
       width: 100%;
       margin-bottom: 10px;

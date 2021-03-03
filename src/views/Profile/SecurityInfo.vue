@@ -32,7 +32,7 @@ export default {
   },
   methods: {
     skip() {
-      this.$router.push({ name: 'SecretPhrase' })
+      this.$router.push({ name: 'ChooseStyle' })
     },
     next(id) {
       if (id < infoBlocks.length) {

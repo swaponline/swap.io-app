@@ -49,7 +49,6 @@
 <script>
 import Copy from '@/utils/copy'
 
-import SvgIcon from '@/components/SvgIcon.vue'
 import ModalWrapper from '../../ModalWrapper.vue'
 import FormIndent from '../../FormIndent.vue'
 
@@ -57,8 +56,7 @@ export default {
   name: 'ShareModal',
   components: {
     ModalWrapper,
-    FormIndent,
-    SvgIcon
+    FormIndent
   },
   props: {
     type: {
@@ -89,7 +87,7 @@ export default {
       return `https://api.qrserver.com/v1/create-qr-code/?size=202x202&data=${this.shareUrl}`
     },
     shareUrl() {
-      return `${window.location.origin + this.type}/${this.data} `
+      return `${window.location.origin}/${this.type}/${this.data} `
     }
   },
   beforeDestroy() {

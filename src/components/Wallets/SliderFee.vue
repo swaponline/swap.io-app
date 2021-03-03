@@ -70,6 +70,15 @@ export default {
     }
   },
   async mounted() {
+    // нормализуем работу слайдера на oversize экранах
+    const wrapParseMouseMove = this.$refs.slider.parseMouseMove
+    this.$refs.slider.parseMouseMove = e => {
+      let { clientX } = e
+      if (window.innerWidth > 1920) {
+        clientX = e.clientX / ((window.innerWidth * 0.01) / 18)
+      }
+      return wrapParseMouseMove({ ...e, clientX })
+    }
     // Поставим точку с рекомендуемой комиссией на плашку
     const model = this.value
     this.$emit('input', this.recommendedFee)
