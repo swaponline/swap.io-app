@@ -1,5 +1,5 @@
 <template>
-  <v-list-group class="list-wallet-group" color="black" active-class="list-wallet-group--active">
+  <v-list-group class="list-wallet-group" color="black" active-class="list-wallet-group--active" append-icon="">
     <template #activator>
       <v-list-item-icon class="list-wallet-group__icon-wrapper">
         <svg-icon class="list-wallet-group__icon" name="btc" />
