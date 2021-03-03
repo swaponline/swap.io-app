@@ -1,5 +1,5 @@
 <template>
-  <v-app id="app" :style="`background: ${background}`">
+  <v-app id="app" :style="`--background-app: ${background}`">
     <media-query-provider :queries="queries">
       <router-view />
     </media-query-provider>
@@ -58,11 +58,21 @@ export default {
 
 <style lang="scss">
 #app {
+  position: relative;
   height: calc(var(--vh, 1vh) * 100);
   width: 100%;
   max-width: 100vw;
   overflow: hidden;
-  background: linear-gradient(287deg, #033dff 0%, #ff7ac6 24%, #ffff00 100%);
+  background: var(--background-app);
+  // &::before {
+  //   position: absolute;
+  //   left: 0;
+  //   width: 0;
+  //   content: '';
+  //   height: 100%;
+  //   width: 100%;
+  //   filter: var(--blur-background-app);
+  // }
   @include small-height {
     min-height: calc(var(--vh, 1vh) * 100);
     height: 100%;
