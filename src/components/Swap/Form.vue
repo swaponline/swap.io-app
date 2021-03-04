@@ -109,6 +109,9 @@ export default {
     border-radius: 8px;
     & + div {
       min-height: 52px;
+      @include phone {
+        min-height: 45px;
+      }
       .v-input__append-inner {
         margin-top: 14px !important;
       }
@@ -121,10 +124,16 @@ export default {
     align-items: center;
     font-weight: $--font-weight-semi-bold;
     font-size: $--font-size-subtitle;
+    @include phone {
+      font-size: $--font-size-extra-small-subtitle;
+    }
   }
   &__balance {
     color: $--dark-grey;
     font-size: $--font-size-medium;
+    @include phone {
+      font-size: $--font-size-base;
+    }
   }
   &__row {
     display: flex;

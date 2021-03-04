@@ -1,13 +1,13 @@
 <template>
-  <v-list-group class="list-wallet-group" color="black" active-class="list-wallet-group--active" append-icon="">
+  <v-list-group class="swap-wallet-group" color="black" active-class="swap-wallet-group--active" append-icon="">
     <template #activator>
-      <v-list-item-icon class="list-wallet-group__icon-wrapper">
-        <svg-icon class="list-wallet-group__icon" name="btc" />
+      <v-list-item-icon class="swap-wallet-group__icon-wrapper">
+        <svg-icon class="swap-wallet-group__icon" name="btc" />
       </v-list-item-icon>
-      <v-list-item-title class="list-wallet-group__header">
+      <v-list-item-title class="swap-wallet-group__header">
         <span>{{ nameCurrency }} </span>
         <span>{{ value }}</span>
-        <span class="list-wallet-group__name">{{ subWallets.length }} wallet</span>
+        <span class="swap-wallet-group__name">{{ subWallets.length }} wallet</span>
       </v-list-item-title>
     </template>
     <v-list-item
@@ -15,11 +15,11 @@
       :key="i"
       link
       exact
-      class="list-wallet-group__item"
+      class="swap-wallet-group__item"
       :to="{ name: 'Swap', query: { wallet: subWallet.address } }"
     >
-      <v-list-item-content class="list-wallet-group__item-content">
-        <v-list-item-title class="list-wallet-group__item-info">
+      <v-list-item-content class="swap-wallet-group__item-content">
+        <v-list-item-title class="swap-wallet-group__item-info">
           <span>{{ subWallet.name }}</span>
           <span>{{ subWallet.value }}</span>
         </v-list-item-title>
@@ -30,7 +30,7 @@
 
 <script>
 export default {
-  name: 'ListWalletGroup',
+  name: 'SwapWalletGroup',
   props: {
     name: {
       type: String,
@@ -53,12 +53,18 @@ export default {
 </script>
 
 <style lang="scss">
-.list-wallet-group {
+.swap-wallet-group {
   width: 100%;
   border-radius: 12px;
   overflow: hidden;
   margin: 5px 10px;
   padding: 0 0;
+  @include tablet {
+    margin: 5px 25px;
+  }
+  @include phone {
+    margin: 5px 0;
+  }
   .v-list-item {
     padding: 0 15px;
   }
