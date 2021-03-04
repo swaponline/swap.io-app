@@ -18,6 +18,12 @@ export default {
   flex-basis: 20% !important;
   max-height: 52px;
   width: 100%;
+  @include tablet {
+    margin-bottom: 15px !important;
+  }
+  @include phone {
+    margin-bottom: 10px !important;
+  }
   &:focus-within {
     border-color: $--blue;
   }

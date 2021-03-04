@@ -16,7 +16,7 @@
         v-for="n in 3"
         :key="n"
         class="security-info-block__dot"
-        :class="n <= id ? 'security-info-block__dot--fill' : ''"
+        :class="{ 'security-info-block__dot--fill': n <= id }"
       ></span>
     </span>
     <div class="security-info-block__buttons">

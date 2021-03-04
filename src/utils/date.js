@@ -1,3 +1,17 @@
+export const monthList = [
+  'January,',
+  'February,',
+  'March,',
+  'April,',
+  'May,',
+  'June,',
+  'July,',
+  'August,',
+  'September,',
+  'October,',
+  'November,',
+  'December,'
+]
 export const isDay = (elDate, newDate) => elDate.getDate() === newDate.getDate()
 export const isMonth = (elDate, newDate) => elDate.getMonth() === newDate.getMonth()
 export const isYear = (elDate, newDate) => elDate.getFullYear() === newDate.getFullYear()
@@ -14,7 +28,7 @@ export const getDate = elDate => {
     .getDate()
     .toString()
     .padStart(2, '0')
-  const month = (date.getMonth() + 1).toString().padStart(2, '0')
+  const month = monthList[date.getMonth()]
   const year = date.getFullYear()
   const newDate = new Date()
   if (isToday(date, newDate)) {
@@ -23,5 +37,5 @@ export const getDate = elDate => {
   if (isYesterdayDay(date, newDate)) {
     return 'Yesterday'
   }
-  return [day, month, year].join('.')
+  return [day, month, year].join(' ')
 }

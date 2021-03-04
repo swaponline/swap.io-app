@@ -10,7 +10,7 @@
     </v-list-item-icon>
     <v-list-item-content>
       <v-list-item-title class="list-wallet-item__title">
-        <span>{{ nameCurrency }}</span>
+        <span class="list-wallet-item__currency-name">{{ nameCurrency }}</span>
         <span>{{ value }}</span>
         <span class="list-wallet-item__name">{{ subWallets[0].name }}</span>
       </v-list-item-title>
@@ -49,10 +49,14 @@ export default {
   margin: 5px 10px;
   padding: 0 15px;
   overflow: hidden;
+  &:hover {
+    background: #f7f7f7;
+  }
   &:first-child {
     margin-top: 5px;
   }
-  &:before {
+  &::before {
+    display: none;
     z-index: 0;
     background: $--black;
   }
@@ -75,10 +79,14 @@ export default {
     justify-content: space-between;
     flex-wrap: wrap;
     line-height: 25px !important;
+    letter-spacing: 0.01em;
+    font-size: $--font-size-extra-small-subtitle;
+  }
+  &__currency-name {
+    letter-spacing: 0.03em;
   }
   &__name {
     width: 100%;
-    font-size: $--font-size-extra-small-subtitle;
     color: $--grey;
   }
 }

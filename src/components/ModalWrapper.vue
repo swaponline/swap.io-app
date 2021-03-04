@@ -2,6 +2,7 @@
   <v-dialog
     :value="value"
     v-bind="$attrs"
+    :overlay-opacity="0.3"
     :content-class="`modal-wrapper modal-wrapper--${modificator}`"
     :transition="transition"
     v-on="$listeners"
@@ -9,14 +10,14 @@
     <form class="modal-wrapper__inner" @submit.prevent="$emit('submit')">
       <slot name="header">
         <header v-if="title" class="modal-wrapper__title" :class="{ 'modal-wrapper__title--with-back': backIcon }">
-          <h3>
+          <span>
             <v-btn v-if="backIcon" color="black" icon @click="cancel">
               <v-icon size="30">mdi-chevron-left</v-icon>
             </v-btn>
             {{ title }}
-          </h3>
+          </span>
           <v-btn icon @click="cancel">
-            <v-icon>mdi-close</v-icon>
+            <v-icon size="32">mdi-close</v-icon>
           </v-btn>
         </header>
       </slot>
@@ -90,7 +91,7 @@ export default {
   overflow: auto;
   background: $--white;
   margin-right: 0;
-
+  box-shadow: none;
   &--flat {
     box-shadow: none;
   }

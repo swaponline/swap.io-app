@@ -94,6 +94,11 @@ export default {
   &__item-info {
     display: flex;
     justify-content: space-between;
+    letter-spacing: 0.03em;
+    line-height: 25px;
+    color: $--black;
+    font-weight: $--font-weight-semi-bold;
+    font-size: $--font-size-extra-small-subtitle;
   }
   &__currnecy {
     color: rgba($color: $--white, $alpha: 0.5);

@@ -28,7 +28,11 @@ export default {
   flex-grow: 1;
   margin-bottom: 25px;
   flex-grow: 0;
+  @include tablet {
+    margin-bottom: 15px;
+  }
   @include phone {
+    margin-bottom: 10px;
     padding: 0 8px;
   }
   &:focus-within {
@@ -39,10 +43,10 @@ export default {
     padding: 0 0;
     transition: 0.2s;
     &:focus-within {
-      margin-top: 15px;
+      margin-top: 15px !important;
     }
     &--is-label-active {
-      margin-top: 15px;
+      margin-top: 15px !important;
     }
     &__slot {
       margin-bottom: 0 !important;
@@ -73,8 +77,11 @@ export default {
     }
   }
 
-  .v-text-field__details {
-    display: none;
+  .v-text-field {
+    margin-top: 0;
+    &__details {
+      display: none;
+    }
   }
 }
 </style>

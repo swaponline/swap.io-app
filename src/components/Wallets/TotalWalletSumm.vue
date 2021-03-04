@@ -39,6 +39,14 @@ export default {
     .v-text-field__details {
       display: none;
     }
+    .v-select__selections {
+      > div {
+        text-overflow: auto;
+      }
+      > input {
+        display: none;
+      }
+    }
   }
 
   &__value {

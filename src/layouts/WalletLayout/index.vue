@@ -2,9 +2,9 @@
   <div class="wallet-layout">
     <list-wallet
       class="wallet-layout__list-wallet"
-      :class="showListWallet ? 'wallet-layout__list-wallet--show' : ''"
+      :class="{ 'wallet-layout__list-wallet--show': showListWallet }"
     ></list-wallet>
-    <div class="wallet-layout__router" :class="showListWallet ? 'wallet-layout__router--hide' : ''">
+    <div class="wallet-layout__router" :class="{ 'wallet-layout__router--hide': showListWallet }">
       <transition-translate :reverse="metaBack">
         <router-view :key="currentRoute" class="wallet-layout__router-content"></router-view>
       </transition-translate>

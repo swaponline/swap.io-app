@@ -46,7 +46,6 @@ export default {
 
 <style lang="scss">
 .transaction-description {
-  margin-bottom: 5px;
   width: 100%;
   font-size: $--font-size-medium;
   color: $--black;

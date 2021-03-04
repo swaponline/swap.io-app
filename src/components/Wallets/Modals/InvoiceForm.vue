@@ -185,6 +185,15 @@ export default {
 
 <style lang="scss">
 .invoice-form {
+  &__subtitle {
+    margin: 40px 0 30px;
+    @include tablet {
+      margin: 35px 0 20px;
+    }
+    @include phone {
+      margin: 25px 0 15px;
+    }
+  }
   &__long-field {
     flex-grow: 1;
     width: 65%;
@@ -209,12 +218,18 @@ export default {
     }
   }
   &__add-button {
+    height: auto !important;
     font-weight: $--font-weight-bold;
     text-transform: none;
     flex-grow: 0;
-    margin-bottom: 25px;
+    margin: 25px 0;
     width: 100%;
+    @include phone {
+      margin-top: 20px;
+    }
     span {
+      letter-spacing: 0.01em;
+      color: $--purple;
       font-size: $--font-size-medium;
     }
   }

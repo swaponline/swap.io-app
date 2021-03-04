@@ -268,6 +268,7 @@ export default {
     }
   }
   &__multiple-button {
+    height: auto !important;
     font-weight: $--font-weight-bold;
     text-transform: none;
     flex-grow: 0;
@@ -275,12 +276,14 @@ export default {
     margin-bottom: 25px;
     width: 100%;
     span {
+      letter-spacing: 0.01em;
+      color: $--purple;
       font-size: $--font-size-medium;
     }
   }
   &__edit-icon {
     height: 11px;
-    width: 11px;
+    width: 12px;
   }
   &__divider {
     margin-bottom: 25px;

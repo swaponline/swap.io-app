@@ -9,7 +9,7 @@
     ></wallet-info>
     <transaction-block
       class="wallet__transaction"
-      :class="compressed ? 'wallet__transaction--stretch' : ''"
+      :class="{ 'wallet__transaction--stretch': compressed }"
       :is-compressed-wallet="compressed"
       @compress-wallet="compressed = true"
       @uncompress-wallet="compressed = false"
