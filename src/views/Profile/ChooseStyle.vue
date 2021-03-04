@@ -61,7 +61,6 @@ export default {
     }
   },
   mounted() {
-    console.log(this.$route)
     this.actionFillCards()
   },
   methods: {

@@ -46,6 +46,7 @@ export default {
   width: 100%;
   max-width: 305px;
   height: 100%;
+  overflow-y: auto;
   @include tablet {
     max-width: none;
     transition: 0.5s;

@@ -8,7 +8,6 @@
 </template>
 
 <script>
-// import { mapActions } from 'vuex'
 import { MODULE_NAME as PROFILE_MODULE } from '@/store/modules/Profile'
 import ShowSecretPhrase from '@/components/Profile/ShowSecretPhrase.vue'
 import InputSecretPhrase from '@/components/Profile/InputSecretPhrase.vue'
