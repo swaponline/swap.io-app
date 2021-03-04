@@ -1,13 +1,13 @@
 <template>
-  <div class="swap" :class="openWalletList ? 'swap--open-list' : ''">
+  <div class="swap" :class="{ 'swap--open-list': openWalletList }">
     <swap-button class="swap__change-wallet" @click="openWalletList = !openWalletList">
-      <v-icon class="swap__icon-change" :class="openWalletList ? 'swap__icon-change--open-list' : ''"
+      <v-icon class="swap__icon-change" :class="{ 'swap__icon-change--open-list': openWalletList }"
         >mdi-chevron-left</v-icon
       >
       change wallet
     </swap-button>
     <swap-form />
-    <swap-wallet-list class="swap__wallet-list" :class="openWalletList ? 'swap__wallet-list--open-list' : ''" />
+    <swap-wallet-list class="swap__wallet-list" :class="{ 'swap__wallet-list--open-list': openWalletList }" />
   </div>
 </template>
 

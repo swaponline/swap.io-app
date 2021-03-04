@@ -67,7 +67,7 @@
         <span>~ $213</span>
       </span>
     </p>
-    <swap-button type="submit" class="swap-form__button" depressed>Call to action</swap-button>
+    <swap-button type="submit" class="swap-form__button">Call to action</swap-button>
   </form>
 </template>
 
