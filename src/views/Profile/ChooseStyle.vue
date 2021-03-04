@@ -12,10 +12,7 @@
             :class="{ 'choose-style__card-inner--select': selectGradient === cardColor }"
             @click="select(cardColor)"
           >
-            <div
-              class="choose-style__card-background"
-              :style="`background: ${cardColor.background}; color: white;`"
-            ></div>
+            <div class="choose-style__card-background" :style="`background: ${cardColor.background};`"></div>
           </div>
           <span v-if="selectGradient === cardColor" class="choose-style__card-text" :style="`color: ${cardColor.color}`"
             >Complementary text
@@ -26,10 +23,15 @@
         >Complementary text
       </span>
       <div class="choose-style__buttons">
-        <v-btn class="choose-style__button" depressed @click="setBackground">Create</v-btn>
-        <v-btn class="choose-style__button choose-style__button--text" text @click="fillCardColors"
-          >Refresh colors</v-btn
+        <swap-button class="choose-style__button" @click="goToSecretPhrase">Create</swap-button>
+        <swap-button
+          class="choose-style__button choose-style__button--text"
+          :depressed="false"
+          text
+          @click="actionFillCards"
         >
+          Refresh colors
+        </swap-button>
       </div>
     </div>
   </div>
@@ -37,55 +39,43 @@
 
 <script>
 import { mapActions } from 'vuex'
-import { SET_USERS_COLORS } from '@/store/modules/Profile'
+import { MODULE_NAME as PROFILE_MODULE, SET_USERS_COLORS, FILL_CARDS } from '@/store/modules/Profile'
 
 export default {
   name: 'ChooseStyle',
   data() {
     return {
-      cardColors: [],
       selectGradient: {
         background: '',
-        color: ''
+        color: '',
+        wordList: []
       }
     }
   },
+  computed: {
+    cardColors() {
+      return this.$store.state[PROFILE_MODULE].list
+    }
+  },
   mounted() {
-    this.fillCardColors()
+    this.actionFillCards()
   },
   methods: {
     ...mapActions({
-      actionSetUsersColors: SET_USERS_COLORS
+      actionSetUsersColors: SET_USERS_COLORS,
+      actionFillCards: FILL_CARDS
     }),
     select(color) {
       this.selectGradient = color
       this.setBackground()
     },
-    fillCardColors() {
-      for (let i = 0; i < 4; i += 1) {
-        const color = this.generateColor()
-        this.cardColors.splice(i, 1, {
-          background: this.getGradient(color),
-          color
-        })
+    goToSecretPhrase() {
+      if (this.selectGradient.wordList.length > 0) {
+        this.$router.push({ name: 'SecretPhrase' })
       }
     },
     setBackground() {
       this.actionSetUsersColors(this.selectGradient)
-    },
-    getGradient(color) {
-      return `linear-gradient(${this.randomInteger(
-        0,
-        360
-      )}deg, ${this.generateColor()} 0%, ${color} ${this.randomInteger(1, 100)}%, ${this.generateColor()} 100%)`
-    },
-    generateColor() {
-      const color = Math.floor(Math.random() * 16777216).toString(16)
-      return '#000000'.slice(0, -color.length) + color
-    },
-    randomInteger(min, max) {
-      const rand = min + Math.random() * (max + 1 - min)
-      return Math.floor(rand)
     }
   }
 }
@@ -231,21 +221,12 @@ export default {
   }
   &__button {
     margin: 0 5px;
-    min-height: 48px;
-    width: 174px;
-    text-transform: none;
-    border-radius: 8px;
-    display: flex;
+    min-width: 174px !important;
     &--text {
       margin-top: 10px;
       color: $--dark-grey !important;
     }
-    > span {
-      font-weight: $--font-weight-semi-bold;
-      font-size: $--font-size-extra-small-subtitle;
-    }
     @include tablet {
-      width: 100%;
       margin-bottom: 10px;
     }
   }

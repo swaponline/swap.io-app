@@ -1,7 +1,7 @@
 <template>
   <modal-wrapper
     value
-    cancel-button-label="Cancel"
+    cancel-button-label="Close"
     confirm-button-label="Share"
     title="Transaction details"
     @input="close"

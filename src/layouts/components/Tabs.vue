@@ -1,5 +1,5 @@
 <template>
-  <v-tabs fixed-tabs height="auto" color="#000000" slider-color="#000000" slider-size="4" class="tabs">
+  <v-tabs fixed-tabs height="auto" color="#000000" slider-color="#101010" slider-size="4" class="tabs">
     <v-tab v-for="tab in tabs" :key="tab.id" :to="tab.to" class="tabs__item">
       {{ tab.label }}
     </v-tab>
@@ -58,6 +58,7 @@ export default {
     margin: 0 0 !important;
     font-weight: $--font-weight-semi-bold;
     font-size: $--font-size-small-subtitle;
+    color: $--black !important;
     line-height: 27px;
     letter-spacing: 0.01em;
     text-transform: none;

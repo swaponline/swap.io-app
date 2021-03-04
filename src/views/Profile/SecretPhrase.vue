@@ -8,9 +8,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-import { GET_RANDOM_WORDS, MODULE_NAME as PROFILE_MODULE } from '@/store/modules/Profile'
-
+import { MODULE_NAME as PROFILE_MODULE } from '@/store/modules/Profile'
 import ShowSecretPhrase from '@/components/Profile/ShowSecretPhrase.vue'
 import InputSecretPhrase from '@/components/Profile/InputSecretPhrase.vue'
 
@@ -27,20 +25,17 @@ export default {
   },
   computed: {
     words() {
-      return this.$store.state[PROFILE_MODULE].list
+      return this.$store.state[PROFILE_MODULE].model.wordList
     }
   },
   created() {
-    this.actionGetRandomWords()
+    if (this.words.length === 0) {
+      this.$router.replace({ name: 'ChooseStyle' })
+    }
   },
   methods: {
-    ...mapActions({
-      actionGetRandomWords: GET_RANDOM_WORDS
-    }),
     back() {
-      this.actionGetRandomWords().then(() => {
-        this.isWritePhrase = false
-      })
+      this.isWritePhrase = false
     }
   }
 }

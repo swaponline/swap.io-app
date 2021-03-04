@@ -58,7 +58,7 @@ export default {
     width: auto;
   }
   &__transaction {
-    margin-top: 20px;
+    margin-top: 25px;
     flex-grow: 1;
     height: 50%;
     transition: 0.5s;

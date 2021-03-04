@@ -6,7 +6,7 @@
       class="transactions__tabs"
       background-color="transparent"
       fixed-tabs
-      color="#000000"
+      slider-color="#101010"
       slider-size="2"
     >
       <v-tab v-for="tab in tabs" :key="tab" class="transactions__tab">{{ tab }}</v-tab>
@@ -100,6 +100,7 @@ export default {
     padding: 0 0;
     min-width: 80px;
     font-weight: $--font-weight-semi-bold;
+    color: $--black !important;
     @include phone {
       width: 25%;
       font-size: $--font-size-small;

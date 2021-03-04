@@ -25,12 +25,12 @@
 
       <slot name="footer">
         <div class="modal-wrapper__footer">
-          <v-btn v-if="cancelButtonLabel" class="modal-wrapper__button" depressed type="button" @click="cancel">
+          <swap-button v-if="cancelButtonLabel" class="modal-wrapper__button" type="button" @click="cancel">
             {{ cancelButtonLabel }}
-          </v-btn>
-          <v-btn v-if="confirmButtonLabel" class="modal-wrapper__button" depressed type="submit">
+          </swap-button>
+          <swap-button v-if="confirmButtonLabel" class="modal-wrapper__button" type="submit">
             {{ confirmButtonLabel }}
-          </v-btn>
+          </swap-button>
         </div>
       </slot>
     </form>
@@ -126,18 +126,17 @@ export default {
     }
   }
   &__footer {
-    margin: 0 -8px;
-    margin-top: auto;
+    margin: auto -8px 0;
+    @include phone {
+      margin: auto -4px 0;
+    }
   }
   &__button {
     width: calc(50% - 16px);
-    border-radius: 8px;
     margin: auto 8px 0;
-    min-height: 52px;
-    text-transform: none;
-    font-weight: $--font-weight-bold;
-    span {
-      font-size: $--font-size-medium;
+    @include phone {
+      width: calc(50% - 8px);
+      margin: auto 4px 0;
     }
   }
 }
