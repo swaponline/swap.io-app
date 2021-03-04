@@ -12,10 +12,7 @@
             :class="{ 'choose-style__card-inner--select': selectGradient === cardColor }"
             @click="select(cardColor)"
           >
-            <div
-              class="choose-style__card-background"
-              :style="`background: ${cardColor.background}; color: white;`"
-            ></div>
+            <div class="choose-style__card-background" :style="`background: ${cardColor.background};`"></div>
           </div>
           <span v-if="selectGradient === cardColor" class="choose-style__card-text" :style="`color: ${cardColor.color}`"
             >Complementary text

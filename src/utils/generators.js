@@ -20,5 +20,5 @@ export const getGradient = color => {
   return `linear-gradient(${randomInteger(0, 360)}deg, ${generateColor()} 0%, ${color} ${randomInteger(
     1,
     100
-  )}%, ${generateColor()} 100%);` // filter: blur(1px); --blur-background-app: blur(5px)
+  )}%, ${generateColor()} 100%)`
 }
