@@ -97,10 +97,13 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 24px 20px 20px;
+  padding: 20px 20px;
   overflow-y: auto;
   width: 100%;
   max-width: 370px;
+  @include tablet {
+    max-width: none;
+  }
   fieldset {
     border-color: $--black;
     border-radius: 8px;
@@ -135,17 +138,14 @@ export default {
   &__select {
     width: 30%;
     margin-left: 10px !important;
+    min-width: 100px;
   }
   &__info {
     margin: 25px 0;
     color: $--dark-grey;
     font-weight: $--font-weight-semi-bold;
     font-size: $--font-size-medium;
-    @include tablet {
-      margin: 30px 0;
-    }
     @include phone {
-      margin: 20px 0 25px;
       font-size: $--font-size-base;
     }
   }

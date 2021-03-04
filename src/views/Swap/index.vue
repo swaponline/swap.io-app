@@ -1,13 +1,13 @@
 <template>
-  <div class="swap" :class="openWalletList ? 'swap--with-list' : ''">
+  <div class="swap" :class="openWalletList ? 'swap--open-list' : ''">
     <swap-button class="swap__change-wallet" @click="openWalletList = !openWalletList">
-      <v-icon class="swap__icon-change" :class="openWalletList ? 'swap__icon-change--with-list' : ''"
+      <v-icon class="swap__icon-change" :class="openWalletList ? 'swap__icon-change--open-list' : ''"
         >mdi-chevron-left</v-icon
       >
       change wallet
     </swap-button>
     <swap-form />
-    <swap-wallet-list />
+    <swap-wallet-list class="swap__wallet-list" :class="openWalletList ? 'swap__wallet-list--open-list' : ''" />
   </div>
 </template>
 
@@ -24,6 +24,18 @@ export default {
   data() {
     return {
       openWalletList: false
+    }
+  },
+  computed: {
+    queryWallet() {
+      return this.$route.query.wallet
+    }
+  },
+  watch: {
+    queryWallet: {
+      handler() {
+        this.openWalletList = false
+      }
     }
   }
 }
@@ -46,27 +58,35 @@ export default {
   box-shadow: 0px 0px 15px rgba($--black, 0.015);
   overflow-x: hidden;
   overflow-y: auto;
-  transform-origin: left center;
   transition: 0.5s;
-  @include only-desktop {
-    &--with-list {
-      right: 152px;
-      max-width: 675px;
-    }
+  &--open-list {
+    right: 152px;
+    max-width: 675px;
   }
   @include tablet {
-    max-width: 370px;
+    &--open-list {
+      right: 0px;
+      max-width: 370px;
+    }
   }
   @include phone {
+    max-width: none;
+    width: auto;
     margin: 14px 14px;
   }
   &__change-wallet {
-    z-index: 2;
+    display: flex;
+    z-index: 3;
     background: $--light-grey !important;
     width: 100%;
     max-width: 370px;
     min-height: 36px;
     border-radius: 0px !important;
+
+    @include phone {
+      max-width: none;
+    }
+
     > span {
       display: flex;
       align-items: center;
@@ -77,13 +97,23 @@ export default {
     }
   }
   &__icon-change {
-    &--with-list {
+    &--open-list {
       transform: rotate(180deg);
     }
-    @include phone {
+    @include tablet {
       transform: rotate(-90deg);
-      &--with-list {
+      &--open-list {
         transform: rotate(90deg);
+      }
+    }
+  }
+  &__wallet-list {
+    z-index: 0;
+    @include tablet {
+      z-index: 2;
+      top: -100%;
+      &--open-list {
+        top: 36px;
       }
     }
   }

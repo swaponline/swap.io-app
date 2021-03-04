@@ -16,7 +16,7 @@
       link
       exact
       class="list-wallet-group__item"
-      :to="{ name: 'Swap', query: { walletAddress: subWallet.address } }"
+      :to="{ name: 'Swap', query: { wallet: subWallet.address } }"
     >
       <v-list-item-content class="list-wallet-group__item-content">
         <v-list-item-title class="list-wallet-group__item-info">

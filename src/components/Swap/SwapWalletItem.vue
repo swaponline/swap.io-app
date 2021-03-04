@@ -1,10 +1,5 @@
 <template>
-  <v-list-item
-    link
-    exact
-    class="list-wallet-item"
-    :to="{ name: 'Swap', query: { walletAddress: subWallets[0].address } }"
-  >
+  <v-list-item link exact class="list-wallet-item" :to="{ name: 'Swap', query: { wallet: subWallets[0].address } }">
     <v-list-item-icon class="list-wallet-item__icon-wrapper">
       <svg-icon class="list-wallet-item__icon" name="btc" />
     </v-list-item-icon>

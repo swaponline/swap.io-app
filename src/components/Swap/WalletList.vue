@@ -40,11 +40,16 @@ export default {
 <style lang="scss">
 .swap-wallet-list {
   position: absolute;
+  background: $--white;
   left: 0;
   top: 0;
   width: 100%;
   max-width: 305px;
   height: 100%;
-  z-index: 0;
+  @include tablet {
+    max-width: none;
+    transition: 0.5s;
+    height: calc(100% - 36px);
+  }
 }
 </style>
