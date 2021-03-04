@@ -63,8 +63,17 @@ export default {
   width: 100%;
   max-width: 100vw;
   overflow: hidden;
-  background: var(--background-app);
-
+  filter: blur(0) !important;
+  &::before {
+    background: var(--background-app);
+    position: absolute;
+    left: -5%;
+    top: -5%;
+    content: '';
+    height: 110%;
+    width: 110%;
+    filter: var(--blur-background-app);
+  }
   @include small-height {
     min-height: calc(var(--vh, 1vh) * 100);
     height: 100%;

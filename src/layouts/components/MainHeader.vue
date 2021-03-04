@@ -1,7 +1,7 @@
 <template>
   <div class="main-header">
-    <div class="main-header__logo">
-      <svg-icon class="main-header__logo-icon" name="logo" :style="`fill: ${iconColor}`" />
+    <div class="main-header__logo" :style="`--logo-color: ${iconColor}`">
+      <svg-icon class="main-header__logo-icon" name="logo" />
       <h2>Swap</h2>
     </div>
     <match-media v-slot="{ desktop }" class="d-flex flex-grow-1">
@@ -54,6 +54,8 @@ export default {
   box-shadow: 0px 0px 20px rgba(17, 17, 17, 0.02);
   border-radius: 0px 0px 12px 12px;
   justify-content: space-between;
+
+  --logo-color: $--purple;
   @include tablet {
     min-height: 80px;
     border-radius: 0px;
@@ -63,7 +65,7 @@ export default {
     margin-right: 20px;
     display: flex;
     align-items: center;
-    color: $--purple;
+    color: var(--logo-color);
     @include tablet {
       min-width: 0;
       flex-grow: 1;
@@ -74,7 +76,7 @@ export default {
     height: 45px;
     margin-right: 20px;
     margin-left: 30px;
-    fill: $--purple;
+    fill: var(--logo-color);
     @include tablet {
       width: 45px;
       height: 42px;
