@@ -47,7 +47,7 @@ export default {
   @include tablet {
     margin: 5px 25px;
   }
-  @include phone {
+  @include small {
     margin: 5px 0;
   }
   &:first-child {
