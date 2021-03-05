@@ -22,7 +22,7 @@
       </form-indent>
 
       <form-indent v-if="status" title="Status">
-        <span :class="status === 'send' ? 'transaction-details__send-status' : ''">
+        <span :class="{ 'transaction-details__send-status': status === 'send' }">
           {{ status }}
           <pending-loader v-if="status === 'pending'" />
         </span>

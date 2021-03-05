@@ -6,7 +6,7 @@
       >
       change wallet
     </swap-button>
-    <swap-form />
+    <swap-form @submit="submit" />
     <swap-wallet-list class="swap__wallet-list" :class="{ 'swap__wallet-list--open-list': openWalletList }" />
   </div>
 </template>
@@ -37,6 +37,9 @@ export default {
         this.openWalletList = false
       }
     }
+  },
+  methods: {
+    submit() {}
   }
 }
 </script>
@@ -64,6 +67,7 @@ export default {
     max-width: 675px;
   }
   @include tablet {
+    margin-top: 20px;
     &--open-list {
       right: 0px;
       max-width: 370px;
@@ -73,6 +77,9 @@ export default {
     max-width: none;
     width: auto;
     margin: 14px 14px;
+  }
+  @include small {
+    max-height: 415px;
   }
   &__change-wallet {
     display: flex;

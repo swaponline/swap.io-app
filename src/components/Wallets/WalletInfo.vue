@@ -1,5 +1,5 @@
 <template>
-  <div class="wallet-info" :class="compressed ? 'wallet-info--compressed' : ''" @click="uncompressWallet">
+  <div class="wallet-info" :class="{ 'wallet-info--compressed': compressed }" @click="uncompressWallet">
     <svg-icon class="wallet-info__background-icon" :name="backgroundIconName"></svg-icon>
     <div class="wallet-info__optional-buttons">
       <v-btn icon class="wallet-info__optional-button" @click="openShareModal">
@@ -301,11 +301,11 @@ export default {
   }
   &__button-qrcode {
     outline: none;
-    border-left: 1px solid $--grey;
+    border-left: 1px solid $--light-grey-1;
     transition: 0.3s;
     opacity: var(--icon-opacity);
     font-size: $--font-size-small-subtitle;
-    line-height: 29px;
+    line-height: 22px;
     @include tablet {
       display: none;
     }
@@ -317,7 +317,7 @@ export default {
     text-transform: none;
     font-size: $--font-size-small-subtitle;
     font-weight: $--font-weight-regular;
-    line-height: 29px;
+    line-height: 22px;
     min-width: 144px;
     word-break: break-all;
     @include tablet {

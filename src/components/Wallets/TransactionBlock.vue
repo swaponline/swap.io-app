@@ -17,7 +17,7 @@
         <list-transactions
           ref="transaction"
           class="transactions__list"
-          :class="isCompressedWallet ? 'transactions__list--stretch' : ''"
+          :class="{ 'transactions__list--stretch': isCompressedWallet }"
           :address="currentAddress"
           :filter-type="tab"
           :is-compressed-wallet="isCompressedWallet"

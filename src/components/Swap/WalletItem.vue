@@ -1,13 +1,13 @@
 <template>
-  <v-list-item link exact class="list-wallet-item" :to="{ name: 'Swap', query: { wallet: subWallets[0].address } }">
-    <v-list-item-icon class="list-wallet-item__icon-wrapper">
-      <svg-icon class="list-wallet-item__icon" name="btc" />
+  <v-list-item link exact class="swap-wallet-item" :to="{ name: 'Swap', query: { wallet: subWallets[0].address } }">
+    <v-list-item-icon class="swap-wallet-item__icon-wrapper">
+      <svg-icon class="swap-wallet-item__icon" name="btc" />
     </v-list-item-icon>
     <v-list-item-content>
-      <v-list-item-title class="list-wallet-item__title">
+      <v-list-item-title class="swap-wallet-item__title">
         <span>{{ nameCurrency }}</span>
         <span>{{ value }}</span>
-        <span class="list-wallet-item__name">{{ subWallets[0].name }}</span>
+        <span class="swap-wallet-item__name">{{ subWallets[0].name }}</span>
       </v-list-item-title>
     </v-list-item-content>
   </v-list-item>
@@ -15,7 +15,7 @@
 
 <script>
 export default {
-  name: 'ListWalletItem',
+  name: 'SwapWalletItem',
   props: {
     name: {
       type: String,
@@ -38,12 +38,18 @@ export default {
 </script>
 
 <style lang="scss">
-.list-wallet-item {
+.swap-wallet-item {
   min-height: 40px;
   border-radius: 12px;
   margin: 5px 10px;
   padding: 0 15px;
   overflow: hidden;
+  @include tablet {
+    margin: 5px 25px;
+  }
+  @include small {
+    margin: 5px 0;
+  }
   &:first-child {
     margin-top: 5px;
   }

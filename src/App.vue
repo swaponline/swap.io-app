@@ -12,8 +12,9 @@ import { MODULE_NAME as PROFILE_MODULE } from '@/store/modules/Profile'
 
 const queries = {
   desktop: '(min-width: 1281px)',
-  tablet: '(min-width: 481px) and (max-width: 1280px)',
-  phone: '(max-width: 480px)'
+  tablet: '(max-width: 1280px)',
+  phone: '(max-width: 480px)',
+  small: '(max-width: 320px)'
 }
 export default {
   name: 'App',
@@ -63,8 +64,16 @@ export default {
   width: 100%;
   max-width: 100vw;
   overflow: hidden;
-  background: var(--background-app);
-
+  &::before {
+    background: var(--background-app);
+    position: absolute;
+    left: -5%;
+    top: -5%;
+    content: '';
+    height: 110%;
+    width: 110%;
+    filter: blur(10px);
+  }
   @include small-height {
     min-height: calc(var(--vh, 1vh) * 100);
     height: 100%;

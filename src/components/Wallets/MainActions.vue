@@ -1,13 +1,11 @@
 <template>
   <v-speed-dial v-model="fab" class="main-actions" bottom left direction="top" transition="slide-y-reverse-transition">
     <template #activator>
-      <v-btn v-model="fab" color="main-actions__open-button blue darken-2" dark fab height="auto" width="auto">
-        <v-icon v-if="fab">
+      <v-btn v-model="fab" class="main-actions__open-button" dark fab height="auto" width="auto">
+        <v-icon v-if="fab" class="main-actions__open-icon">
           mdi-close
         </v-icon>
-        <v-icon v-else>
-          mdi-plus
-        </v-icon>
+        <svg-icon v-else name="plus" class="main-actions__open-icon" />
       </v-btn>
     </template>
     <v-btn
@@ -84,16 +82,21 @@ export default {
 <style lang="scss">
 .main-actions {
   &__open-button {
-    min-width: 75px;
-    min-height: 75px;
+    background: $--purple !important;
+    min-width: 65px;
+    min-height: 65px;
     @include tablet {
-      min-width: 65px;
-      min-height: 65px;
+      min-width: 75px;
+      min-height: 75px;
     }
     @include phone {
-      min-width: 55px;
-      min-height: 55px;
+      min-width: 50px;
+      min-height: 50px;
     }
+  }
+  &__open-icon {
+    width: 26px;
+    height: 26px;
   }
   &__button {
     min-width: 55px;

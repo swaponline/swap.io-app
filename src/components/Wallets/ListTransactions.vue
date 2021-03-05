@@ -1,8 +1,8 @@
 <template>
-  <div ref="transaction" class="list-transaction" :class="isCompressedWallet ? 'list-transaction--stretch' : ''">
+  <div ref="transaction" class="list-transaction" :class="{ 'list-transaction--stretch': isCompressedWallet }">
     <div v-for="transaction in transactions" :key="transaction.date" class="list-transaction__block">
       <v-subheader ref="headers" class="list-transaction__title">
-        <h4>{{ transaction.date }}</h4>
+        <span>{{ transaction.date }}</span>
       </v-subheader>
       <transaction-item
         v-for="item in transaction.list"
@@ -134,6 +134,9 @@ export default {
     top: 0;
     display: flex;
     justify-content: space-between;
+    padding: 0 25px;
+    color: $--black !important;
+    font-size: $--font-size-medium;
     &.sticky {
       position: sticky;
     }

@@ -1,5 +1,5 @@
 <template>
-  <form class="swap-form" @submit.prevent>
+  <form class="swap-form" @submit.prevent="$emit('submit')">
     <header class="swap-form__header">
       <span>Swap</span>
       <span class="swap-form__balance">Balance: BTC 1231231</span>
@@ -25,8 +25,8 @@
       ></v-select>
     </div>
     <div class="swap-form__row">
-      <v-btn icon @click="swapWallet">
-        <v-icon>mdi-swap-vertical</v-icon>
+      <v-btn class="swap-form__swap-button" icon height="auto" min-height="none" @click="swapWallet">
+        <svg-icon class="swap-form__icon" name="swap" />
       </v-btn>
     </div>
     <div class="swap-form__row">
@@ -104,11 +104,17 @@ export default {
   @include tablet {
     max-width: none;
   }
+  @include small {
+    padding: 16px 12px 14px;
+  }
   fieldset {
     border-color: $--black;
     border-radius: 8px;
     & + div {
       min-height: 52px;
+      @include small {
+        min-height: 45px;
+      }
       .v-input__append-inner {
         margin-top: 14px !important;
       }
@@ -121,16 +127,34 @@ export default {
     align-items: center;
     font-weight: $--font-weight-semi-bold;
     font-size: $--font-size-subtitle;
+    line-height: 33px;
+    @include tablet {
+      margin-bottom: 7px;
+    }
+    @include small {
+      margin-bottom: 5px;
+      line-height: 25px;
+      font-size: $--font-size-extra-small-subtitle;
+    }
   }
   &__balance {
     color: $--dark-grey;
     font-size: $--font-size-medium;
+    @include phone {
+      font-size: $--font-size-base;
+    }
   }
   &__row {
     display: flex;
     justify-content: center;
     height: auto;
     margin-top: 15px;
+    @include tablet {
+      margin-top: 18px;
+    }
+    @include small {
+      margin-top: 10px;
+    }
   }
   &__input {
     width: 70%;
@@ -140,13 +164,26 @@ export default {
     margin-left: 10px !important;
     min-width: 100px;
   }
+  &__swap-button {
+    padding: 6px 0;
+  }
+  &__icon {
+    width: 22px;
+    height: 15px;
+  }
   &__info {
     margin: 25px 0;
     color: $--dark-grey;
     font-weight: $--font-weight-semi-bold;
     font-size: $--font-size-medium;
-    @include phone {
+    line-height: 22px;
+    @include tablet {
+      margin-top: 24px;
+    }
+    @include small {
+      margin-top: 20px;
       font-size: $--font-size-base;
+      line-height: 19px;
     }
   }
   &__info-row {
@@ -155,11 +192,20 @@ export default {
     justify-content: space-between;
     &:not(:first-child) {
       margin-top: 10px;
+      @include small {
+        margin-top: 6px;
+      }
     }
   }
   &__button {
     margin-top: auto;
     width: 100%;
+    @include phone {
+      min-height: 52px;
+    }
+    @include phone {
+      min-height: 42px;
+    }
   }
 }
 </style>

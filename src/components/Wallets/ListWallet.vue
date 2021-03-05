@@ -80,7 +80,7 @@ export default {
       top: 100%;
       width: calc(100% - 30px);
       min-height: 1px;
-      background: rgba($--black, 0.1);
+      background: $--light-grey;
     }
   }
 }

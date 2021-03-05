@@ -28,6 +28,12 @@
   }
 }
 
+@mixin small {
+  @media screen and (max-width: $--bp-small) {
+    @content;
+  }
+}
+
 @mixin small-height {
   @media screen and (max-height: calc(100vw / 2.5)) {
     @content;

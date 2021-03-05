@@ -14,7 +14,7 @@
     </div>
     <div class="item-transaction__main-info">
       <transaction-description v-model="comment"></transaction-description>
-      <span>CONFIRMED</span>
+      <span class="item-transaction__status">{{ status }}</span>
     </div>
     <div
       class="item-transaction__value"
@@ -77,7 +77,7 @@ export default {
     },
     status: {
       type: String,
-      default: ''
+      default: 'PENDING'
     },
     timestamp: {
       type: Number,
@@ -189,6 +189,7 @@ export default {
   border-top: 1px solid rgba($color: $--black, $alpha: 0.05) !important;
   padding: 20px 0;
   margin: 0 20px;
+  border-radius: 0px !important;
   &:after {
     display: none;
   }
@@ -197,6 +198,12 @@ export default {
   }
   &__header {
     padding: 16px 0;
+  }
+  &__icon {
+    margin-bottom: 4px;
+    &--send {
+      transform: rotate(180deg);
+    }
   }
   &__time {
     flex: 0 !important;
@@ -208,6 +215,9 @@ export default {
     font-size: $--font-size-small;
     line-height: 16px;
     font-weight: $--font-weight-medium;
+  }
+  &__status {
+    margin-top: 7px;
   }
   &__main-info {
     display: flex;
