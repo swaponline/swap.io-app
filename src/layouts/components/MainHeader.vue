@@ -60,6 +60,9 @@ export default {
     min-height: 80px;
     border-radius: 0px;
   }
+  @include small {
+    min-height: 70px;
+  }
   &__logo {
     min-width: 305px;
     margin-right: 20px;

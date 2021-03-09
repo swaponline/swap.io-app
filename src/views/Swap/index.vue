@@ -6,7 +6,7 @@
       >
       change wallet
     </swap-button>
-    <swap-form @submit="submit" />
+    <swap-form :class="{ 'swap__form--open-list': openWalletList }" @submit="submit" />
     <swap-wallet-list class="swap__wallet-list" :class="{ 'swap__wallet-list--open-list': openWalletList }" />
   </div>
 </template>
@@ -112,6 +112,12 @@ export default {
       &--open-list {
         transform: rotate(90deg);
       }
+    }
+  }
+  &__form--open-list {
+    box-shadow: 0px 0px 15px rgba(17, 17, 17, 0.05);
+    @include tablet {
+      box-shadow: none;
     }
   }
   &__wallet-list {
