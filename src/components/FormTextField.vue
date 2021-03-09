@@ -1,6 +1,6 @@
 <template>
-  <div class="form-text-field">
-    <v-text-field v-bind="$attrs" v-on="$listeners">
+  <div class="form-text-field" :class="{ 'form-text-field--with-label': label }">
+    <v-text-field v-bind="$attrs" :label="label" v-on="$listeners">
       <template #append>
         <slot name="append"></slot>
       </template>
@@ -11,7 +11,13 @@
 <script>
 export default {
   name: 'FormTextField',
-  inheritAttrs: false
+  inheritAttrs: false,
+  props: {
+    label: {
+      type: String,
+      default: ''
+    }
+  }
 }
 </script>
 
@@ -28,6 +34,11 @@ export default {
   flex-grow: 1;
   margin-bottom: 25px;
   flex-grow: 0;
+
+  --mt-value: 0px;
+  &--with-label {
+    --mt-value: 15px;
+  }
   @include tablet {
     margin-bottom: 15px;
   }
@@ -43,10 +54,10 @@ export default {
     padding: 0 0;
     transition: 0.2s;
     &:focus-within {
-      margin-top: 15px !important;
+      margin-top: var(--mt-value) !important;
     }
     &--is-label-active {
-      margin-top: 15px !important;
+      margin-top: var(--mt-value) !important;
     }
     &__slot {
       margin-bottom: 0 !important;

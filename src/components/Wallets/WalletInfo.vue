@@ -5,7 +5,7 @@
       <v-btn icon class="wallet-info__optional-button" @click="openShareModal">
         <svg-icon name="share" class="wallet-info__icon"></svg-icon>
       </v-btn>
-      <v-btn icon class="wallet-info__optional-button">
+      <v-btn icon class="wallet-info__optional-button" @click="openSettingsModal">
         <svg-icon name="settings" class="wallet-info__icon"></svg-icon>
       </v-btn>
     </div>
@@ -41,7 +41,7 @@
 import copy from '@/utils/copy'
 import { mapMutations } from 'vuex'
 import { ADD_MODAL } from '@/store/modules/Modals'
-import { COPY_MENU, INVOICE_FORM, SEND_FORM, SHARE_MODAL } from '@/store/modules/Modals/names'
+import { COPY_MENU, INVOICE_FORM, SEND_FORM, SHARE_MODAL, WALLET_SETTINGS } from '@/store/modules/Modals/names'
 
 export default {
   name: 'WalletInfo',
@@ -147,6 +147,15 @@ export default {
         show: true,
         info: {
           address: this.walletAddress
+        }
+      })
+    },
+    openSettingsModal() {
+      this.mutationAddModal({
+        name: WALLET_SETTINGS,
+        id: `${WALLET_SETTINGS + this.walletAddress}`,
+        info: {
+          walletId: this.walletAddress
         }
       })
     }

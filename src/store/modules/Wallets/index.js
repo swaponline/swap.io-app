@@ -1,10 +1,11 @@
-import { SET_MODEL, SET_LIST } from '@/store/common/mutations.types'
+import { SET_MODEL, SET_LIST, UPDATE_OBJECT_PROPERTY } from '@/store/common/mutations.types'
 
 export const MODULE_NAME = 'Wallets'
 export const SET_ACCOUNT_ID = 'SET_ACCOUNT_ID'
 export const GET_ACCOUNT_ID = 'GET_ACCOUNT_ID'
 export const CREATE_NEW_USER = 'CREATE_NEW_USER'
 export const CREATE_NEW_WALLET = 'CREATE_NEW_WALLET'
+export const UPDATE_WALLET_NAME = 'UPDATE_WALLET_NAME'
 
 export default {
   state: {
@@ -109,6 +110,14 @@ export default {
     }
   },
   actions: {
+    [UPDATE_WALLET_NAME]({ state, commit }, { wallet, name }) {
+      commit(UPDATE_OBJECT_PROPERTY, {
+        model: wallet,
+        key: 'name',
+        value: name
+      })
+      window.localStorage.setItem('list', JSON.stringify(state.list))
+    },
     [GET_ACCOUNT_ID]({ state, commit }) {
       const accountId = window.localStorage.getItem('accountId') || state.list[0].id
       commit(SET_MODEL, { name: MODULE_NAME, model: { accountId } })
