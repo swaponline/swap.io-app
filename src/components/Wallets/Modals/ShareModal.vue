@@ -128,6 +128,8 @@ export default {
 
 <style lang="scss">
 .share-modal {
+  display: flex;
+  flex-direction: column;
   &__qr-image {
     display: flex;
     align-items: center;
