@@ -27,6 +27,7 @@ const InvoicePreview = () => import(/* webpackChunkName: "InvoicePreview" */ './
 const SendPreview = () => import(/* webpackChunkName: "SendPreview" */ './SendPreview.vue')
 const EditFee = () => import(/* webpackChunkName: "EditFee" */ './EditFee.vue')
 const ShareModal = () => import(/* webpackChunkName: "ShareModal" */ './ShareModal.vue')
+const WalletSettings = () => import(/* webpackChunkName: "WalletSettings" */ './WalletSettings.vue')
 
 export default {
   name: 'AllModalsWallet',
@@ -38,6 +39,7 @@ export default {
     SendPreview,
     EditFee,
     ShareModal,
+    WalletSettings,
     TransactionDetails
   },
   computed: {

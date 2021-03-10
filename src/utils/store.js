@@ -26,7 +26,7 @@ export function getStateProperty(state, ref) {
   // eslint-disable-next-line no-constant-condition
   while (true) {
     const propKey = path.shift()
-    if (!propKey || !property[propKey]) break
+    if (!Object.hasOwnProperty.call(property, propKey)) break
     property = property[propKey]
   }
 

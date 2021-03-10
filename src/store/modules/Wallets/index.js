@@ -1,10 +1,11 @@
-import { SET_MODEL, SET_LIST } from '@/store/common/mutations.types'
+import { SET_MODEL, SET_LIST, UPDATE_OBJECT_PROPERTY } from '@/store/common/mutations.types'
 
 export const MODULE_NAME = 'Wallets'
 export const SET_ACCOUNT_ID = 'SET_ACCOUNT_ID'
 export const GET_ACCOUNT_ID = 'GET_ACCOUNT_ID'
 export const CREATE_NEW_USER = 'CREATE_NEW_USER'
 export const CREATE_NEW_WALLET = 'CREATE_NEW_WALLET'
+export const UPDATE_WALLET_NAME = 'UPDATE_WALLET_NAME'
 
 export default {
   state: {
@@ -109,6 +110,25 @@ export default {
     }
   },
   actions: {
+    [UPDATE_WALLET_NAME]({ state, getters, commit }, wallet) {
+      const index = state.list.indexOf(getters.currentAccount)
+      if (index > -1) {
+        const indexWalletGroup = getters.currentAccount.list.findIndex(w => w.nameCurrency === wallet.nameCurrency)
+        if (indexWalletGroup > -1) {
+          const indexWallet = getters.currentAccount.list[indexWalletGroup].subWallets.findIndex(
+            w => w.address === wallet.address
+          )
+          if (indexWallet > -1) {
+            commit(UPDATE_OBJECT_PROPERTY, {
+              path: [MODULE_NAME, 'list', index, 'list', indexWalletGroup, 'subWallets', indexWallet],
+              key: 'name',
+              value: wallet.name
+            })
+            window.localStorage.setItem('list', JSON.stringify(state.list))
+          }
+        }
+      }
+    },
     [GET_ACCOUNT_ID]({ state, commit }) {
       const accountId = window.localStorage.getItem('accountId') || state.list[0].id
       commit(SET_MODEL, { name: MODULE_NAME, model: { accountId } })

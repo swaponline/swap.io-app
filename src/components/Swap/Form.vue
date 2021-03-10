@@ -149,6 +149,7 @@ export default {
     justify-content: center;
     height: auto;
     margin-top: 15px;
+    flex-shrink: 0;
     @include tablet {
       margin-top: 18px;
     }
@@ -165,7 +166,7 @@ export default {
     min-width: 100px;
   }
   &__swap-button {
-    padding: 6px 0;
+    padding: 5px 0;
   }
   &__icon {
     width: 22px;
