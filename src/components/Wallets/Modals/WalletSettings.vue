@@ -56,7 +56,7 @@ export default {
       this.$emit('close')
     },
     save() {
-      if (this.name.trim()) this.actionUpdateWalletName({ wallet: this.wallet, name: this.name })
+      if (this.name.trim()) this.actionUpdateWalletName({ ...this.wallet, name: this.name })
       this.close()
     }
   }
