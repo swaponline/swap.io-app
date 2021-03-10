@@ -4,6 +4,7 @@ module.exports = {
   devServer: {
     open: true,
     // https: true,
+    disableHostCheck: true,
     watchOptions: {
       poll: true
     }
