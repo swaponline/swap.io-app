@@ -1,4 +1,4 @@
-import { SET_MODEL, SET_LIST, UPDATE_LIST_ITEM } from '@/store/common/mutations.types'
+import { SET_MODEL, SET_LIST, UPDATE_OBJECT_PROPERTY } from '@/store/common/mutations.types'
 
 export const MODULE_NAME = 'Wallets'
 export const SET_ACCOUNT_ID = 'SET_ACCOUNT_ID'
@@ -113,16 +113,16 @@ export default {
     [UPDATE_WALLET_NAME]({ state, getters, commit }, wallet) {
       const index = state.list.indexOf(getters.currentAccount)
       if (index > -1) {
-        const value = { ...getters.currentAccount }
-        const indexWalletGroup = value.list.findIndex(w => w.nameCurrency === wallet.nameCurrency)
+        const indexWalletGroup = getters.currentAccount.list.findIndex(w => w.nameCurrency === wallet.nameCurrency)
         if (indexWalletGroup > -1) {
-          const indexWallet = value.list[indexWalletGroup].subWallets.findIndex(w => w.address === wallet.address)
+          const indexWallet = getters.currentAccount.list[indexWalletGroup].subWallets.findIndex(
+            w => w.address === wallet.address
+          )
           if (indexWallet > -1) {
-            value.list[indexWalletGroup].subWallets.splice(indexWallet, 1, wallet)
-            commit(UPDATE_LIST_ITEM, {
-              name: MODULE_NAME,
-              index,
-              value
+            commit(UPDATE_OBJECT_PROPERTY, {
+              path: [MODULE_NAME, 'list', index, 'list', indexWalletGroup, 'subWallets', indexWallet],
+              key: 'name',
+              value: wallet.name
             })
             window.localStorage.setItem('list', JSON.stringify(state.list))
           }

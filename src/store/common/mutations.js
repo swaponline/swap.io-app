@@ -41,5 +41,13 @@ export default {
   [mutations.UPDATE_PARAMS]: (state, { name, params }) => {
     const property = getStateProperty(state, name)
     property.params = { ...property.params, ...params }
+  },
+  [mutations.UPDATE_OBJECT_PROPERTY](state, { path, key, value }) {
+    const property = getStateProperty(state, path)
+    property[key] = value
+  },
+  [mutations.ADD_OBJECT_PROPERTY](state, { path, key, value }) {
+    const property = getStateProperty(state, path)
+    Vue.set(property, key, value)
   }
 }
