@@ -1,9 +1,9 @@
 <template>
   <div class="main-header">
-    <div class="main-header__logo">
+    <router-link :to="{ name: 'Wallet' }" class="main-header__logo">
       <svg-icon class="main-header__logo-icon" name="logo" />
       <h2>Swap</h2>
-    </div>
+    </router-link>
     <match-media v-slot="{ desktop }" class="d-flex flex-grow-1">
       <main-header-tabs v-if="desktop" class="main-header__tabs"></main-header-tabs>
       <div v-if="desktop" class="main-header__profile">
@@ -59,6 +59,7 @@ export default {
     min-height: 70px;
   }
   &__logo {
+    text-decoration: none;
     min-width: 305px;
     margin-right: 20px;
     display: flex;
