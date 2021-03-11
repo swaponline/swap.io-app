@@ -1,5 +1,5 @@
 <template>
-  <v-app id="app" :style="`--background-app: ${background}`">
+  <v-app id="app">
     <media-query-provider :queries="queries">
       <router-view />
     </media-query-provider>
@@ -27,8 +27,28 @@ export default {
     }
   },
   computed: {
+    model() {
+      return this.$store.state[PROFILE_MODULE].model
+    },
     background() {
-      return this.$store.state[PROFILE_MODULE].model.background
+      return this.model.background
+    },
+    color() {
+      return this.model.color
+    }
+  },
+  watch: {
+    background: {
+      immediate: true,
+      handler(val) {
+        document.documentElement.style.setProperty('--background-app', `linear-gradient(${val})`)
+      }
+    },
+    color: {
+      immediate: true,
+      handler(val) {
+        document.documentElement.style.setProperty('--main-color', val)
+      }
     }
   },
   mounted() {
