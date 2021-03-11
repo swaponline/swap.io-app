@@ -12,7 +12,7 @@
         class="list-transaction__item"
       />
     </div>
-    <v-btn depressed class="list-transaction__up-button" @click="unCompressWallet">UP</v-btn>
+    <v-btn class="list-transaction__up-button" depressed @click="unCompressWallet">UP</v-btn>
   </div>
 </template>
 
@@ -60,13 +60,11 @@ export default {
     }),
     eventScroll(e) {
       if (this.mediaQueries.phone && this.$refs.headers && this.$refs.headers.length > 0) {
-        this.$refs.headers.forEach((el, i) => {
+        this.$refs.headers.forEach(el => {
           const domEl = el.$el
           if (domEl.offsetTop <= e.target.scrollTop) {
-            if (i === 1) console.log('yes')
             domEl.classList.add('sticky')
           } else {
-            if (i === 1) console.log('no')
             domEl.classList.remove('sticky')
           }
         })

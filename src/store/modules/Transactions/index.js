@@ -43,7 +43,7 @@ export default {
   },
   actions: {
     [GET_TRANSACTIONS]({ commit }) {
-      const list = Transaction.sort((a, b) => b.timestamp - a.timestamp)
+      const list = [...Transaction.sort((a, b) => b.timestamp - a.timestamp)]
       commit(SET_LIST, { name: MODULE_NAME, list })
     },
     [EDIT_FEE]({ commit }, fee) {
