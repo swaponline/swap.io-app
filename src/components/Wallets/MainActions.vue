@@ -8,15 +8,7 @@
         <svg-icon v-else name="plus" class="main-actions__open-icon" />
       </v-btn>
     </template>
-    <v-btn
-      fab
-      dark
-      color="green"
-      class="main-actions__button"
-      height="auto"
-      width="auto"
-      @click="$emit('activeForm', 'create-wallet-form')"
-    >
+    <v-btn fab dark color="green" class="main-actions__button" height="auto" width="auto" @click="openWalletCreate">
       <v-icon>mdi-wallet</v-icon>
     </v-btn>
     <v-btn fab dark :to="{ name: 'SecurityInfo' }" color="blue" class="main-actions__button" height="auto" width="auto">
@@ -48,7 +40,7 @@
 </template>
 
 <script>
-import { INVOICE_FORM, SEND_FORM } from '@/store/modules/Modals/names'
+import { INVOICE_FORM, SEND_FORM, WALLET_CREATE } from '@/store/modules/Modals/names'
 import { ADD_MODAL } from '@/store/modules/Modals'
 import { mapMutations } from 'vuex'
 
@@ -72,6 +64,12 @@ export default {
     openSendForm() {
       this.mutationAddModal({
         name: SEND_FORM,
+        show: true
+      })
+    },
+    openWalletCreate() {
+      this.mutationAddModal({
+        name: WALLET_CREATE,
         show: true
       })
     }
