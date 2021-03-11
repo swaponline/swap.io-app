@@ -17,7 +17,17 @@ export default {
   min-width: 142px !important;
   border-radius: 8px;
   text-transform: none;
+
+  --text-color: $--black;
+  &:disabled {
+    // обходим vuetify
+    &.v-btn.v-btn--depressed.v-btn--disabled.theme--light {
+      background-color: $--light-grey !important;
+    }
+    --text-color: $--dark-grey;
+  }
   > span {
+    color: var(--text-color);
     font-weight: $--font-weight-bold;
     font-size: $--font-size-button;
   }

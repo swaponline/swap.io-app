@@ -113,16 +113,16 @@ export default {
     margin-top: -2px;
   }
   &__list {
-    max-height: calc(var(--vh, 1vh) * 100 - 430px);
+    max-height: calc(var(--vh, 1vh) * 100 - 435px);
     overflow-x: hidden;
     overflow-y: auto;
     &--stretch {
-      max-height: calc(var(--vh, 1vh) * 100 - 320px);
+      max-height: calc(var(--vh, 1vh) * 100 - 325px);
       @include tablet {
-        max-height: calc(var(--vh, 1vh) * 100 - 380px);
+        max-height: calc(var(--vh, 1vh) * 100 - 385px);
       }
       @include phone {
-        max-height: calc(var(--vh, 1vh) * 100 - 248px);
+        max-height: calc(var(--vh, 1vh) * 100 - 253px);
       }
     }
     @include small-height {
@@ -131,10 +131,10 @@ export default {
       &--stretch {
         max-height: none;
         @include tablet {
-          max-height: calc(var(--vh, 1vh) * 100 - 380px);
+          max-height: calc(var(--vh, 1vh) * 100 - 385px);
         }
         @include phone {
-          max-height: calc(var(--vh, 1vh) * 100 - 272px);
+          max-height: calc(var(--vh, 1vh) * 100 - 277px);
         }
       }
     }

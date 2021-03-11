@@ -12,7 +12,7 @@
         class="list-transaction__item"
       />
     </div>
-    <v-btn class="list-transaction__up-button" depressed @click="unCompressWallet">UP</v-btn>
+    <v-btn depressed class="list-transaction__up-button" @click="unCompressWallet">UP</v-btn>
   </div>
 </template>
 
@@ -45,28 +45,6 @@ export default {
     ...mapGetters(['listTransactionsSortByDate']),
     transactions() {
       return this.listTransactionsSortByDate(this.address)
-    },
-    list() {
-      return [
-        {
-          id: 1,
-          type: 'Received',
-          currency: 'BTC',
-          value: 0.693232,
-          valueInUsd: 13382.39,
-          date: new Date(),
-          status: 'confirmed'
-        },
-        {
-          id: 2,
-          type: 'Received',
-          currency: 'BTC',
-          value: 0.693232,
-          valueInUsd: 13382.39,
-          date: new Date(),
-          status: 'confirmed'
-        }
-      ]
     }
   },
   mounted() {
@@ -82,11 +60,13 @@ export default {
     }),
     eventScroll(e) {
       if (this.mediaQueries.phone && this.$refs.headers && this.$refs.headers.length > 0) {
-        this.$refs.headers.forEach(el => {
+        this.$refs.headers.forEach((el, i) => {
           const domEl = el.$el
           if (domEl.offsetTop <= e.target.scrollTop) {
+            if (i === 1) console.log('yes')
             domEl.classList.add('sticky')
           } else {
+            if (i === 1) console.log('no')
             domEl.classList.remove('sticky')
           }
         })

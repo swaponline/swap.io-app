@@ -1,9 +1,11 @@
 // color
 $--black: #101010;
 $--white: #ffffff;
-$--light-grey: #F6F6F6;
+$--light-grey: #F5F5F5;
 $--light-grey-1: #E9E9E9;
 $--grey: #b9b9b9;
+$--grey-1: #A4A4A4;
+$--grey-2: #B4B4B4;
 $--dark-grey: #919191;
 $--light-blue: #d8d4ff;
 $--blue: #1935cf;
@@ -11,8 +13,6 @@ $--purple: #6144E5;
 $--salad: #49c800;
 $--red: #ff0000;
 $--green: #008000;
-// typography
-$--small-border-radius: 3px;
 // fonts
 $--font-base: 'Nunito', serif;
 $--font-size-extra-small: 10px;
@@ -50,4 +50,5 @@ $--z-index-high: 1000;
   --navigation-drawer-mobile-height: 57px;
   --navigation-drawer-desktop-width: 70px;
   --max-content-size: 1920px;
+  --disabled-background: #f5f5f5;
 }

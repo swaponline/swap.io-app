@@ -353,20 +353,29 @@ export default {
     }
   }
   &__buttons {
+    display: flex;
     overflow: hidden;
     width: auto;
     max-height: 70px;
     margin: 0 -6px;
+    @include tablet {
+      margin: 0 -5px;
+    }
     @include phone {
-      width: 100%;
+      margin: 0 -3px;
       max-height: var(--height-header);
     }
   }
   &__button {
     min-height: 42px;
     margin: 0 6px;
-    min-width: 144px !important;
+    width: 144px;
     @include tablet {
+      width: 114px;
+      margin: 0 5px;
+      min-width: 0 !important;
+    }
+    @include phone {
       width: calc(33.3% - 6px);
       margin: 0 3px;
       padding: 0 12px !important;

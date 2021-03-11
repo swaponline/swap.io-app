@@ -29,7 +29,12 @@
           <swap-button v-if="cancelButtonLabel" class="modal-wrapper__button" type="button" @click="cancel">
             {{ cancelButtonLabel }}
           </swap-button>
-          <swap-button v-if="confirmButtonLabel" class="modal-wrapper__button" type="submit">
+          <swap-button
+            v-if="confirmButtonLabel"
+            class="modal-wrapper__button"
+            :disabled="disableConfirmButton"
+            type="submit"
+          >
             {{ confirmButtonLabel }}
           </swap-button>
         </div>
@@ -70,6 +75,10 @@ export default {
     transition: {
       type: [String, Boolean],
       default: 'slide-x-reverse-transition'
+    },
+    disableConfirmButton: {
+      type: Boolean,
+      default: false
     }
   },
   methods: {
