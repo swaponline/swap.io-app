@@ -117,7 +117,7 @@ export default {
       }, 0)
     },
     currentBalance() {
-      const wallet = this.journal[0].balance.find(wall => wall.wallet === this.address)
+      const wallet = this.journal[0].balance.find(point => point.wallet === this.address)
       if (wallet) {
         return (wallet.balance / 10 ** this.decimal).toFixed(this.currentDecimal)
       }
@@ -254,7 +254,7 @@ export default {
     align-self: stretch;
     font-size: $--font-size-extra-small-subtitle;
     line-height: 25px;
-    color: rgba($color: $--black, $alpha: 0.3);
+    color: $--grey-2;
     @include tablet {
       display: none;
     }

@@ -45,28 +45,6 @@ export default {
     ...mapGetters(['listTransactionsSortByDate']),
     transactions() {
       return this.listTransactionsSortByDate(this.address)
-    },
-    list() {
-      return [
-        {
-          id: 1,
-          type: 'Received',
-          currency: 'BTC',
-          value: 0.693232,
-          valueInUsd: 13382.39,
-          date: new Date(),
-          status: 'confirmed'
-        },
-        {
-          id: 2,
-          type: 'Received',
-          currency: 'BTC',
-          value: 0.693232,
-          valueInUsd: 13382.39,
-          date: new Date(),
-          status: 'confirmed'
-        }
-      ]
     }
   },
   mounted() {

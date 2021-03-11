@@ -1,5 +1,5 @@
 <template>
-  <v-tabs fixed-tabs height="auto" color="#000000" :slider-color="sliderColor" slider-size="4" class="tabs">
+  <v-tabs fixed-tabs height="auto" color="#000000" slider-color="var(--main-color)" slider-size="4" class="tabs">
     <v-tab v-for="tab in tabs" :key="tab.id" :to="tab.to" class="tabs__item">
       {{ tab.label }}
     </v-tab>
@@ -7,8 +7,6 @@
 </template>
 
 <script>
-import { MODULE_NAME as PROFILE_MODULE } from '@/store/modules/Profile'
-
 export default {
   name: 'Tabs',
   data() {
@@ -35,11 +33,6 @@ export default {
         //   to: { name: 'Settings' }
         // }
       ]
-    }
-  },
-  computed: {
-    sliderColor() {
-      return this.$store.state[PROFILE_MODULE].model.color
     }
   }
 }

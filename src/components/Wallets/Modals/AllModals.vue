@@ -28,6 +28,8 @@ const SendPreview = () => import(/* webpackChunkName: "SendPreview" */ './SendPr
 const EditFee = () => import(/* webpackChunkName: "EditFee" */ './EditFee.vue')
 const ShareModal = () => import(/* webpackChunkName: "ShareModal" */ './ShareModal.vue')
 const WalletSettings = () => import(/* webpackChunkName: "WalletSettings" */ './WalletSettings.vue')
+const WalletCreate = () => import(/* webpackChunkName: "WalletCreate" */ './WalletCreate.vue')
+const AddNewCurrency = () => import(/* webpackChunkName: "AddNewCurrency" */ './AddNewCurrency.vue')
 
 export default {
   name: 'AllModalsWallet',
@@ -40,7 +42,9 @@ export default {
     EditFee,
     ShareModal,
     WalletSettings,
-    TransactionDetails
+    TransactionDetails,
+    WalletCreate,
+    AddNewCurrency
   },
   computed: {
     modals() {

@@ -17,8 +17,8 @@ export const randomInteger = (min, max) => {
   return Math.floor(rand)
 }
 export const getGradient = color => {
-  return `linear-gradient(${randomInteger(0, 360)}deg, ${generateColor()} 0%, ${color} ${randomInteger(
-    1,
-    100
-  )}%, ${generateColor()} 100%);`
+  return `${randomInteger(0, 360)}deg, ${generateColor()} 0%, ${color} ${randomInteger(
+    30,
+    70
+  )}%, ${generateColor()} 100%`
 }
