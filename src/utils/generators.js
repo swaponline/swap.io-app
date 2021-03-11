@@ -18,7 +18,7 @@ export const randomInteger = (min, max) => {
 }
 export const getGradient = color => {
   return `${randomInteger(0, 360)}deg, ${generateColor()} 0%, ${color} ${randomInteger(
-    1,
-    100
+    30,
+    70
   )}%, ${generateColor()} 100%`
 }

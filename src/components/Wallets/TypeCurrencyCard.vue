@@ -1,15 +1,11 @@
 <template>
   <button
     class="type-currency-card"
-    :class="{ 'type-currency-card--select': select }"
+    :class="{ 'type-currency-card--selected': selected }"
     type="button"
-    @click="$emit('click')"
+    @click="$emit('select')"
   >
-    <component
-      :is="iconName ? 'SvgIcon' : 'div'"
-      class="type-currency-card__icon"
-      :name="`cards/card-${iconName}`"
-    ></component>
+    <svg-icon class="type-currency-card__icon" :name="`cards/card-${iconName}`"></svg-icon>
     <span class="type-currency-card__name">{{ name }}</span>
   </button>
 </template>
@@ -26,7 +22,7 @@ export default {
       type: String,
       required: true
     },
-    select: {
+    selected: {
       type: Boolean,
       default: false
     }
@@ -49,7 +45,7 @@ export default {
   @include phone {
     min-height: 100px;
   }
-  &--select {
+  &--selected {
     padding: 9px 9px;
     border: 2px solid $--purple;
   }

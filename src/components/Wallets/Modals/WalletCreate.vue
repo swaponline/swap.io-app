@@ -2,7 +2,7 @@
   <modal-wrapper
     value
     title="Creating a wallet"
-    :disable-confirm-button="select === ''"
+    :disable-confirm-button="selectedType === ''"
     :confirm-button-label="confirmButtonLabel"
     @input="close"
     @submit="create"
@@ -14,17 +14,17 @@
           class="wallet-create-modal__card"
           name="Custom"
           icon-name="custom"
-          :select="select === 'custom'"
-          @click="select = 'custom'"
+          :selected="selectedType === 'custom'"
+          @select="selectedType = 'custom'"
         ></type-currency-card>
         <type-currency-card
-          v-for="i in $options.cur"
+          v-for="i in $options.currencies"
           :key="i"
           class="wallet-create-modal__card"
           :name="i.toUpperCase()"
           :icon-name="i"
-          :select="select === i"
-          @click="select = i"
+          :selected="selectedType === i"
+          @select="selectedType = i"
         ></type-currency-card>
       </div>
     </div>
@@ -42,9 +42,24 @@ import { ADD_NEW_CURRENCY } from '@/store/modules/Modals/names'
 import ModalWrapper from '../../ModalWrapper.vue'
 import TypeCurrencyCard from '../TypeCurrencyCard.vue'
 
-const cur = ['btc', 'btcp', 'cc', 'etn', 'dash', 'dbc', 'entrp', 'eos', 'cnd', 'cvc', 'icx', 'ink', 'ignis', 'equa']
+const currencies = [
+  'btc',
+  'btcp',
+  'cc',
+  'etn',
+  'dash',
+  'dbc',
+  'entrp',
+  'eos',
+  'cnd',
+  'cvc',
+  'icx',
+  'ink',
+  'ignis',
+  'equa'
+]
 export default {
-  cur,
+  currencies,
   name: 'WalletCreate',
   components: {
     ModalWrapper,
@@ -52,12 +67,12 @@ export default {
   },
   data() {
     return {
-      select: ''
+      selectedType: ''
     }
   },
   computed: {
     confirmButtonLabel() {
-      return this.select === 'custom' ? 'Next' : 'Confirm'
+      return this.selectedType === 'custom' ? 'Next' : 'Confirm'
     }
   },
   methods: {
@@ -66,7 +81,7 @@ export default {
     }),
     create() {
       this.close()
-      if (this.select === 'custom') {
+      if (this.selectedType === 'custom') {
         this.mutationAddModal({
           name: ADD_NEW_CURRENCY
         })
