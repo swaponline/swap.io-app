@@ -1,13 +1,9 @@
 <template>
-  <button
-    class="type-currency-card"
-    :class="{ 'type-currency-card--selected': selected }"
-    type="button"
-    @click="$emit('select')"
-  >
+  <label class="type-currency-card" :class="{ 'type-currency-card--selected': selected }" type="button">
     <svg-icon class="type-currency-card__icon" :name="`cards/card-${iconName}`"></svg-icon>
     <span class="type-currency-card__name">{{ name }}</span>
-  </button>
+    <input style="display: none" type="radio" name="currency" @input="$emit('select')" />
+  </label>
 </template>
 
 <script>
