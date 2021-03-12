@@ -145,6 +145,7 @@ export default {
     width: calc(50% - 16px);
     margin: auto 8px 0;
     @include phone {
+      min-width: 0px !important;
       width: calc(50% - 8px);
       margin: auto 4px 0;
     }
