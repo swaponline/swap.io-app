@@ -20,16 +20,15 @@ import { CLOSE_MODAL, CLOSE_ALL_MODAL, TOGGLE_MODAL, MODULE_NAME as MODALS_MODUL
 
 import CopyMenu from './CopyMenu.vue'
 import InvoiceForm from './InvoiceForm.vue'
+import InvoicePreview from './InvoicePreview.vue'
 import SendForm from './SendForm.vue'
+import SendPreview from './SendPreview.vue'
 import TransactionDetails from './TransactionDetails.vue'
-
-const InvoicePreview = () => import(/* webpackChunkName: "InvoicePreview" */ './InvoicePreview.vue')
-const SendPreview = () => import(/* webpackChunkName: "SendPreview" */ './SendPreview.vue')
-const EditFee = () => import(/* webpackChunkName: "EditFee" */ './EditFee.vue')
-const ShareModal = () => import(/* webpackChunkName: "ShareModal" */ './ShareModal.vue')
-const WalletSettings = () => import(/* webpackChunkName: "WalletSettings" */ './WalletSettings.vue')
-const WalletCreate = () => import(/* webpackChunkName: "WalletCreate" */ './WalletCreate.vue')
-const AddNewCurrency = () => import(/* webpackChunkName: "AddNewCurrency" */ './AddNewCurrency.vue')
+import EditFee from './EditFee.vue'
+import ShareModal from './ShareModal.vue'
+import WalletSettings from './WalletSettings.vue'
+import WalletCreate from './WalletCreate.vue'
+import AddNewCurrency from './AddNewCurrency.vue'
 
 export default {
   name: 'AllModalsWallet',
