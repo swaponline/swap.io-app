@@ -1,5 +1,5 @@
 <template>
-  <label class="type-currency-card" :class="{ 'type-currency-card--selected': selected }" type="button">
+  <label class="type-currency-card" :class="{ 'type-currency-card--selected': selected }">
     <svg-icon class="type-currency-card__icon" :name="`cards/card-${iconName}`"></svg-icon>
     <span class="type-currency-card__name">{{ name }}</span>
     <input class="type-currency-card__input" tabindex="0" type="radio" name="currency" @input="$emit('select')" />

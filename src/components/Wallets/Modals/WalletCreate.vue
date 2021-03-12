@@ -121,7 +121,7 @@ export default {
     }
   }
   &__links {
-    margin-top: 14px;
+    margin: 14px 0;
     display: flex;
     flex-direction: column;
   }
