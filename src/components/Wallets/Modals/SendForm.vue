@@ -29,8 +29,8 @@
         outlined
         :hint="'Остаток: ' + (maxAmount - regexpSumm)"
         class="send-form__multiple-list rounded-lg"
-        placeholder="Enter a list of outputs in the 'Pay to' field.
-  One output per line.
+        placeholder="Enter a list of outputs in the 'Pay to' field. 
+  One output per line. 
   Format: address, amount"
       ></v-textarea>
 

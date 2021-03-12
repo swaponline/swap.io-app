@@ -81,6 +81,7 @@ export default {
     width: calc(100% / 6);
     font-size: $--font-size-extra-small-subtitle;
     margin-top: 30px;
+    border-bottom: 1px solid transparent;
     @include tablet {
       margin-top: 20px;
       width: calc(100% / 3);
