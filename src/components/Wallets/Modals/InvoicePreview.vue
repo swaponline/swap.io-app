@@ -80,7 +80,7 @@
       <v-divider class="mb-6"></v-divider>
 
       <span v-if="type.labelQuantity" class="invoice-preview__quantity">
-        <span>Total {{ type.labelQuantity }}:</span>
+        <span>Total {{ type.labelQuantity.toLowerCase() }}:</span>
         <span>{{ summQuantity }}</span>
       </span>
 
