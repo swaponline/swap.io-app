@@ -186,7 +186,6 @@ export default {
       mutationAddModal: ADD_MODAL
     }),
     submit() {
-      this.hide()
       const recipients = this.multipleRecepients ? this.getRecipients() : [this.recipient]
       this.mutationAddModal({
         name: SEND_PREVIEW,
