@@ -116,13 +116,16 @@ export default {
     max-height: calc(var(--vh, 1vh) * 100 - 435px);
     overflow-x: hidden;
     overflow-y: auto;
+    @include phone {
+      max-height: calc(var(--vh, 1vh) * 100 - 355px);
+    }
     &--stretch {
       max-height: calc(var(--vh, 1vh) * 100 - 325px);
       @include tablet {
         max-height: calc(var(--vh, 1vh) * 100 - 385px);
       }
       @include phone {
-        max-height: calc(var(--vh, 1vh) * 100 - 253px);
+        max-height: calc(var(--vh, 1vh) * 100 - 233px);
       }
     }
     @include small-height {

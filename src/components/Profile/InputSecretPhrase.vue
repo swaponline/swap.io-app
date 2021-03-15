@@ -2,17 +2,12 @@
   <div class="input-secret-phrase">
     <header class="input-secret-phrase__title">Fill in the missing words</header>
     <div class="input-secret-phrase__words">
-      <div v-for="(word, i) in wordsWrapper" :key="word + i" class="show-secret-phrase__word">
+      <div v-for="(word, i) in words" :key="word + i" class="input-secret-phrase__word">
         <label v-if="inputIndexes.includes(i)" class="input-secret-phrase__label">
           <span> {{ i + 1 }}. </span>
-          <input
-            :value="word"
-            type="text"
-            class="input-secret-phrase__field"
-            @input="setValue(i, $event.target.value)"
-          />
+          <input type="text" class="input-secret-phrase__field" @input="setValue(i, $event.target.value)" />
         </label>
-        <span v-else> {{ i + 1 }}. {{ word }} </span>
+        <span v-else class="input-secret-phrase__text"> {{ i + 1 }}. {{ word }} </span>
       </div>
     </div>
     <div class="input-secret-phrase__buttons">
@@ -100,7 +95,7 @@ export default {
     }
   }
   &__words {
-    margin: 30px -5px 20px;
+    margin: 30px 0 20px;
     display: flex;
     flex-wrap: wrap;
     width: 100%;
@@ -122,9 +117,16 @@ export default {
     border-bottom: 1px solid $--black;
     margin-right: 20px;
   }
+  &__text {
+    display: block;
+    height: 100%;
+    width: 100%;
+    border-bottom: 1px solid transparent;
+  }
   &__field {
     min-width: 100px;
     margin-left: 5px;
+    margin-bottom: 2px;
     outline: none;
   }
   &__buttons {

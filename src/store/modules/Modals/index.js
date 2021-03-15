@@ -46,7 +46,7 @@ export default {
      * Закрывает модальное окно и удаляет его со страницы
      */
     [CLOSE_MODAL](state, id) {
-      const modalIndex = state.modals.findIndex(m => m.id === id)
+      const modalIndex = state.modals.findIndex(m => id !== undefined && m.id === id)
       if (modalIndex > -1) {
         state.modals.splice(modalIndex, 1)
       } else {

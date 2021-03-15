@@ -101,6 +101,7 @@ export default {
   overflow-y: auto;
   width: 100%;
   max-width: 370px;
+  border-radius: 12px;
   @include tablet {
     max-width: none;
   }

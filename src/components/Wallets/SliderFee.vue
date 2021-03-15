@@ -74,6 +74,9 @@ export default {
     const wrapParseMouseMove = this.$refs.slider.parseMouseMove
     this.$refs.slider.parseMouseMove = e => {
       let { clientX } = e
+      if (clientX === undefined) {
+        return wrapParseMouseMove(e)
+      }
       if (window.innerWidth > 1920) {
         clientX = e.clientX / ((window.innerWidth * 0.01) / 18)
       }
@@ -122,13 +125,14 @@ export default {
       position: absolute;
       width: 100%;
       left: -4px;
+      top: 7px;
     }
   }
   &__recommended-fee {
     position: absolute;
     z-index: 99;
-    top: -5px;
     left: 0;
+    top: 0;
     height: 10px;
     width: 10px;
     display: flex;

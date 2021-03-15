@@ -62,7 +62,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="item in amountFields" :key="item.id">
+          <tr v-for="item in fields" :key="item.id">
             <td class="invoice-preview__table-cell text-left">{{ item.description }}</td>
             <td v-if="type.labelQuantity" class="invoice-preview__table-cell text-right">{{ item.quantity }}</td>
             <td class="invoice-preview__table-cell text-right">
@@ -80,7 +80,7 @@
       <v-divider class="mb-6"></v-divider>
 
       <span v-if="type.labelQuantity" class="invoice-preview__quantity">
-        <span>Total {{ type.labelQuantity }}:</span>
+        <span>Total {{ type.labelQuantity.toLowerCase() }}:</span>
         <span>{{ summQuantity }}</span>
       </span>
 
@@ -146,6 +146,9 @@ export default {
     }
   },
   computed: {
+    fields() {
+      return this.amountFields.filter(el => !!el.description && (el.amount !== null || el.amount !== undefined))
+    },
     formatAddress() {
       if (this.mediaQueries.desktop) {
         return this.address
