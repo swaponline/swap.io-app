@@ -74,6 +74,9 @@ export default {
     const wrapParseMouseMove = this.$refs.slider.parseMouseMove
     this.$refs.slider.parseMouseMove = e => {
       let { clientX } = e
+      if (clientX === undefined) {
+        return wrapParseMouseMove(e)
+      }
       if (window.innerWidth > 1920) {
         clientX = e.clientX / ((window.innerWidth * 0.01) / 18)
       }
