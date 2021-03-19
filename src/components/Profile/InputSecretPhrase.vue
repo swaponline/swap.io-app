@@ -111,6 +111,12 @@ export default {
       margin-top: 20px;
       width: calc(100% / 3);
     }
+    @include phone {
+      font-size: $--font-size-medium;
+    }
+    @include small {
+      font-size: $--font-size-base;
+    }
   }
   &__label {
     display: flex;
