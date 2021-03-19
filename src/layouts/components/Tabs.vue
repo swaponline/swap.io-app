@@ -74,6 +74,9 @@ export default {
       max-width: none;
       min-height: 55px;
     }
+    @include phone {
+      min-height: 50px;
+    }
   }
 }
 </style>

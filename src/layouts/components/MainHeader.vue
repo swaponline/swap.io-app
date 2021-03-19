@@ -56,7 +56,7 @@ export default {
     border-radius: 0px;
   }
   @include small {
-    min-height: 70px;
+    min-height: 50px;
   }
   &__logo {
     text-decoration: none;
@@ -79,6 +79,12 @@ export default {
     @include tablet {
       width: 45px;
       height: 42px;
+    }
+    @include small {
+      margin-right: 15px;
+      margin-left: 15px;
+      width: 30px;
+      height: 30px;
     }
   }
   &__profile {

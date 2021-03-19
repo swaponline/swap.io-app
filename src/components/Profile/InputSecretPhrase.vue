@@ -111,6 +111,12 @@ export default {
       margin-top: 20px;
       width: calc(100% / 3);
     }
+    @include phone {
+      font-size: $--font-size-medium;
+    }
+    @include small {
+      font-size: $--font-size-base;
+    }
   }
   &__label {
     display: flex;
@@ -124,8 +130,8 @@ export default {
     border-bottom: 1px solid transparent;
   }
   &__field {
-    min-width: 100px;
-    margin-left: 5px;
+    width: 100%;
+    margin-left: 2px;
     margin-bottom: 2px;
     outline: none;
   }

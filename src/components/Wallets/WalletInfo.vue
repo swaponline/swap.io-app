@@ -31,7 +31,7 @@
     </div>
     <div class="wallet-info__buttons">
       <swap-button class="wallet-info__button" @click="openInvoiceBlock">Invoice</swap-button>
-      <swap-button class="wallet-info__button">Swap</swap-button>
+      <swap-button :to="{ name: 'Swap' }" class="wallet-info__button">Swap</swap-button>
       <swap-button class="wallet-info__button" @click="openSendForm">Send</swap-button>
     </div>
   </div>
