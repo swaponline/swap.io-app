@@ -124,8 +124,8 @@ export default {
     border-bottom: 1px solid transparent;
   }
   &__field {
-    min-width: 100px;
-    margin-left: 5px;
+    width: 100%;
+    margin-left: 2px;
     margin-bottom: 2px;
     outline: none;
   }
