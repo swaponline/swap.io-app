@@ -5,7 +5,7 @@
         <svg-icon class="swap-wallet-group__icon" name="btc" />
       </v-list-item-icon>
       <v-list-item-title class="swap-wallet-group__header">
-        <span>{{ nameCurrency }} </span>
+        <span class="swap-wallet-group__currency">{{ nameCurrency }} </span>
         <span>{{ value }}</span>
         <span class="swap-wallet-group__name">{{ subWallets.length }} wallet</span>
       </v-list-item-title>
@@ -16,7 +16,7 @@
       link
       exact
       class="swap-wallet-group__item"
-      :to="{ name: 'Swap', query: { wallet: subWallet.address } }"
+      @click="$emit('selectWallet', { nameCurrency, wallet: subWallet.address })"
     >
       <v-list-item-content class="swap-wallet-group__item-content">
         <v-list-item-title class="swap-wallet-group__item-info">
@@ -102,8 +102,7 @@ export default {
     justify-content: space-between;
   }
   &__currnecy {
-    color: rgba($color: $--white, $alpha: 0.5);
-    margin-right: 4px;
+    font-weight: $--font-weight-semi-bold;
   }
   &__icon-wrapper {
     display: flex;
@@ -112,7 +111,7 @@ export default {
     border-radius: 50%;
     min-width: 45px;
     height: 45px;
-    margin: 15px 16px 15px 0 !important;
+    margin: 15px 14px 15px 0 !important;
   }
   &__icon {
     width: 45px;

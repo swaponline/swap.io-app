@@ -5,7 +5,7 @@
         <svg-icon class="list-wallet-group__icon" name="btc" />
       </v-list-item-icon>
       <v-list-item-title class="list-wallet-group__header">
-        <span>{{ nameCurrency }} </span>
+        <span class="list-wallet-group__currency">{{ nameCurrency }} </span>
         <span>{{ value }}</span>
         <span class="list-wallet-group__name">{{ subWallets.length }} wallet</span>
       </v-list-item-title>
@@ -100,9 +100,8 @@ export default {
     font-weight: $--font-weight-semi-bold;
     font-size: $--font-size-extra-small-subtitle;
   }
-  &__currnecy {
-    color: rgba($color: $--white, $alpha: 0.5);
-    margin-right: 4px;
+  &__currency {
+    font-weight: $--font-weight-semi-bold;
   }
   &__icon-wrapper {
     display: flex;
@@ -111,7 +110,7 @@ export default {
     border-radius: 50%;
     min-width: 45px;
     height: 45px;
-    margin: 15px 16px 15px 0 !important;
+    margin: 15px 14px 15px 0 !important;
   }
   &__icon {
     width: 45px;

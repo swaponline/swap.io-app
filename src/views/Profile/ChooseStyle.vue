@@ -131,7 +131,7 @@ export default {
   }
   &__subtitle {
     margin-top: 10px;
-    color: #909090;
+    color: $--grey-3;
     font-weight: $--font-weight-semi-bold;
     font-size: $--font-size-medium;
     @include tablet {

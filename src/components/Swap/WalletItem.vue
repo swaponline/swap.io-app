@@ -1,11 +1,16 @@
 <template>
-  <v-list-item link exact class="swap-wallet-item" :to="{ name: 'Swap', query: { wallet: subWallets[0].address } }">
+  <v-list-item
+    link
+    exact
+    class="swap-wallet-item"
+    @click="$emit('selectWallet', { nameCurrency, wallet: subWallets[0].address })"
+  >
     <v-list-item-icon class="swap-wallet-item__icon-wrapper">
       <svg-icon class="swap-wallet-item__icon" name="btc" />
     </v-list-item-icon>
     <v-list-item-content>
       <v-list-item-title class="swap-wallet-item__title">
-        <span>{{ nameCurrency }}</span>
+        <span class="swap-wallet-item__currency">{{ nameCurrency }}</span>
         <span>{{ value }}</span>
         <span class="swap-wallet-item__name">{{ subWallets[0].name }}</span>
       </v-list-item-title>
@@ -64,7 +69,7 @@ export default {
     border-radius: 50%;
     min-width: 45px;
     height: 45px;
-    margin: 15px 16px 15px 0 !important;
+    margin: 15px 14px 15px 0 !important;
   }
   &__icon {
     width: 45px;
@@ -76,6 +81,9 @@ export default {
     justify-content: space-between;
     flex-wrap: wrap;
     line-height: 25px !important;
+  }
+  &__currency {
+    font-weight: $--font-weight-semi-bold;
   }
   &__name {
     width: 100%;
