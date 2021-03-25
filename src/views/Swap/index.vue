@@ -1,20 +1,18 @@
 <template>
   <div class="swap" :class="{ 'swap--open-list': isOpenMenu }">
     <swap-form
-      :is-open-to-list="isOpenToList"
-      :is-open-from-list="isOpenFromList"
-      :to-wallet="toWallet"
-      :from-wallet="fromWallet"
+      :is-open-to-list="openMenuCondition.to"
+      :is-open-from-list="openMenuCondition.from"
+      :to-wallet="wallets.to"
+      :from-wallet="wallets.from"
       :class="{ 'swap__form--open-list': isOpenMenu }"
-      @openToList="openToList"
-      @openFromList="openFromList"
+      @openToList="openList"
+      @openFromList="openList"
       @submit="submit"
     />
     <swap-wallet-list
       class="swap__wallet-list"
       :class="{ 'swap__wallet-list--open-list': isOpenMenu }"
-      :to-wallet="toWallet"
-      :from-wallet="fromWallet"
       @setWallet="setWallet"
     />
   </div>
@@ -33,10 +31,17 @@ export default {
   data() {
     return {
       openWalletList: false,
+      openMenuCondition: {
+        to: false,
+        from: false
+      },
       isOpenToList: false,
       isOpenFromList: false,
-      fromWallet: {},
-      toWallet: {}
+      wallets: {
+        to: {},
+        from: {}
+      },
+      currentWallet: null
     }
   },
   computed: {
@@ -44,7 +49,7 @@ export default {
       return this.$route.query.wallet
     },
     isOpenMenu() {
-      return this.isOpenToList || this.isOpenFromList
+      return this.openMenuCondition.from || this.openMenuCondition.to
     }
   },
   watch: {
@@ -55,30 +60,16 @@ export default {
     }
   },
   methods: {
-    openFromList() {
-      if (this.isOpenFromList) {
-        this.isOpenFromList = false
-      } else {
-        this.isOpenToList = false
-        this.isOpenFromList = true
-      }
-    },
-    openToList() {
-      if (this.isOpenToList) {
-        this.isOpenToList = false
-      } else {
-        this.isOpenFromList = false
-        this.isOpenToList = true
-      }
+    openList(key) {
+      this.currentWallet = key
+      Object.keys(this.openMenuCondition).forEach(el => {
+        this.openMenuCondition[el] = el === key
+      })
     },
     setWallet(event) {
-      if (this.isOpenFromList) {
-        this.fromWallet = event
-      } else if (this.isOpenToList) {
-        this.toWallet = event
-      }
-      this.isOpenToList = false
-      this.isOpenFromList = false
+      this.wallets[this.currentWallet] = event
+      this.openMenuCondition.from = false
+      this.openMenuCondition.to = false
     },
     submit() {}
   }
@@ -121,39 +112,6 @@ export default {
   }
   @include small {
     max-height: 415px;
-  }
-  &__change-wallet {
-    display: flex;
-    z-index: 3;
-    background: $--light-grey !important;
-    width: 100%;
-    max-width: 370px;
-    min-height: 36px;
-    border-radius: 0px !important;
-
-    @include phone {
-      max-width: none;
-    }
-
-    > span {
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      color: $--dark-grey;
-      font-weight: $--font-weight-semi-bold;
-      font-size: $--font-size-base;
-    }
-  }
-  &__icon-change {
-    &--open-list {
-      transform: rotate(180deg);
-    }
-    @include tablet {
-      transform: rotate(-90deg);
-      &--open-list {
-        transform: rotate(90deg);
-      }
-    }
   }
   &__form {
     &--open-list {

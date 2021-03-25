@@ -9,7 +9,9 @@
         @openExternalForm="openExternalForm"
       ></external-button>
     </v-list-item>
+
     <external-form v-if="isOpenExternalForm" @input="setWallet"></external-form>
+
     <v-list v-else class="swap-wallet-list__main-list py-0">
       <v-list-item v-for="wallet in wallets" :key="wallet.name" class="swap-wallet-list__wallet-item px-0">
         <swap-wallet-item

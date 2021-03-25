@@ -24,10 +24,7 @@
 
     <span v-if="error" outlined class="external-form__error">{{ error }}</span>
 
-    <v-btn class="external-form__qr-button" text @click="openCamera">
-      <span class="external-form__qr-text text-left flex-grow-1">Scan qr-code</span>
-    </v-btn>
-    <input ref="camera" type="file" accept="image/*;capture=camera" class="visually-hidden" @input="getPhoto" />
+    <qr-code-reader class="external-form__qr-button" @input="setPhoto" />
 
     <swap-button class="external-form__button">Add wallet</swap-button>
   </form>
@@ -35,6 +32,7 @@
 
 <script>
 import FormSelector from '../FormSelector.vue'
+import QrCodeReader from '../QrCodeReader.vue'
 import SwapButton from '../UI/SwapButton.vue'
 
 const currencies = ['BTC', 'ETH', 'XRP', 'DOGE', 'USDT']
@@ -43,7 +41,8 @@ export default {
   currencies,
   components: {
     FormSelector,
-    SwapButton
+    SwapButton,
+    QrCodeReader
   },
   data() {
     return {
@@ -54,11 +53,8 @@ export default {
     }
   },
   methods: {
-    openCamera() {
-      this.$refs.camera.click()
-    },
-    getPhoto({ target }) {
-      console.log(target.files[0])
+    setPhoto(file) {
+      console.log(file)
     }
   }
 }
@@ -110,28 +106,10 @@ export default {
     color: $--red;
   }
   &__qr-button {
-    height: auto !important;
-    font-weight: $--font-weight-bold;
-    text-transform: none;
-    flex-grow: 0;
-    padding: 0 0 !important;
     margin: 14px 0 25px;
-    width: 100%;
-    span {
-      letter-spacing: 0.01em;
-      color: $--purple;
-      font-size: $--font-size-medium;
-    }
   }
   &__button {
     margin-top: auto;
-  }
-  .visually-hidden {
-    position: absolute;
-    clip: rect(0 0 0 0);
-    width: 1px;
-    height: 1px;
-    margin: -1px;
   }
 }
 </style>
