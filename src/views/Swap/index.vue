@@ -30,8 +30,6 @@ export default {
   data() {
     return {
       openWalletList: false,
-      isOpenToList: false,
-      isOpenFromList: false,
       wallets: {
         to: {},
         from: {}
