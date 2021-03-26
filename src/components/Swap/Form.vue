@@ -16,7 +16,7 @@
       <button
         class="swap-form__menu-button"
         :class="{ 'swap-form__menu-button--select': fromWallet.nameCurrency }"
-        @click="openFromList"
+        @click="openList('from')"
       >
         {{ fromNameCurrency }}
         <v-icon class="swap-form__menu-icon" :class="{ 'swap-form__menu-icon--active': isOpenFromList }"
@@ -42,7 +42,7 @@
       <button
         class="swap-form__menu-button"
         :class="{ 'swap-form__menu-button--select': toWallet.nameCurrency }"
-        @click="openToList"
+        @click="openList('to')"
       >
         {{ toNameCurrency }}
         <v-icon class="swap-form__menu-icon" :class="{ 'swap-form__menu-icon--active': isOpenToList }"
@@ -124,11 +124,8 @@ export default {
       this.to = { ...this.from }
       this.from = { ...wrap }
     },
-    openFromList() {
-      this.$emit('openFromList', this.isOpenFromList ? null : 'from')
-    },
-    openToList() {
-      this.$emit('openToList', this.isOpenToList ? null : 'to')
+    openList(key) {
+      this.$emit('openList', key)
     }
   }
 }

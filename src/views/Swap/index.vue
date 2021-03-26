@@ -1,13 +1,12 @@
 <template>
   <div class="swap" :class="{ 'swap--open-list': isOpenMenu }">
     <swap-form
-      :is-open-to-list="openMenuCondition.to"
-      :is-open-from-list="openMenuCondition.from"
+      :is-open-to-list="currentWallet === 'to'"
+      :is-open-from-list="currentWallet === 'from'"
       :to-wallet="wallets.to"
       :from-wallet="wallets.from"
       :class="{ 'swap__form--open-list': isOpenMenu }"
-      @openToList="openList"
-      @openFromList="openList"
+      @openList="openList"
       @submit="submit"
     />
     <swap-wallet-list
@@ -31,10 +30,6 @@ export default {
   data() {
     return {
       openWalletList: false,
-      openMenuCondition: {
-        to: false,
-        from: false
-      },
       isOpenToList: false,
       isOpenFromList: false,
       wallets: {
@@ -49,27 +44,16 @@ export default {
       return this.$route.query.wallet
     },
     isOpenMenu() {
-      return this.openMenuCondition.from || this.openMenuCondition.to
-    }
-  },
-  watch: {
-    queryWallet: {
-      handler() {
-        this.openWalletList = false
-      }
+      return this.currentWallet !== null
     }
   },
   methods: {
     openList(key) {
-      this.currentWallet = key
-      Object.keys(this.openMenuCondition).forEach(el => {
-        this.openMenuCondition[el] = el === key
-      })
+      this.currentWallet = this.currentWallet === key ? null : key
     },
     setWallet(event) {
       this.wallets[this.currentWallet] = event
-      this.openMenuCondition.from = false
-      this.openMenuCondition.to = false
+      this.currentWallet = null
     },
     submit() {}
   }
