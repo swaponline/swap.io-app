@@ -1,18 +1,15 @@
 <template>
-  <v-list-item
-    link
-    exact
-    class="list-wallet-item"
-    :to="{ name: 'Wallet', params: { walletAddress: subWallets[0].address } }"
-  >
-    <v-list-item-icon class="list-wallet-item__icon-wrapper">
-      <svg-icon class="list-wallet-item__icon" name="btc" />
+  <v-list-item class="swap-external-button" @click="$emit('openExternalForm')">
+    <v-list-item-icon class="swap-external-button__icon-wrapper">
+      <svg-icon
+        name="external"
+        class="swap-external-button__icon"
+        :class="{ 'swap-external-button__icon--is-open-form': isOpenExternalForm }"
+      />
     </v-list-item-icon>
     <v-list-item-content>
-      <v-list-item-title class="list-wallet-item__title">
-        <span class="list-wallet-item__currency-name">{{ nameCurrency }}</span>
-        <span>{{ value }}</span>
-        <span class="list-wallet-item__name">{{ subWallets[0].name }}</span>
+      <v-list-item-title class="swap-external-button__title">
+        <span class>External wallet</span>
       </v-list-item-title>
     </v-list-item-content>
   </v-list-item>
@@ -20,30 +17,19 @@
 
 <script>
 export default {
-  name: 'ListWalletItem',
+  name: 'SwapExternalButton',
   props: {
-    name: {
-      type: String,
-      default: ''
-    },
-    nameCurrency: {
-      type: String,
-      default: ''
-    },
-    value: {
-      type: Number,
-      default: 0
-    },
-    subWallets: {
-      type: Array,
-      default: () => []
+    isOpenExternalForm: {
+      type: Boolean,
+      default: false
     }
   }
 }
 </script>
 
 <style lang="scss">
-.list-wallet-item {
+.swap-external-button {
+  width: 100%;
   min-height: 40px;
   border-radius: 12px;
   margin: 5px 10px;
@@ -60,6 +46,12 @@ export default {
     z-index: 0;
     background: $--black;
   }
+  @include tablet {
+    margin: 5px 25px;
+  }
+  @include small {
+    margin: 5px 0;
+  }
   &__icon-wrapper {
     display: flex;
     align-items: center;
@@ -73,6 +65,10 @@ export default {
     width: 45px;
     height: 45px;
     fill: $--white;
+    transition: 0.3s;
+    &--is-open-form {
+      transform: rotate(45deg);
+    }
   }
   &__title {
     display: flex;
@@ -80,15 +76,8 @@ export default {
     flex-wrap: wrap;
     line-height: 25px !important;
     letter-spacing: 0.01em;
-    font-size: $--font-size-extra-small-subtitle;
-  }
-  &__currency-name {
     font-weight: $--font-weight-semi-bold;
-    letter-spacing: 0.03em;
-  }
-  &__name {
-    width: 100%;
-    color: $--grey;
+    font-size: $--font-size-extra-small-subtitle;
   }
 }
 </style>
