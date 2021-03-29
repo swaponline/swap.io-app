@@ -23,7 +23,7 @@
 
 <script>
 import WalletInfo from '@/components/Wallets/WalletInfo.vue'
-import TransactionBlock from '@/components/Wallets/TransactionBlock.vue'
+import TransactionBlock from '@/components/Wallets/Transactions/index.vue'
 
 export default {
   name: 'Wallet',

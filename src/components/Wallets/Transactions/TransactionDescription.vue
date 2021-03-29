@@ -59,6 +59,7 @@ export default {
     text-align: left;
     word-break: break-all;
     outline: none;
+    cursor: text;
   }
   &__edit-icon {
     margin-left: 8px;

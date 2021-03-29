@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import FormTextField from '../FormTextField.vue'
+import FormTextField from '../UI/Forms/TextField.vue'
 
 export default {
   name: 'SliderFee',

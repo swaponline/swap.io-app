@@ -53,8 +53,8 @@ import { mapMutations } from 'vuex'
 import { ADD_MODAL } from '@/store/modules/Modals'
 import { SEND_FORM } from '@/store/modules/Modals/names'
 
-import ModalWrapper from '../../ModalWrapper.vue'
-import FormIndent from '../../FormIndent.vue'
+import ModalWrapper from '@/components/UI/ModalWrapper.vue'
+import FormIndent from '@/components/UI/Forms/Indent.vue'
 
 export default {
   name: 'SendPreview',

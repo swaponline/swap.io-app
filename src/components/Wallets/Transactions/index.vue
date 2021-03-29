@@ -12,9 +12,12 @@
       <v-tab v-for="tab in tabs" :key="tab" class="transactions__tab">{{ tab }}</v-tab>
     </v-tabs>
     <div class="transactions__horizontal-line"></div>
-    <v-tabs-items v-model="activeTab">
+
+    <transaction-loader v-if="loadingTransaction"></transaction-loader>
+
+    <v-tabs-items v-else v-model="activeTab">
       <v-tab-item v-for="tab in tabs" :key="tab">
-        <list-transactions
+        <transaction-list
           ref="transaction"
           class="transactions__list"
           :class="{ 'transactions__list--stretch': isCompressedWallet }"
@@ -23,19 +26,24 @@
           :is-compressed-wallet="isCompressedWallet"
           @compress-wallet="$emit('compress-wallet')"
           @uncompress-wallet="$emit('uncompress-wallet')"
-        ></list-transactions>
+        ></transaction-list>
       </v-tab-item>
     </v-tabs-items>
   </div>
 </template>
 
 <script>
-import ListTransactions from '@/components/Wallets/ListTransactions.vue'
+import { mapActions } from 'vuex'
+import TransactionLoader from '@/components/TransactionLoader.vue'
+
+import { GET_TRANSACTIONS, MODULE_NAME as TRANSACTIONS_MODULE } from '@/store/modules/Transactions'
+import TransactionList from './List.vue'
 
 export default {
-  name: 'TransactionBlock',
+  name: 'Transactions',
   components: {
-    ListTransactions
+    TransactionList,
+    TransactionLoader
   },
   props: {
     isCompressedWallet: {
@@ -59,12 +67,23 @@ export default {
     siblingList() {
       return this.$store.getters.siblingList
     },
+    loadingTransaction() {
+      return this.$store.state[TRANSACTIONS_MODULE].loading
+    },
     currentWallet() {
       if (this.wallet && this.siblingList) {
         return this.siblingList.find(el => el.address === this.$route.params.walletAddress) || {}
       }
       return {}
     }
+  },
+  mounted() {
+    this.actionGetTransaction()
+  },
+  methods: {
+    ...mapActions({
+      actionGetTransaction: GET_TRANSACTIONS
+    })
   }
 }
 </script>

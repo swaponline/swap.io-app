@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import FormIndent from '../FormIndent.vue'
+import FormIndent from '../UI/Forms/Indent.vue'
 
 export default {
   name: 'ShowMoreDetails',

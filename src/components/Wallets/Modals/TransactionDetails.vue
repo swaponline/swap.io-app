@@ -78,8 +78,8 @@ import { MODULE_NAME as TRANSACTIONS_MODULE } from '@/store/modules/Transactions
 import { EDIT_FEE, SHARE_MODAL } from '@/store/modules/Modals/names'
 import Copy from '@/utils/copy'
 
-import ModalWrapper from '@/components/ModalWrapper.vue'
-import FormIndent from '@/components/FormIndent.vue'
+import ModalWrapper from '@/components/UI/ModalWrapper.vue'
+import FormIndent from '@/components/UI/Forms/Indent.vue'
 import SliderFee from '@/components/Wallets/SliderFee.vue'
 import ShowMoreDetails from '@/components/Wallets/ShowMoreDetails.vue'
 import PendingLoader from '@/components/Loader.vue'

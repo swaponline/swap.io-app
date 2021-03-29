@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import FormSelector from '../FormSelector.vue'
+import FormSelector from '../UI/Forms/Selector.vue'
 import QrCodeReader from '../QrCodeReader.vue'
 import SwapButton from '../UI/SwapButton.vue'
 

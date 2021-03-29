@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import ModalWrapper from '../../ModalWrapper.vue'
-import FormField from '../../FormTextField.vue'
+import ModalWrapper from '@/components/UI/ModalWrapper.vue'
+import FormField from '@/components/UI/Forms/TextField.vue'
 
 export default {
   name: 'AddNewCurrency',

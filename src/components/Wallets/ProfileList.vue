@@ -111,11 +111,11 @@ export default {
   &__header {
     margin: 0;
     padding: 0 25px;
-    min-height: 80px;
+    min-height: 80px !important;
     background: $--white;
     border-radius: 12px;
     @include phone {
-      min-height: 70px;
+      min-height: 70px !important;
     }
   }
   &__avatar {

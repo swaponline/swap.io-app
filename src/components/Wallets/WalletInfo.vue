@@ -1,6 +1,7 @@
 <template>
   <div class="wallet-info" :class="{ 'wallet-info--compressed': compressed }" @click="uncompressWallet">
     <svg-icon class="wallet-info__background-icon" :name="backgroundIconName"></svg-icon>
+
     <div class="wallet-info__optional-buttons">
       <v-btn icon class="wallet-info__optional-button" @click="openShareModal">
         <svg-icon name="share" class="wallet-info__icon"></svg-icon>
@@ -9,26 +10,37 @@
         <svg-icon name="settings" class="wallet-info__icon"></svg-icon>
       </v-btn>
     </div>
+
     <header class="wallet-info__header">
       <div>
         <span class="wallet-info__crypto-value">0.200332btc</span>
         <span class="wallet-info__fiat-value">3000.04$</span>
       </div>
     </header>
+
     <div class="wallet-info__address-wrapper">
       <v-tooltip v-model="copyTooltip.value" top :open-on-hover="false" class="wallet-info__tooltip">
         <template #activator="{ on }">
           <button class="wallet-info__button-copy" tabindex="-1" @click="copy">
-            <span class="wallet-info__address">{{ address }}</span>
+            <span class="wallet-info__address wallet-info__address--desktop">
+              {{ address }}
+            </span>
+
+            <span class="wallet-info__address wallet-info__address--tablet">
+              {{ `${address.slice(0, 5)}***${address.slice(-5)}` }}
+            </span>
+
             <svg-icon class="wallet-info__icon-copy" name="copy" v-on="on"></svg-icon>
           </button>
         </template>
         <span>Copied</span>
       </v-tooltip>
+
       <button class="wallet-info__button-qrcode" @click="openShareModal">
         <svg-icon class="wallet-info__icon-qrcode" name="qrcode"></svg-icon>
       </button>
     </div>
+
     <div class="wallet-info__buttons">
       <swap-button class="wallet-info__button" @click="openInvoiceBlock">Invoice</swap-button>
       <swap-button :to="{ name: 'Swap' }" class="wallet-info__button">Swap</swap-button>
@@ -81,7 +93,7 @@ export default {
       return this.$route.params.walletAddress
     },
     backgroundIconName() {
-      return `background-${this.nameCurrency.toLowerCase()}`
+      return `background/background-${this.nameCurrency.toLowerCase()}`
     }
   },
   beforeDestroy() {
@@ -304,8 +316,18 @@ export default {
     }
   }
   &__address {
+    &--tablet {
+      display: none;
+    }
     @include tablet {
       font-size: $--font-size-medium;
+
+      &--desktop {
+        display: none;
+      }
+      &--tablet {
+        display: inline;
+      }
     }
   }
   &__button-qrcode {

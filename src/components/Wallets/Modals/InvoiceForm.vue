@@ -94,10 +94,10 @@ import { INVOICE_PREVIEW } from '@/store/modules/Modals/names'
 import { ADD_MODAL } from '@/store/modules/Modals'
 
 import { mapMutations } from 'vuex'
-import ModalWrapper from '../../ModalWrapper.vue'
-import FormTextField from '../../FormTextField.vue'
-import FormSelector from '../../FormSelector.vue'
-import FormIndent from '../../FormIndent.vue'
+import FormTextField from '@/components/UI/Forms/TextField.vue'
+import FormSelector from '@/components/UI/Forms/Selector.vue'
+import FormIndent from '@/components/UI/Forms/Indent.vue'
+import ModalWrapper from '@/components/UI/ModalWrapper.vue'
 
 export default {
   name: 'InvoiceForm',
