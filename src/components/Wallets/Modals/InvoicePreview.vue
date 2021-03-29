@@ -101,7 +101,7 @@ import { mapMutations } from 'vuex'
 import { ADD_MODAL } from '@/store/modules/Modals'
 import { INVOICE_FORM, COPY_MENU } from '@/store/modules/Modals/names'
 
-import ModalWrapper from '../../ModalWrapper.vue'
+import ModalWrapper from '@/components/UI/ModalWrapper.vue'
 
 export default {
   name: 'InvoicePreview',

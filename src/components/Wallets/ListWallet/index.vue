@@ -8,8 +8,8 @@
         <total-wallet-summ />
       </v-list-item>
       <v-list-item v-for="wallet in wallets" :key="wallet.name" class="list-wallet__wallet-item px-0">
-        <list-wallet-item v-if="wallet.subWallets.length === 1" v-bind="wallet"></list-wallet-item>
-        <list-wallet-group v-else v-bind="wallet"></list-wallet-group>
+        <list-item v-if="wallet.subWallets.length === 1" v-bind="wallet"></list-item>
+        <list-group v-else v-bind="wallet"></list-group>
       </v-list-item>
     </v-list>
   </div>
@@ -18,12 +18,12 @@
 <script>
 import { mapActions } from 'vuex'
 import { GET_ACCOUNT_ID } from '@/store/modules/Wallets'
-//  components
 import { MatchMedia } from 'vue-component-media-queries'
-import ProfileList from './ProfileList.vue'
+//  components
+import ProfileList from '../ProfileList.vue'
 import TotalWalletSumm from './TotalWalletSumm.vue'
-import ListWalletGroup from './ListWalletGroup.vue'
-import ListWalletItem from './ListWalletItem.vue'
+import ListGroup from './Group.vue'
+import ListItem from './Item.vue'
 
 export default {
   name: 'ListWallet',
@@ -31,8 +31,8 @@ export default {
     ProfileList,
     TotalWalletSumm,
     MatchMedia,
-    ListWalletGroup,
-    ListWalletItem
+    ListGroup,
+    ListItem
   },
   computed: {
     wallets() {

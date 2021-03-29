@@ -1,25 +1,25 @@
 <template>
-  <v-card flat class="d-flex justify-space-between item-transaction" @click="openTransactionDetailsModal">
-    <div class="item-transaction__time">
+  <v-card flat class="transaction-item d-flex justify-space-between" @click="openTransactionDetailsModal">
+    <div class="transaction-item__time">
       <v-icon
-        class="item-transaction__icon lighten-1"
+        class="transaction-item__icon lighten-1"
         background="white"
         :class="{
-          'item-transaction__icon--send': !isReceived
+          'transaction-item__icon--send': !isReceived
         }"
       >
         mdi-arrow-bottom-left
       </v-icon>
       <span>{{ `${hours}:${minutes}` }}</span>
     </div>
-    <div class="item-transaction__main-info">
+    <div class="transaction-item__main-info">
       <transaction-description v-model="comment"></transaction-description>
-      <span class="item-transaction__status">{{ status }}</span>
+      <span class="transaction-item__status">{{ status }}</span>
     </div>
     <div
-      class="item-transaction__value"
+      class="transaction-item__value"
       :class="{
-        'item-transaction__value--send': !isReceived
+        'transaction-item__value--send': !isReceived
       }"
     >
       <v-tooltip top>
@@ -32,15 +32,15 @@
       </v-tooltip>
       <v-tooltip top>
         <template v-slot:activator="{ on }">
-          <span class="item-transaction__value-in-usd" v-on="on">~${{ valueInUsd }}</span>
+          <span class="transaction-item__value-in-usd" v-on="on">~${{ valueInUsd }}</span>
         </template>
         <span> USD Equivalent of transaction amount @ {{ rateValue.toFixed(2) }} USD/ETH)</span>
       </v-tooltip>
     </div>
-    <div class="item-transaction__amount">
+    <div class="transaction-item__amount">
       <v-tooltip top>
         <template v-slot:activator="{ on }">
-          <span class="item-transaction__balance-value" v-on="on">{{ currentBalance }}</span>
+          <span class="transaction-item__balance-value" v-on="on">{{ currentBalance }}</span>
         </template>
         <span>Balance after transaction</span>
       </v-tooltip>
@@ -184,7 +184,7 @@ export default {
 </script>
 
 <style lang="scss">
-.item-transaction {
+.transaction-item {
   border-bottom: 1px solid rgba($color: $--black, $alpha: 0.05) !important;
   border-top: 1px solid rgba($color: $--black, $alpha: 0.05) !important;
   padding: 20px 0;

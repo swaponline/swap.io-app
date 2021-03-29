@@ -1,25 +1,25 @@
 <template>
-  <v-list-item to="/" class="item-link-transaction px-1">
-    <div class="item-link-transaction__time">
+  <v-card flat class="transaction-item d-flex justify-space-between" @click="openTransactionDetailsModal">
+    <div class="transaction-item__time">
       <v-icon
-        class="item-link-transaction__icon lighten-1"
+        class="transaction-item__icon lighten-1"
         background="white"
         :class="{
-          'item-link-transaction__icon--send': !isReceived
+          'transaction-item__icon--send': !isReceived
         }"
       >
         mdi-arrow-bottom-left
       </v-icon>
       <span>{{ `${hours}:${minutes}` }}</span>
     </div>
-    <div class="item-link-transaction__main-info">
+    <div class="transaction-item__main-info">
       <transaction-description v-model="comment"></transaction-description>
-      <span>CONFIRMED</span>
+      <span class="transaction-item__status">{{ status }}</span>
     </div>
     <div
-      class="item-link-transaction__value"
+      class="transaction-item__value"
       :class="{
-        'item-link-transaction__value--send': !isReceived
+        'transaction-item__value--send': !isReceived
       }"
     >
       <v-tooltip top>
@@ -32,19 +32,31 @@
       </v-tooltip>
       <v-tooltip top>
         <template v-slot:activator="{ on }">
-          <span class="item-link-transaction__value-in-usd" v-on="on">~${{ valueInUsd }}</span>
+          <span class="transaction-item__value-in-usd" v-on="on">~${{ valueInUsd }}</span>
         </template>
         <span> USD Equivalent of transaction amount @ {{ rateValue.toFixed(2) }} USD/ETH)</span>
       </v-tooltip>
     </div>
-  </v-list-item>
+    <div class="transaction-item__amount">
+      <v-tooltip top>
+        <template v-slot:activator="{ on }">
+          <span class="transaction-item__balance-value" v-on="on">{{ currentBalance }}</span>
+        </template>
+        <span>Balance after transaction</span>
+      </v-tooltip>
+    </div>
+  </v-card>
 </template>
 
 <script>
+import { ADD_MODAL } from '@/store/modules/Modals'
+import { TRANSACTION_DETAILS } from '@/store/modules/Modals/names'
+import { mapMutations } from 'vuex'
+
 import TransactionDescription from './TransactionDescription.vue'
 
 export default {
-  name: 'ItemLinkTransaction',
+  name: 'ItemTransaction',
   components: {
     TransactionDescription
   },
@@ -65,7 +77,7 @@ export default {
     },
     status: {
       type: String,
-      default: ''
+      default: 'PENDING'
     },
     timestamp: {
       type: Number,
@@ -90,7 +102,8 @@ export default {
   },
   data() {
     return {
-      comment: ''
+      comment: '',
+      inputShow: false
     }
   },
   computed: {
@@ -104,7 +117,7 @@ export default {
       }, 0)
     },
     currentBalance() {
-      const wallet = this.journal[0].balance.find(wall => wall.wallet === this.address)
+      const wallet = this.journal[0].balance.find(point => point.wallet === this.address)
       if (wallet) {
         return (wallet.balance / 10 ** this.decimal).toFixed(this.currentDecimal)
       }
@@ -145,19 +158,38 @@ export default {
     }
   },
   mounted() {
-    this.comment =
-      this.description || this.isReceived ? `From: ***${this.from.slice(-4)}` : `To: ***${this.to.slice(-4)}`
+    this.comment = this.description || this.isReceived ? `From: ${this.from}` : `To: ${this.to}`
+  },
+  methods: {
+    ...mapMutations({
+      mutationAddModal: ADD_MODAL
+    }),
+    // мб перенесем выше в родительский компонент чтобы данные было проще прокинуть
+    openTransactionDetailsModal() {
+      this.mutationAddModal({
+        name: TRANSACTION_DETAILS,
+        id: this.hash,
+        info: {
+          hash: this.hash,
+          fee: this.transactionFee,
+          entries: this.entries,
+          decimal: this.decimal,
+          currentDecimal: this.currentDecimal,
+          journal: this.journal
+        }
+      })
+    }
   }
 }
 </script>
 
 <style lang="scss">
-.item-link-transaction {
-  display: flex;
-  border-bottom: 1px solid rgba($color: $--black, $alpha: 0.05);
-  border-top: 1px solid rgba($color: $--black, $alpha: 0.05);
-  margin: 0 10px;
-  padding: 16px 0;
+.transaction-item {
+  border-bottom: 1px solid rgba($color: $--black, $alpha: 0.05) !important;
+  border-top: 1px solid rgba($color: $--black, $alpha: 0.05) !important;
+  padding: 20px 0;
+  margin: 0 20px;
+  border-radius: 0px !important;
   &:after {
     display: none;
   }
@@ -165,8 +197,13 @@ export default {
     display: none;
   }
   &__header {
-    padding: 0 0;
-    min-height: 80px;
+    padding: 16px 0;
+  }
+  &__icon {
+    margin-bottom: 4px;
+    &--send {
+      transform: rotate(180deg);
+    }
   }
   &__time {
     flex: 0 !important;
@@ -179,14 +216,17 @@ export default {
     line-height: 16px;
     font-weight: $--font-weight-medium;
   }
+  &__status {
+    margin-top: 7px;
+  }
   &__main-info {
-    flex-grow: 1;
     display: flex;
+    flex-grow: 1;
     flex-direction: column;
     justify-content: center;
     padding: 0 10px;
     font-weight: $--font-weight-semi-bold;
-    font-size: $--font-size-small;
+    font-size: $--font-size-extra-small;
     color: $--green;
   }
   &__value {
@@ -197,6 +237,7 @@ export default {
     font-weight: $--font-weight-semi-bold;
     font-size: $--font-size-extra-small-subtitle;
     color: $--green;
+    line-height: 25px;
     &--send {
       color: $--red;
     }
@@ -206,6 +247,17 @@ export default {
     font-size: $--font-size-small;
     line-height: 16px;
     color: $--black;
+  }
+  &__amount {
+    flex: 0 !important;
+    margin: 0 15px;
+    align-self: stretch;
+    font-size: $--font-size-extra-small-subtitle;
+    line-height: 25px;
+    color: $--grey-2;
+    @include tablet {
+      display: none;
+    }
   }
 }
 </style>

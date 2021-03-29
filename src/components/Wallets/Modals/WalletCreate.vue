@@ -39,7 +39,7 @@
 import { mapMutations } from 'vuex'
 import { ADD_MODAL } from '@/store/modules/Modals'
 import { ADD_NEW_CURRENCY } from '@/store/modules/Modals/names'
-import ModalWrapper from '../../ModalWrapper.vue'
+import ModalWrapper from '@/components/UI/ModalWrapper.vue'
 import TypeCurrencyCard from '../TypeCurrencyCard.vue'
 
 const currencies = [

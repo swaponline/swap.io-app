@@ -2,7 +2,7 @@
   <div class="main-header">
     <router-link :to="{ name: 'Wallet' }" class="main-header__logo">
       <svg-icon class="main-header__logo-icon" name="logo" />
-      <h2>Swap</h2>
+      <h2 class="main-header__logo-text">Swap</h2>
     </router-link>
     <match-media v-slot="{ desktop }" class="d-flex flex-grow-1">
       <main-header-tabs v-if="desktop" class="main-header__tabs"></main-header-tabs>
@@ -64,7 +64,6 @@ export default {
     margin-right: 20px;
     display: flex;
     align-items: center;
-    color: var(--main-color);
     @include tablet {
       min-width: 0;
       flex-grow: 1;
@@ -86,6 +85,9 @@ export default {
       width: 30px;
       height: 30px;
     }
+  }
+  &__logo-text {
+    color: var(--main-color);
   }
   &__profile {
     min-width: 175px;

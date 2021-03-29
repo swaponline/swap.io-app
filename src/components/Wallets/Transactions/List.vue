@@ -17,9 +17,8 @@
 </template>
 
 <script>
-import { GET_TRANSACTIONS } from '@/store/modules/Transactions'
-import { mapActions, mapGetters } from 'vuex'
-import TransactionItem from './TransactionItem.vue'
+import { mapGetters } from 'vuex'
+import TransactionItem from './Transaction.vue'
 
 export default {
   name: 'ListTransactions',
@@ -49,15 +48,11 @@ export default {
   },
   mounted() {
     this.$refs.transaction.addEventListener('scroll', this.eventScroll)
-    this.actionGetTransaction()
   },
   beforeDestroy() {
     this.$refs.transaction.removeEventListener('scroll', this.eventScroll)
   },
   methods: {
-    ...mapActions({
-      actionGetTransaction: GET_TRANSACTIONS
-    }),
     eventScroll(e) {
       if (this.mediaQueries.phone && this.$refs.headers && this.$refs.headers.length > 0) {
         this.$refs.headers.forEach(el => {

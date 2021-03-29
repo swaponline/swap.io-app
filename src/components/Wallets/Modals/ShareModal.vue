@@ -49,8 +49,8 @@
 <script>
 import Copy from '@/utils/copy'
 
-import ModalWrapper from '../../ModalWrapper.vue'
-import FormIndent from '../../FormIndent.vue'
+import ModalWrapper from '@/components/UI/ModalWrapper.vue'
+import FormIndent from '@/components/UI/Forms/Indent.vue'
 
 export default {
   name: 'ShareModal',

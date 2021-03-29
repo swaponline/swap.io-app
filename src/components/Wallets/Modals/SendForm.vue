@@ -104,10 +104,10 @@ import { ADD_MODAL } from '@/store/modules/Modals'
 import { EDIT_FEE, SEND_PREVIEW } from '@/store/modules/Modals/names'
 import { MODULE_NAME as TRANSACTIONS_MODULE } from '@/store/modules/Transactions'
 
-import ModalWrapper from '../../ModalWrapper.vue'
-import FormTextField from '../../FormTextField.vue'
-import FormSelector from '../../FormSelector.vue'
-import FormIndent from '../../FormIndent.vue'
+import ModalWrapper from '@/components/UI/ModalWrapper.vue'
+import FormTextField from '@/components/UI/Forms/TextField.vue'
+import FormSelector from '@/components/UI/Forms/Selector.vue'
+import FormIndent from '@/components/UI/Forms/Indent.vue'
 import SliderFee from '../SliderFee.vue'
 
 export default {

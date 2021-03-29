@@ -17,7 +17,7 @@
 
 <script>
 import TransitionTranslate from '@/components/Transitions/Translate.vue'
-import ListWallet from '@/components/Wallets/ListWallet.vue'
+import ListWallet from '@/components/Wallets/ListWallet/index.vue'
 import MainActions from '@/components/Wallets/MainActions.vue'
 import AllModals from '@/components/Wallets/Modals/AllModals.vue'
 

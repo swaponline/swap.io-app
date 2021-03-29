@@ -22,16 +22,6 @@ export default [
         path: '/swap',
         name: 'Swap',
         component: () => import(/* webpackChunkName: 'Swap' */ '@/views/Swap')
-      },
-      {
-        path: '/history',
-        name: 'History',
-        component: () => import(/* webpackChunkName: 'Wallet' */ '@/views/Wallets/Wallet.vue')
-      },
-      {
-        path: '/settings',
-        name: 'Settings',
-        component: () => import(/* webpackChunkName: 'Wallet' */ '@/views/Wallets/Wallet.vue')
       }
     ]
   },
@@ -44,17 +34,17 @@ export default [
       {
         path: '/security-info',
         name: 'SecurityInfo',
-        component: () => import(/* webpackChunkName: 'SecurityInfo' */ '@/views/Profile/SecurityInfo.vue')
+        component: () => import(/* webpackChunkName: 'SecurityInfo' */ '@/views/CreateProfile/SecurityInfo.vue')
       },
       {
         path: '/secret-phrase',
         name: 'SecretPhrase',
-        component: () => import(/* webpackChunkName: 'SecretPhrase' */ '@/views/Profile/SecretPhrase.vue')
+        component: () => import(/* webpackChunkName: 'SecretPhrase' */ '@/views/CreateProfile/SecretPhrase.vue')
       },
       {
         path: '/choose-style',
         name: 'ChooseStyle',
-        component: () => import(/* webpackChunkName: 'ChooseStyle' */ '@/views/Profile/ChooseStyle.vue')
+        component: () => import(/* webpackChunkName: 'ChooseStyle' */ '@/views/CreateProfile/ChooseStyle.vue')
       }
     ]
   }

@@ -2,7 +2,7 @@
   <v-list-group class="list-wallet-group" color="black" active-class="list-wallet-group--active" append-icon="">
     <template #activator>
       <v-list-item-icon class="list-wallet-group__icon-wrapper">
-        <svg-icon class="list-wallet-group__icon" name="btc" />
+        <svg-icon class="list-wallet-group__icon" :name="iconName" />
       </v-list-item-icon>
       <v-list-item-title class="list-wallet-group__header">
         <span class="list-wallet-group__currency">{{ nameCurrency }} </span>
@@ -47,6 +47,11 @@ export default {
     subWallets: {
       type: Array,
       required: true
+    }
+  },
+  computed: {
+    iconName() {
+      return `list/list-${this.nameCurrency.toLowerCase()}`
     }
   }
 }
