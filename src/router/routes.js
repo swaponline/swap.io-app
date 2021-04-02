@@ -45,6 +45,11 @@ export default [
         path: '/choose-style',
         name: 'ChooseStyle',
         component: () => import(/* webpackChunkName: 'ChooseStyle' */ '@/views/CreateProfile/ChooseStyle.vue')
+      },
+      {
+        path: '/frame',
+        name: 'Frame',
+        component: () => import(/* webpackChunkName: 'Frame' */ '@/views/Frame')
       }
     ]
   }

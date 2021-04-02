@@ -1,5 +1,5 @@
 <template>
-  <v-app id="app">
+  <v-app id="app" class="fuck">
     <media-query-provider :queries="queries">
       <router-view />
     </media-query-provider>
@@ -84,6 +84,7 @@ export default {
   width: 100%;
   max-width: 100vw;
   overflow: hidden;
+
   &::before {
     background: var(--background-app);
     position: absolute;
@@ -94,11 +95,13 @@ export default {
     width: 110%;
     filter: blur(10px);
   }
+
   @include small-height {
     min-height: calc(var(--vh, 1vh) * 100);
     height: 100%;
   }
 }
+
 @media screen and (min-width: 1921px) {
   #app {
     zoom: calc(var(--vw) / 18);
