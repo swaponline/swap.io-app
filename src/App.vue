@@ -9,6 +9,7 @@
 <script>
 import { MediaQueryProvider } from 'vue-component-media-queries'
 import { MODULE_NAME as PROFILE_MODULE } from '@/store/modules/Profile'
+import messageHandler from './messageHandler'
 
 const queries = {
   desktop: '(min-width: 1281px)',
@@ -54,6 +55,7 @@ export default {
   mounted() {
     window.addEventListener('resize', this.resize)
     this.resize()
+    messageHandler()
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.resize)

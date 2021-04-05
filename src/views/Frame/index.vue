@@ -7,8 +7,9 @@
 </template>
 
 <script>
-import windowsStorage from '@/windowsStorage'
 import WindowHandler from '@/WindowHandler'
+import { mapActions } from 'vuex'
+import { SET_USERS_COLORS } from '@/store/modules/Profile'
 
 export default {
   name: 'FramePage',
@@ -17,20 +18,17 @@ export default {
       currentWindow: null
     }
   },
-  mounted() {
-    window.addEventListener('message', event => {
-      console.log(event.origin)
-      if (event.origin !== 'http://keys.localhost') return
-      console.log(event.data, windowsStorage)
-    })
-  },
   methods: {
+    ...mapActions({
+      actionSetUsersColors: SET_USERS_COLORS
+    }),
     openFrame() {
-      this.currentWindow = new WindowHandler('logic', '/choose-style')
+      this.currentWindow = new WindowHandler('logic', '/choose-style', 'style', data => {
+        this.actionSetUsersColors(data.selectGradient)
+      })
     },
     async message() {
-      await this.currentWindow.sendMessage({ key: 'hello', message: 'world' })
-      console.log(123)
+      await this.currentWindow.sendMessage({})
     }
   }
 }

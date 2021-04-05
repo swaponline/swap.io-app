@@ -3,8 +3,9 @@ import windowsStorage from '@/windowsStorage'
 export default class WindowHandler {
   static host = 'http://keys.localhost'
 
-  constructor(nameFrame, additionalUrl, callback) {
+  constructor(nameFrame, additionalUrl, key, callback) {
     this.url = WindowHandler.host + additionalUrl
+    this.key = key
     this.w = window
     this.callback = callback
     this.frame = null
@@ -16,15 +17,24 @@ export default class WindowHandler {
 
   init() {
     this.frame = this.w.open(this.url, this.name)
-    windowsStorage.push(this)
+    windowsStorage[this.key] = this
   }
 
-  async sendMessage(data) {
+  async sendMessage(data, callback = undefined) {
     await new Promise((resolve, reject) => {
-      this.frame.postMessage(data, this.url)
+      this.frame.postMessage(
+        {
+          key: this.key,
+          ...data
+        },
+        this.url
+      )
       this.resolve = resolve
       this.reject = reject
     })
+    if (callback) {
+      callback()
+    }
   }
 
   confirm() {
@@ -40,6 +50,7 @@ export default class WindowHandler {
   close() {
     this.resolve = undefined
     this.reject = undefined
+    this.callback = undefined
     this.frame.close()
   }
 }
