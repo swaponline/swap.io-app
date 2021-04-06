@@ -23,12 +23,11 @@ export default {
       actionSetUsersColors: SET_USERS_COLORS
     }),
     openFrame() {
-      this.currentWindow = new WindowHandler('logic', '/choose-style', 'style', data => {
-        this.actionSetUsersColors(data.selectGradient)
-      })
+      this.currentWindow = new WindowHandler('logic', '/choose-style', 'profile')
     },
     async message() {
-      await this.currentWindow.sendMessage({})
+      const data = await this.currentWindow.sendMessage()
+      this.actionSetUsersColors(data.selectGradient)
     }
   }
 }

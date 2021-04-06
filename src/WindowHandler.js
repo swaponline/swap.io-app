@@ -21,7 +21,7 @@ export default class WindowHandler {
   }
 
   async sendMessage(data, callback = undefined) {
-    await new Promise((resolve, reject) => {
+    const res = await new Promise((resolve, reject) => {
       this.frame.postMessage(
         {
           key: this.key,
@@ -35,11 +35,12 @@ export default class WindowHandler {
     if (callback) {
       callback()
     }
+    return res
   }
 
-  confirm() {
+  confirm(data) {
     this.reject = undefined
-    this.resolve()
+    this.resolve(data)
   }
 
   cancel() {
