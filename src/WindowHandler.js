@@ -52,6 +52,8 @@ export default class WindowHandler {
     this.resolve = undefined
     this.reject = undefined
     this.callback = undefined
-    this.frame.close()
+    this.frame = undefined
+    delete windowsStorage[this.key]
+    window.location.reload()
   }
 }
