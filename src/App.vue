@@ -9,6 +9,7 @@
 <script>
 import { MediaQueryProvider } from 'vue-component-media-queries'
 import { MODULE_NAME as PROFILE_MODULE } from '@/store/modules/Profile'
+import messageHandler from './messageHandler'
 
 const queries = {
   desktop: '(min-width: 1281px)',
@@ -54,6 +55,7 @@ export default {
   mounted() {
     window.addEventListener('resize', this.resize)
     this.resize()
+    messageHandler()
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.resize)
@@ -84,6 +86,7 @@ export default {
   width: 100%;
   max-width: 100vw;
   overflow: hidden;
+
   &::before {
     background: var(--background-app);
     position: absolute;
@@ -94,11 +97,13 @@ export default {
     width: 110%;
     filter: blur(10px);
   }
+
   @include small-height {
     min-height: calc(var(--vh, 1vh) * 100);
     height: 100%;
   }
 }
+
 @media screen and (min-width: 1921px) {
   #app {
     zoom: calc(var(--vw) / 18);

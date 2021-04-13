@@ -43,8 +43,10 @@ export default {
   overflow: hidden;
   display: flex;
   flex-direction: column;
+
   &__tabs {
     display: none;
+
     @include tablet {
       display: block;
       flex-grow: 0;

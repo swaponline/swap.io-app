@@ -21,12 +21,12 @@ export default {
           id: 2,
           label: 'Swap',
           to: { name: 'Swap' }
+        },
+        {
+          id: 3,
+          label: 'Frame',
+          to: { name: 'Frame' }
         }
-        // {
-        //   id: 3,
-        //   label: 'History',
-        //   to: { name: 'History' }
-        // },
         // {
         //   id: 4,
         //   label: 'Settings',
@@ -47,6 +47,7 @@ export default {
     padding: 0 40px;
     border-top: 1px solid $--grey;
   }
+
   @include phone {
     padding: 0 0;
   }
@@ -62,11 +63,13 @@ export default {
     line-height: 27px;
     letter-spacing: 0.01em;
     text-transform: none;
+
     @include tablet {
       font-size: $--font-size-subtitle;
       max-width: none;
       min-height: 80px;
     }
+
     @include phone {
       padding: 0 0;
       font-weight: $--font-weight-semi-bold;
@@ -74,6 +77,7 @@ export default {
       max-width: none;
       min-height: 55px;
     }
+
     @include phone {
       min-height: 50px;
     }
