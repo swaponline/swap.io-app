@@ -59,6 +59,5 @@ export default class WindowHandler {
     this.callback = undefined
     this.frame = undefined
     delete windowsStorage[this.key]
-    window.location.reload()
   }
 }
