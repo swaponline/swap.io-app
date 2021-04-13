@@ -1,5 +1,5 @@
 <template>
-  <v-app id="app" class="fuck">
+  <v-app id="app">
     <media-query-provider :queries="queries">
       <router-view />
     </media-query-provider>
