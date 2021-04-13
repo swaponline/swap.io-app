@@ -3,7 +3,6 @@ import windowsStorage from './windowsStorage'
 export default () => {
   window.addEventListener('message', event => {
     if (event.origin !== 'http://keys.localhost') return
-    console.log(event.data.callbackName)
     if (event.data && event.data.key) {
       const currentWindow = windowsStorage[event.data.key]
       if (currentWindow.callback) {

@@ -21,21 +21,26 @@ export default class WindowHandler {
   }
 
   async sendMessage(data, callback = undefined) {
-    const res = await new Promise((resolve, reject) => {
-      this.frame.postMessage(
-        {
-          key: this.key,
-          ...data
-        },
-        this.url
-      )
-      this.resolve = resolve
-      this.reject = reject
-    })
-    if (callback) {
-      callback()
+    try {
+      const res = await new Promise((resolve, reject) => {
+        this.frame.postMessage(
+          {
+            key: this.key,
+            ...data
+          },
+          this.url
+        )
+        this.resolve = resolve
+        this.reject = reject
+      })
+      if (callback) {
+        callback()
+      }
+      return res
+    } catch (e) {
+      console.error(`error in windowHandler: ${e}`)
+      return e
     }
-    return res
   }
 
   confirm(data) {
