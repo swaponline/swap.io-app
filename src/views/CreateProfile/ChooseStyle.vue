@@ -27,22 +27,19 @@
       </span>
       <div class="choose-style__buttons">
         <swap-button class="choose-style__button" @click="goToSecretPhrase">Create</swap-button>
-        <swap-button
-          class="choose-style__button choose-style__button--text"
-          :depressed="false"
-          text
-          @click="actionFillCards"
-        >
+        <swap-button class="choose-style__button choose-style__button--text" :depressed="false" text @click="getCards">
           Refresh colors
         </swap-button>
       </div>
     </div>
+    <keys-frame name="chooseStyle" />
   </div>
 </template>
 
 <script>
+import WindowHandler from '@/WindowHandler'
 import { mapActions } from 'vuex'
-import { MODULE_NAME as PROFILE_MODULE, SET_USERS_COLORS, FILL_CARDS } from '@/store/modules/Profile'
+import { SET_USERS_COLORS } from '@/store/modules/Profile'
 
 export default {
   name: 'ChooseStyle',
@@ -52,21 +49,37 @@ export default {
         background: '',
         color: '',
         wordList: []
-      }
+      },
+      cardColors: [],
+      currentWindow: {}
     }
   },
   computed: {
-    cardColors() {
-      return this.$store.state[PROFILE_MODULE].list
+    currentWindowIsOpen() {
+      return this.currentWindow.isOpen
+    }
+  },
+  watch: {
+    currentWindowIsOpen: {
+      handler(val) {
+        if (val) {
+          console.error(val)
+          this.getCards()
+        }
+      }
     }
   },
   mounted() {
-    this.actionFillCards()
+    this.openFrame()
+  },
+  beforeDestroy() {
+    if (this.currentWindowIsOpen) {
+      this.currentWindow.close()
+    }
   },
   methods: {
     ...mapActions({
-      actionSetUsersColors: SET_USERS_COLORS,
-      actionFillCards: FILL_CARDS
+      actionSetUsersColors: SET_USERS_COLORS
     }),
     select(color) {
       this.selectGradient = color
@@ -79,6 +92,13 @@ export default {
     },
     setBackground() {
       this.actionSetUsersColors(this.selectGradient)
+    },
+    async getCards() {
+      const { list } = await this.currentWindow.sendMessage()
+      this.cardColors = list
+    },
+    openFrame() {
+      this.currentWindow = new WindowHandler('chooseStyle', '/', 'getColorCards')
     }
   }
 }
@@ -97,12 +117,14 @@ export default {
   position: relative;
   overflow-x: hidden;
   overflow-y: auto;
+
   @include tablet {
     width: auto;
     margin: 20px 20px 25px;
     max-height: none;
     max-width: none;
   }
+
   &__inner {
     position: relative;
     height: 100%;
@@ -112,77 +134,95 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
+
     @include tablet {
       padding: 24px 20px;
       align-items: center;
     }
   }
+
   &__header {
     width: 100%;
     text-align: center;
   }
+
   &__title {
     font-weight: $--font-weight-semi-bold;
     font-size: $--font-size-extra-title;
+
     @include tablet {
       width: 100%;
       font-size: $--font-size-subtitle;
     }
   }
+
   &__subtitle {
     margin-top: 10px;
     color: $--grey-3;
     font-weight: $--font-weight-semi-bold;
     font-size: $--font-size-medium;
+
     @include tablet {
       width: 100%;
       text-align: left;
       font-size: $--font-size-medium;
     }
   }
+
   &__cards {
     margin: 75px -7px 20px;
     display: flex;
     flex-wrap: wrap;
     width: 100%;
+
     @include tablet {
       margin: 30px -7px 60px;
     }
+
     @include phone {
       margin: 30px -2px 10px;
     }
   }
+
   &__card {
     width: calc(25% - 14px);
     margin: 0 7px;
+
     @include tablet {
       width: calc(50% - 14px);
       margin: 9px 7px;
     }
+
     @include phone {
       width: calc(50% - 4px);
       margin: 2px;
     }
   }
+
   &__card-inner {
     padding: 5px 5px;
     border-radius: 20px;
     border: 5px solid transparent;
+
     &--select {
       border-color: $--grey;
     }
   }
+
   &__card-background {
     border-radius: 12px;
     width: 100%;
     height: 120px;
+
     @include tablet {
       height: 145px;
     }
+
     @include phone {
       height: 100px;
     }
   }
+
   &__card-text {
     display: block;
     margin-top: 22px;
@@ -190,10 +230,12 @@ export default {
     text-align: center;
     font-weight: $--font-weight-semi-bold;
     font-size: $--font-size-extra-small-subtitle;
+
     @include tablet {
       display: none;
     }
   }
+
   &__text {
     display: none;
     width: 100%;
@@ -201,37 +243,53 @@ export default {
     margin-bottom: 20px;
     font-weight: $--font-weight-semi-bold;
     font-size: $--font-size-extra-small-subtitle;
+
     @include tablet {
       display: block;
     }
+
     @include phone {
       margin-top: auto;
     }
   }
+
   &__buttons {
     margin-top: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
+
     @include tablet {
       margin: auto auto 0;
       max-width: 400px;
     }
+
     @include phone {
       margin-top: 30px;
     }
   }
+
   &__button {
     margin: 0 5px;
     min-width: 174px !important;
+
     &--text {
       margin-top: 10px;
       color: $--dark-grey !important;
     }
+
     @include tablet {
       margin-bottom: 10px;
     }
+  }
+
+  &__iframe {
+    position: absolute;
+    clip: rect(0 0 0 0);
+    width: 1px;
+    height: 1px;
+    margin: -1px;
   }
 }
 </style>
