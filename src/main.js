@@ -10,6 +10,7 @@ import '@/assets/scss/base.scss'
 
 Vue.config.productionTip = false
 Vue.use(UI)
+
 const lang = getLanguage()
 loadLanguageAsync(lang).then(() => {
   /* eslint-disable vue/require-name-property */

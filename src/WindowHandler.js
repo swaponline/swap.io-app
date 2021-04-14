@@ -12,12 +12,14 @@ export default class WindowHandler {
     this.name = nameFrame
     this.resolve = undefined
     this.reject = undefined
+    this.isOpen = false
     this.init()
   }
 
   init() {
     this.frame = this.w.open(this.url, this.name)
     windowsStorage[this.key] = this
+    windowsStorage.lastWindowOpen = this.key
   }
 
   async sendMessage(data, callback = undefined) {

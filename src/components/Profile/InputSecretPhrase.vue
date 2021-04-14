@@ -64,7 +64,7 @@ export default {
     },
     create() {
       if (this.isDisabledCreate) {
-        this.$router.push({ name: 'ChooseStyle' })
+        this.$emit('create')
       }
     }
   }
@@ -80,72 +80,88 @@ export default {
   padding: 40px 50px 60px;
   display: flex;
   flex-direction: column;
+
   @include tablet {
     padding: 20px 20px;
   }
+
   &__title {
     width: 100%;
     text-align: center;
     font-weight: $--font-weight-semi-bold;
     font-size: $--font-size-extra-title;
+
     @include tablet {
       width: 100%;
       text-align: left;
       font-size: $--font-size-subtitle;
     }
   }
+
   &__words {
     margin: 30px 0 20px;
     display: flex;
     flex-wrap: wrap;
     width: 100%;
+
     @include tablet {
       margin-top: 0;
     }
   }
+
   &__word {
     width: calc(100% / 6);
     font-size: $--font-size-extra-small-subtitle;
     margin-top: 30px;
+
     @include tablet {
       margin-top: 20px;
       width: calc(100% / 3);
     }
+
     @include phone {
       font-size: $--font-size-medium;
     }
+
     @include small {
       font-size: $--font-size-base;
     }
   }
+
   &__label {
     display: flex;
     border-bottom: 1px solid $--black;
     margin-right: 20px;
   }
+
   &__text {
     display: block;
     height: 100%;
     width: 100%;
     border-bottom: 1px solid transparent;
   }
+
   &__field {
     width: 100%;
     margin-left: 2px;
     margin-bottom: 2px;
     outline: none;
   }
+
   &__buttons {
     margin-top: auto;
     display: flex;
     justify-content: center;
+
     @include tablet {
       flex-wrap: wrap-reverse;
     }
   }
+
   &__button {
     margin: 0 5px;
     min-width: 174px !important;
+
     @include tablet {
       width: 100%;
       margin-bottom: 10px;
