@@ -11,7 +11,15 @@
     <v-btn fab dark color="green" class="main-actions__button" height="auto" width="auto" @click="openWalletCreate">
       <v-icon>mdi-wallet</v-icon>
     </v-btn>
-    <v-btn fab dark :to="{ name: 'SecurityInfo' }" color="blue" class="main-actions__button" height="auto" width="auto">
+    <v-btn
+      fab
+      dark
+      :to="{ name: 'CreateProfile' }"
+      color="blue"
+      class="main-actions__button"
+      height="auto"
+      width="auto"
+    >
       <v-icon>mdi-account-plus</v-icon>
     </v-btn>
     <v-btn
@@ -83,42 +91,52 @@ export default {
     background: $--purple !important;
     min-width: 65px;
     min-height: 65px;
+
     @include tablet {
       min-width: 75px;
       min-height: 75px;
     }
+
     @include phone {
       min-width: 50px;
       min-height: 50px;
     }
   }
+
   &__open-icon {
     width: 26px;
     height: 26px;
   }
+
   &__button {
     min-width: 55px;
     min-height: 55px;
+
     @include tablet {
       min-width: 45px;
       min-height: 45px;
     }
+
     @include phone {
       min-width: 40px;
       min-height: 40px;
     }
+
     &--rotate {
       transform: rotate(45deg);
     }
   }
 }
+
 .v-speed-dial {
   position: absolute;
+
   @include tablet {
     position: fixed;
     bottom: 80px !important;
     z-index: 100;
     transition: 0.5s;
+
     &--wallet {
       transform: translate(100vw, 0);
     }

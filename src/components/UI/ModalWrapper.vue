@@ -101,6 +101,7 @@ export default {
   background: $--white;
   margin-right: 0;
   box-shadow: none;
+
   &--flat {
     box-shadow: none;
   }
@@ -108,6 +109,7 @@ export default {
   @include tablet {
     width: 100%;
   }
+
   &__inner {
     display: flex;
     flex-direction: column;
@@ -115,10 +117,12 @@ export default {
     padding: 45px 50px 45px 40px;
     margin: 0 0;
     min-height: calc(var(--vh, 1vh) * 100);
+
     @include phone {
       padding: 25px 20px 20px;
     }
   }
+
   &__title {
     display: flex;
     justify-content: space-between;
@@ -127,25 +131,31 @@ export default {
     width: 100%;
     font-weight: $--font-weight-semi-bold;
     font-size: $--font-size-small-subtitle;
+
     &--with-back {
       margin: 0 -12px 25px;
+
       h3 {
         display: flex;
         align-items: center;
       }
     }
   }
+
   &__footer {
     margin: auto -8px 0;
+
     @include phone {
       margin: auto -4px 0;
     }
   }
+
   &__button {
     width: calc(50% - 16px);
     margin: auto 8px 0;
+
     @include phone {
-      min-width: 0px !important;
+      min-width: 0 !important;
       width: calc(50% - 8px);
       margin: auto 4px 0;
     }
