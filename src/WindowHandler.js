@@ -1,15 +1,23 @@
 import windowsStorage from '@/windowsStorage'
 
 export default class WindowHandler {
-  static host = 'http://keys.localhost'
+  static host = process.env.VUE_APP_KEYS_URL
 
+  /**
+   *
+   * @param {string} nameFrame аттрибут имя фрейма, где должно открываться окно
+   * @param {string} additionalUrl добавочный к основному url
+   * @param {string} key ключ для сохранения в объекте всех открытых окон и возможности к легкому доступу к нему
+   * @param {} callback
+   */
   constructor(nameFrame, additionalUrl, key, callback) {
-    this.url = WindowHandler.host + additionalUrl
-    this.key = key
     this.w = window
-    this.callback = callback
-    this.frame = null
+    this.url = WindowHandler.host + additionalUrl
     this.name = nameFrame
+    this.key = key
+    this.callback = callback
+
+    this.frame = null
     this.resolve = undefined
     this.reject = undefined
     this.isOpen = false

@@ -32,7 +32,6 @@
         </swap-button>
       </div>
     </div>
-    <keys-frame name="chooseStyle" />
   </div>
 </template>
 
@@ -63,7 +62,6 @@ export default {
     currentWindowIsOpen: {
       handler(val) {
         if (val) {
-          console.error(val)
           this.getCards()
         }
       }

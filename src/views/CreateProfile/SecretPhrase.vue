@@ -5,7 +5,6 @@
       <input-secret-phrase v-else :words="words" @create="createProfile" @back="back"></input-secret-phrase>
     </div>
     <form-password v-if="formVisible" @close="reject" @submit="resolve" />
-    <keys-frame name="secretPhrase" />
   </div>
 </template>
 
