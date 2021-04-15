@@ -11,15 +11,7 @@
     <v-btn fab dark color="green" class="main-actions__button" height="auto" width="auto" @click="openWalletCreate">
       <v-icon>mdi-wallet</v-icon>
     </v-btn>
-    <v-btn
-      fab
-      dark
-      :to="{ name: 'CreateProfile' }"
-      color="blue"
-      class="main-actions__button"
-      height="auto"
-      width="auto"
-    >
+    <v-btn fab dark :to="{ name: 'SecurityInfo' }" color="blue" class="main-actions__button" height="auto" width="auto">
       <v-icon>mdi-account-plus</v-icon>
     </v-btn>
     <v-btn

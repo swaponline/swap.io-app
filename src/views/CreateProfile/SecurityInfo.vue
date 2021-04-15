@@ -32,7 +32,7 @@ export default {
   },
   methods: {
     skip() {
-      this.$router.push({ name: 'ChooseStyle' })
+      this.$router.push({ name: 'CreateProfile' })
     },
     next(id) {
       if (id < infoBlocks.length) {
@@ -63,6 +63,7 @@ export default {
   position: relative;
   overflow-x: hidden;
   overflow-y: auto;
+
   @include tablet {
     margin: 0 0;
     border-radius: 0;
