@@ -11,7 +11,6 @@ export default class WindowHandler {
    * @param {} callback
    */
   constructor(nameFrame, additionalUrl, key, callback) {
-    console.log(process.env.VUE_APP_KEYS_URL)
     this.w = window
     this.url = WindowHandler.host + additionalUrl
     this.name = nameFrame
