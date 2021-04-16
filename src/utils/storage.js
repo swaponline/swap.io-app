@@ -1,7 +1,15 @@
+export const getStorage = key => {
+  return window.localStorage.getItem(key)
+}
+
+export const setStorage = (key, data) => {
+  return window.localStorage.setItem(key, data)
+}
+
 export const setLanguage = lang => {
-  window.localStorage.setItem('lang', lang)
+  setStorage('lang', lang)
 }
 
 export const getLanguage = () => {
-  return window.localStorage.getItem('lang') || 'en'
+  return getStorage('lang') || 'en'
 }
