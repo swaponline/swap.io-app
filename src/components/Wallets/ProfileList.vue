@@ -25,6 +25,7 @@
             />
             <span>{{ account.name }}</span>
           </v-list-item>
+          <button class="profile-list__add-new-profile" @click="toSecurityInfo">+ Add profile</button>
         </v-list>
       </v-expansion-panel-content>
     </v-expansion-panel>
@@ -74,6 +75,9 @@ export default {
     },
     getSrcAvatar(name) {
       return `https://identicon-api.herokuapp.com/${name}/96?format=png`
+    },
+    toSecurityInfo() {
+      return this.$router.push({ name: 'SecurityInfo' })
     }
   }
 }
@@ -129,6 +133,13 @@ export default {
   }
   &__list-item {
     padding: 0 25px;
+    height: 80px;
+  }
+  &__add-new-profile {
+    width: 100%;
+    border-top: 1px solid #f6f6f6;
+    padding: 16px 32px 15px 25px;
+    color: #101010;
   }
   &__name {
     font-weight: $--font-weight-medium;

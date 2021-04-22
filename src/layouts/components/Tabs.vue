@@ -21,12 +21,12 @@ export default {
           id: 2,
           label: 'Swap',
           to: { name: 'Swap' }
-        },
-        {
-          id: 3,
-          label: 'Frame',
-          to: { name: 'Frame' }
         }
+        // {
+        //   id: 3,
+        //   label: 'Frame',
+        //   to: { name: 'Frame' }
+        // }
         // {
         //   id: 4,
         //   label: 'Settings',

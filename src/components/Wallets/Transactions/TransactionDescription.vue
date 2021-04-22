@@ -1,25 +1,39 @@
 <template>
-  <form class="transaction-description" @submit.prevent="inputShow = false">
-    <input
-      v-show="inputShow"
-      ref="input"
-      :value="value"
-      type="text"
-      class="transaction-description__input"
-      @keyup.space.prevent
-      @click.stop
-      @blur="inputShow = false"
-      @input="$emit('input', $event.target.value)"
-    />
-    <button v-show="!inputShow" type="button" class="transaction-description__button-show" @click.stop="showInput">
-      <span>{{ value }}<svg-icon class="transaction-description__edit-icon" name="edit"></svg-icon></span>
-    </button>
-  </form>
+  <match-media v-slot="{ phone }">
+    <form class="transaction-description" @submit.prevent="inputShow = false">
+      <input
+        v-show="inputShow"
+        ref="input"
+        :value="value"
+        type="text"
+        class="transaction-description__input"
+        @keyup.space.prevent
+        @click.stop
+        @blur="inputShow = false"
+        @input="$emit('input', $event.target.value)"
+      />
+      <button
+        v-show="!inputShow"
+        type="button"
+        class="transaction-description__button-show"
+        @click.stop="() => !phone && showInput()"
+      >
+        <span
+          >{{ value }}<svg-icon v-if="!phone" class="transaction-description__edit-icon" name="edit"></svg-icon
+        ></span>
+      </button>
+    </form>
+  </match-media>
 </template>
 
 <script>
+import { MatchMedia } from 'vue-component-media-queries'
+
 export default {
   name: 'TransactionDescription',
+  components: {
+    MatchMedia
+  },
   props: {
     value: {
       type: String,
