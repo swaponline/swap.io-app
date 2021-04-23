@@ -26,7 +26,9 @@
         >Complementary text
       </span>
       <div class="choose-style__buttons">
-        <swap-button class="choose-style__button" @click="goToSecretPhrase">Create</swap-button>
+        <swap-button class="choose-style__button" :disabled="disabledCreateProfile" @click="goToSecretPhrase"
+          >Create</swap-button
+        >
         <swap-button class="choose-style__button choose-style__button--text" :depressed="false" text @click="getCards">
           Refresh colors
         </swap-button>
@@ -56,6 +58,9 @@ export default {
   computed: {
     currentWindowIsOpen() {
       return this.currentWindow.isOpen
+    },
+    disabledCreateProfile() {
+      return !this.selectGradient.wordList.length
     }
   },
   watch: {

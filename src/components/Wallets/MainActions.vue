@@ -8,34 +8,78 @@
         <svg-icon v-else name="plus" class="main-actions__open-icon" />
       </v-btn>
     </template>
-    <v-btn fab dark color="green" class="main-actions__button" height="auto" width="auto" @click="openWalletCreate">
-      <v-icon>mdi-wallet</v-icon>
-    </v-btn>
-    <v-btn fab dark :to="{ name: 'SecurityInfo' }" color="blue" class="main-actions__button" height="auto" width="auto">
-      <v-icon>mdi-account-plus</v-icon>
-    </v-btn>
-    <v-btn
-      fab
-      dark
-      color="indigo"
-      class="main-actions__button main-actions__button--rotate"
-      height="auto"
-      width="auto"
-      @click="openInvoiceBlock"
-    >
-      <v-icon>mdi-arrow-down-circle</v-icon>
-    </v-btn>
-    <v-btn
-      fab
-      dark
-      color="indigo"
-      class="main-actions__button main-actions__button--rotate"
-      height="auto"
-      width="auto"
-      @click="openSendForm"
-    >
-      <v-icon>mdi-arrow-up-circle</v-icon>
-    </v-btn>
+    <v-tooltip right>
+      <template #activator="{ on, attrs }">
+        <v-btn
+          fab
+          dark
+          color="green"
+          class="main-actions__button"
+          height="auto"
+          width="auto"
+          v-bind="attrs"
+          @click="openWalletCreate"
+          v-on="on"
+        >
+          <v-icon>mdi-wallet</v-icon>
+        </v-btn>
+      </template>
+      <span>New address</span>
+    </v-tooltip>
+    <v-tooltip right>
+      <template #activator="{ on, attrs }">
+        <v-btn
+          fab
+          dark
+          :to="{ name: 'SecurityInfo' }"
+          color="blue"
+          class="main-actions__button"
+          height="auto"
+          width="auto"
+          v-bind="attrs"
+          v-on="on"
+        >
+          <v-icon>mdi-account-plus</v-icon>
+        </v-btn>
+      </template>
+      <span>New profile</span>
+    </v-tooltip>
+    <v-tooltip right>
+      <template #activator="{ on, attrs }">
+        <v-btn
+          fab
+          dark
+          color="indigo"
+          class="main-actions__button main-actions__button--rotate"
+          height="auto"
+          width="auto"
+          v-bind="attrs"
+          v-on="on"
+          @click="openInvoiceBlock"
+        >
+          <v-icon>mdi-arrow-down-circle</v-icon>
+        </v-btn>
+      </template>
+      <span>Receive</span>
+    </v-tooltip>
+    <v-tooltip right>
+      <template #activator="{ on, attrs }">
+        <v-btn
+          fab
+          dark
+          color="indigo"
+          class="main-actions__button main-actions__button--rotate"
+          height="auto"
+          width="auto"
+          v-bind="attrs"
+          v-on="on"
+          @click="openSendForm"
+        >
+          <v-icon>mdi-arrow-up-circle</v-icon>
+        </v-btn>
+      </template>
+      <span>Send</span>
+    </v-tooltip>
   </v-speed-dial>
 </template>
 

@@ -126,11 +126,15 @@ export default {
   &__title {
     display: flex;
     justify-content: space-between;
-    align-items: center;
     margin-bottom: 25px;
     width: 100%;
     font-weight: $--font-weight-semi-bold;
     font-size: $--font-size-small-subtitle;
+
+    & > span {
+      display: flex;
+      align-items: center;
+    }
 
     &--with-back {
       margin: 0 -12px 25px;

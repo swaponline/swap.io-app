@@ -2,7 +2,7 @@
   <div class="main-header">
     <router-link :to="{ name: 'Wallet' }" class="main-header__logo">
       <svg-icon class="main-header__logo-icon" name="logo" />
-      <h2 class="main-header__logo-text">Swap</h2>
+      <h2 class="main-header__logo-text">Swap.io</h2>
     </router-link>
     <match-media v-slot="{ desktop }" class="d-flex flex-grow-1">
       <main-header-tabs v-if="desktop" class="main-header__tabs"></main-header-tabs>
