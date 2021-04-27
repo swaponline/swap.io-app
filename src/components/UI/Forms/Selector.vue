@@ -11,7 +11,7 @@ export default {
 
 <style lang="scss">
 .form-selector {
-  border-radius: $--border-radius-8;
+  border-radius: $--main-border-radius;
   border: 1px solid $--black;
   color: $--blue !important;
   margin-bottom: 25px !important;

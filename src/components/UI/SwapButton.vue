@@ -15,7 +15,7 @@ export default {
 .swap-button {
   min-height: 52px;
   min-width: 142px !important;
-  border-radius: $--border-radius-8;
+  border-radius: $--main-border-radius;
   text-transform: none;
 
   --text-color: $--black;

@@ -91,7 +91,7 @@ export default {
     font-weight: $--font-weight-semi-bold;
     color: $--black;
     font-size: $--font-size-button;
-    border-radius: $--border-radius-8;
+    border-radius: $--main-border-radius;
 
     &--text {
       color: $--dark-grey;

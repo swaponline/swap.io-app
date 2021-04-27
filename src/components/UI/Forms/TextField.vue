@@ -24,7 +24,7 @@ export default {
 <style lang="scss">
 .form-text-field {
   border: 1px solid $--black;
-  border-radius: $--border-radius-8;
+  border-radius: $--main-border-radius;
   display: flex;
   align-items: center;
   min-height: 52px;

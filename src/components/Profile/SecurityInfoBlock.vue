@@ -150,7 +150,7 @@ export default {
     max-width: 174px;
     min-height: 48px;
     font-weight: $--font-weight-semi-bold;
-    border-radius: $--border-radius-8;
+    border-radius: $--main-border-radius;
     span {
       font-size: $--font-size-extra-small-subtitle;
     }
