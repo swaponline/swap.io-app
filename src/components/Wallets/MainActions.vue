@@ -31,7 +31,7 @@
         <v-btn
           fab
           dark
-          :to="{ name: 'SecurityInfo' }"
+          :to="{ name: 'CreateOrRecover' }"
           color="blue"
           class="main-actions__button"
           height="auto"

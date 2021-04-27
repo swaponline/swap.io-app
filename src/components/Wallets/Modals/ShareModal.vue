@@ -165,7 +165,7 @@ export default {
   }
   &__button {
     width: calc(50% - 16px);
-    border-radius: 8px;
+    border-radius: $--border-radius-8;
     margin: auto 8px;
     min-height: 52px;
     text-transform: none;

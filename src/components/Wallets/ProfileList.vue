@@ -2,8 +2,14 @@
   <v-expansion-panels v-model="panels" class="profile-list">
     <v-expansion-panel class="profile-list__inner">
       <v-expansion-panel-header class="profile-list__header" :hide-actions="isDesktop">
-        <v-avatar height="50" width="50" min-width="50" class="profile-list__avatar">
-          <img height="45" width="45" :src="getSrcAvatar(currentAccountName)" alt="avatar" />
+        <v-avatar height="50" width="50" min-width="50" class="profile-list__avatar-wrapper">
+          <img
+            height="45"
+            width="45"
+            class="profile-list__avatar"
+            :src="getSrcAvatar(currentAccountName)"
+            alt="avatar"
+          />
         </v-avatar>
         <span class="profile-list__name">{{ currentAccountName }}</span>
       </v-expansion-panel-header>
@@ -15,14 +21,16 @@
             class="profile-list__list-item"
             @click="setAccount(account.id)"
           >
-            <img
-              height="48"
-              width="48"
-              class="profile-list__avatar-item"
-              :src="getSrcAvatar(account.name)"
-              alt="avatar-item"
-              loading="lazy"
-            />
+            <v-avatar height="50" width="50" min-width="50" class="profile-list__avatar-wrapper">
+              <img
+                height="45"
+                width="45"
+                class="profile-list__avatar-item"
+                :src="getSrcAvatar(account.name)"
+                alt="avatar-item"
+                loading="lazy"
+              />
+            </v-avatar>
             <span>{{ account.name }}</span>
           </v-list-item>
           <button class="profile-list__add-new-profile" @click="toSecurityInfo">+ Add profile</button>
@@ -122,11 +130,10 @@ export default {
       min-height: 70px !important;
     }
   }
-  &__avatar {
+  &__avatar-wrapper {
     margin-right: 12px;
     flex: 0 !important;
-    height: 50px;
-    width: 50px;
+    border-radius: 50% !important;
   }
   &__list-account {
     margin: 0 -24px -6px;
@@ -144,10 +151,6 @@ export default {
   &__name {
     font-weight: $--font-weight-medium;
     font-size: $--font-size-extra-small-subtitle;
-  }
-  &__avatar-item {
-    border-radius: 50%;
-    margin-right: 12px;
   }
 }
 </style>

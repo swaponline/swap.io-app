@@ -7,7 +7,9 @@
       </v-btn>
     </header>
     <div class="show-secret-phrase__words">
-      <span v-for="(word, i) in words" :key="word + i" class="show-secret-phrase__word"> {{ i + 1 }}. {{ word }} </span>
+      <span v-for="(word, index) in words" :key="word + index" class="show-secret-phrase__word">
+        {{ index + 1 }}. {{ word }}
+      </span>
     </div>
     <div class="show-secret-phrase__buttons">
       <swap-button class="show-secret-phrase__button show-secret-phrase__button--hide-tablet" @click="back">
