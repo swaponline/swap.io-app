@@ -151,7 +151,7 @@ export default {
   }
   fieldset {
     border-color: $--black;
-    border-radius: 8px;
+    border-radius: $--main-border-radius;
     & + div {
       min-height: 52px;
       @include small {
@@ -211,7 +211,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-radius: 8px;
+    border-radius: $--main-border-radius;
     outline: none;
     border: 1px solid $--black;
     font-size: $--font-size-medium;

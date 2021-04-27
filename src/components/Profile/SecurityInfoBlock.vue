@@ -20,7 +20,10 @@
       ></span>
     </span>
     <div class="security-info-block__buttons">
-      <v-btn depressed class="security-info-block__button" @click="$emit('back')">Back</v-btn>
+      <v-btn v-if="id === $options.FIRST_BLOCK" depressed class="security-info-block__button" @click="$emit('cancel')"
+        >Cancel</v-btn
+      >
+      <v-btn v-else depressed class="security-info-block__button" @click="$emit('back')">Back</v-btn>
       <v-btn depressed class="security-info-block__button" @click="$emit('next')">{{ nameButton }}</v-btn>
     </div>
     <span class="security-info-block__pagination">{{ id }}/3</span>
@@ -29,7 +32,10 @@
 </template>
 
 <script>
+const FIRST_BLOCK = 1
+
 export default {
+  FIRST_BLOCK,
   name: 'SecurityInfoBlock',
   props: {
     text: {
@@ -144,7 +150,7 @@ export default {
     max-width: 174px;
     min-height: 48px;
     font-weight: $--font-weight-semi-bold;
-    border-radius: 8px;
+    border-radius: $--main-border-radius;
     span {
       font-size: $--font-size-extra-small-subtitle;
     }

@@ -6,6 +6,7 @@
       :key="infoBlock.id"
       v-bind="infoBlock"
       :name-button="infoBlock.id === infoBlocks.length ? 'Create' : 'Next'"
+      @cancel="cancel"
       @next="next(infoBlock.id)"
       @back="back(infoBlock.id)"
       @skip="skip"
@@ -15,7 +16,6 @@
 </template>
 
 <script>
-// component
 import SecurityInfoBlock from '@/components/Profile/SecurityInfoBlock.vue'
 import infoBlocks from './infoBlocks'
 
@@ -45,6 +45,9 @@ export default {
       if (id > 1) {
         this.currentBlock = id - 1
       }
+    },
+    cancel() {
+      this.$router.push({ name: 'Wallets' })
     }
   }
 }
