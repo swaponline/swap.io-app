@@ -55,8 +55,11 @@ import { mapMutations } from 'vuex'
 
 import TransactionDescription from './TransactionDescription.vue'
 
+const NUMBER_REMAINING_CHARACTERS = 4
+
 export default {
   name: 'ItemTransaction',
+  inject: ['mediaQueries'],
   components: {
     TransactionDescription
   },
@@ -155,10 +158,25 @@ export default {
     },
     valueInUsd() {
       return ((this.value / 10 ** this.decimal) * this.rateValue).toFixed(2)
+    },
+    isMobile() {
+      return this.mediaQueries.phone
     }
   },
-  mounted() {
-    this.comment = this.description || this.isReceived ? `From: ${this.from}` : `To: ${this.to}`
+  watch: {
+    isMobile: {
+      immediate: true,
+      handler(newValue) {
+        if (newValue) {
+          this.comment =
+            this.description || this.isReceived
+              ? `From: ${this.shortString(this.from)}`
+              : `To: ${this.shortString(this.to)}`
+        } else {
+          this.comment = this.description || this.isReceived ? `From: ${this.from}` : `To: ${this.to}`
+        }
+      }
+    }
   },
   methods: {
     ...mapMutations({
@@ -178,6 +196,10 @@ export default {
           journal: this.journal
         }
       })
+    },
+    shortString(string) {
+      const initialNumber = string.split('').length - NUMBER_REMAINING_CHARACTERS
+      return `***${string.slice(initialNumber)}`
     }
   }
 }
