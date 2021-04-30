@@ -177,5 +177,14 @@ export default {
       transform: translate(100vw, 0);
     }
   }
+
+  @include phone {
+    bottom: 26px !important;
+
+    &--left {
+      left: 50%;
+      transform: translate(-50%);
+    }
+  }
 }
 </style>

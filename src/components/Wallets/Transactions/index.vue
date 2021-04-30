@@ -144,6 +144,9 @@ export default {
         max-height: calc(var(--vh, 1vh) * 100 - 385px);
       }
       @include phone {
+        max-height: calc(var(--vh, 1vh) * 100 - 230px);
+      }
+      @include small {
         max-height: calc(var(--vh, 1vh) * 100 - 216px);
       }
     }
