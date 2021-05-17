@@ -12,6 +12,7 @@
   "dependencies": {
     "axios": "^0.21.0",
     "core-js": "^3.6.5",
+    "js-base64": "^3.6.0",
     "normalize.css": "^8.0.1",
     "vue": "^2.6.11",
     "vue-component-media-queries": "^1.0.0",
