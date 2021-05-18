@@ -9,7 +9,6 @@
 <script>
 import { MediaQueryProvider } from 'vue-component-media-queries'
 import { MODULE_NAME as PROFILE_MODULE } from '@/store/modules/Profile'
-import { Base64 } from 'js-base64'
 import messageHandler from './messageHandler'
 
 const queries = {
@@ -33,8 +32,7 @@ export default {
       return this.$store.state[PROFILE_MODULE].model
     },
     background() {
-      const svgBase64 = Base64.encode(this.model.background)
-      return `url("data:image/svg+xml;base64,${svgBase64}")`
+      return this.model.background
     },
     color() {
       return this.model.color
