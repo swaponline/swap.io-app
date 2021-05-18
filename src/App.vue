@@ -9,6 +9,7 @@
 <script>
 import { MediaQueryProvider } from 'vue-component-media-queries'
 import { MODULE_NAME as PROFILE_MODULE } from '@/store/modules/Profile'
+import { Base64 } from 'js-base64'
 import messageHandler from './messageHandler'
 
 const queries = {
@@ -32,7 +33,8 @@ export default {
       return this.$store.state[PROFILE_MODULE].model
     },
     background() {
-      return this.model.background
+      const svgBase64 = Base64.encode(this.model.background)
+      return `url("data:image/svg+xml;base64,${svgBase64}")`
     },
     color() {
       return this.model.color
@@ -42,7 +44,7 @@ export default {
     background: {
       immediate: true,
       handler(val) {
-        document.documentElement.style.setProperty('--background-app', `linear-gradient(${val})`)
+        document.documentElement.style.setProperty('--background-app', val)
       }
     },
     color: {
@@ -88,14 +90,15 @@ export default {
   overflow: hidden;
 
   &::before {
-    background: var(--background-app);
+    background-image: var(--background-app);
+    background-size: 100% 100%;
     position: absolute;
     left: -5%;
     top: -5%;
     content: '';
     height: 110%;
     width: 110%;
-    filter: blur(10px);
+    opacity: 0.85;
   }
 
   @include small-height {
