@@ -2,7 +2,7 @@ import windowsStorage from './windowsStorage'
 
 export default () => {
   window.addEventListener('message', event => {
-    if (event.origin !== 'http://keys.localhost') return
+    if (event.origin !== process.env.VUE_APP_KEYS_URL) return
     if (event.data && event.data.key) {
       if (event.data.key === 'createWindow') {
         const currentWindow = windowsStorage[windowsStorage.lastWindowOpen]
