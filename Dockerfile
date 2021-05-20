@@ -3,6 +3,7 @@ ARG NODE_VERSION=14.7.0
 
 FROM node:${NODE_VERSION} AS build-stage
 
+#ENV NODE_ENV production
 RUN mkdir -p /app
 WORKDIR /app
 
@@ -11,7 +12,7 @@ RUN npm install
 RUN npm rebuild node-sass
 
 COPY . .
-RUN npm run build
+RUN npm run build-prod
 
 # production stage
 FROM nginx:stable-alpine as production-stage
