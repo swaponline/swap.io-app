@@ -124,7 +124,7 @@ export default {
 <style lang="scss">
 .main-actions {
   &__open-button {
-    background: $--purple !important;
+    background: var(--main-color) !important;
     min-width: 65px;
     min-height: 65px;
 

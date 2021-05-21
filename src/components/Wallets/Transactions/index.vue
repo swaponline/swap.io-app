@@ -6,7 +6,7 @@
       class="transactions__tabs"
       background-color="transparent"
       fixed-tabs
-      slider-color="#101010"
+      slider-color="var(--main-color)"
       slider-size="2"
     >
       <v-tab v-for="tab in tabs" :key="tab" class="transactions__tab">{{ tab }}</v-tab>
