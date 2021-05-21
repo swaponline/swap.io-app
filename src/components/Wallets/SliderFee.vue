@@ -139,7 +139,7 @@ export default {
     justify-content: center;
     align-items: center;
     border-radius: 50%;
-    background: $--purple;
+    background: var(--main-color);
   }
   &__field {
     margin: 0 0;

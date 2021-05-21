@@ -86,7 +86,7 @@ export default {
   &__header {
     padding: 0 0;
     min-height: 0 !important;
-    color: $--purple;
+    color: var(--main-color);
     font-weight: $--font-weight-semi-bold;
     font-size: $--font-size-medium;
     border: none;
@@ -94,7 +94,7 @@ export default {
       opacity: 0 !important;
     }
     .v-icon {
-      color: $--purple !important;
+      color: var(--main-color) !important;
     }
   }
   &__header-content {
@@ -116,7 +116,7 @@ export default {
     background: $--light-grey;
     color: $--dark-grey;
     &--select {
-      color: $--purple;
+      color: var(--main-color);
     }
   }
   &__content {

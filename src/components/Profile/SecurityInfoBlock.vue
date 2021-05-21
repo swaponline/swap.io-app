@@ -130,9 +130,9 @@ export default {
     width: 10px;
     border-radius: 50%;
     margin: 0 5px;
-    border: 1px solid $--purple;
+    border: 1px solid var(--main-color);
     &--fill {
-      background: $--purple;
+      background: var(--main-color);
     }
   }
   &__buttons {

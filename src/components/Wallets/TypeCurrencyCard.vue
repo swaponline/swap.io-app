@@ -45,11 +45,11 @@ export default {
   }
   &--selected {
     padding: 9px 9px;
-    border: 2px solid $--purple;
+    border: 2px solid var(--main-color);
   }
   &:focus-within {
     padding: 9px 9px;
-    border: 2px solid $--purple;
+    border: 2px solid var(--main-color);
   }
   &__icon {
     height: 40px;

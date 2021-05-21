@@ -229,7 +229,7 @@ export default {
     }
     span {
       letter-spacing: 0.01em;
-      color: $--purple;
+      color: var(--main-color);
       font-size: $--font-size-medium;
     }
   }

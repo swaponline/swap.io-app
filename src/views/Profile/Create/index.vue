@@ -8,6 +8,8 @@
 import WindowHandler from '@/WindowHandler'
 import { mapActions } from 'vuex'
 import { SET_USERS_COLORS } from '@/store/modules/Profile'
+import { LOADING, SET_BACKGROUND, REDIRECT_TO_HOME } from '@/constants/createProfile'
+import { CREATE_PROFILE } from '@/constants/windowKey'
 
 export default {
   name: 'CreateProfile',
@@ -24,11 +26,24 @@ export default {
       actionSetBackground: SET_USERS_COLORS
     }),
     openFrame() {
-      this.frame = new WindowHandler('createProfile', '/choose-style', 'CreateProfile', event => {
-        this.actionSetBackground({
-          background: event.selectGradient.background,
-          color: event.selectGradient.color
-        })
+      this.frame = new WindowHandler('createProfile', '/choose-style', CREATE_PROFILE, event => {
+        switch (event.data.type) {
+          case LOADING:
+            // ! implementation will appear in the future
+            break
+          case SET_BACKGROUND:
+            this.actionSetBackground({
+              background: event.data.selectGradient.background,
+              color: event.data.selectGradient.color
+            })
+            break
+          case REDIRECT_TO_HOME:
+            this.$router.push({ name: 'Wallets' })
+            break
+          default: {
+            // ! implementation will appear in the future
+          }
+        }
       })
     }
   }
