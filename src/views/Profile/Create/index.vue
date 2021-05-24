@@ -1,10 +1,15 @@
 <template>
   <div class="create-profile">
+    <substrate v-if="loading">
+      <v-loader :active="loading"></v-loader>
+    </substrate>
     <iframe class="create-profile__frame" name="createProfile" frameborder="0" />
   </div>
 </template>
 
 <script>
+import Substrate from '@/views/Profile/Substrate.vue'
+import VLoader from '@/components/Loaders/VLoader.vue'
 import WindowHandler from '@/WindowHandler'
 import { mapActions } from 'vuex'
 import { SET_USERS_COLORS } from '@/store/modules/Profile'
@@ -13,8 +18,13 @@ import { CREATE_PROFILE } from '@/constants/windowKey'
 
 export default {
   name: 'CreateProfile',
+  components: {
+    Substrate,
+    VLoader
+  },
   data() {
     return {
+      loading: false,
       frame: null
     }
   },
@@ -26,15 +36,17 @@ export default {
       actionSetBackground: SET_USERS_COLORS
     }),
     openFrame() {
+      this.loading = true
       this.frame = new WindowHandler('createProfile', '/choose-style', CREATE_PROFILE, event => {
-        switch (event.data.type) {
+        const { data } = event
+        switch (data.type) {
           case LOADING:
-            // ! implementation will appear in the future
+            this.loading = data.loading
             break
           case SET_BACKGROUND:
             this.actionSetBackground({
-              background: event.data.selectGradient.background,
-              color: event.data.selectGradient.color
+              background: data.selectGradient.background,
+              color: data.selectGradient.color
             })
             break
           case REDIRECT_TO_HOME:
@@ -42,6 +54,7 @@ export default {
             break
           default: {
             // ! implementation will appear in the future
+            this.loading = false
           }
         }
       })
@@ -58,6 +71,10 @@ export default {
   flex-grow: 1;
   border-radius: 12px;
   position: relative;
+
+  &__stub {
+    min-height: 555px;
+  }
 
   &__frame {
     width: 100%;

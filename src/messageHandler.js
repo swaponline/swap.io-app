@@ -2,8 +2,6 @@ import windowsStorage from './windowsStorage'
 
 export default () => {
   window.addEventListener('message', event => {
-    console.log(event)
-    console.log('event.origin -', event.origin, 'process.env.VUE_APP_KEYS_URL -', process.env.VUE_APP_KEYS_URL)
     if (event.origin !== process.env.VUE_APP_KEYS_URL) return
     if (event.data && event.data.key) {
       if (event.data.key === 'createWindow') {

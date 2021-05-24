@@ -1,20 +1,30 @@
 <template>
   <div class="recover-profile">
+    <substrate v-if="loading">
+      <v-loader :active="loading"></v-loader>
+    </substrate>
     <iframe class="recover-profile__frame" name="recoverProfile" frameborder="0" />
   </div>
 </template>
 
 <script>
+import Substrate from '@/views/Profile/Substrate.vue'
 import WindowHandler from '@/WindowHandler'
-import { REDIRECT_TO_HOME, SET_BACKGROUND } from '@/constants/recoverProfile'
+import { REDIRECT_TO_HOME, SET_BACKGROUND, LOADING } from '@/constants/recoverProfile'
 import { mapActions } from 'vuex'
 import { SET_USERS_COLORS } from '@/store/modules/Profile'
 import { RECOVER_PROFILE } from '@/constants/windowKey'
+import VLoader from '@/components/Loaders/VLoader.vue'
 
 export default {
   name: 'RecoverProfile',
+  components: {
+    Substrate,
+    VLoader
+  },
   data() {
     return {
+      loading: false,
       frame: null
     }
   },
@@ -26,19 +36,25 @@ export default {
       actionSetBackground: SET_USERS_COLORS
     }),
     openFrame() {
+      this.loading = true
       this.frame = new WindowHandler('recoverProfile', '/secret-phrase', RECOVER_PROFILE, event => {
+        const { data } = event
         switch (event.data.type) {
+          case LOADING:
+            this.loading = data.loading
+            break
           case REDIRECT_TO_HOME:
             this.$router.push({ name: 'Wallets' })
             break
           case SET_BACKGROUND:
             this.actionSetBackground({
-              background: event.data.selectGradient.background,
-              color: event.data.selectGradient.color
+              background: data.selectGradient.background,
+              color: data.selectGradient.color
             })
             break
           default: {
             // ! implementation will appear in the future
+            this.loading = false
           }
         }
       })
