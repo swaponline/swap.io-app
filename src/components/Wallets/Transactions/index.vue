@@ -13,9 +13,8 @@
     </v-tabs>
     <div class="transactions__horizontal-line"></div>
 
-    <transaction-loader v-if="loadingTransaction"></transaction-loader>
-
-    <v-tabs-items v-else v-model="activeTab">
+    <v-loader :active="loading"></v-loader>
+    <v-tabs-items v-model="activeTab">
       <v-tab-item v-for="tab in tabs" :key="tab">
         <transaction-list
           ref="transaction"
@@ -34,16 +33,16 @@
 
 <script>
 import { mapActions } from 'vuex'
-import TransactionLoader from '@/components/TransactionLoader.vue'
 
 import { GET_TRANSACTIONS, MODULE_NAME as TRANSACTIONS_MODULE } from '@/store/modules/Transactions'
+import VLoader from '@/components/Loaders/VLoader.vue'
 import TransactionList from './List.vue'
 
 export default {
   name: 'Transactions',
   components: {
     TransactionList,
-    TransactionLoader
+    VLoader
   },
   props: {
     isCompressedWallet: {
@@ -67,7 +66,7 @@ export default {
     siblingList() {
       return this.$store.getters.siblingList
     },
-    loadingTransaction() {
+    loading() {
       return this.$store.state[TRANSACTIONS_MODULE].loading
     },
     currentWallet() {

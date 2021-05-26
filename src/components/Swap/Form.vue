@@ -25,8 +25,10 @@
       </button>
     </div>
     <span class="swap-form__hint">{{ fromHintValue }}</span>
+
     <div class="swap-form__row mt-0">
-      <v-btn class="swap-form__swap-button" icon height="auto" min-height="none" @click="swapWallet">
+      <v-loader :active="loading" width="70px" height="70px"></v-loader>
+      <v-btn v-if="!loading" class="swap-form__swap-button" icon height="auto" min-height="none" @click="swapWallet">
         <svg-icon class="swap-form__icon" name="swap" />
       </v-btn>
     </div>
@@ -74,8 +76,13 @@
 </template>
 
 <script>
+import VLoader from '@/components/Loaders/VLoader.vue'
+
 export default {
   name: 'SwapForm',
+  components: {
+    VLoader
+  },
   props: {
     isOpenToList: {
       type: Boolean,
@@ -96,6 +103,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       to: { address: '', currency: 'BTC' },
       from: { address: '', currency: 'BTC' }
     }
@@ -120,6 +128,10 @@ export default {
   },
   methods: {
     swapWallet() {
+      this.loading = true
+      setTimeout(() => {
+        this.loading = false
+      }, 2000)
       const wrap = { ...this.to }
       this.to = { ...this.from }
       this.from = { ...wrap }

@@ -82,7 +82,7 @@ import ModalWrapper from '@/components/UI/ModalWrapper.vue'
 import FormIndent from '@/components/UI/Forms/Indent.vue'
 import SliderFee from '@/components/Wallets/SliderFee.vue'
 import ShowMoreDetails from '@/components/Wallets/ShowMoreDetails.vue'
-import PendingLoader from '@/components/Loader.vue'
+import PendingLoader from '@/components/Loaders/VLoaderDots.vue'
 
 export default {
   name: 'TransactionDetails',

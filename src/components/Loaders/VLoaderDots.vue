@@ -1,5 +1,5 @@
 <template>
-  <div class="loader">
+  <div class="loader-dots">
     <span></span>
     <span></span>
     <span></span>
@@ -8,12 +8,12 @@
 
 <script>
 export default {
-  name: 'Loader'
+  name: 'VLoaderDots'
 }
 </script>
 
 <style lang="scss">
-.loader {
+.loader-dots {
   display: inline-flex;
   span {
     height: 10px;
