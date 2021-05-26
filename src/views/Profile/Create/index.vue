@@ -7,8 +7,8 @@
 <script>
 import WindowHandler from '@/WindowHandler'
 import { mapActions } from 'vuex'
-import { SET_USERS_COLORS } from '@/store/modules/Profile'
-import { LOADING, SET_BACKGROUND, REDIRECT_TO_HOME } from '@/constants/createProfile'
+import { SET_USERS_COLORS, CREATING_OR_RECOVERING_PROFILE } from '@/store/modules/Profile'
+import { INIT_IFRAME, SET_BACKGROUND, REDIRECT_TO_HOME } from '@/constants/createProfile'
 import { CREATE_PROFILE } from '@/constants/windowKey'
 
 export default {
@@ -28,8 +28,8 @@ export default {
     openFrame() {
       this.frame = new WindowHandler('createProfile', '/choose-style', CREATE_PROFILE, event => {
         switch (event.data.type) {
-          case LOADING:
-            // ! implementation will appear in the future
+          case INIT_IFRAME:
+            this.$store.dispatch(CREATING_OR_RECOVERING_PROFILE, true)
             break
           case SET_BACKGROUND:
             this.actionSetBackground({
@@ -38,6 +38,7 @@ export default {
             })
             break
           case REDIRECT_TO_HOME:
+            this.$store.dispatch(CREATING_OR_RECOVERING_PROFILE, false)
             this.$router.push({ name: 'Wallets' })
             break
           default: {
