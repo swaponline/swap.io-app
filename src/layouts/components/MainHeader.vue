@@ -1,12 +1,16 @@
 <template>
   <div class="main-header">
-    <router-link :to="{ name: 'Wallet' }" class="main-header__logo">
+    <div v-if="isCreatingOrRecoveringProfile" class="main-header__logo">
+      <svg-icon class="main-header__logo-icon" name="logo" />
+      <h2 class="main-header__logo-text">Swap.io</h2>
+    </div>
+    <router-link v-else :to="{ name: 'Wallet' }" class="main-header__logo">
       <svg-icon class="main-header__logo-icon" name="logo" />
       <h2 class="main-header__logo-text">Swap.io</h2>
     </router-link>
     <match-media v-slot="{ desktop }" class="d-flex flex-grow-1">
       <main-header-tabs v-if="desktop" class="main-header__tabs"></main-header-tabs>
-      <div v-if="desktop" class="main-header__profile">
+      <div v-if="desktop && !isCreatingOrRecoveringProfile" class="main-header__profile">
         <profile-list></profile-list>
       </div>
     </match-media>
@@ -16,6 +20,7 @@
 <script>
 import { MatchMedia } from 'vue-component-media-queries'
 import ProfileList from '@/components/Wallets/ProfileList.vue'
+import { MODULE_PROFILE, IS_CREATING_OR_RECOVERING } from '@/store/modules/Profile'
 import MainHeaderTabs from './Tabs.vue'
 
 export default {
@@ -26,6 +31,9 @@ export default {
     MatchMedia
   },
   computed: {
+    isCreatingOrRecoveringProfile() {
+      return this.$store.state[MODULE_PROFILE][IS_CREATING_OR_RECOVERING]
+    },
     currentAccount() {
       return this.$store.getters.currentAccount
     },

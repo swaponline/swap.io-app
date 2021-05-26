@@ -1,12 +1,14 @@
 <template>
-  <v-tabs fixed-tabs height="auto" color="#000000" slider-color="var(--main-color)" slider-size="4" class="tabs">
-    <v-tab v-for="tab in tabs" :key="tab.id" :to="tab.to" class="tabs__item">
+  <v-tabs fixed-tabs height="auto" color="#000000" :slider-color="sliderColor" slider-size="4" class="tabs">
+    <v-tab v-for="tab in tabs" :key="tab.id" :disabled="isCreatingOrRecoveringProfile" :to="tab.to" class="tabs__item">
       {{ tab.label }}
     </v-tab>
   </v-tabs>
 </template>
 
 <script>
+import { MODULE_PROFILE, IS_CREATING_OR_RECOVERING } from '@/store/modules/Profile'
+
 export default {
   name: 'Tabs',
   data() {
@@ -33,6 +35,14 @@ export default {
         //   to: { name: 'Settings' }
         // }
       ]
+    }
+  },
+  computed: {
+    isCreatingOrRecoveringProfile() {
+      return this.$store.state[MODULE_PROFILE][IS_CREATING_OR_RECOVERING]
+    },
+    sliderColor() {
+      return this.isCreatingOrRecoveringProfile ? 'transparent' : 'var(--main-color)'
     }
   }
 }

@@ -12,7 +12,7 @@ import Substrate from '@/views/Profile/Substrate.vue'
 import WindowHandler from '@/WindowHandler'
 import { REDIRECT_TO_HOME, SET_BACKGROUND, INIT_IFRAME } from '@/constants/recoverProfile'
 import { mapActions } from 'vuex'
-import { SET_USERS_COLORS } from '@/store/modules/Profile'
+import { SET_USERS_COLORS, CREATING_OR_RECOVERING_PROFILE } from '@/store/modules/Profile'
 import { RECOVER_PROFILE } from '@/constants/windowKey'
 import VLoader from '@/components/Loaders/VLoader.vue'
 
@@ -42,8 +42,10 @@ export default {
         switch (message.type) {
           case INIT_IFRAME:
             this.loading = message.loading
+            this.$store.dispatch(CREATING_OR_RECOVERING_PROFILE, true)
             break
           case REDIRECT_TO_HOME:
+            this.$store.dispatch(CREATING_OR_RECOVERING_PROFILE, false)
             this.$router.push({ name: 'Wallets' })
             break
           case SET_BACKGROUND:
