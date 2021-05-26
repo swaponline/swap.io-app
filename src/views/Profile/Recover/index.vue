@@ -10,7 +10,7 @@
 <script>
 import Substrate from '@/views/Profile/Substrate.vue'
 import WindowHandler from '@/WindowHandler'
-import { REDIRECT_TO_HOME, SET_BACKGROUND, LOADING } from '@/constants/recoverProfile'
+import { REDIRECT_TO_HOME, SET_BACKGROUND, INIT_IFRAME } from '@/constants/recoverProfile'
 import { mapActions } from 'vuex'
 import { SET_USERS_COLORS } from '@/store/modules/Profile'
 import { RECOVER_PROFILE } from '@/constants/windowKey'
@@ -38,18 +38,18 @@ export default {
     openFrame() {
       this.loading = true
       this.frame = new WindowHandler('recoverProfile', '/secret-phrase', RECOVER_PROFILE, event => {
-        const { data } = event
-        switch (event.data.type) {
-          case LOADING:
-            this.loading = data.loading
+        const { message } = event
+        switch (message.type) {
+          case INIT_IFRAME:
+            this.loading = message.loading
             break
           case REDIRECT_TO_HOME:
             this.$router.push({ name: 'Wallets' })
             break
           case SET_BACKGROUND:
             this.actionSetBackground({
-              background: data.selectGradient.background,
-              color: data.selectGradient.color
+              background: message.selectGradient.background,
+              color: message.selectGradient.color
             })
             break
           default: {

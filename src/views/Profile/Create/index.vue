@@ -13,7 +13,7 @@ import VLoader from '@/components/Loaders/VLoader.vue'
 import WindowHandler from '@/WindowHandler'
 import { mapActions } from 'vuex'
 import { SET_USERS_COLORS } from '@/store/modules/Profile'
-import { LOADING, SET_BACKGROUND, REDIRECT_TO_HOME } from '@/constants/createProfile'
+import { SET_BACKGROUND, REDIRECT_TO_HOME, INIT_IFRAME } from '@/constants/createProfile'
 import { CREATE_PROFILE } from '@/constants/windowKey'
 
 export default {
@@ -38,15 +38,15 @@ export default {
     openFrame() {
       this.loading = true
       this.frame = new WindowHandler('createProfile', '/choose-style', CREATE_PROFILE, event => {
-        const { data } = event
-        switch (data.type) {
-          case LOADING:
-            this.loading = data.loading
+        const { message } = event
+        switch (message.type) {
+          case INIT_IFRAME:
+            this.loading = message.loading
             break
           case SET_BACKGROUND:
             this.actionSetBackground({
-              background: data.selectGradient.background,
-              color: data.selectGradient.color
+              background: message.selectGradient.background,
+              color: message.selectGradient.color
             })
             break
           case REDIRECT_TO_HOME:

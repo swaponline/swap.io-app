@@ -27,8 +27,8 @@
     <span class="swap-form__hint">{{ fromHintValue }}</span>
 
     <div class="swap-form__row mt-0">
-      <v-loader v-if="loading" :active="loading" width="70px" height="70px"></v-loader>
-      <v-btn v-else class="swap-form__swap-button" icon height="auto" min-height="none" @click="swapWallet">
+      <v-loader :active="loading" width="70px" height="70px"></v-loader>
+      <v-btn v-if="!loading" class="swap-form__swap-button" icon height="auto" min-height="none" @click="swapWallet">
         <svg-icon class="swap-form__icon" name="swap" />
       </v-btn>
     </div>
