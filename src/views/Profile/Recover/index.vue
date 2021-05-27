@@ -37,19 +37,19 @@ export default {
     }),
     openFrame() {
       this.loading = true
-      this.frame = new WindowHandler('recoverProfile', '/secret-phrase', RECOVER_PROFILE, event => {
-        const { message } = event
+      this.frame = new WindowHandler('recoverProfile', '/secret-phrase', RECOVER_PROFILE, ({ message }) => {
+        const { payload } = message
         switch (message.type) {
           case INIT_IFRAME:
-            this.loading = message.loading
+            this.loading = payload.loading
             break
           case REDIRECT_TO_HOME:
             this.$router.push({ name: 'Wallets' })
             break
           case SET_BACKGROUND:
             this.actionSetBackground({
-              background: message.selectGradient.background,
-              color: message.selectGradient.color
+              background: payload.selectGradient.background,
+              color: payload.selectGradient.color
             })
             break
           default: {
