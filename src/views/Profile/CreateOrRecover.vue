@@ -11,7 +11,10 @@
         or recover from mneminic phrase
       </div>
       <div class="create-or-recover__buttons">
-        <v-btn depressed class="create-or-recover__button" block @click="create">Create</v-btn>
+        <div class="create-or-recover__buttons-controls">
+          <v-btn depressed class="create-or-recover__button" block @click="cancel">Cancel</v-btn>
+          <v-btn depressed class="create-or-recover__button" block @click="create">Create</v-btn>
+        </div>
         <v-btn text class="create-or-recover__button create-or-recover__button--text" block @click="goToRecover"
           >Recover profile</v-btn
         >
@@ -33,6 +36,10 @@ export default {
     this.$store.dispatch(CREATING_OR_RECOVERING_PROFILE, true)
   },
   methods: {
+    cancel() {
+      this.$store.dispatch(CREATING_OR_RECOVERING_PROFILE, false)
+      return this.$router.push({ name: 'Wallets' })
+    },
     create() {
       return this.$router.push({ name: 'SecurityInfo' })
     },
@@ -68,7 +75,32 @@ export default {
     margin-bottom: 45px;
   }
 
+  &__buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &-controls {
+      display: flex;
+
+      @include phone {
+        flex-direction: column;
+      }
+    }
+
+    @include tablet {
+      margin: auto auto 0;
+      max-width: 400px;
+    }
+
+    @include phone {
+      margin-top: 30px;
+    }
+  }
+
   &__button {
+    margin: 0 5px;
+    min-width: 174px !important;
     min-height: 48px;
     margin-bottom: 15px;
     border-radius: $--main-border-radius;
