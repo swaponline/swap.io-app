@@ -22,11 +22,15 @@
 
 <script>
 import Substrate from '@/views/Profile/Substrate.vue'
+import { CREATING_OR_RECOVERING_PROFILE } from '@/store/modules/Profile'
 
 export default {
   name: 'CreateOrRecover',
   components: {
     Substrate
+  },
+  created() {
+    this.$store.dispatch(CREATING_OR_RECOVERING_PROFILE, true)
   },
   methods: {
     create() {
@@ -54,6 +58,7 @@ export default {
 
   &__text {
     font-size: $--font-size-extra-title;
+    font-weight: $--font-weight-semi-bold;
     color: $--black;
   }
 
@@ -66,14 +71,19 @@ export default {
   &__button {
     min-height: 48px;
     margin-bottom: 15px;
-    text-transform: none;
-    font-weight: $--font-weight-semi-bold;
-    color: $--black;
-    font-size: $--font-size-button;
     border-radius: $--main-border-radius;
 
+    .v-btn__content {
+      font-weight: $--font-weight-semi-bold;
+      font-size: $--font-size-button;
+      text-transform: none;
+      color: $--black;
+    }
+
     &--text {
-      color: $--dark-grey;
+      .v-btn__content {
+        color: $--dark-grey;
+      }
     }
   }
 }

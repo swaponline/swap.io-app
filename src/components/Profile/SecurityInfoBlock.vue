@@ -1,30 +1,34 @@
 <template>
   <div class="security-info-block">
-    <svg-icon
-      v-if="nameIcon"
-      :name="nameIcon"
-      class="security-info-block__icon"
-      :class="`security-info-block__icon--${nameIcon}`"
-    ></svg-icon>
-    <h2 class="security-info-block__title">{{ title }}</h2>
+    <div class="security-info-block__wrapper">
+      <div class="security-info-block__icon-wrapper">
+        <svg-icon
+          v-if="nameIcon"
+          :name="nameIcon"
+          class="security-info-block__icon"
+          :class="`security-info-block__icon--${nameIcon}`"
+        ></svg-icon>
+      </div>
+      <h2 class="security-info-block__title">{{ title }}</h2>
 
-    <!-- eslint-disable-next-line vue/no-v-html -->
-    <p class="security-info-block__text" v-html="text"></p>
+      <!-- eslint-disable-next-line vue/no-v-html -->
+      <p class="security-info-block__text" v-html="text"></p>
 
-    <span class="security-info-block__dots">
-      <span
-        v-for="n in 3"
-        :key="n"
-        class="security-info-block__dot"
-        :class="{ 'security-info-block__dot--fill': n <= id }"
-      ></span>
-    </span>
-    <div class="security-info-block__buttons">
-      <v-btn v-if="id === $options.FIRST_BLOCK" depressed class="security-info-block__button" @click="$emit('cancel')"
-        >Cancel</v-btn
-      >
-      <v-btn v-else depressed class="security-info-block__button" @click="$emit('back')">Back</v-btn>
-      <v-btn depressed class="security-info-block__button" @click="$emit('next')">{{ nameButton }}</v-btn>
+      <span class="security-info-block__dots">
+        <span
+          v-for="n in 3"
+          :key="n"
+          class="security-info-block__dot"
+          :class="{ 'security-info-block__dot--fill': n <= id }"
+        ></span>
+      </span>
+      <div class="security-info-block__buttons">
+        <v-btn v-if="id === $options.FIRST_BLOCK" depressed class="security-info-block__button" @click="$emit('cancel')"
+          >Cancel</v-btn
+        >
+        <v-btn v-else depressed class="security-info-block__button" @click="$emit('back')">Back</v-btn>
+        <v-btn depressed class="security-info-block__button" @click="$emit('next')">{{ nameButton }}</v-btn>
+      </div>
     </div>
     <span class="security-info-block__pagination">{{ id }}/3</span>
     <button class="security-info-block__skip" @click="$emit('skip')">Skip introduction</button>
@@ -75,10 +79,21 @@ export default {
   padding: 40px 50px;
   display: flex;
   flex-direction: column;
+
+  &__wrapper {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    justify-content: space-between;
+  }
   @include tablet {
     padding: 5px 20px;
-    align-items: center;
   }
+
+  &__icon-wrapper {
+    text-align: center;
+  }
+
   &__icon {
     position: absolute;
     right: 50px;
@@ -123,6 +138,7 @@ export default {
     @include tablet {
       margin-top: auto;
       display: flex;
+      justify-content: center;
     }
   }
   &__dot {
@@ -159,8 +175,8 @@ export default {
     }
   }
   &__pagination {
-    margin-top: auto;
     color: $--dark-grey;
+    margin-top: 40px;
     @include tablet {
       display: none;
     }

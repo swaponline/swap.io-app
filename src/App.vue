@@ -8,7 +8,7 @@
 
 <script>
 import { MediaQueryProvider } from 'vue-component-media-queries'
-import { MODULE_NAME as PROFILE_MODULE } from '@/store/modules/Profile'
+import { MODULE_PROFILE } from '@/store/modules/Profile'
 import messageHandler from './messageHandler'
 
 const queries = {
@@ -29,7 +29,7 @@ export default {
   },
   computed: {
     model() {
-      return this.$store.state[PROFILE_MODULE].model
+      return this.$store.state[MODULE_PROFILE].model
     },
     background() {
       return this.model.background

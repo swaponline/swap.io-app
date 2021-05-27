@@ -17,6 +17,7 @@
 
 <script>
 import SecurityInfoBlock from '@/components/Profile/SecurityInfoBlock.vue'
+import { CREATING_OR_RECOVERING_PROFILE } from '@/store/modules/Profile'
 import infoBlocks from './infoBlocks'
 
 export default {
@@ -29,6 +30,9 @@ export default {
       currentBlock: 1,
       infoBlocks
     }
+  },
+  created() {
+    this.$store.dispatch(CREATING_OR_RECOVERING_PROFILE, true)
   },
   methods: {
     skip() {
@@ -47,6 +51,7 @@ export default {
       }
     },
     cancel() {
+      this.$store.dispatch(CREATING_OR_RECOVERING_PROFILE, false)
       this.$router.push({ name: 'Wallets' })
     }
   }
