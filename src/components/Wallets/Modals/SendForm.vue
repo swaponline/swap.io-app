@@ -113,22 +113,10 @@ import SliderFee from '../SliderFee.vue'
 export default {
   name: 'SendForm',
   inject: ['mediaQueries'],
-  components: {
-    ModalWrapper,
-    FormTextField,
-    FormSelector,
-    SliderFee,
-    FormIndent
-  },
+  components: { ModalWrapper, FormTextField, FormSelector, SliderFee, FormIndent },
   props: {
-    value: {
-      type: Boolean,
-      required: true
-    },
-    address: {
-      type: String,
-      default: ''
-    }
+    value: { type: Boolean, required: true },
+    address: { type: String, default: '' }
   },
   data() {
     return {
