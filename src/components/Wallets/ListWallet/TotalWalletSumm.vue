@@ -6,7 +6,10 @@
       :value="'USD'"
       flat
       solo
+      filled
       :items="['USD', 'EUR', 'GBP']"
+      item-color
+      :menu-props="{ 'content-class': 'total-wallet-summ__selector-menu' }"
     >
     </v-select>
     <div class="total-wallet-summ__value">567.12</div>
@@ -31,6 +34,7 @@ export default {
   &__selector {
     max-width: 50%;
     padding: 0 13px !important;
+
     .v-input__slot {
       box-shadow: none;
       margin-bottom: 0;
@@ -46,6 +50,12 @@ export default {
       > input {
         display: none;
       }
+    }
+  }
+
+  &__selector-menu {
+    .v-list-item--active {
+      color: var(--main-color);
     }
   }
 

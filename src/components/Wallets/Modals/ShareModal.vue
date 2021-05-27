@@ -17,7 +17,7 @@
       </div>
 
       <div class="share-modal__info">
-        <form-indent :title="type === 'wallet' ? 'Wallet ID:' : 'Hash:'">
+        <form-indent :title="isWallet ? 'Wallet ID:' : 'Hash:'">
           <v-tooltip v-model="copyDataTooltip.value" top :open-on-hover="false">
             <template #activator="{ on }">
               <button class="share-modal__copy-button" @click="copy(data, 'copyDataTooltip')">
@@ -47,26 +47,17 @@
 </template>
 
 <script>
-import Copy from '@/utils/copy'
-
 import ModalWrapper from '@/components/UI/ModalWrapper.vue'
 import FormIndent from '@/components/UI/Forms/Indent.vue'
+import copy from '@/utils/copy'
+import QRCode from 'qrcode-generator'
 
 export default {
   name: 'ShareModal',
-  components: {
-    ModalWrapper,
-    FormIndent
-  },
+  components: { ModalWrapper, FormIndent },
   props: {
-    type: {
-      type: String,
-      default: ''
-    },
-    data: {
-      type: String,
-      default: ''
-    }
+    type: { type: String, default: '' },
+    data: { type: String, default: '' }
   },
   data() {
     return {
@@ -83,8 +74,14 @@ export default {
     }
   },
   computed: {
+    isWallet() {
+      return this.type === 'wallet'
+    },
     qrCodeSrc() {
-      return `https://api.qrserver.com/v1/create-qr-code/?size=202x202&data=${this.shareUrl}`
+      const qr = new QRCode(0, 'M')
+      qr.addData(this.shareUrl)
+      qr.make()
+      return qr.createDataURL(4, 0)
     },
     shareUrl() {
       return `${window.location.origin}/${this.type}/${this.data} `
@@ -108,7 +105,7 @@ export default {
       })
     },
     copy(data, tooltipName) {
-      Copy(data)
+      copy(data)
         .then(() => {
           this[tooltipName].value = true
           if (this[tooltipName].timer) {

@@ -264,12 +264,27 @@ export default {
   &__optional-buttons {
     position: absolute;
     right: 25px;
+
     @include tablet {
       top: 15px;
     }
     @include phone {
       top: 12px;
       right: 11px;
+    }
+  }
+  &__optional-button {
+    &:before {
+      opacity: 0.2;
+      background-color: $--grey-1;
+    }
+    &:hover {
+      &:before {
+        opacity: 0.3 !important;
+      }
+    }
+    &:not(:last-child) {
+      margin-right: 6px;
     }
   }
   &__crypto-value {
