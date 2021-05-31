@@ -28,27 +28,18 @@ export default {
     }
   },
   computed: {
-    model() {
+    userColorTheme() {
       return this.$store.state[MODULE_PROFILE].model
-    },
-    background() {
-      return this.model.background
-    },
-    color() {
-      return this.model.color
     }
   },
   watch: {
-    background: {
+    userColorTheme: {
       immediate: true,
-      handler(val) {
-        document.documentElement.style.setProperty('--background-app', val)
-      }
-    },
-    color: {
-      immediate: true,
-      handler(val) {
-        document.documentElement.style.setProperty('--main-color', val)
+      deep: true,
+      handler(newTheme) {
+        document.documentElement.style.setProperty('--background-app', newTheme.background)
+        document.documentElement.style.setProperty('--main-color', newTheme.color)
+        document.documentElement.style.setProperty('--color-selection', newTheme.colorSelection)
       }
     }
   },
