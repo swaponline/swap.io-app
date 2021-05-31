@@ -7,11 +7,16 @@
   box-sizing: border-box;
 }
 
+// Переопределяем фон для выделенных элементов
+::selection {
+  background: var(--color-selection);
+  color: $--black;
+}
+
 body {
   font-family: $--font-base;
   font-weight: $--font-weight-regular;
   font-size: $--font-size-base;
-
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;

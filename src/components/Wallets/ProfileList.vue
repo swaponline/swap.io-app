@@ -146,7 +146,7 @@ export default {
     width: 100%;
     border-top: 1px solid #f6f6f6;
     padding: 16px 32px 15px 25px;
-    color: #101010;
+    color: $--black;
   }
   &__name {
     font-weight: $--font-weight-medium;

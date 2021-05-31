@@ -46,8 +46,9 @@ export default {
             break
           case SET_BACKGROUND:
             this.actionSetBackground({
-              background: payload.selectGradient.background,
-              color: payload.selectGradient.color
+              background: payload.userColorTheme.background,
+              color: payload.userColorTheme.color,
+              colorSelection: payload.userColorTheme.colorSelection
             })
             break
           case REDIRECT_TO_HOME:
