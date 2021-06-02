@@ -40,11 +40,13 @@ export default {
       immediate: true,
       deep: true,
       handler(newTheme) {
-        document.documentElement.style.setProperty('--background-app', newTheme.background)
         document.documentElement.style.setProperty('--main-color', newTheme.color)
         document.documentElement.style.setProperty('--color-selection', newTheme.colorSelection)
 
-        if (!newTheme.background.includes('linear-gradient')) {
+        if (newTheme.background.includes('linear-gradient')) {
+          document.documentElement.style.setProperty('--background-app', newTheme.background)
+        } else {
+          document.documentElement.style.setProperty('--background-app', '')
           this.backgroundSvg = newTheme.background
           this.$nextTick(() => this.setBackground())
         }
@@ -78,7 +80,7 @@ export default {
     },
     setBackground() {
       const { backgroundSvg } = this
-      if (!backgroundSvg) return null
+      if (!backgroundSvg) return
 
       const canvas = this.$refs.backgroundCanvas
       const ctx = canvas.getContext('2d')
@@ -91,12 +93,10 @@ export default {
       const heightStr = `height="${window.innerHeight}"\n`
       const index = backgroundSvg.indexOf('viewBox')
       const resSvg = backgroundSvg.substring(0, index) + widthStr + heightStr + backgroundSvg.substring(index)
-      const kek = 'Denis lol'
 
-      const v = Canvg.fromString(ctx, resSvg, options)
+      const canvg = Canvg.fromString(ctx, resSvg, options)
 
-      v.start()
-      return kek
+      canvg.start()
     }
   }
 }
