@@ -1,5 +1,6 @@
 <template>
   <v-app id="app">
+    <canvas ref="backgroundCanvas" class="app-background" />
     <media-query-provider :queries="queries">
       <router-view />
     </media-query-provider>
@@ -9,6 +10,7 @@
 <script>
 import { MediaQueryProvider } from 'vue-component-media-queries'
 import { MODULE_PROFILE } from '@/store/modules/Profile'
+import Canvg from 'canvg'
 import messageHandler from './messageHandler'
 
 const queries = {
@@ -24,7 +26,8 @@ export default {
   },
   data() {
     return {
-      queries
+      queries,
+      backgroundSvg: null
     }
   },
   computed: {
@@ -37,9 +40,16 @@ export default {
       immediate: true,
       deep: true,
       handler(newTheme) {
-        document.documentElement.style.setProperty('--background-app', newTheme.background)
         document.documentElement.style.setProperty('--main-color', newTheme.color)
         document.documentElement.style.setProperty('--color-selection', newTheme.colorSelection)
+
+        if (newTheme.background.includes('linear-gradient')) {
+          document.documentElement.style.setProperty('--background-app', newTheme.background)
+        } else {
+          document.documentElement.style.setProperty('--background-app', '')
+          this.backgroundSvg = newTheme.background
+          this.$nextTick(() => this.setBackground())
+        }
       }
     }
   },
@@ -65,6 +75,28 @@ export default {
 
       const vw = window.innerWidth * 0.01
       document.documentElement.style.setProperty('--vw', `${vw}`)
+
+      this.setBackground()
+    },
+    setBackground() {
+      const { backgroundSvg } = this
+      if (!backgroundSvg) return
+
+      const canvas = this.$refs.backgroundCanvas
+      const ctx = canvas.getContext('2d')
+      const options = {
+        ignoreMouse: true
+      }
+
+      // hack for scaling svg to window size
+      const widthStr = `width="${window.innerWidth}"\n`
+      const heightStr = `height="${window.innerHeight}"\n`
+      const index = backgroundSvg.indexOf('viewBox')
+      const resSvg = backgroundSvg.substring(0, index) + widthStr + heightStr + backgroundSvg.substring(index)
+
+      const canvg = Canvg.fromString(ctx, resSvg, options)
+
+      canvg.start()
     }
   }
 }
@@ -77,6 +109,7 @@ export default {
   width: 100%;
   max-width: 100vw;
   overflow: hidden;
+  z-index: 3;
 
   &::before {
     background-image: var(--background-app);
@@ -100,5 +133,14 @@ export default {
   #app {
     zoom: calc(var(--vw) / 18);
   }
+}
+.app-background {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  z-index: -1;
+  opacity: 0.85;
 }
 </style>
