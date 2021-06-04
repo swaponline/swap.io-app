@@ -6,7 +6,7 @@
     :to="{ name: 'Wallet', params: { walletAddress: subWallets[0].address } }"
   >
     <v-list-item-icon class="list-wallet-item__icon-wrapper">
-      <svg-icon class="list-wallet-item__icon" :name="iconName" />
+      <cryptoicon :symbol="nameCurrency.toLowerCase()" size="45" />
     </v-list-item-icon>
     <v-list-item-content>
       <v-list-item-title class="list-wallet-item__title">
@@ -37,11 +37,6 @@ export default {
     subWallets: {
       type: Array,
       default: () => []
-    }
-  },
-  computed: {
-    iconName() {
-      return `list/list-${this.nameCurrency.toLowerCase()}`
     }
   }
 }

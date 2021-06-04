@@ -95,17 +95,15 @@ export default {
 .profile-list {
   display: flex;
   overflow: visible;
-  max-height: 80px;
-  min-height: 80px;
-  min-width: 150px;
+  height: 80px;
+  min-width: 200px;
 
   @include tablet {
     width: auto;
     margin: 20px 40px;
   }
   @include phone {
-    max-height: 70px;
-    min-height: 70px;
+    height: 70px;
     margin: 8px;
   }
   &__inner {
@@ -151,6 +149,8 @@ export default {
   &__name {
     font-weight: $--font-weight-medium;
     font-size: $--font-size-extra-small-subtitle;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 </style>

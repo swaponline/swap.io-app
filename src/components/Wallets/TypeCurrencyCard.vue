@@ -1,6 +1,6 @@
 <template>
   <label class="type-currency-card" :class="{ 'type-currency-card--selected': selected }">
-    <svg-icon class="type-currency-card__icon" :name="`cards/card-${iconName}`"></svg-icon>
+    <cryptoicon :symbol="iconName.toLowerCase()" size="40" />
     <span class="type-currency-card__name">{{ name }}</span>
     <input class="type-currency-card__input" tabindex="0" type="radio" name="currency" @input="$emit('select')" />
   </label>
@@ -50,10 +50,6 @@ export default {
   &:focus-within {
     padding: 9px 9px;
     border: 2px solid var(--main-color);
-  }
-  &__icon {
-    height: 40px;
-    width: 40px;
   }
   &__name {
     font-size: $--font-size-medium;

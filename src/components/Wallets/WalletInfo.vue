@@ -1,6 +1,6 @@
 <template>
   <div class="wallet-info" :class="{ 'wallet-info--compressed': compressed }" @click="uncompressWallet">
-    <svg-icon class="wallet-info__background-icon" :name="backgroundIconName"></svg-icon>
+    <cryptoicon class="wallet-info__background-icon" :symbol="nameCurrency.toLowerCase()" size="500" />
 
     <div class="wallet-info__optional-buttons">
       <v-btn icon class="wallet-info__optional-button" @click="openShareModal">
@@ -91,9 +91,6 @@ export default {
   computed: {
     walletAddress() {
       return this.$route.params.walletAddress
-    },
-    backgroundIconName() {
-      return `background/background-${this.nameCurrency.toLowerCase()}`
     }
   },
   beforeDestroy() {
@@ -275,8 +272,8 @@ export default {
   }
   &__optional-button {
     &:before {
-      opacity: 0.2;
-      background-color: $--grey-1;
+      opacity: 0.5;
+      background-color: $--light-grey-1;
     }
     &:hover {
       &:before {
