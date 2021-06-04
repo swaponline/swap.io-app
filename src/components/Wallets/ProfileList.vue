@@ -101,6 +101,7 @@ export default {
   @include tablet {
     width: auto;
     margin: 20px 40px;
+    z-index: 10;
   }
   @include phone {
     height: 70px;
