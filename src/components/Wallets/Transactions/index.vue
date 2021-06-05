@@ -13,7 +13,7 @@
     </v-tabs>
     <div class="transactions__horizontal-line"></div>
 
-    <v-loader :active="loading"></v-loader>
+    <v-loader :active="true"></v-loader>
     <v-tabs-items v-model="activeTab">
       <v-tab-item v-for="tab in tabs" :key="tab">
         <transaction-list

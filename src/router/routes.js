@@ -51,11 +51,6 @@ export default [
         path: '/security-info',
         name: 'SecurityInfo',
         component: () => import(/* webpackChunkName: 'SecurityInfo' */ '@/views/Profile/Create/SecurityInfo.vue')
-      },
-      {
-        path: '/frame',
-        name: 'Frame',
-        component: () => import(/* webpackChunkName: 'Frame' */ '@/views/Frame')
       }
     ]
   }
