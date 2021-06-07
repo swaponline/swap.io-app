@@ -40,6 +40,9 @@ export default {
       margin-bottom: 0;
       font-size: $--font-size-small-subtitle;
     }
+    .v-input__icon .v-icon {
+      color: var(--main-color) !important;
+    }
     .v-text-field__details {
       display: none;
     }
