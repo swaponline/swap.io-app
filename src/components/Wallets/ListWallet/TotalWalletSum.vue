@@ -32,7 +32,7 @@ export default {
   align-items: center;
   border-bottom: 2px solid $--light-grey;
   &__selector {
-    max-width: 50%;
+    max-width: 160px;
     padding: 0 13px !important;
 
     .v-input__slot {

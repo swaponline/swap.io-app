@@ -13,7 +13,7 @@
       <form-indent
         v-if="selectedWallet"
         title="Wallet balance:"
-        :text="`${selectedWallet.value} ${selectedWallet.nameCurrency}`"
+        :text="`${selectedWallet.value} ${selectedWallet.currencyName}`"
       />
 
       <wallet-selector v-if="!address" v-model="selectedWallet" :items="wallets" />
@@ -93,7 +93,7 @@
           <span>Total balance change:</span>
           <span class="send-form__amount">
             <span>
-              <span class="send-form__currency-name">{{ selectedWallet.nameCurrency }}</span>
+              <span class="send-form__currency-name">{{ selectedWallet.currencyName }}</span>
               {{ totalBalanceChange }}
             </span>
             <span class="send-form__amount-fiat"
@@ -170,7 +170,7 @@ export default {
       return (this.isMultipleRecepients ? this.multipleSum : this.recipient.amount) || '0'
     },
     totalConvertedBalanceChange() {
-      return convertAmountToOtherCurrency(this.totalBalanceChange, this.selectedWallet.nameCurrency, 'USD')
+      return convertAmountToOtherCurrency(this.totalBalanceChange, this.selectedWallet.currencyName, 'USD')
     }
   },
   watch: {

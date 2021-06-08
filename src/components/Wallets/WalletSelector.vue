@@ -8,13 +8,13 @@
     class="wallet-selector"
   >
     <template #item="{item}">
-      <cryptoicon :symbol="item.nameCurrency.toLowerCase()" size="32" class="wallet-selector__icon" />
+      <cryptoicon :symbol="item.currencyName.toLowerCase()" size="32" class="wallet-selector__icon" />
       <span class="wallet-selector__name">{{ item.name }}</span>
       <span class="wallet-selector__address">{{ minifyAddress(item.address) }}</span>
     </template>
 
     <template #selection="{item}">
-      <cryptoicon :symbol="item.nameCurrency.toLowerCase()" size="32" class="wallet-selector__icon" />
+      <cryptoicon :symbol="item.currencyName.toLowerCase()" size="32" class="wallet-selector__icon" />
       <span class="wallet-selector__name">{{ item.name }}</span>
       <span class="wallet-selector__address">{{ minifyAddress(item.address) }}</span>
     </template>

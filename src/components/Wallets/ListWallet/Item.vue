@@ -6,11 +6,11 @@
     :to="{ name: 'Wallet', params: { walletAddress: subWallets[0].address } }"
   >
     <v-list-item-icon class="list-wallet-item__icon-wrapper">
-      <cryptoicon :symbol="nameCurrency.toLowerCase()" size="45" />
+      <cryptoicon :symbol="currencyName.toLowerCase()" size="45" />
     </v-list-item-icon>
     <v-list-item-content>
       <v-list-item-title class="list-wallet-item__title">
-        <span class="list-wallet-item__currency-name">{{ nameCurrency }}</span>
+        <span class="list-wallet-item__currency-name">{{ currencyName }}</span>
         <span>{{ value }}</span>
         <span class="list-wallet-item__name">{{ subWallets[0].name }}</span>
       </v-list-item-title>
@@ -26,7 +26,7 @@ export default {
       type: String,
       default: ''
     },
-    nameCurrency: {
+    currencyName: {
       type: String,
       default: ''
     },

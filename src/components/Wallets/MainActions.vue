@@ -1,11 +1,17 @@
 <template>
-  <v-speed-dial v-model="fab" class="main-actions" bottom left direction="top" transition="slide-y-reverse-transition">
+  <v-speed-dial
+    v-model="isOpen"
+    class="main-actions"
+    bottom
+    left
+    direction="top"
+    transition="slide-y-reverse-transition"
+  >
     <template #activator>
-      <v-btn v-model="fab" class="main-actions__open-button" dark fab height="auto" width="auto">
-        <v-icon v-if="fab" class="main-actions__open-icon">
+      <v-btn v-model="isOpen" class="main-actions__open-button" dark fab height="auto" width="auto">
+        <v-icon class="main-actions__open-icon" :class="{ 'main-actions__open-icon--rotated': isOpen }">
           mdi-close
         </v-icon>
-        <svg-icon v-else name="plus" class="main-actions__open-icon" />
       </v-btn>
     </template>
     <v-tooltip right>
@@ -92,7 +98,7 @@ export default {
   name: 'MainActions',
   data() {
     return {
-      fab: false
+      isOpen: false
     }
   },
   methods: {
@@ -140,8 +146,18 @@ export default {
   }
 
   &__open-icon {
-    width: 26px;
-    height: 26px;
+    font-size: 32px !important;
+    transform: rotate(135deg);
+    @include tablet {
+      font-size: 40px !important;
+    }
+    @include phone {
+      font-size: 26px !important;
+    }
+
+    &--rotated {
+      transform: rotate(0);
+    }
   }
 
   &__button {

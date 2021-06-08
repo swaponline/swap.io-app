@@ -1,6 +1,6 @@
 <template>
   <div class="wallet-info" :class="{ 'wallet-info--compressed': compressed }" @click="uncompressWallet">
-    <cryptoicon class="wallet-info__background-icon" :symbol="nameCurrency.toLowerCase()" size="500" />
+    <cryptoicon class="wallet-info__background-icon" :symbol="currencyName.toLowerCase()" size="500" />
 
     <div class="wallet-info__optional-buttons">
       <v-btn icon class="wallet-info__optional-button" @click="openShareModal">
@@ -14,7 +14,7 @@
     <header class="wallet-info__header">
       <div>
         <span class="wallet-info__crypto-value">
-          {{ value }} <span class="grey--text">{{ nameCurrency }}</span>
+          {{ value }} <span class="grey--text">{{ currencyName }}</span>
         </span>
         <span class="wallet-info__fiat-value">3000.04 USD</span>
       </div>
@@ -66,7 +66,7 @@ export default {
     address: { type: String, required: true },
     name: { type: String, default: '' },
     value: { type: Number, default: 0 },
-    nameCurrency: { type: String, default: '' }
+    currencyName: { type: String, default: '' }
   },
   data() {
     return {
