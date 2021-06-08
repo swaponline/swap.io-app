@@ -8,26 +8,21 @@
     @cancel="close"
   >
     <div class="send-form">
-      <form-indent v-if="selectAddress" title="Wallet ID:" :text="selectAddress" />
+      <form-indent v-if="selectedWallet" title="Wallet ID:" :text="selectedWallet.address" />
 
-      <form-indent v-if="selectAddress" title="Wallet balance:" :text="'39 BTC'" />
+      <form-indent
+        v-if="selectedWallet"
+        title="Wallet balance:"
+        :text="`${selectedWallet.value} ${selectedWallet.nameCurrency}`"
+      />
 
-      <form-selector
-        v-if="!address"
-        v-model="selectAddress"
-        :items="wallets"
-        item-text="address"
-        item-value="address"
-        label="Your wallet"
-        outlined
-      >
-      </form-selector>
+      <wallet-selector v-if="!address" v-model="selectedWallet" :items="wallets" />
 
       <v-textarea
-        v-if="multipleRecepients"
+        v-if="isMultipleRecepients"
         v-model="listRecipient"
         outlined
-        :hint="'Остаток: ' + (maxAmount - regexpSumm)"
+        :hint="listRecipientHint"
         class="send-form__multiple-list rounded-lg"
         placeholder="Enter a list of outputs in the 'Pay to' field. 
   One output per line. 
@@ -49,51 +44,64 @@
           step="any"
           min="0"
           class="send-form__short-field"
-          :hint="'max: ' + maxAmount"
           required
           label="Amount"
         >
         </form-text-field>
       </div>
 
-      <v-btn class="send-form__multiple-button" color="blue" text @click="multipleRecepients = !multipleRecepients">
-        <span class="text-left flex-grow-1">{{ multipleRecepients ? 'Single recipient' : 'Multple recipients' }}</span>
+      <v-btn
+        class="send-form__multiple-button"
+        color="var(--main-color)"
+        text
+        @click="isMultipleRecepients = !isMultipleRecepients"
+      >
+        <span class="text-left flex-grow-1">{{
+          isMultipleRecepients ? 'Single recipient' : 'Multple recipients'
+        }}</span>
       </v-btn>
 
-      <v-divider class="send-form__divider"></v-divider>
+      <v-divider class="send-form__divider" />
 
-      <span class="send-form__result-row">
-        <span>Transaction fee: </span>
+      <template v-if="selectedWallet">
+        <div class="send-form__result-row">
+          <span>Transaction fee: </span>
 
-        <slider-fee
-          v-if="editFee"
-          v-model="fee"
-          :recommended-fee="recommendedFee"
-          v-bind="sliderParams"
-          class="send-form__slider"
-        ></slider-fee>
+          <slider-fee
+            v-if="isEditingFee"
+            v-model="fee"
+            :recommended-fee="recommendedFee"
+            v-bind="sliderParams"
+            class="send-form__slider"
+          />
 
-        <span v-else>
-          <v-btn icon small @click="editFeeShow">
-            <svg-icon class="send-form__edit-icon" name="edit"></svg-icon>
-          </v-btn>
+          <span v-else>
+            <v-btn icon small @click="editFeeShow">
+              <svg-icon class="send-form__edit-icon" name="edit"></svg-icon>
+            </v-btn>
 
-          <v-tooltip top>
-            <template #activator="{on}">
-              <span v-on="on"> <span class="send-form__currency-name">USD </span>{{ fee }} </span>
-            </template>
-            <span>Recommended fee</span>
-          </v-tooltip>
-        </span>
-      </span>
+            <v-tooltip top>
+              <template #activator="{on}">
+                <span v-on="on"><span class="send-form__currency-name">USD </span>{{ fee }}</span>
+              </template>
+              <span>Recommended fee</span>
+            </v-tooltip>
+          </span>
+        </div>
 
-      <span class="send-form__result-row">
-        <span>Total balance change: </span>
-        <span class="send-form__amount">
-          <span><span class="send-form__currency-name">BTC</span> {{ recipient.amount }}</span>
-          <span class="send-form__amount-fiat"><span class="send-form__currency-name">~USD</span> 21</span>
-        </span>
-      </span>
+        <div class="send-form__result-row">
+          <span>Total balance change:</span>
+          <span class="send-form__amount">
+            <span>
+              <span class="send-form__currency-name">{{ selectedWallet.nameCurrency }}</span>
+              {{ totalBalanceChange }}
+            </span>
+            <span class="send-form__amount-fiat"
+              ><span class="grey--text">~USD</span> {{ totalConvertedBalanceChange }}</span
+            >
+          </span>
+        </div>
+      </template>
     </div>
   </modal-wrapper>
 </template>
@@ -106,14 +114,16 @@ import { MODULE_NAME as TRANSACTIONS_MODULE } from '@/store/modules/Transactions
 
 import ModalWrapper from '@/components/UI/ModalWrapper.vue'
 import FormTextField from '@/components/UI/Forms/TextField.vue'
-import FormSelector from '@/components/UI/Forms/Selector.vue'
 import FormIndent from '@/components/UI/Forms/Indent.vue'
-import SliderFee from '../SliderFee.vue'
+import SliderFee from '@/components/Wallets/SliderFee.vue'
+import WalletSelector from '@/components/Wallets/WalletSelector.vue'
+
+import { convertAmountToOtherCurrency } from '@/services/converter'
 
 export default {
   name: 'SendForm',
   inject: ['mediaQueries'],
-  components: { ModalWrapper, FormTextField, FormSelector, SliderFee, FormIndent },
+  components: { ModalWrapper, FormTextField, SliderFee, FormIndent, WalletSelector },
   props: {
     value: { type: Boolean, required: true },
     address: { type: String, default: '' }
@@ -128,10 +138,10 @@ export default {
       fee: 0.545,
       recommendedFee: 0.545,
       recipient: { address: null, amount: null },
-      multipleRecepients: false,
-      editFee: false,
+      isMultipleRecepients: false,
+      isEditingFee: false,
       listRecipient: '',
-      selectAddress: null
+      selectedWallet: null
     }
   },
   computed: {
@@ -141,22 +151,26 @@ export default {
     wallets() {
       return this.$store.getters.siblingList
     },
-    currentWallet() {
-      if (this.address && this.wallets) {
-        return this.wallets.find(el => el.address === this.address)
-      }
-      return {}
-    },
     maxAmount() {
-      return (this.currentWallet.value * 10 ** 18 - this.fee * 10 ** 18) / 10 ** 18
+      return this.selectedWallet && (this.selectedWallet.value * 10 ** 18 - this.fee * 10 ** 18) / 10 ** 18
     },
-    regexpSumm() {
+    multipleAmountSum() {
       const field = `${this.listRecipient} `
       const arr = [...field.matchAll(/,\s*\d+\.?\d*\s/g)]
       return arr.reduce((acc, el) => {
         const amount = el[0].slice(1).trim()
         return acc + +amount
       }, 0)
+    },
+    listRecipientHint() {
+      const balance = this.maxAmount - this.multipleAmountSum
+      return `Balance: ${balance}`
+    },
+    totalBalanceChange() {
+      return (this.isMultipleRecepients ? this.multipleSum : this.recipient.amount) || '0'
+    },
+    totalConvertedBalanceChange() {
+      return convertAmountToOtherCurrency(this.totalBalanceChange, this.selectedWallet.nameCurrency, 'USD')
     }
   },
   watch: {
@@ -167,22 +181,24 @@ export default {
     }
   },
   created() {
-    this.selectAddress = this.address
+    if (this.address && this.wallets) {
+      this.selectedWallet = this.wallets.find(el => el.address === this.address)
+    }
   },
   methods: {
     ...mapMutations({
       mutationAddModal: ADD_MODAL
     }),
     submit() {
-      const recipients = this.multipleRecepients ? this.getRecipients() : [this.recipient]
+      const recipients = this.isMultipleRecepients ? this.getRecipients() : [this.recipient]
       this.mutationAddModal({
         name: SEND_PREVIEW,
         info: {
           fee: this.fee,
           recipient: this.recipient,
           listRecipient: this.listRecipient,
-          address: this.selectAddress,
-          multipleRecepients: this.multipleRecepients,
+          address: this.selectedWallet.address,
+          isMultipleRecepients: this.isMultipleRecepients,
           recipients
         }
       })
@@ -204,7 +220,7 @@ export default {
           }
         })
       } else {
-        this.editFee = true
+        this.isEditingFee = true
       }
     },
     getRecipients() {
@@ -241,7 +257,7 @@ export default {
 
     --color-fieldset: $--black;
     &:focus-within {
-      --color-fieldset: $--blue;
+      --color-fieldset: var(--main-color);
     }
     .v-input__slot {
       margin-bottom: 0;
@@ -255,12 +271,11 @@ export default {
     }
   }
   &__multiple-button {
-    height: auto !important;
     font-weight: $--font-weight-bold;
     text-transform: none;
     flex-grow: 0;
     padding: 0 0 !important;
-    margin-bottom: 25px;
+    margin: 10px 0;
     width: 100%;
     span {
       letter-spacing: 0.01em;

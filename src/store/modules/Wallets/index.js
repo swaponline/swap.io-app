@@ -549,7 +549,7 @@ export default {
         return acc
       }, [])
     },
-    walletsSumm(state, { currentListWallets }) {
+    walletsSum(state, { currentListWallets }) {
       return currentListWallets?.reduce((balance, el) => {
         return balance + el.value
       }, 0)

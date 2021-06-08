@@ -1,29 +1,29 @@
 <template>
-  <div class="total-wallet-summ">
+  <div class="total-wallet-sum">
     <v-select
       append-icon="mdi-chevron-down"
-      class="total-wallet-summ__selector"
+      class="total-wallet-sum__selector"
       :value="'USD'"
       flat
       solo
       filled
       :items="['USD', 'EUR', 'GBP']"
       item-color
-      :menu-props="{ 'content-class': 'total-wallet-summ__selector-menu' }"
+      :menu-props="{ 'content-class': 'total-wallet-sum__selector-menu' }"
     >
     </v-select>
-    <div class="total-wallet-summ__value">567.12</div>
+    <div class="total-wallet-sum__value">567.12</div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'TotalWalletSumm'
+  name: 'TotalWalletSum'
 }
 </script>
 
 <style lang="scss">
-.total-wallet-summ {
+.total-wallet-sum {
   width: 100%;
   height: 100%;
   min-height: 80px;
