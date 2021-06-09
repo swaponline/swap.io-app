@@ -25,25 +25,10 @@ import MainHeaderTabs from './Tabs.vue'
 
 export default {
   name: 'MainHeader',
-  components: {
-    ProfileList,
-    MainHeaderTabs,
-    MatchMedia
-  },
+  components: { ProfileList, MainHeaderTabs, MatchMedia },
   computed: {
     isCreatingOrRecoveringProfile() {
       return this.$store.state[MODULE_PROFILE][IS_CREATING_OR_RECOVERING]
-    },
-    currentAccount() {
-      return this.$store.getters.currentAccount
-    },
-    currentAccountName() {
-      return this.currentAccount.name
-    }
-  },
-  methods: {
-    getSrcAvatar(name) {
-      return `https://identicon-api.herokuapp.com/${name}/135?format=png`
     }
   }
 }

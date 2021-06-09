@@ -603,9 +603,6 @@ export default {
     [IS_CREATING_OR_RECOVERING]: false
   },
   getters: {
-    currentAccount(state) {
-      return state.profile || {}
-    },
     currentWallets(state) {
       return state.list.find(el => el.id === state.model.profile.accountId).wallets
     },
@@ -627,24 +624,27 @@ export default {
       const profile = state.profiles.find(p => p.accountId === getStorage(CURRENT_USER_KEY))
       commit(SET_MODEL, { name: MODULE_PROFILE, model: { profile } })
     },
-    [UPDATE_WALLET]({ state, getters, commit }, wallet) {
-      const index = state.list.indexOf(getters.currentAccount)
-      if (index > -1) {
-        const indexWalletGroup = getters.currentAccount.list.findIndex(w => w.currencyName === wallet.currencyName)
-        if (indexWalletGroup > -1) {
-          const indexWallet = getters.currentAccount.list[indexWalletGroup].subWallets.findIndex(
-            w => w.address === wallet.address
-          )
-          if (indexWallet > -1) {
-            commit(UPDATE_OBJECT_PROPERTY, {
-              path: [MODULE_PROFILE, 'list', index, 'list', indexWalletGroup, 'subWallets', indexWallet],
-              key: 'name',
-              value: wallet.name
-            })
-            setStorage(WALLETS_LIST_KEY, JSON.stringify(state.list))
-          }
-        }
-      }
+    [UPDATE_WALLET]() {
+      // TODO
+      // arguments { state, commit }, wallet
+      // const index = state.list.find(state.currentAccount)
+      // console.log()
+      // if (index > -1) {
+      //   const indexWalletGroup = getters.currentAccount.list.findIndex(w => w.currencyName === wallet.currencyName)
+      //   if (indexWalletGroup > -1) {
+      //     const indexWallet = getters.currentAccount.list[indexWalletGroup].subWallets.findIndex(
+      //       w => w.address === wallet.address
+      //     )
+      //     if (indexWallet > -1) {
+      //       commit(UPDATE_OBJECT_PROPERTY, {
+      //         path: [MODULE_PROFILE, 'list', index, 'list', indexWalletGroup, 'subWallets', indexWallet],
+      //         key: 'name',
+      //         value: wallet.name
+      //       })
+      //       setStorage(WALLETS_LIST_KEY, JSON.stringify(state.list))
+      //     }
+      //   }
+      // }
     },
 
     [SET_USERS_COLORS]({ commit }, params) {
