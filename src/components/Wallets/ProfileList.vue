@@ -2,36 +2,35 @@
   <v-expansion-panels v-model="panels" class="profile-list">
     <v-expansion-panel class="profile-list__inner">
       <v-expansion-panel-header class="profile-list__header" :hide-actions="isDesktop">
-        <v-avatar height="50" width="50" min-width="50" class="profile-list__avatar-wrapper">
-          <img
-            height="45"
-            width="45"
-            class="profile-list__avatar"
-            :src="getSrcAvatar(currentAccountName)"
-            alt="avatar"
-          />
+        <v-avatar
+          height="50"
+          width="50"
+          min-width="50"
+          class="profile-list__avatar-wrapper"
+          :style="`background-image: ${getAvatar(currentProfile)}`"
+        >
+          <v-icon size="60" class="profile-list__avatar-icon">mdi-account-circle</v-icon>
         </v-avatar>
-        <span class="profile-list__name">{{ currentAccountName }}</span>
+        <span class="profile-list__name">{{ currentProfile.username }}</span>
       </v-expansion-panel-header>
       <v-expansion-panel-content>
         <v-list class="profile-list__list-account py-0">
           <v-list-item
-            v-for="account in accounts"
-            :key="account.id"
+            v-for="profile in restProfiles"
+            :key="profile.accountId"
             class="profile-list__list-item"
-            @click="setAccount(account.id)"
+            @click="setProfile(profile.accountId)"
           >
-            <v-avatar height="50" width="50" min-width="50" class="profile-list__avatar-wrapper">
-              <img
-                height="45"
-                width="45"
-                class="profile-list__avatar-item"
-                :src="getSrcAvatar(account.name)"
-                alt="avatar-item"
-                loading="lazy"
-              />
+            <v-avatar
+              height="50"
+              width="50"
+              min-width="50"
+              class="profile-list__avatar-wrapper"
+              :style="`background-image: ${getAvatar(profile)}`"
+            >
+              <v-icon size="60" class="profile-list__avatar-icon">mdi-account-circle</v-icon>
             </v-avatar>
-            <span>{{ account.name }}</span>
+            <span>{{ profile.username }}</span>
           </v-list-item>
           <button class="profile-list__add-new-profile" @click="toSecurityInfo">+ Add profile</button>
         </v-list>
@@ -42,7 +41,8 @@
 
 <script>
 import { mapActions } from 'vuex'
-import { MODULE_NAME as WALLETS_MODULE, SET_ACCOUNT_ID } from '@/store/modules/Wallets'
+import { MODULE_PROFILE, SET_PROFILE } from '@/store/modules/Profile'
+import { Base64 } from 'js-base64'
 
 export default {
   name: 'ProfileList',
@@ -57,32 +57,34 @@ export default {
       return this.mediaQueries.desktop
     },
     balance() {
-      return this.$store.getters.walletsSum
+      return this.$store.getters.accountBalance
     },
-    styleParams() {
-      return `height: ${48 * this.accounts.length}px; overflow: auto;`
+    module() {
+      return this.$store.state[MODULE_PROFILE]
     },
-    currentAccount() {
-      return this.$store.getters.currentAccount
+    profiles() {
+      return this.module.profiles
     },
-    accounts() {
-      return this.$store.state[WALLETS_MODULE].list.filter(el => el.id !== this.currentAccount.id)
+    currentProfile() {
+      return this.module.model.profile
     },
-    currentAccountName() {
-      return this.currentAccount.name
+    restProfiles() {
+      return this.profiles.filter(p => p.accountId !== this.currentProfile.accountId)
     }
   },
   methods: {
     ...mapActions({
-      actionSetAccount: SET_ACCOUNT_ID
+      actionSetProfile: SET_PROFILE
     }),
-    setAccount(id) {
+    setProfile(id) {
+      this.actionSetProfile(id)
       this.$router.push({ name: 'Wallets', query: null })
-      this.actionSetAccount(id)
       this.panels = []
     },
-    getSrcAvatar(name) {
-      return `https://identicon-api.herokuapp.com/${name}/96?format=png`
+    getAvatar({ accountId }) {
+      const { background } = this.profiles.find(p => p.accountId === accountId)
+      const svgBase64 = `url("data:image/svg+xml;base64,${Base64.encode(background)}")`
+      return svgBase64
     },
     toSecurityInfo() {
       return this.$router.push({ name: 'SecurityInfo' })
@@ -133,6 +135,11 @@ export default {
     margin-right: 12px;
     flex: 0 !important;
     border-radius: 50% !important;
+    position: relative;
+  }
+  &__avatar-icon {
+    color: white !important;
+    opacity: 0.6;
   }
   &__list-account {
     margin: 0 -24px -6px;

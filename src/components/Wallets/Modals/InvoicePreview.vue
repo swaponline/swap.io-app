@@ -163,12 +163,12 @@ export default {
     date() {
       return new Date().toLocaleDateString()
     },
-    siblingList() {
-      return this.$store.getters.siblingList
+    currentSubWallets() {
+      return this.$store.getters.currentSubWallets
     },
     currentWallet() {
-      if (this.address && this.siblingList) {
-        return this.siblingList.find(el => el.address === this.address)
+      if (this.address && this.currentSubWallets) {
+        return this.currentSubWallets.find(el => el.address === this.address)
       }
       return {}
     },

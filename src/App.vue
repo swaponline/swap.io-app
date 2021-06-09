@@ -32,7 +32,7 @@ export default {
   },
   computed: {
     userColorTheme() {
-      return this.$store.state[MODULE_PROFILE].model
+      return this.$store.state[MODULE_PROFILE].model.profile
     }
   },
   watch: {
@@ -41,7 +41,7 @@ export default {
       deep: true,
       handler(newTheme) {
         document.documentElement.style.setProperty('--main-color', newTheme.color)
-        document.documentElement.style.setProperty('--color-selection', newTheme.colorSelection)
+        document.documentElement.style.setProperty('--selection-color', newTheme.selectionColor)
 
         if (newTheme.background.includes('linear-gradient')) {
           document.documentElement.style.setProperty('--background-app', newTheme.background)

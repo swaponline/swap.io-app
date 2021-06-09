@@ -9,7 +9,7 @@
 
 // Переопределяем фон для выделенных элементов
 ::selection {
-  background: var(--color-selection);
+  background: var(--selection-color);
   color: $--black;
 }
 

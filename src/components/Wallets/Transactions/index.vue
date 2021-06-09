@@ -63,15 +63,15 @@ export default {
     filterType() {
       return this.tabs.find(tab => tab.id === +this.activeTab)
     },
-    siblingList() {
-      return this.$store.getters.siblingList
+    currentSubWallets() {
+      return this.$store.getters.currentSubWallets
     },
     loading() {
       return this.$store.state[TRANSACTIONS_MODULE].loading
     },
     currentWallet() {
-      if (this.wallet && this.siblingList) {
-        return this.siblingList.find(el => el.address === this.$route.params.walletAddress) || {}
+      if (this.wallet && this.currentSubWallets) {
+        return this.currentSubWallets.find(el => el.address === this.$route.params.walletAddress) || {}
       }
       return {}
     }

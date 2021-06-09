@@ -29,7 +29,7 @@
       </div>
     </div>
     <div class="wallet-create-modal__links">
-      <a class="wallet-create-modal__link">Resore from 24-word seed</a>
+      <a class="wallet-create-modal__link">Restore from 24-word seed</a>
       <a class="wallet-create-modal__link">Connect wallet</a>
     </div>
   </modal-wrapper>

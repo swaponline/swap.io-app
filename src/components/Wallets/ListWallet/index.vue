@@ -18,8 +18,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-import { GET_ACCOUNT_ID } from '@/store/modules/Wallets'
 import { MatchMedia } from 'vue-component-media-queries'
 //  components
 import ProfileList from '../ProfileList.vue'
@@ -29,25 +27,11 @@ import ListItem from './Item.vue'
 
 export default {
   name: 'ListWallet',
-  components: {
-    ProfileList,
-    TotalWalletSum,
-    MatchMedia,
-    ListGroup,
-    ListItem
-  },
+  components: { ProfileList, TotalWalletSum, MatchMedia, ListGroup, ListItem },
   computed: {
     wallets() {
-      return this.$store.getters.currentListWallets
+      return this.$store.getters.currentWallets
     }
-  },
-  mounted() {
-    this.actionGetAccountId()
-  },
-  methods: {
-    ...mapActions({
-      actionGetAccountId: GET_ACCOUNT_ID
-    })
   }
 }
 </script>

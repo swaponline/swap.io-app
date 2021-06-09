@@ -8,7 +8,7 @@
 
 <script>
 import { mapActions } from 'vuex'
-import { UPDATE_WALLET_NAME } from '@/store/modules/Wallets'
+import { UPDATE_WALLET } from '@/store/modules/Profile'
 import ModalWrapper from '@/components/UI/ModalWrapper.vue'
 import FormField from '@/components/UI/Forms/TextField.vue'
 
@@ -31,7 +31,7 @@ export default {
   },
   computed: {
     wallet() {
-      return this.$store.getters.siblingList.find(wallet => wallet.address === this.walletId)
+      return this.$store.getters.currentSubWallets.find(wallet => wallet.address === this.walletId)
     },
     walletName() {
       return this.wallet.name
@@ -47,7 +47,7 @@ export default {
   },
   methods: {
     ...mapActions({
-      actionUpdateWalletName: UPDATE_WALLET_NAME
+      actionUpdateWallet: UPDATE_WALLET
     }),
     hide() {
       this.$emit('toggle', false)
@@ -56,7 +56,7 @@ export default {
       this.$emit('close')
     },
     save() {
-      if (this.name.trim()) this.actionUpdateWalletName({ ...this.wallet, name: this.name })
+      if (this.name.trim()) this.actionUpdateWallet({ ...this.wallet, name: this.name })
       this.close()
     }
   }

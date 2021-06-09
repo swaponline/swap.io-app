@@ -26,8 +26,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-import { GET_ACCOUNT_ID } from '@/store/modules/Wallets'
 import SwapWalletGroup from './WalletGroup.vue'
 import SwapWalletItem from './WalletItem.vue'
 import ExternalForm from './ExternalForm.vue'
@@ -48,16 +46,10 @@ export default {
   },
   computed: {
     wallets() {
-      return this.$store.getters.currentListWallets
+      return this.$store.getters.currentWallets
     }
   },
-  mounted() {
-    this.actionGetAccountId()
-  },
   methods: {
-    ...mapActions({
-      actionGetAccountId: GET_ACCOUNT_ID
-    }),
     openExternalForm() {
       this.isOpenExternalForm = !this.isOpenExternalForm
     },
