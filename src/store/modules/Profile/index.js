@@ -649,7 +649,7 @@ export default {
 
     [SET_USERS_COLORS]({ commit }, params) {
       commit(UPDATE_MODEL, { name: MODULE_PROFILE, model: { ...params } })
-      setStorage(USERS_THEMES_KEY, params)
+      // setStorage(USERS_THEMES_KEY, params)
     },
     [CREATING_OR_RECOVERING_PROFILE]({ commit }, value) {
       commit(UPDATE_OBJECT_PROPERTY, { path: MODULE_PROFILE, key: IS_CREATING_OR_RECOVERING, value })
