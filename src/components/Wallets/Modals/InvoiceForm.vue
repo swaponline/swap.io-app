@@ -128,7 +128,9 @@ export default {
     }
   },
   created() {
-    this.selectedWallet = this.address
+    if (this.address && this.wallets) {
+      this.selectedWallet = this.wallets.find(el => el.address === this.address)
+    }
   },
   methods: {
     convertAmountToOtherCurrency,
