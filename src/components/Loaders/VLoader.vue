@@ -20,7 +20,7 @@
         d="M17.25 8.25l11.25-3V39l-11.25-3.375V8.25z"
         fill="var(--main-color)"
       />
-      <path ill-rule="evenodd" clip-rule="evenodd" d="M34.5 12H48L34.5 29.25V12z" fill="var(--main-color)" />
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M34.5 12H48L34.5 29.25V12z" fill="var(--main-color)" />
     </svg>
   </vue-element-loading>
 </template>
