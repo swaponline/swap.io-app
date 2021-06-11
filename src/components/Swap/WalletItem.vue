@@ -3,14 +3,14 @@
     link
     exact
     class="swap-wallet-item"
-    @click="$emit('selectWallet', { nameCurrency, wallet: subWallets[0].address })"
+    @click="$emit('selectWallet', { currencyName, wallet: subWallets[0].address })"
   >
     <v-list-item-icon class="swap-wallet-item__icon-wrapper">
       <svg-icon class="swap-wallet-item__icon" name="btc" />
     </v-list-item-icon>
     <v-list-item-content>
       <v-list-item-title class="swap-wallet-item__title">
-        <span class="swap-wallet-item__currency">{{ nameCurrency }}</span>
+        <span class="swap-wallet-item__currency">{{ currencyName }}</span>
         <span>{{ value }}</span>
         <span class="swap-wallet-item__name">{{ subWallets[0].name }}</span>
       </v-list-item-title>
@@ -26,7 +26,7 @@ export default {
       type: String,
       default: ''
     },
-    nameCurrency: {
+    currencyName: {
       type: String,
       default: ''
     },

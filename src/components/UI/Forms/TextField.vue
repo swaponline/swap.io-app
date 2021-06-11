@@ -1,6 +1,6 @@
 <template>
   <div class="form-text-field" :class="{ 'form-text-field--with-label': label }">
-    <v-text-field v-bind="$attrs" :label="label" v-on="$listeners">
+    <v-text-field v-bind="$attrs" :label="label" color="grey" v-on="$listeners">
       <template #append>
         <slot name="append"></slot>
       </template>
@@ -47,7 +47,7 @@ export default {
     padding: 0 8px;
   }
   &:focus-within {
-    border-color: $--blue;
+    border-color: var(--main-color);
   }
   // переопределим стили vuetify
   .v-input {

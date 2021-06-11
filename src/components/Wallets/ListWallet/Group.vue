@@ -2,10 +2,10 @@
   <v-list-group class="list-wallet-group" color="black" active-class="list-wallet-group--active" append-icon="">
     <template #activator>
       <v-list-item-icon class="list-wallet-group__icon-wrapper">
-        <cryptoicon :symbol="nameCurrency.toLowerCase()" size="45" />
+        <cryptoicon :symbol="currencyName.toLowerCase()" size="45" />
       </v-list-item-icon>
       <v-list-item-title class="list-wallet-group__header">
-        <span class="list-wallet-group__currency">{{ nameCurrency }} </span>
+        <span class="list-wallet-group__currency">{{ currencyName }} </span>
         <span>{{ value }}</span>
         <span class="list-wallet-group__name">{{ subWallets.length }} wallet</span>
       </v-list-item-title>
@@ -36,7 +36,7 @@ export default {
       type: String,
       default: 'my wallet'
     },
-    nameCurrency: {
+    currencyName: {
       type: String,
       default: ''
     },

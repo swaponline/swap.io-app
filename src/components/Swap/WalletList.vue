@@ -61,8 +61,8 @@ export default {
     openExternalForm() {
       this.isOpenExternalForm = !this.isOpenExternalForm
     },
-    setWallet({ nameCurrency, wallet }) {
-      this.$emit('setWallet', { nameCurrency, wallet })
+    setWallet({ currencyName, wallet }) {
+      this.$emit('setWallet', { currencyName, wallet })
     }
   }
 }

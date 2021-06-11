@@ -57,7 +57,7 @@ export default {
       return this.mediaQueries.desktop
     },
     balance() {
-      return this.$store.getters.walletsSumm
+      return this.$store.getters.walletsSum
     },
     styleParams() {
       return `height: ${48 * this.accounts.length}px; overflow: auto;`

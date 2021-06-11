@@ -15,7 +15,7 @@
       ></v-text-field>
       <button
         class="swap-form__menu-button"
-        :class="{ 'swap-form__menu-button--select': fromWallet.nameCurrency }"
+        :class="{ 'swap-form__menu-button--select': fromWallet.currencyName }"
         @click="openList('from')"
       >
         {{ fromNameCurrency }}
@@ -45,7 +45,7 @@
       ></v-text-field>
       <button
         class="swap-form__menu-button"
-        :class="{ 'swap-form__menu-button--select': toWallet.nameCurrency }"
+        :class="{ 'swap-form__menu-button--select': toWallet.currencyName }"
         @click="openList('to')"
       >
         {{ toNameCurrency }}
@@ -112,10 +112,10 @@ export default {
   },
   computed: {
     fromNameCurrency() {
-      return this.fromWallet.nameCurrency || 'BTC'
+      return this.fromWallet.currencyName || 'BTC'
     },
     toNameCurrency() {
-      return this.toWallet.nameCurrency || 'BTC'
+      return this.toWallet.currencyName || 'BTC'
     },
     fromHintValue() {
       return this.fromWallet.wallet

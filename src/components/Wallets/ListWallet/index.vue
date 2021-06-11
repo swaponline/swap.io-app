@@ -5,7 +5,7 @@
     </match-media>
     <div class="list-wallet__wrapper">
       <div class="list-wallet__header">
-        <total-wallet-summ />
+        <total-wallet-sum />
       </div>
       <v-list class="list-wallet__body pt-0 ">
         <v-list-item v-for="wallet in wallets" :key="wallet.name" class="list-wallet__item px-0">
@@ -23,7 +23,7 @@ import { GET_ACCOUNT_ID } from '@/store/modules/Wallets'
 import { MatchMedia } from 'vue-component-media-queries'
 //  components
 import ProfileList from '../ProfileList.vue'
-import TotalWalletSumm from './TotalWalletSumm.vue'
+import TotalWalletSum from './TotalWalletSum.vue'
 import ListGroup from './Group.vue'
 import ListItem from './Item.vue'
 
@@ -31,7 +31,7 @@ export default {
   name: 'ListWallet',
   components: {
     ProfileList,
-    TotalWalletSumm,
+    TotalWalletSum,
     MatchMedia,
     ListGroup,
     ListItem

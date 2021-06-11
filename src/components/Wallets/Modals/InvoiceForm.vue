@@ -1,17 +1,9 @@
 <template>
   <modal-wrapper :value="value" title="Invoice form" @input="hide" @submit="submit" @cancel="close">
     <div class="invoice-form">
-      <form-indent v-if="selectAddress" title="Wallet balance:" :text="selectAddress" class="mb-8" />
+      <form-indent v-if="selectedWallet" title="Wallet balance:" :text="selectedWallet.address" class="mb-8" />
 
-      <form-selector
-        v-if="!address"
-        v-model="selectAddress"
-        :items="wallets"
-        item-text="address"
-        item-value="address"
-        label="Your wallet"
-        outlined
-      ></form-selector>
+      <wallet-selector v-if="!address" v-model="selectedWallet" :items="wallets" />
 
       <form-text-field v-model="contact" color="grey" required label="Bill to"></form-text-field>
 
@@ -19,26 +11,24 @@
 
       <div class="d-flex">
         <form-selector
-          v-model="type"
+          v-model="invoiceType"
           return-object
           outlined
           item-text="label"
           item-value="id"
-          color="blue"
           class="invoice-form__long-field"
-          :items="types"
+          :items="$options.INVOICE_TYPES"
         ></form-selector>
 
         <form-selector
           v-model="currency"
           outlined
-          color="blue"
-          :items="currencies"
+          :items="$options.CURRENCIES"
           class="invoice-form__short-field"
         ></form-selector>
       </div>
 
-      <div v-for="field in amountFields" :key="field.id" class="d-flex">
+      <div v-for="(field, index) in amountFields" :key="index" class="d-flex align-center">
         <form-text-field
           v-model="field.description"
           label="Description"
@@ -46,9 +36,9 @@
         ></form-text-field>
 
         <form-text-field
-          v-if="type.id !== 1"
+          v-if="invoiceType.id !== 1"
           v-model="field.quantity"
-          :label="type.labelQuantity"
+          :label="invoiceType.labelQuantity"
           class="invoice-form__short-field"
         ></form-text-field>
 
@@ -56,23 +46,16 @@
           v-model="field.amount"
           type="number"
           min="0"
-          step="any"
           class="invoice-form__short-field"
-          :label="type.labelItemPrice"
+          :label="invoiceType.labelItemPrice"
         ></form-text-field>
 
-        <v-btn
-          depressed
-          color="white"
-          class="invoice-form__remove-button align-self-center"
-          min-width="20"
-          @click="removeField(field)"
-        >
+        <v-btn depressed icon class="invoice-form__remove-button" min-width="20" @click="removeField(field)">
           <v-icon>mdi-close</v-icon>
         </v-btn>
       </div>
 
-      <v-btn class="invoice-form__add-button px-0" color="blue" text @click="addAmountField">
+      <v-btn class="invoice-form__add-button px-0" color="var(--main-color)" text @click="addAmountField">
         <span class="text-left flex-grow-1">+ Add Another Item</span>
       </v-btn>
 
@@ -81,8 +64,8 @@
       <span class="invoice-form__amount">
         <span>Amount: </span>
         <span>
-          <span class="invoice-form__currency-name">USD</span>
-          {{ summ }}
+          <span class="invoice-form__currency-name">{{ currency }}</span>
+          {{ totalConvertedAmount }}
         </span>
       </span>
     </div>
@@ -98,55 +81,59 @@ import FormTextField from '@/components/UI/Forms/TextField.vue'
 import FormSelector from '@/components/UI/Forms/Selector.vue'
 import FormIndent from '@/components/UI/Forms/Indent.vue'
 import ModalWrapper from '@/components/UI/ModalWrapper.vue'
+import WalletSelector from '@/components/Wallets/WalletSelector.vue'
+
+import { currencies, convertAmountToOtherCurrency } from '@/services/converter'
+
+const INVOICE_TYPES = [
+  { id: 1, label: 'Amount only', labelItemPrice: 'Amount' },
+  { id: 2, label: 'Hourly', labelQuantity: 'Hours', labelItemPrice: 'Rate' },
+  { id: 3, label: 'Quantity', labelQuantity: 'Quantity', labelItemPrice: 'Item price' }
+]
+
+function generateFieldModel() {
+  return { description: null, quantity: null, amount: null }
+}
 
 export default {
   name: 'InvoiceForm',
-  components: {
-    ModalWrapper,
-    FormTextField,
-    FormSelector,
-    FormIndent
-  },
+  components: { ModalWrapper, FormTextField, FormSelector, FormIndent, WalletSelector },
+  INVOICE_TYPES,
+  CURRENCIES: currencies,
   props: {
-    value: {
-      type: Boolean,
-      default: false
-    },
-    address: {
-      type: String,
-      default: ''
-    }
+    value: { type: Boolean, default: false },
+    address: { type: String, default: '' }
   },
   data() {
     return {
+      selectedWallet: null,
       contact: 'as123asdfascd',
-      amountFields: [{ id: 1, description: null, quantity: null, amount: null }],
-      currency: 'USD',
-      type: { id: 1, label: 'Amount only', labelItemPrice: 'Amount' },
-      types: [
-        { id: 1, label: 'Amount only', labelItemPrice: 'Amount' },
-        { id: 2, label: 'Hourly', labelQuantity: 'Hours', labelItemPrice: 'Rate' },
-        { id: 3, label: 'Quantity', labelQuantity: 'Quantity', labelItemPrice: 'Item price' }
-      ],
-      currencies: ['USD', 'BTC', 'ETH'],
-      selectAddress: null
+      amountFields: [generateFieldModel()],
+      currency: currencies[0],
+      invoiceType: INVOICE_TYPES[0]
     }
   },
   computed: {
     wallets() {
       return this.$store.getters.siblingList
     },
-    summ() {
-      return this.amountFields.reduce((summ, el) => {
-        const quantity = this.type.id !== 1 ? el.quantity : 1
-        return summ + +el.amount * quantity
+    sumAmount() {
+      return this.amountFields.reduce((sum, el) => {
+        const quantity = this.invoiceType.id !== 1 ? el.quantity : 1
+        return sum + +el.amount * quantity
       }, 0)
+    },
+    totalConvertedAmount() {
+      return convertAmountToOtherCurrency(this.sumAmount, this.selectedWallet.nameCarrency, this.currency)
     }
   },
   created() {
-    this.selectAddress = this.address
+    if (this.address && this.wallets) {
+      this.selectedWallet = this.wallets.find(el => el.address === this.address)
+    }
   },
   methods: {
+    convertAmountToOtherCurrency,
     ...mapMutations({
       mutationAddModal: ADD_MODAL
     }),
@@ -157,27 +144,25 @@ export default {
       this.$emit('close')
     },
     submit() {
-      this.mutationAddModal({
-        name: INVOICE_PREVIEW,
-        info: {
-          contact: this.contact,
-          type: this.type,
-          amountFields: this.amountFields,
-          currency: this.currency,
-          address: this.address,
-          summ: this.summ
-        }
-      })
+      if (this.selectedWallet) {
+        this.mutationAddModal({
+          name: INVOICE_PREVIEW,
+          info: {
+            contact: this.contact,
+            type: this.invoiceType,
+            amountFields: this.amountFields,
+            currency: this.currency,
+            address: this.selectedWallet.address,
+            sum: this.sumAmount
+          }
+        })
+      }
     },
     addAmountField() {
-      const lastField = this.amountFields[this.amountFields.length - 1]
-      const id = lastField ? lastField.id + 1 : 1
-      this.amountFields.push({ id, description: null, quantity: null, amount: null })
+      this.amountFields.push(generateFieldModel())
     },
     removeField(field) {
-      if (field) {
-        this.amountFields.splice(this.amountFields.indexOf(field), 1)
-      }
+      this.amountFields.splice(this.amountFields.indexOf(field), 1)
     }
   }
 }
@@ -207,22 +192,18 @@ export default {
     }
   }
   &__remove-button {
-    margin-bottom: 25px;
+    margin-bottom: 16px;
     margin-left: 16px;
     padding: 0 0 !important;
     @include tablet {
       margin-left: 8px !important;
     }
-    &::before {
-      display: none;
-    }
   }
   &__add-button {
-    height: auto !important;
     font-weight: $--font-weight-bold;
     text-transform: none;
     flex-grow: 0;
-    margin: 25px 0;
+    margin: 10px 0;
     width: 100%;
     @include phone {
       margin-top: 20px;

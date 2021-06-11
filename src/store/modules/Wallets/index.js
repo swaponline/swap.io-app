@@ -18,13 +18,13 @@ export default {
         name: 'Vasilii',
         list: [
           {
-            nameCurrency: 'BTC',
+            currencyName: 'BTC',
             name: 'my Wallet',
             value: 0.056734,
             icon: 'btc',
             subWallets: [
               {
-                nameCurrency: 'BTC',
+                currencyName: 'BTC',
                 name: 'Default',
                 value: 0.056734,
                 address: '1C9Uae6kyDtPo4ykzd5AJaLzLEZSpEbP3y'
@@ -32,24 +32,24 @@ export default {
             ]
           },
           {
-            nameCurrency: 'ETH',
+            currencyName: 'ETH',
             name: 'my multisig',
             value: 43.0561,
             subWallets: [
               {
-                nameCurrency: 'ETH',
+                currencyName: 'ETH',
                 name: 'Default',
                 value: 40.0561,
                 address: '0xd19615f2Eab2ABfBF7ca16618b5eD43386374DD0'
               },
               {
-                nameCurrency: 'ETH',
+                currencyName: 'ETH',
                 name: 'Swaps',
                 value: 3.0,
                 address: '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D'
               },
               {
-                nameCurrency: 'ETH',
+                currencyName: 'ETH',
                 name: 'Expenses',
                 value: 0.0,
                 address: '0x7a250d5630B4cF539739dF2C5dAcb4c659F24882'
@@ -57,11 +57,11 @@ export default {
             ]
           },
           {
-            nameCurrency: 'USDT',
+            currencyName: 'USDT',
             value: 100.1,
             subWallets: [
               {
-                nameCurrency: 'USDT',
+                currencyName: 'USDT',
                 name: 'Default',
                 value: 100.1,
                 address: 'GUzPzmRhx5VgsYH3vZjGjLgtFQMHkJzyHU'
@@ -75,11 +75,11 @@ export default {
         name: 'Corporat',
         list: [
           {
-            nameCurrency: 'ETH',
+            currencyName: 'ETH',
             value: 43.0561,
             subWallets: [
               {
-                nameCurrency: 'ETH',
+                currencyName: 'ETH',
                 name: 'Default',
                 value: 40.0561,
                 address: '0xd19615f2Eab2ABfBF7ca16618b5eD43386374DD0'
@@ -93,13 +93,13 @@ export default {
         name: 'Millionaire',
         list: [
           {
-            nameCurrency: 'BTC',
+            currencyName: 'BTC',
             name: 'my Wallet 1',
             value: 0.056734,
             icon: 'btc',
             subWallets: [
               {
-                nameCurrency: 'BTC',
+                currencyName: 'BTC',
                 name: 'Default',
                 value: 0.056734,
                 address: '1C9Uae6kyDtPo4ykzd5AJaLzLEZSpEbP3y'
@@ -107,24 +107,24 @@ export default {
             ]
           },
           {
-            nameCurrency: 'ETH',
+            currencyName: 'ETH',
             name: 'my multisig 1',
             value: 43.0561,
             subWallets: [
               {
-                nameCurrency: 'ETH',
+                currencyName: 'ETH',
                 name: 'Default',
                 value: 40.0561,
                 address: '0xd19615f2Eab2ABfBF7ca16618b5eD43386374DD0'
               },
               {
-                nameCurrency: 'ETH',
+                currencyName: 'ETH',
                 name: 'Swaps',
                 value: 3.0,
                 address: '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D'
               },
               {
-                nameCurrency: 'ETH',
+                currencyName: 'ETH',
                 name: 'Expenses',
                 value: 0.0,
                 address: '0x7a250d5630B4cF539739dF2C5dAcb4c659F24882'
@@ -132,11 +132,11 @@ export default {
             ]
           },
           {
-            nameCurrency: 'USDT',
+            currencyName: 'USDT',
             value: 100.1,
             subWallets: [
               {
-                nameCurrency: 'USDT',
+                currencyName: 'USDT',
                 name: 'Default',
                 value: 100.1,
                 address: 'GUzPzmRhx5VgsYH3vZjGjLgtFQMHkJzyHU'
@@ -144,12 +144,12 @@ export default {
             ]
           },
           {
-            nameCurrency: 'BTCP',
+            currencyName: 'BTCP',
             name: 'my Wallet 2',
             value: 0.056734,
             subWallets: [
               {
-                nameCurrency: 'BTCP',
+                currencyName: 'BTCP',
                 name: 'Default',
                 value: 0.056734,
                 address: '1C9Uae6kyDtPo4ykzd5AdJaLzLEZSpEbP3y'
@@ -157,11 +157,11 @@ export default {
             ]
           },
           {
-            nameCurrency: 'CC',
+            currencyName: 'CC',
             value: 100.1,
             subWallets: [
               {
-                nameCurrency: 'CC',
+                currencyName: 'CC',
                 name: 'Default',
                 value: 100.1,
                 address: 'GUzPzamRhx5VgsYH3vZjGjLgtFQMHkJzyHU'
@@ -169,13 +169,13 @@ export default {
             ]
           },
           {
-            nameCurrency: 'ETN',
+            currencyName: 'ETN',
             name: 'my Wallet 3',
             value: 0.056734,
             icon: 'btc',
             subWallets: [
               {
-                nameCurrency: 'ETN',
+                currencyName: 'ETN',
                 name: 'Default',
                 value: 0.056734,
                 address: '1C9Uae6kyDtPos4ykzd5AJaLzLEZSpEbP3y'
@@ -183,13 +183,13 @@ export default {
             ]
           },
           {
-            nameCurrency: 'DASH',
+            currencyName: 'DASH',
             name: 'my Wallet 4',
             value: 0.056734,
             icon: 'btc',
             subWallets: [
               {
-                nameCurrency: 'DASH',
+                currencyName: 'DASH',
                 name: 'Default',
                 value: 0.056734,
                 address: '1C9dUae6kyDtPo4ykzd5AJaLzLEZSpEbP3y'
@@ -197,11 +197,11 @@ export default {
             ]
           },
           {
-            nameCurrency: 'DBC',
+            currencyName: 'DBC',
             value: 100.1,
             subWallets: [
               {
-                nameCurrency: 'DBC',
+                currencyName: 'DBC',
                 name: 'Default',
                 value: 100.1,
                 address: 'GUzPzmRhx5VgsYH3vfZjGjLgtFQMHkJzyHU'
@@ -209,13 +209,13 @@ export default {
             ]
           },
           {
-            nameCurrency: 'ENTRP',
+            currencyName: 'ENTRP',
             name: 'my Wallet 11',
             value: 0.056734,
             icon: 'btc',
             subWallets: [
               {
-                nameCurrency: 'ENTRP',
+                currencyName: 'ENTRP',
                 name: 'Default',
                 value: 0.056734,
                 address: '1C9Uae6kvyDtPo4ykzd5AJaLzLEZSpEbP3y'
@@ -223,11 +223,11 @@ export default {
             ]
           },
           {
-            nameCurrency: 'EOS',
+            currencyName: 'EOS',
             value: 100.1,
             subWallets: [
               {
-                nameCurrency: 'EOS',
+                currencyName: 'EOS',
                 name: 'Default',
                 value: 100.1,
                 address: 'GUzPzmRhx5VcgsYH3vZjGjLgtFQMHkJzyHU'
@@ -235,13 +235,13 @@ export default {
             ]
           },
           {
-            nameCurrency: 'CND',
+            currencyName: 'CND',
             name: 'my Wallet 12',
             value: 0.056734,
             icon: 'btc',
             subWallets: [
               {
-                nameCurrency: 'CND',
+                currencyName: 'CND',
                 name: 'Default',
                 value: 0.056734,
                 address: '1C9Uae6kyxDtPo4ykzd5AJaLzLEZSpEbP3y'
@@ -249,11 +249,11 @@ export default {
             ]
           },
           {
-            nameCurrency: 'CVC',
+            currencyName: 'CVC',
             value: 100.1,
             subWallets: [
               {
-                nameCurrency: 'CVC',
+                currencyName: 'CVC',
                 name: 'Default',
                 value: 100.1,
                 address: 'GUzzPzmRhx5VgsYH3vZjGjLgtFQMHkJzyHU'
@@ -261,13 +261,13 @@ export default {
             ]
           },
           {
-            nameCurrency: 'ICX',
+            currencyName: 'ICX',
             name: 'my Wallet 13',
             value: 0.056734,
             icon: 'btc',
             subWallets: [
               {
-                nameCurrency: 'ICX',
+                currencyName: 'ICX',
                 name: 'Default',
                 value: 0.056734,
                 address: '1C9Uae6kyDtPo4ykzd5sAJaLzLEZSpEbP3y'
@@ -275,11 +275,11 @@ export default {
             ]
           },
           {
-            nameCurrency: 'INK',
+            currencyName: 'INK',
             value: 100.1,
             subWallets: [
               {
-                nameCurrency: 'INK',
+                currencyName: 'INK',
                 name: 'Default',
                 value: 100.1,
                 address: 'GUzPzmRhx5VgsYH3vZjGjLgtFQMHkJzywHU'
@@ -287,13 +287,13 @@ export default {
             ]
           },
           {
-            nameCurrency: 'IGNIS',
+            currencyName: 'IGNIS',
             name: 'my Wallet 1ф',
             value: 0.056734,
             icon: 'btc',
             subWallets: [
               {
-                nameCurrency: 'IGNIS',
+                currencyName: 'IGNIS',
                 name: 'Default',
                 value: 0.056734,
                 address: '1C9Uae6kyDtPo4ykzd5AJaLzLEZeSpEbP3y'
@@ -301,11 +301,11 @@ export default {
             ]
           },
           {
-            nameCurrency: 'EQUA',
+            currencyName: 'EQUA',
             value: 100.1,
             subWallets: [
               {
-                nameCurrency: 'EQUA',
+                currencyName: 'EQUA',
                 name: 'Default',
                 value: 100.1,
                 address: 'GUzPzmRhx5VgsYH3vZjGjLgtFQMHkJzyrHU'
@@ -313,13 +313,13 @@ export default {
             ]
           },
           {
-            nameCurrency: 'BTC',
+            currencyName: 'BTC',
             name: 'my Wallet 1sa',
             value: 0.056734,
             icon: 'btc',
             subWallets: [
               {
-                nameCurrency: 'BTC',
+                currencyName: 'BTC',
                 name: 'Default',
                 value: 0.056734,
                 address: '1C9Uae6kyDtPo4ykzd5AJaLzLEZSpEbP3y'
@@ -327,24 +327,24 @@ export default {
             ]
           },
           {
-            nameCurrency: 'ETH',
+            currencyName: 'ETH',
             name: 'my multisig 1d',
             value: 43.0561,
             subWallets: [
               {
-                nameCurrency: 'ETH',
+                currencyName: 'ETH',
                 name: 'Default',
                 value: 40.0561,
                 address: '0xd19615f2Eab2ABfBF7ca16618b5eD43386374DD0'
               },
               {
-                nameCurrency: 'ETH',
+                currencyName: 'ETH',
                 name: 'Swaps',
                 value: 3.0,
                 address: '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D'
               },
               {
-                nameCurrency: 'ETH',
+                currencyName: 'ETH',
                 name: 'Expenses',
                 value: 0.0,
                 address: '0x7a250d5630B4cF539739dF2C5dAcb4c659F24882'
@@ -352,11 +352,11 @@ export default {
             ]
           },
           {
-            nameCurrency: 'USDT',
+            currencyName: 'USDT',
             value: 100.1,
             subWallets: [
               {
-                nameCurrency: 'USDT',
+                currencyName: 'USDT',
                 name: 'Default',
                 value: 100.1,
                 address: 'GUzPzmRhx5VgsYH3vZjGjLgtFQMHkJzyHU'
@@ -364,12 +364,12 @@ export default {
             ]
           },
           {
-            nameCurrency: 'BTCP',
+            currencyName: 'BTCP',
             name: 'my Wallet 2d',
             value: 0.056734,
             subWallets: [
               {
-                nameCurrency: 'BTCP',
+                currencyName: 'BTCP',
                 name: 'Default',
                 value: 0.056734,
                 address: '1C9Uae6kyDtPo4ykzd5AdJaLzLEZSpEbP3y'
@@ -377,11 +377,11 @@ export default {
             ]
           },
           {
-            nameCurrency: 'CC',
+            currencyName: 'CC',
             value: 100.1,
             subWallets: [
               {
-                nameCurrency: 'CC',
+                currencyName: 'CC',
                 name: 'Default',
                 value: 100.1,
                 address: 'GUzPzamRhx5VgsYH3vZjGjLgtFQMHkJzyHU'
@@ -389,13 +389,13 @@ export default {
             ]
           },
           {
-            nameCurrency: 'ETN',
+            currencyName: 'ETN',
             name: 'my Wallet 3d',
             value: 0.056734,
             icon: 'btc',
             subWallets: [
               {
-                nameCurrency: 'ETN',
+                currencyName: 'ETN',
                 name: 'Default',
                 value: 0.056734,
                 address: '1C9Uae6kyDtPos4ykzd5AJaLzLEZSpEbP3y'
@@ -403,13 +403,13 @@ export default {
             ]
           },
           {
-            nameCurrency: 'DASH',
+            currencyName: 'DASH',
             name: 'my Wallet 4d',
             value: 0.056734,
             icon: 'btc',
             subWallets: [
               {
-                nameCurrency: 'DASH',
+                currencyName: 'DASH',
                 name: 'Default',
                 value: 0.056734,
                 address: '1C9dUae6kyDtPo4ykzd5AJaLzLEZSpEbP3y'
@@ -417,11 +417,11 @@ export default {
             ]
           },
           {
-            nameCurrency: 'DBC',
+            currencyName: 'DBC',
             value: 100.1,
             subWallets: [
               {
-                nameCurrency: 'DBC',
+                currencyName: 'DBC',
                 name: 'Default',
                 value: 100.1,
                 address: 'GUzPzmRhx5VgsYH3vfZjGjLgtFQMHkJzyHU'
@@ -429,13 +429,13 @@ export default {
             ]
           },
           {
-            nameCurrency: 'ENTRP',
+            currencyName: 'ENTRP',
             name: 'my Wallet 11d',
             value: 0.056734,
             icon: 'btc',
             subWallets: [
               {
-                nameCurrency: 'ENTRP',
+                currencyName: 'ENTRP',
                 name: 'Default',
                 value: 0.056734,
                 address: '1C9Uae6kvyDtPo4ykzd5AJaLzLEZSpEbP3y'
@@ -443,11 +443,11 @@ export default {
             ]
           },
           {
-            nameCurrency: 'EOS',
+            currencyName: 'EOS',
             value: 100.1,
             subWallets: [
               {
-                nameCurrency: 'EOS',
+                currencyName: 'EOS',
                 name: 'Default',
                 value: 100.1,
                 address: 'GUzPzmRhx5VcgsYH3vZjGjLgtFQMHkJzyHU'
@@ -455,13 +455,13 @@ export default {
             ]
           },
           {
-            nameCurrency: 'CND',
+            currencyName: 'CND',
             name: 'my Wallet 12d',
             value: 0.056734,
             icon: 'btc',
             subWallets: [
               {
-                nameCurrency: 'CND',
+                currencyName: 'CND',
                 name: 'Default',
                 value: 0.056734,
                 address: '1C9Uae6kyxDtPo4ykzd5AJaLzLEZSpEbP3y'
@@ -469,11 +469,11 @@ export default {
             ]
           },
           {
-            nameCurrency: 'CVC',
+            currencyName: 'CVC',
             value: 100.1,
             subWallets: [
               {
-                nameCurrency: 'CVC',
+                currencyName: 'CVC',
                 name: 'Default',
                 value: 100.1,
                 address: 'GUzzPzmRhx5VgsYH3vZjGjLgtFQMHkJzyHU'
@@ -481,13 +481,13 @@ export default {
             ]
           },
           {
-            nameCurrency: 'ICX',
+            currencyName: 'ICX',
             name: 'my Wallet 13d',
             value: 0.056734,
             icon: 'btc',
             subWallets: [
               {
-                nameCurrency: 'ICX',
+                currencyName: 'ICX',
                 name: 'Default',
                 value: 0.056734,
                 address: '1C9Uae6kyDtPo4ykzd5sAJaLzLEZSpEbP3y'
@@ -495,11 +495,11 @@ export default {
             ]
           },
           {
-            nameCurrency: 'INK',
+            currencyName: 'INK',
             value: 100.1,
             subWallets: [
               {
-                nameCurrency: 'INK',
+                currencyName: 'INK',
                 name: 'Default',
                 value: 100.1,
                 address: 'GUzPzmRhx5VgsYH3vZjGjLgtFQMHkJzywHU'
@@ -507,13 +507,13 @@ export default {
             ]
           },
           {
-            nameCurrency: 'IGNIS',
+            currencyName: 'IGNIS',
             name: 'my Wallet 1d',
             value: 0.056734,
             icon: 'btc',
             subWallets: [
               {
-                nameCurrency: 'IGNIS',
+                currencyName: 'IGNIS',
                 name: 'Default',
                 value: 0.056734,
                 address: '1C9Uae6kyDtPo4ykzd5AJaLzLEZeSpEbP3y'
@@ -521,11 +521,11 @@ export default {
             ]
           },
           {
-            nameCurrency: 'EQUA',
+            currencyName: 'EQUA',
             value: 100.1,
             subWallets: [
               {
-                nameCurrency: 'EQUA',
+                currencyName: 'EQUA',
                 name: 'Default',
                 value: 100.1,
                 address: 'GUzPzmRhx5VgsYH3vZjGjLgtFQMHkJzyrHU'
@@ -549,7 +549,7 @@ export default {
         return acc
       }, [])
     },
-    walletsSumm(state, { currentListWallets }) {
+    walletsSum(state, { currentListWallets }) {
       return currentListWallets?.reduce((balance, el) => {
         return balance + el.value
       }, 0)
@@ -559,7 +559,7 @@ export default {
     [UPDATE_WALLET_NAME]({ state, getters, commit }, wallet) {
       const index = state.list.indexOf(getters.currentAccount)
       if (index > -1) {
-        const indexWalletGroup = getters.currentAccount.list.findIndex(w => w.nameCurrency === wallet.nameCurrency)
+        const indexWalletGroup = getters.currentAccount.list.findIndex(w => w.currencyName === wallet.currencyName)
         if (indexWalletGroup > -1) {
           const indexWallet = getters.currentAccount.list[indexWalletGroup].subWallets.findIndex(
             w => w.address === wallet.address
