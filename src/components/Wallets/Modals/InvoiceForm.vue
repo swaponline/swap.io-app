@@ -124,7 +124,9 @@ export default {
       }, 0)
     },
     totalConvertedAmount() {
-      return convertAmountToOtherCurrency(this.sumAmount, this.selectedWallet.nameCarrency, this.currency)
+      return this.selectedWallet
+        ? convertAmountToOtherCurrency(this.sumAmount, this.selectedWallet.currencyName, this.currency)
+        : null
     }
   },
   created() {
