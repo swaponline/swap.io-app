@@ -3,15 +3,17 @@
     <match-media v-slot="{ desktop }">
       <profile-list v-if="!desktop"></profile-list>
     </match-media>
-    <v-list class="list-wallet__main-list py-0">
-      <v-list-item class="px-0">
-        <total-wallet-summ />
-      </v-list-item>
-      <v-list-item v-for="wallet in wallets" :key="wallet.name" class="list-wallet__wallet-item px-0">
-        <list-item v-if="wallet.subWallets.length === 1" v-bind="wallet"></list-item>
-        <list-group v-else v-bind="wallet"></list-group>
-      </v-list-item>
-    </v-list>
+    <div class="list-wallet__wrapper">
+      <div class="list-wallet__header">
+        <total-wallet-sum />
+      </div>
+      <v-list class="list-wallet__body pt-0 ">
+        <v-list-item v-for="wallet in wallets" :key="wallet.name" class="list-wallet__item px-0">
+          <list-item v-if="wallet.subWallets.length === 1" v-bind="wallet"></list-item>
+          <list-group v-else v-bind="wallet"></list-group>
+        </v-list-item>
+      </v-list>
+    </div>
   </div>
 </template>
 
@@ -21,7 +23,7 @@ import { GET_ACCOUNT_ID } from '@/store/modules/Wallets'
 import { MatchMedia } from 'vue-component-media-queries'
 //  components
 import ProfileList from '../ProfileList.vue'
-import TotalWalletSumm from './TotalWalletSumm.vue'
+import TotalWalletSum from './TotalWalletSum.vue'
 import ListGroup from './Group.vue'
 import ListItem from './Item.vue'
 
@@ -29,7 +31,7 @@ export default {
   name: 'ListWallet',
   components: {
     ProfileList,
-    TotalWalletSumm,
+    TotalWalletSum,
     MatchMedia,
     ListGroup,
     ListItem
@@ -63,16 +65,28 @@ export default {
   @include tablet {
     max-width: none;
   }
-  &__main-list {
+  &__wrapper {
+    position: relative;
     height: 100%;
     overflow: auto;
     background: $--white;
     border-radius: 12px 12px 0 0 !important;
+    padding-bottom: 100px;
     @include tablet {
       border-radius: 0 !important;
+      padding-bottom: 75px;
+    }
+    @include phone {
+      padding-bottom: 0;
     }
   }
-  &__wallet-item {
+  &__header {
+    position: sticky;
+    top: 0;
+    background: $--white;
+    z-index: 1;
+  }
+  &__item {
     justify-content: center;
     &:after {
       content: '';

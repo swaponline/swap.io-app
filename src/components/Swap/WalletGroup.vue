@@ -5,7 +5,7 @@
         <svg-icon class="swap-wallet-group__icon" name="btc" />
       </v-list-item-icon>
       <v-list-item-title class="swap-wallet-group__header">
-        <span class="swap-wallet-group__currency">{{ nameCurrency }} </span>
+        <span class="swap-wallet-group__currency">{{ currencyName }} </span>
         <span>{{ value }}</span>
         <span class="swap-wallet-group__name">{{ subWallets.length }} wallet</span>
       </v-list-item-title>
@@ -16,7 +16,7 @@
       link
       exact
       class="swap-wallet-group__item"
-      @click="$emit('selectWallet', { nameCurrency, wallet: subWallet.address })"
+      @click="$emit('selectWallet', { currencyName, wallet: subWallet.address })"
     >
       <v-list-item-content class="swap-wallet-group__item-content">
         <v-list-item-title class="swap-wallet-group__item-info">
@@ -36,7 +36,7 @@ export default {
       type: String,
       default: 'my wallet'
     },
-    nameCurrency: {
+    currencyName: {
       type: String,
       default: ''
     },

@@ -18,13 +18,13 @@ export default {
         name: 'Vasilii',
         list: [
           {
-            nameCurrency: 'BTC',
+            currencyName: 'BTC',
             name: 'my Wallet',
             value: 0.056734,
             icon: 'btc',
             subWallets: [
               {
-                nameCurrency: 'BTC',
+                currencyName: 'BTC',
                 name: 'Default',
                 value: 0.056734,
                 address: '1C9Uae6kyDtPo4ykzd5AJaLzLEZSpEbP3y'
@@ -32,24 +32,24 @@ export default {
             ]
           },
           {
-            nameCurrency: 'ETH',
+            currencyName: 'ETH',
             name: 'my multisig',
             value: 43.0561,
             subWallets: [
               {
-                nameCurrency: 'ETH',
+                currencyName: 'ETH',
                 name: 'Default',
                 value: 40.0561,
                 address: '0xd19615f2Eab2ABfBF7ca16618b5eD43386374DD0'
               },
               {
-                nameCurrency: 'ETH',
+                currencyName: 'ETH',
                 name: 'Swaps',
                 value: 3.0,
                 address: '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D'
               },
               {
-                nameCurrency: 'ETH',
+                currencyName: 'ETH',
                 name: 'Expenses',
                 value: 0.0,
                 address: '0x7a250d5630B4cF539739dF2C5dAcb4c659F24882'
@@ -57,11 +57,11 @@ export default {
             ]
           },
           {
-            nameCurrency: 'USDT',
+            currencyName: 'USDT',
             value: 100.1,
             subWallets: [
               {
-                nameCurrency: 'USDT',
+                currencyName: 'USDT',
                 name: 'Default',
                 value: 100.1,
                 address: 'GUzPzmRhx5VgsYH3vZjGjLgtFQMHkJzyHU'
@@ -75,14 +75,460 @@ export default {
         name: 'Corporat',
         list: [
           {
-            nameCurrency: 'ETH',
+            currencyName: 'ETH',
             value: 43.0561,
             subWallets: [
               {
-                nameCurrency: 'ETH',
+                currencyName: 'ETH',
                 name: 'Default',
                 value: 40.0561,
                 address: '0xd19615f2Eab2ABfBF7ca16618b5eD43386374DD0'
+              }
+            ]
+          }
+        ]
+      },
+      {
+        id: 'iasd123uahfni1j832jh8rj1fimda0m',
+        name: 'Millionaire',
+        list: [
+          {
+            currencyName: 'BTC',
+            name: 'my Wallet 1',
+            value: 0.056734,
+            icon: 'btc',
+            subWallets: [
+              {
+                currencyName: 'BTC',
+                name: 'Default',
+                value: 0.056734,
+                address: '1C9Uae6kyDtPo4ykzd5AJaLzLEZSpEbP3y'
+              }
+            ]
+          },
+          {
+            currencyName: 'ETH',
+            name: 'my multisig 1',
+            value: 43.0561,
+            subWallets: [
+              {
+                currencyName: 'ETH',
+                name: 'Default',
+                value: 40.0561,
+                address: '0xd19615f2Eab2ABfBF7ca16618b5eD43386374DD0'
+              },
+              {
+                currencyName: 'ETH',
+                name: 'Swaps',
+                value: 3.0,
+                address: '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D'
+              },
+              {
+                currencyName: 'ETH',
+                name: 'Expenses',
+                value: 0.0,
+                address: '0x7a250d5630B4cF539739dF2C5dAcb4c659F24882'
+              }
+            ]
+          },
+          {
+            currencyName: 'USDT',
+            value: 100.1,
+            subWallets: [
+              {
+                currencyName: 'USDT',
+                name: 'Default',
+                value: 100.1,
+                address: 'GUzPzmRhx5VgsYH3vZjGjLgtFQMHkJzyHU'
+              }
+            ]
+          },
+          {
+            currencyName: 'BTCP',
+            name: 'my Wallet 2',
+            value: 0.056734,
+            subWallets: [
+              {
+                currencyName: 'BTCP',
+                name: 'Default',
+                value: 0.056734,
+                address: '1C9Uae6kyDtPo4ykzd5AdJaLzLEZSpEbP3y'
+              }
+            ]
+          },
+          {
+            currencyName: 'CC',
+            value: 100.1,
+            subWallets: [
+              {
+                currencyName: 'CC',
+                name: 'Default',
+                value: 100.1,
+                address: 'GUzPzamRhx5VgsYH3vZjGjLgtFQMHkJzyHU'
+              }
+            ]
+          },
+          {
+            currencyName: 'ETN',
+            name: 'my Wallet 3',
+            value: 0.056734,
+            icon: 'btc',
+            subWallets: [
+              {
+                currencyName: 'ETN',
+                name: 'Default',
+                value: 0.056734,
+                address: '1C9Uae6kyDtPos4ykzd5AJaLzLEZSpEbP3y'
+              }
+            ]
+          },
+          {
+            currencyName: 'DASH',
+            name: 'my Wallet 4',
+            value: 0.056734,
+            icon: 'btc',
+            subWallets: [
+              {
+                currencyName: 'DASH',
+                name: 'Default',
+                value: 0.056734,
+                address: '1C9dUae6kyDtPo4ykzd5AJaLzLEZSpEbP3y'
+              }
+            ]
+          },
+          {
+            currencyName: 'DBC',
+            value: 100.1,
+            subWallets: [
+              {
+                currencyName: 'DBC',
+                name: 'Default',
+                value: 100.1,
+                address: 'GUzPzmRhx5VgsYH3vfZjGjLgtFQMHkJzyHU'
+              }
+            ]
+          },
+          {
+            currencyName: 'ENTRP',
+            name: 'my Wallet 11',
+            value: 0.056734,
+            icon: 'btc',
+            subWallets: [
+              {
+                currencyName: 'ENTRP',
+                name: 'Default',
+                value: 0.056734,
+                address: '1C9Uae6kvyDtPo4ykzd5AJaLzLEZSpEbP3y'
+              }
+            ]
+          },
+          {
+            currencyName: 'EOS',
+            value: 100.1,
+            subWallets: [
+              {
+                currencyName: 'EOS',
+                name: 'Default',
+                value: 100.1,
+                address: 'GUzPzmRhx5VcgsYH3vZjGjLgtFQMHkJzyHU'
+              }
+            ]
+          },
+          {
+            currencyName: 'CND',
+            name: 'my Wallet 12',
+            value: 0.056734,
+            icon: 'btc',
+            subWallets: [
+              {
+                currencyName: 'CND',
+                name: 'Default',
+                value: 0.056734,
+                address: '1C9Uae6kyxDtPo4ykzd5AJaLzLEZSpEbP3y'
+              }
+            ]
+          },
+          {
+            currencyName: 'CVC',
+            value: 100.1,
+            subWallets: [
+              {
+                currencyName: 'CVC',
+                name: 'Default',
+                value: 100.1,
+                address: 'GUzzPzmRhx5VgsYH3vZjGjLgtFQMHkJzyHU'
+              }
+            ]
+          },
+          {
+            currencyName: 'ICX',
+            name: 'my Wallet 13',
+            value: 0.056734,
+            icon: 'btc',
+            subWallets: [
+              {
+                currencyName: 'ICX',
+                name: 'Default',
+                value: 0.056734,
+                address: '1C9Uae6kyDtPo4ykzd5sAJaLzLEZSpEbP3y'
+              }
+            ]
+          },
+          {
+            currencyName: 'INK',
+            value: 100.1,
+            subWallets: [
+              {
+                currencyName: 'INK',
+                name: 'Default',
+                value: 100.1,
+                address: 'GUzPzmRhx5VgsYH3vZjGjLgtFQMHkJzywHU'
+              }
+            ]
+          },
+          {
+            currencyName: 'IGNIS',
+            name: 'my Wallet 1ф',
+            value: 0.056734,
+            icon: 'btc',
+            subWallets: [
+              {
+                currencyName: 'IGNIS',
+                name: 'Default',
+                value: 0.056734,
+                address: '1C9Uae6kyDtPo4ykzd5AJaLzLEZeSpEbP3y'
+              }
+            ]
+          },
+          {
+            currencyName: 'EQUA',
+            value: 100.1,
+            subWallets: [
+              {
+                currencyName: 'EQUA',
+                name: 'Default',
+                value: 100.1,
+                address: 'GUzPzmRhx5VgsYH3vZjGjLgtFQMHkJzyrHU'
+              }
+            ]
+          },
+          {
+            currencyName: 'BTC',
+            name: 'my Wallet 1sa',
+            value: 0.056734,
+            icon: 'btc',
+            subWallets: [
+              {
+                currencyName: 'BTC',
+                name: 'Default',
+                value: 0.056734,
+                address: '1C9Uae6kyDtPo4ykzd5AJaLzLEZSpEbP3y'
+              }
+            ]
+          },
+          {
+            currencyName: 'ETH',
+            name: 'my multisig 1d',
+            value: 43.0561,
+            subWallets: [
+              {
+                currencyName: 'ETH',
+                name: 'Default',
+                value: 40.0561,
+                address: '0xd19615f2Eab2ABfBF7ca16618b5eD43386374DD0'
+              },
+              {
+                currencyName: 'ETH',
+                name: 'Swaps',
+                value: 3.0,
+                address: '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D'
+              },
+              {
+                currencyName: 'ETH',
+                name: 'Expenses',
+                value: 0.0,
+                address: '0x7a250d5630B4cF539739dF2C5dAcb4c659F24882'
+              }
+            ]
+          },
+          {
+            currencyName: 'USDT',
+            value: 100.1,
+            subWallets: [
+              {
+                currencyName: 'USDT',
+                name: 'Default',
+                value: 100.1,
+                address: 'GUzPzmRhx5VgsYH3vZjGjLgtFQMHkJzyHU'
+              }
+            ]
+          },
+          {
+            currencyName: 'BTCP',
+            name: 'my Wallet 2d',
+            value: 0.056734,
+            subWallets: [
+              {
+                currencyName: 'BTCP',
+                name: 'Default',
+                value: 0.056734,
+                address: '1C9Uae6kyDtPo4ykzd5AdJaLzLEZSpEbP3y'
+              }
+            ]
+          },
+          {
+            currencyName: 'CC',
+            value: 100.1,
+            subWallets: [
+              {
+                currencyName: 'CC',
+                name: 'Default',
+                value: 100.1,
+                address: 'GUzPzamRhx5VgsYH3vZjGjLgtFQMHkJzyHU'
+              }
+            ]
+          },
+          {
+            currencyName: 'ETN',
+            name: 'my Wallet 3d',
+            value: 0.056734,
+            icon: 'btc',
+            subWallets: [
+              {
+                currencyName: 'ETN',
+                name: 'Default',
+                value: 0.056734,
+                address: '1C9Uae6kyDtPos4ykzd5AJaLzLEZSpEbP3y'
+              }
+            ]
+          },
+          {
+            currencyName: 'DASH',
+            name: 'my Wallet 4d',
+            value: 0.056734,
+            icon: 'btc',
+            subWallets: [
+              {
+                currencyName: 'DASH',
+                name: 'Default',
+                value: 0.056734,
+                address: '1C9dUae6kyDtPo4ykzd5AJaLzLEZSpEbP3y'
+              }
+            ]
+          },
+          {
+            currencyName: 'DBC',
+            value: 100.1,
+            subWallets: [
+              {
+                currencyName: 'DBC',
+                name: 'Default',
+                value: 100.1,
+                address: 'GUzPzmRhx5VgsYH3vfZjGjLgtFQMHkJzyHU'
+              }
+            ]
+          },
+          {
+            currencyName: 'ENTRP',
+            name: 'my Wallet 11d',
+            value: 0.056734,
+            icon: 'btc',
+            subWallets: [
+              {
+                currencyName: 'ENTRP',
+                name: 'Default',
+                value: 0.056734,
+                address: '1C9Uae6kvyDtPo4ykzd5AJaLzLEZSpEbP3y'
+              }
+            ]
+          },
+          {
+            currencyName: 'EOS',
+            value: 100.1,
+            subWallets: [
+              {
+                currencyName: 'EOS',
+                name: 'Default',
+                value: 100.1,
+                address: 'GUzPzmRhx5VcgsYH3vZjGjLgtFQMHkJzyHU'
+              }
+            ]
+          },
+          {
+            currencyName: 'CND',
+            name: 'my Wallet 12d',
+            value: 0.056734,
+            icon: 'btc',
+            subWallets: [
+              {
+                currencyName: 'CND',
+                name: 'Default',
+                value: 0.056734,
+                address: '1C9Uae6kyxDtPo4ykzd5AJaLzLEZSpEbP3y'
+              }
+            ]
+          },
+          {
+            currencyName: 'CVC',
+            value: 100.1,
+            subWallets: [
+              {
+                currencyName: 'CVC',
+                name: 'Default',
+                value: 100.1,
+                address: 'GUzzPzmRhx5VgsYH3vZjGjLgtFQMHkJzyHU'
+              }
+            ]
+          },
+          {
+            currencyName: 'ICX',
+            name: 'my Wallet 13d',
+            value: 0.056734,
+            icon: 'btc',
+            subWallets: [
+              {
+                currencyName: 'ICX',
+                name: 'Default',
+                value: 0.056734,
+                address: '1C9Uae6kyDtPo4ykzd5sAJaLzLEZSpEbP3y'
+              }
+            ]
+          },
+          {
+            currencyName: 'INK',
+            value: 100.1,
+            subWallets: [
+              {
+                currencyName: 'INK',
+                name: 'Default',
+                value: 100.1,
+                address: 'GUzPzmRhx5VgsYH3vZjGjLgtFQMHkJzywHU'
+              }
+            ]
+          },
+          {
+            currencyName: 'IGNIS',
+            name: 'my Wallet 1d',
+            value: 0.056734,
+            icon: 'btc',
+            subWallets: [
+              {
+                currencyName: 'IGNIS',
+                name: 'Default',
+                value: 0.056734,
+                address: '1C9Uae6kyDtPo4ykzd5AJaLzLEZeSpEbP3y'
+              }
+            ]
+          },
+          {
+            currencyName: 'EQUA',
+            value: 100.1,
+            subWallets: [
+              {
+                currencyName: 'EQUA',
+                name: 'Default',
+                value: 100.1,
+                address: 'GUzPzmRhx5VgsYH3vZjGjLgtFQMHkJzyrHU'
               }
             ]
           }
@@ -103,7 +549,7 @@ export default {
         return acc
       }, [])
     },
-    walletsSumm(state, { currentListWallets }) {
+    walletsSum(state, { currentListWallets }) {
       return currentListWallets?.reduce((balance, el) => {
         return balance + el.value
       }, 0)
@@ -113,7 +559,7 @@ export default {
     [UPDATE_WALLET_NAME]({ state, getters, commit }, wallet) {
       const index = state.list.indexOf(getters.currentAccount)
       if (index > -1) {
-        const indexWalletGroup = getters.currentAccount.list.findIndex(w => w.nameCurrency === wallet.nameCurrency)
+        const indexWalletGroup = getters.currentAccount.list.findIndex(w => w.currencyName === wallet.currencyName)
         if (indexWalletGroup > -1) {
           const indexWallet = getters.currentAccount.list[indexWalletGroup].subWallets.findIndex(
             w => w.address === wallet.address

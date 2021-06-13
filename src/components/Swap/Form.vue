@@ -15,7 +15,7 @@
       ></v-text-field>
       <button
         class="swap-form__menu-button"
-        :class="{ 'swap-form__menu-button--select': fromWallet.nameCurrency }"
+        :class="{ 'swap-form__menu-button--select': fromWallet.currencyName }"
         @click="openList('from')"
       >
         {{ fromNameCurrency }}
@@ -27,8 +27,10 @@
     <span class="swap-form__hint">{{ fromHintValue }}</span>
 
     <div class="swap-form__row mt-0">
-      <v-loader :active="loading" width="70px" height="70px"></v-loader>
-      <v-btn v-if="!loading" class="swap-form__swap-button" icon height="auto" min-height="none" @click="swapWallet">
+      <div v-if="loading" class="swap-form__loader">
+        <v-loader :active="loading" width="30px" height="30px"></v-loader>
+      </div>
+      <v-btn v-else class="swap-form__swap-button" icon height="auto" min-height="none" @click="swapWallet">
         <svg-icon class="swap-form__icon" name="swap" />
       </v-btn>
     </div>
@@ -43,7 +45,7 @@
       ></v-text-field>
       <button
         class="swap-form__menu-button"
-        :class="{ 'swap-form__menu-button--select': toWallet.nameCurrency }"
+        :class="{ 'swap-form__menu-button--select': toWallet.currencyName }"
         @click="openList('to')"
       >
         {{ toNameCurrency }}
@@ -110,10 +112,10 @@ export default {
   },
   computed: {
     fromNameCurrency() {
-      return this.fromWallet.nameCurrency || 'BTC'
+      return this.fromWallet.currencyName || 'BTC'
     },
     toNameCurrency() {
-      return this.toWallet.nameCurrency || 'BTC'
+      return this.toWallet.currencyName || 'BTC'
     },
     fromHintValue() {
       return this.fromWallet.wallet
@@ -131,7 +133,7 @@ export default {
       this.loading = true
       setTimeout(() => {
         this.loading = false
-      }, 2000)
+      }, 3000)
       const wrap = { ...this.to }
       this.to = { ...this.from }
       this.from = { ...wrap }
@@ -239,12 +241,18 @@ export default {
       transform: rotate(-90deg);
     }
   }
+
+  &__loader {
+    width: 36px;
+    height: 32px;
+  }
+
   &__swap-button {
     padding: 5px 0;
   }
   &__icon {
     width: 22px;
-    height: 15px;
+    height: 22px;
   }
   &__hint {
     margin-top: 8px;

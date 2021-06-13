@@ -81,14 +81,14 @@
 
       <span v-if="type.labelQuantity" class="invoice-preview__quantity">
         <span>Total {{ type.labelQuantity.toLowerCase() }}:</span>
-        <span>{{ summQuantity }}</span>
+        <span>{{ sumQuantity }}</span>
       </span>
 
       <span class="invoice-preview__amount">
         <span>Total amount: </span>
         <span>
           <span class="invoice-preview__currency-name">USD</span>
-          {{ summ }}
+          {{ sum }}
         </span>
       </span>
     </div>
@@ -132,7 +132,7 @@ export default {
       type: String,
       required: true
     },
-    summ: {
+    sum: {
       type: Number,
       required: true
     }
@@ -155,7 +155,7 @@ export default {
       }
       return `**${this.address.slice(-5)}`
     },
-    summQuantity() {
+    sumQuantity() {
       return this.amountFields.reduce((acc, el) => {
         return acc + +el.quantity
       }, 0)

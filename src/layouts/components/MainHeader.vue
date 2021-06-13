@@ -98,7 +98,6 @@ export default {
     color: var(--main-color);
   }
   &__profile {
-    min-width: 175px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -118,6 +117,9 @@ export default {
     margin-right: 20px;
   }
   &__tabs {
+    @include only-desktop {
+      border-radius: 0 0 12px 0;
+    }
     @include tablet {
       display: none;
     }

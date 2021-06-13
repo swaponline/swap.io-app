@@ -1,6 +1,6 @@
 <template>
   <div class="wallet-info" :class="{ 'wallet-info--compressed': compressed }" @click="uncompressWallet">
-    <svg-icon class="wallet-info__background-icon" :name="backgroundIconName"></svg-icon>
+    <cryptoicon class="wallet-info__background-icon" :symbol="currencyName.toLowerCase()" size="500" />
 
     <div class="wallet-info__optional-buttons">
       <v-btn icon class="wallet-info__optional-button" @click="openShareModal">
@@ -13,8 +13,10 @@
 
     <header class="wallet-info__header">
       <div>
-        <span class="wallet-info__crypto-value">0.200332btc</span>
-        <span class="wallet-info__fiat-value">3000.04$</span>
+        <span class="wallet-info__crypto-value">
+          {{ value }} <span class="grey--text">{{ currencyName }}</span>
+        </span>
+        <span class="wallet-info__fiat-value">3000.04 USD</span>
       </div>
     </header>
 
@@ -27,7 +29,7 @@
             </span>
 
             <span class="wallet-info__address wallet-info__address--tablet">
-              {{ `${address.slice(0, 5)}***${address.slice(-5)}` }}
+              {{ minifiedAddress }}
             </span>
 
             <svg-icon class="wallet-info__icon-copy" name="copy" v-on="on"></svg-icon>
@@ -50,35 +52,21 @@
 </template>
 
 <script>
-import copy from '@/utils/copy'
 import { mapMutations } from 'vuex'
 import { ADD_MODAL } from '@/store/modules/Modals'
 import { COPY_MENU, INVOICE_FORM, SEND_FORM, SHARE_MODAL, WALLET_SETTINGS } from '@/store/modules/Modals/names'
+import copy from '@/utils/copy'
+import { minifyAddress } from '@/utils/common'
 
 export default {
   name: 'WalletInfo',
   inject: ['mediaQueries'],
   props: {
-    compressed: {
-      type: Boolean,
-      default: false
-    },
-    address: {
-      type: String,
-      required: true
-    },
-    name: {
-      type: String,
-      default: ''
-    },
-    value: {
-      type: Number,
-      default: 0
-    },
-    nameCurrency: {
-      type: String,
-      default: ''
-    }
+    compressed: { type: Boolean, default: false },
+    address: { type: String, required: true },
+    name: { type: String, default: '' },
+    value: { type: Number, default: 0 },
+    currencyName: { type: String, default: '' }
   },
   data() {
     return {
@@ -92,8 +80,8 @@ export default {
     walletAddress() {
       return this.$route.params.walletAddress
     },
-    backgroundIconName() {
-      return `background/background-${this.nameCurrency.toLowerCase()}`
+    minifiedAddress() {
+      return minifyAddress(this.address)
     }
   },
   beforeDestroy() {
@@ -275,8 +263,8 @@ export default {
   }
   &__optional-button {
     &:before {
-      opacity: 0.2;
-      background-color: $--grey-1;
+      opacity: 0.5;
+      background-color: $--light-grey-1;
     }
     &:hover {
       &:before {
@@ -386,7 +374,7 @@ export default {
     transition: 0.3s;
     opacity: var(--icon-opacity);
     @include tablet {
-      display: none;
+      opacity: 1;
     }
   }
   &__buttons {

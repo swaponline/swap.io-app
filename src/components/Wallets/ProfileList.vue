@@ -57,7 +57,7 @@ export default {
       return this.mediaQueries.desktop
     },
     balance() {
-      return this.$store.getters.walletsSumm
+      return this.$store.getters.walletsSum
     },
     styleParams() {
       return `height: ${48 * this.accounts.length}px; overflow: auto;`
@@ -95,17 +95,16 @@ export default {
 .profile-list {
   display: flex;
   overflow: visible;
-  max-height: 80px;
-  min-height: 80px;
-  min-width: 150px;
+  height: 80px;
+  min-width: 200px;
 
   @include tablet {
     width: auto;
     margin: 20px 40px;
+    z-index: 10;
   }
   @include phone {
-    max-height: 70px;
-    min-height: 70px;
+    height: 70px;
     margin: 8px;
   }
   &__inner {
@@ -151,6 +150,8 @@ export default {
   &__name {
     font-weight: $--font-weight-medium;
     font-size: $--font-size-extra-small-subtitle;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 </style>
