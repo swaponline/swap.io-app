@@ -19,7 +19,8 @@ const WALLETS_LIST_KEY = 'walletsList'
 // const DEFAULT_COLOR_THEME = {
 //   background: 'linear-gradient(287deg, #033dff 0%, #ff7ac6 24%, #ffff00 100%)',
 //   color: '#6144E5',
-//   selectionColor: ''
+//   selectionColor: '',
+//   isSelecting: true
 // }
 
 // TODO mock for prototype. To be sure that localStorage has correct data
@@ -68,6 +69,7 @@ function setupLocalStorage() {
   removeStorage('accountId')
   removeStorage('list')
 }
+
 setupLocalStorage()
 
 export default {
@@ -649,7 +651,9 @@ export default {
 
     [SET_USERS_COLORS]({ commit }, params) {
       commit(UPDATE_MODEL, { name: MODULE_PROFILE, model: { ...params } })
-      // setStorage(USERS_THEMES_KEY, params)
+      if (!params.isSelecting) {
+        setStorage('colorTheme', params)
+      }
     },
     [CREATING_OR_RECOVERING_PROFILE]({ commit }, value) {
       commit(UPDATE_OBJECT_PROPERTY, { path: MODULE_PROFILE, key: IS_CREATING_OR_RECOVERING, value })
