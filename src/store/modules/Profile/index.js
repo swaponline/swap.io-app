@@ -12,7 +12,7 @@ export const CREATE_NEW_USER = 'CREATE_NEW_USER'
 export const CREATE_WALLET = 'CREATE_WALLET'
 export const UPDATE_WALLET = 'UPDATE_WALLET'
 
-const USERS_THEMES_KEY = 'usersThemes'
+export const USERS_THEMES_KEY = 'usersThemes'
 const CURRENT_USER_KEY = 'currentAccount'
 const WALLETS_LIST_KEY = 'walletsList'
 
@@ -653,7 +653,7 @@ export default {
     [SET_USERS_COLORS]({ commit }, params) {
       commit(UPDATE_MODEL, { name: MODULE_PROFILE, model: { ...params } })
       if (!params.isSelecting) {
-        setStorage('colorTheme', params)
+        setStorage(USERS_THEMES_KEY, params)
       }
     },
     [CREATING_OR_RECOVERING_PROFILE]({ commit }, value) {

@@ -69,7 +69,7 @@ export default {
   @include tablet {
     padding: 0 40px 30px;
   }
-  @include small {
+  @include small-phone {
     padding: 0 15px 10px;
   }
   &__select {

@@ -119,7 +119,7 @@ export default {
       width: calc(25% - 15px);
       margin: 0 7.5px 16px;
     }
-    @include small {
+    @include small-phone {
       width: calc(33.3% - 15px);
       margin: 0 7.5px 16px;
     }

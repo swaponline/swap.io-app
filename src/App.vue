@@ -134,6 +134,7 @@ export default {
     zoom: calc(var(--vw) / 18);
   }
 }
+
 .app-background {
   position: absolute;
   left: 0;
