@@ -9,7 +9,8 @@ export const IS_CREATING_OR_RECOVERING = 'IS_CREATING_OR_RECOVERING'
 const DEFAULT_COLOR_THEME = {
   background: 'linear-gradient(287deg, #033dff 0%, #ff7ac6 24%, #ffff00 100%)',
   color: '#6144E5',
-  colorSelection: ''
+  colorSelection: '',
+  isSelecting: true
 }
 
 export default {
@@ -20,7 +21,9 @@ export default {
   actions: {
     [SET_USERS_COLORS]({ commit }, params) {
       commit(UPDATE_MODEL, { name: MODULE_PROFILE, model: { ...params } })
-      setStorage('colorTheme', params)
+      if (!params.isSelecting) {
+        setStorage('colorTheme', params)
+      }
     },
     [CREATING_OR_RECOVERING_PROFILE]({ commit }, value) {
       commit(UPDATE_OBJECT_PROPERTY, { path: MODULE_PROFILE, key: IS_CREATING_OR_RECOVERING, value })
