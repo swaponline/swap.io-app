@@ -93,7 +93,7 @@ export default {
     &--error {
       .v-input__slot {
         fieldset {
-          border-color: $--red;
+          border-color: $--text-color-error;
         }
       }
     }
@@ -103,7 +103,7 @@ export default {
     margin-top: 12px;
     text-align: center;
     line-height: 22px;
-    color: $--red;
+    color: $--text-color-error;
   }
   &__qr-button {
     margin: 14px 0 25px;

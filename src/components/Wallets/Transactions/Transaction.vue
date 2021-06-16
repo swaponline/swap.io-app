@@ -261,7 +261,7 @@ export default {
     color: $--green;
     line-height: 25px;
     &--send {
-      color: $--red;
+      color: $--text-color-error;
     }
   }
   &__value-in-usd {

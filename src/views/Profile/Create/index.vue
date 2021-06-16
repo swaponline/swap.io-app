@@ -15,6 +15,7 @@ import { mapActions } from 'vuex'
 import { SET_USERS_COLORS, CREATING_OR_RECOVERING_PROFILE } from '@/store/modules/Profile'
 import { INIT_IFRAME, SET_BACKGROUND, REDIRECT_TO_HOME } from '@/constants/createProfile'
 import { CREATE_PROFILE } from '@/constants/windowKey'
+import { getStorage } from '@/utils/storage'
 
 export default {
   name: 'CreateProfile',
@@ -48,11 +49,13 @@ export default {
             this.actionSetBackground({
               background: payload.userColorTheme.background,
               color: payload.userColorTheme.color,
-              selectionColor: payload.userColorTheme.selectionColor
+              selectionColor: payload.userColorTheme.selectionColor,
+              isSelecting: payload.userColorTheme.isSelecting
             })
             break
           case REDIRECT_TO_HOME:
             this.$store.dispatch(CREATING_OR_RECOVERING_PROFILE, false)
+            this.actionSetBackground({ ...getStorage('colorTheme') })
             this.$router.push({ name: 'Wallets' })
             break
           default: {

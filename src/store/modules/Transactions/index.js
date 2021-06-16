@@ -46,7 +46,7 @@ export default {
     [GET_TRANSACTIONS]({ commit }) {
       commit(LOADING, MODULE_NAME)
       setTimeout(() => {
-        const list = [...Transaction.sort((a, b) => b.timestamp - a.timestamp)]
+        const list = [...Transaction].sort((a, b) => b.timestamp - a.timestamp)
         commit(SET_LIST, { name: MODULE_NAME, list })
         commit(LOADED, MODULE_NAME)
       }, 1000)

@@ -32,7 +32,8 @@ function setupLocalStorage() {
       color: '#320091',
       selectionColor: 'rgba(89,0,255,0.24)',
       accountId: 'iasduah415fni1j832jh8rjnfimda0m',
-      username: 'Vasilii'
+      username: 'Vasilii',
+      isSelecting: true
     },
     {
       background:
@@ -40,7 +41,8 @@ function setupLocalStorage() {
       color: '#680091',
       selectionColor: 'rgba(184,0,255,0.24)',
       accountId: 'iasd123uahfni1j832jh8rjnfimda0m',
-      username: 'Corporat'
+      username: 'Corporat',
+      isSelecting: true
     },
     {
       background:
@@ -48,7 +50,8 @@ function setupLocalStorage() {
       color: '#009144',
       selectionColor: 'rgba(0,255,121,0.24)',
       accountId: 'iasd123uahfni1j832jh8rj1fimda0m',
-      username: 'Millionaire'
+      username: 'Millionaire',
+      isSelecting: true
     }
   ]
   /* eslint-enable vue/max-len */
@@ -649,7 +652,9 @@ export default {
 
     [SET_USERS_COLORS]({ commit }, params) {
       commit(UPDATE_MODEL, { name: MODULE_PROFILE, model: { ...params } })
-      // setStorage(USERS_THEMES_KEY, params)
+      if (!params.isSelecting) {
+        setStorage('colorTheme', params)
+      }
     },
     [CREATING_OR_RECOVERING_PROFILE]({ commit }, value) {
       commit(UPDATE_OBJECT_PROPERTY, { path: MODULE_PROFILE, key: IS_CREATING_OR_RECOVERING, value })
