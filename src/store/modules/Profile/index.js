@@ -12,7 +12,7 @@ export const CREATE_NEW_USER = 'CREATE_NEW_USER'
 export const CREATE_WALLET = 'CREATE_WALLET'
 export const UPDATE_WALLET = 'UPDATE_WALLET'
 
-const USERS_THEMES_KEY = 'usersThemes'
+export const USERS_THEMES_KEY = 'usersThemes'
 const CURRENT_USER_KEY = 'currentAccount'
 const WALLETS_LIST_KEY = 'walletsList'
 
@@ -33,7 +33,8 @@ function setupLocalStorage() {
       color: '#320091',
       selectionColor: 'rgba(89,0,255,0.24)',
       accountId: 'iasduah415fni1j832jh8rjnfimda0m',
-      username: 'Vasilii'
+      username: 'Vasilii',
+      isSelecting: true
     },
     {
       background:
@@ -41,7 +42,8 @@ function setupLocalStorage() {
       color: '#680091',
       selectionColor: 'rgba(184,0,255,0.24)',
       accountId: 'iasd123uahfni1j832jh8rjnfimda0m',
-      username: 'Corporat'
+      username: 'Corporat',
+      isSelecting: true
     },
     {
       background:
@@ -49,7 +51,8 @@ function setupLocalStorage() {
       color: '#009144',
       selectionColor: 'rgba(0,255,121,0.24)',
       accountId: 'iasd123uahfni1j832jh8rj1fimda0m',
-      username: 'Millionaire'
+      username: 'Millionaire',
+      isSelecting: true
     }
   ]
   /* eslint-enable vue/max-len */
@@ -652,7 +655,7 @@ export default {
     [SET_USERS_COLORS]({ commit }, params) {
       commit(UPDATE_MODEL, { name: MODULE_PROFILE, model: { ...params } })
       if (!params.isSelecting) {
-        setStorage('colorTheme', params)
+        setStorage(USERS_THEMES_KEY, params)
       }
     },
     [CREATING_OR_RECOVERING_PROFILE]({ commit }, value) {

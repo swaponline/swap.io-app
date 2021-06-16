@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import Substrate from '@/views/Profile/Substrate.vue'
+import Substrate from '@/components/Profile/Substrate.vue'
 import WindowHandler from '@/WindowHandler'
 import { REDIRECT_TO_HOME, SET_BACKGROUND, INIT_IFRAME } from '@/constants/recoverProfile'
 import { mapActions } from 'vuex'

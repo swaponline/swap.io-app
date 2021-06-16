@@ -92,7 +92,7 @@ export default {
     width: auto;
     margin: 14px 14px;
   }
-  @include small {
+  @include small-phone {
     max-height: 415px;
   }
   &__form {

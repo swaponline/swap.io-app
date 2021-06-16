@@ -1,29 +1,33 @@
 <template>
-  <div class="security-info">
-    <security-info-block
-      v-for="infoBlock in infoBlocks"
-      v-show="infoBlock.id === currentBlock"
-      :key="infoBlock.id"
-      v-bind="infoBlock"
-      :name-button="infoBlock.id === infoBlocks.length ? 'Create' : 'Next'"
-      @cancel="cancel"
-      @next="next(infoBlock.id)"
-      @back="back(infoBlock.id)"
-      @skip="skip"
-    >
-    </security-info-block>
-  </div>
+  <substrate class="security-info">
+    <div class="security-info__wrapper">
+      <security-info-block
+        v-for="infoBlock in infoBlocks"
+        v-show="infoBlock.id === currentBlock"
+        :key="infoBlock.id"
+        v-bind="infoBlock"
+        :name-button="infoBlock.id === infoBlocks.length ? 'Create' : 'Next'"
+        @cancel="cancel"
+        @next="next(infoBlock.id)"
+        @back="back(infoBlock.id)"
+        @skip="skip"
+      >
+      </security-info-block>
+    </div>
+  </substrate>
 </template>
 
 <script>
 import SecurityInfoBlock from '@/components/Profile/SecurityInfoBlock.vue'
 import { CREATING_OR_RECOVERING_PROFILE } from '@/store/modules/Profile'
+import Substrate from '@/components/Profile/Substrate.vue'
 import infoBlocks from './infoBlocks'
 
 export default {
   name: 'SecurityInfo',
   components: {
-    SecurityInfoBlock
+    SecurityInfoBlock,
+    Substrate
   },
   data() {
     return {
@@ -60,23 +64,11 @@ export default {
 
 <style lang="scss">
 .security-info {
-  width: 100%;
-  max-width: 1064px;
-  height: 100%;
-  max-height: 555px;
-  margin: 20px auto;
-  background: $--white;
-  flex-grow: 1;
-  border-radius: 12px;
-  position: relative;
-  overflow-x: hidden;
-  overflow-y: auto;
+  display: block;
 
   @include tablet {
-    margin: 0 0;
-    border-radius: 0;
-    max-height: none;
-    max-width: none;
+    display: flex;
+    padding-top: 15px;
   }
 }
 </style>

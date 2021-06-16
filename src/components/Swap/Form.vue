@@ -160,7 +160,7 @@ export default {
   @include tablet {
     max-width: none;
   }
-  @include small {
+  @include small-phone {
     padding: 16px 12px 14px;
   }
   fieldset {
@@ -168,7 +168,7 @@ export default {
     border-radius: $--main-border-radius;
     & + div {
       min-height: 52px;
-      @include small {
+      @include small-phone {
         min-height: 45px;
       }
       .v-input__append-inner {
@@ -187,7 +187,7 @@ export default {
     @include tablet {
       margin-bottom: 7px;
     }
-    @include small {
+    @include small-phone {
       margin-bottom: 5px;
       line-height: 25px;
       font-size: $--font-size-extra-small-subtitle;
@@ -209,7 +209,7 @@ export default {
     @include tablet {
       margin-top: 18px;
     }
-    @include small {
+    @include small-phone {
       margin-top: 10px;
     }
   }
@@ -273,7 +273,7 @@ export default {
     @include tablet {
       margin-top: 15px;
     }
-    @include small {
+    @include small-phone {
       font-size: $--font-size-base;
       line-height: 19px;
     }
@@ -284,7 +284,7 @@ export default {
     justify-content: space-between;
     &:not(:first-child) {
       margin-top: 10px;
-      @include small {
+      @include small-phone {
         margin-top: 6px;
       }
     }
