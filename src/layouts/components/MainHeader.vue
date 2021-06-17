@@ -1,5 +1,5 @@
 <template>
-  <div class="main-header">
+  <match-media v-slot="{ desktop, phone }" tag="div" class="main-header">
     <div v-if="isCreatingOrRecoveringProfile" class="main-header__logo">
       <svg-icon class="main-header__logo-icon" name="logo" />
       <h2 class="main-header__logo-text">Swap.io</h2>
@@ -8,20 +8,14 @@
       <svg-icon class="main-header__logo-icon" name="logo" />
       <h2 class="main-header__logo-text">Swap.io</h2>
     </router-link>
-    <match-media v-slot="{ desktop, phone }">
-      <v-button-cancel
-        v-if="isCreatingOrRecoveringProfile && phone"
-        class="main-header__button-cancel"
-        @click="cancel"
-      />
-      <div class="main-header__content d-flex flex-grow-1">
-        <main-header-tabs v-if="desktop" class="main-header__tabs"></main-header-tabs>
-        <div v-if="desktop && !isCreatingOrRecoveringProfile" class="main-header__profile">
-          <profile-list></profile-list>
-        </div>
+    <v-button-cancel v-if="isCreatingOrRecoveringProfile && phone" class="main-header__button-cancel" @click="cancel" />
+    <div class="main-header__content d-flex flex-grow-1">
+      <main-header-tabs v-if="desktop" class="main-header__tabs"></main-header-tabs>
+      <div v-if="desktop && !isCreatingOrRecoveringProfile" class="main-header__profile">
+        <profile-list></profile-list>
       </div>
-    </match-media>
-  </div>
+    </div>
+  </match-media>
 </template>
 
 <script>

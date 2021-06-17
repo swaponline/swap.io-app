@@ -1,6 +1,6 @@
 <template>
   <v-app id="app">
-    <canvas ref="backgroundCanvas" class="app-background" />
+    <canvas v-show="!isDefaultTheme" ref="backgroundCanvas" class="app-background" />
     <media-query-provider :queries="queries">
       <router-view />
     </media-query-provider>
@@ -9,7 +9,6 @@
 
 <script>
 import { MediaQueryProvider } from 'vue-component-media-queries'
-import { MODULE_PROFILE } from '@/store/modules/Profile'
 import Canvg from 'canvg'
 import messageHandler from './messageHandler'
 
@@ -32,7 +31,10 @@ export default {
   },
   computed: {
     userColorTheme() {
-      return this.$store.state[MODULE_PROFILE].model.profile
+      return this.$store.getters.userColorTheme
+    },
+    isDefaultTheme() {
+      return this.userColorTheme.background.includes('linear-gradient')
     }
   },
   watch: {

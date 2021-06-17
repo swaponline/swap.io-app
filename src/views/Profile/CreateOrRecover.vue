@@ -24,15 +24,11 @@
 
 <script>
 import Substrate from '@/components/Profile/Substrate.vue'
-import { CREATING_OR_RECOVERING_PROFILE } from '@/store/modules/Profile'
 
 export default {
   name: 'CreateOrRecover',
   components: {
     Substrate
-  },
-  created() {
-    this.$store.dispatch(CREATING_OR_RECOVERING_PROFILE, true)
   },
   methods: {
     create() {
