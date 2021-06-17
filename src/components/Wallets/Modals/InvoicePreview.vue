@@ -15,7 +15,7 @@
     <div class="invoice-preview">
       <h3 class="invoice-preview__subtitle">From:</h3>
       <p class="invoice-preview__agent-info">
-        <span>User: {{ currentAccount.name }}</span>
+        <span>User: {{ currentProfile.username }}</span>
         <span>Wallet: {{ currentWallet.name }}</span>
         <span class="invoice-preview__wallet">
           Wallet address: {{ formatAddress }}
@@ -102,6 +102,7 @@ import { ADD_MODAL } from '@/store/modules/Modals'
 import { INVOICE_FORM, COPY_MENU } from '@/store/modules/Modals/names'
 
 import ModalWrapper from '@/components/UI/ModalWrapper.vue'
+import { MODULE_PROFILE } from '@/store/modules/Profile'
 
 export default {
   name: 'InvoicePreview',
@@ -163,17 +164,17 @@ export default {
     date() {
       return new Date().toLocaleDateString()
     },
-    siblingList() {
-      return this.$store.getters.siblingList
+    currentSubWallets() {
+      return this.$store.getters.currentSubWallets
     },
     currentWallet() {
-      if (this.address && this.siblingList) {
-        return this.siblingList.find(el => el.address === this.address)
+      if (this.address && this.currentSubWallets) {
+        return this.currentSubWallets.find(el => el.address === this.address)
       }
       return {}
     },
-    currentAccount() {
-      return this.$store.getters.currentAccount
+    currentProfile() {
+      return this.$store.state[MODULE_PROFILE].model.profile
     }
   },
   beforeDestroy() {

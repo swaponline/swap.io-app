@@ -41,7 +41,7 @@ export default {
       return this.$route.params.walletAddress
     },
     currentWallet() {
-      return this.$store.getters.siblingList?.find(el => el.address === this.walletAddress)
+      return this.$store.getters.currentSubWallets?.find(el => el.address === this.walletAddress)
     }
   }
 }

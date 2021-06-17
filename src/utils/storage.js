@@ -7,6 +7,10 @@ export const setStorage = (key, data) => {
   return storage.setItem(key, JSON.stringify(data))
 }
 
+export const removeStorage = key => {
+  return storage.removeItem(key)
+}
+
 export const setLanguage = lang => {
   setStorage('lang', JSON.stringify(lang))
 }

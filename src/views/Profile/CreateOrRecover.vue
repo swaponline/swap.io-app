@@ -12,7 +12,6 @@
       </div>
       <div class="create-or-recover__buttons">
         <div class="create-or-recover__buttons-controls">
-          <v-btn depressed class="create-or-recover__button" block @click="cancel">Cancel</v-btn>
           <v-btn depressed class="create-or-recover__button" block @click="create">Create</v-btn>
         </div>
         <v-btn text class="create-or-recover__button create-or-recover__button--text" block @click="goToRecover"
@@ -24,22 +23,14 @@
 </template>
 
 <script>
-import Substrate from '@/views/Profile/Substrate.vue'
-import { CREATING_OR_RECOVERING_PROFILE } from '@/store/modules/Profile'
+import Substrate from '@/components/Profile/Substrate.vue'
 
 export default {
   name: 'CreateOrRecover',
   components: {
     Substrate
   },
-  created() {
-    this.$store.dispatch(CREATING_OR_RECOVERING_PROFILE, true)
-  },
   methods: {
-    cancel() {
-      this.$store.dispatch(CREATING_OR_RECOVERING_PROFILE, false)
-      return this.$router.push({ name: 'Wallets' })
-    },
     create() {
       return this.$router.push({ name: 'SecurityInfo' })
     },
@@ -55,6 +46,18 @@ export default {
   &__wrapper {
     max-width: 256px;
     text-align: center;
+  }
+
+  &__header {
+    padding-top: 55px;
+
+    @include tablet {
+      padding-top: 140px;
+    }
+
+    @include phone {
+      padding-top: 67px;
+    }
   }
 
   &__icon {

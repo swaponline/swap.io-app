@@ -149,7 +149,7 @@ export default {
       return this.$store.state[TRANSACTIONS_MODULE].model.fee
     },
     wallets() {
-      return this.$store.getters.siblingList
+      return this.$store.getters.currentSubWallets
     },
     maxAmount() {
       return this.selectedWallet && (this.selectedWallet.value * 10 ** 18 - this.fee * 10 ** 18) / 10 ** 18

@@ -115,7 +115,7 @@ export default {
   },
   computed: {
     wallets() {
-      return this.$store.getters.siblingList
+      return this.$store.getters.currentSubWallets
     },
     sumAmount() {
       return this.amountFields.reduce((sum, el) => {
@@ -126,7 +126,7 @@ export default {
     totalConvertedAmount() {
       return this.selectedWallet
         ? convertAmountToOtherCurrency(this.sumAmount, this.selectedWallet.currencyName, this.currency)
-        : null
+        : 0
     }
   },
   created() {

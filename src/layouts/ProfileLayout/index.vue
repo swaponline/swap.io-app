@@ -6,24 +6,11 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-import { GET_ACCOUNT_ID } from '@/store/modules/Wallets'
-
 import MainHeader from '../components/MainHeader.vue'
 
 export default {
   name: 'MainLayout',
-  components: {
-    MainHeader
-  },
-  mounted() {
-    this.actionGetAccountId()
-  },
-  methods: {
-    ...mapActions({
-      actionGetAccountId: GET_ACCOUNT_ID
-    })
-  }
+  components: { MainHeader }
 }
 </script>
 

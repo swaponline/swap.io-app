@@ -29,7 +29,7 @@
       </div>
     </div>
     <div class="wallet-create-modal__links">
-      <a class="wallet-create-modal__link">Resore from 24-word seed</a>
+      <a class="wallet-create-modal__link">Restore from 24-word seed</a>
       <a class="wallet-create-modal__link">Connect wallet</a>
     </div>
   </modal-wrapper>
@@ -119,7 +119,7 @@ export default {
       width: calc(25% - 15px);
       margin: 0 7.5px 16px;
     }
-    @include small {
+    @include small-phone {
       width: calc(33.3% - 15px);
       margin: 0 7.5px 16px;
     }
