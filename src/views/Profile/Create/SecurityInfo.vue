@@ -65,5 +65,9 @@ export default {
     display: flex;
     padding-top: 15px;
   }
+
+  &__wrapper {
+    width: 100%;
+  }
 }
 </style>
