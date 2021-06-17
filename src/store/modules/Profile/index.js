@@ -635,14 +635,16 @@ export default {
       commit(UPDATE_OBJECT_PROPERTY, { path: MODULE_PROFILE, key: 'temporaryProfile', value: colors })
     },
     [CREATE_PROFILE]({ state, commit, dispatch }, profile) {
-      const { publicKey, color, background, selectionColor } = profile
-      const newProfile = { accountId: publicKey, color, background, selectionColor, username: 'New User' }
+      // TODO use publicKey for accountId and username
+      const { color, background, selectionColor } = profile
+      const accountId = Date.now()
+      const newProfile = { accountId, color, background, selectionColor, username: 'New User' }
       const newProfiles = [...state.profiles]
       newProfiles.push(newProfile)
 
       setStorage(USERS_THEMES_KEY, newProfiles)
       commit(UPDATE_OBJECT_PROPERTY, { path: MODULE_PROFILE, key: 'profiles', value: newProfiles })
-      dispatch(SET_PROFILE, publicKey)
+      dispatch(SET_PROFILE, accountId)
       dispatch(CREATING_OR_RECOVERING_PROFILE, false)
     },
     [CREATING_OR_RECOVERING_PROFILE]({ commit, dispatch }, value) {
