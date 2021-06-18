@@ -1,26 +1,27 @@
 import { getStorage, setStorage, removeStorage } from '@/utils/storage'
-import { SET_MODEL, UPDATE_MODEL, UPDATE_OBJECT_PROPERTY } from '../../common/mutations.types'
+import { SET_MODEL, UPDATE_OBJECT_PROPERTY } from '../../common/mutations.types'
 
 export const MODULE_PROFILE = 'Profile'
-export const SET_USERS_COLORS = 'SET_USERS_COLORS'
-export const CREATING_OR_RECOVERING_PROFILE = 'CREATING_OR_RECOVERING_PROFILE'
-export const IS_CREATING_OR_RECOVERING = 'IS_CREATING_OR_RECOVERING'
+export const CREATING_OR_RECOVERING_PROFILE = 'creatingOrRecoveringProfile'
+export const IS_CREATING_OR_RECOVERING = 'isCreatingOrRecovering'
 
-export const SET_PROFILE = 'SET_PROFILE'
-export const GET_ACCOUNT_ID = 'GET_ACCOUNT_ID'
-export const CREATE_NEW_USER = 'CREATE_NEW_USER'
-export const CREATE_WALLET = 'CREATE_WALLET'
-export const UPDATE_WALLET = 'UPDATE_WALLET'
+export const SET_PROFILE = 'setProfile'
+export const SET_TEMPORARY_PROFILE = 'setTemporaryProfile'
+export const CREATE_PROFILE = 'createProfile'
+export const GET_ACCOUNT_ID = 'getAccountId'
+export const CREATE_NEW_USER = 'createNewUser'
+export const CREATE_WALLET = 'createWallet'
+export const UPDATE_WALLET = 'updateWallet'
 
 export const USERS_THEMES_KEY = 'usersThemes'
 const CURRENT_USER_KEY = 'currentAccount'
 const WALLETS_LIST_KEY = 'walletsList'
 
-// const DEFAULT_COLOR_THEME = {
-//   background: 'linear-gradient(287deg, #033dff 0%, #ff7ac6 24%, #ffff00 100%)',
-//   color: '#6144E5',
-//   selectionColor: ''
-// }
+export const DEFAULT_COLOR_THEME = {
+  background: 'linear-gradient(0deg, rgba(189,189,189,1) 0%, rgba(255,255,255,1) 100%)',
+  color: '#6144E5',
+  selectionColor: ''
+}
 
 // TODO mock for prototype. To be sure that localStorage has correct data
 function setupLocalStorage() {
@@ -32,8 +33,7 @@ function setupLocalStorage() {
       color: '#320091',
       selectionColor: 'rgba(89,0,255,0.24)',
       accountId: 'iasduah415fni1j832jh8rjnfimda0m',
-      username: 'Vasilii',
-      isSelecting: true
+      username: 'Vasilii'
     },
     {
       background:
@@ -41,8 +41,7 @@ function setupLocalStorage() {
       color: '#680091',
       selectionColor: 'rgba(184,0,255,0.24)',
       accountId: 'iasd123uahfni1j832jh8rjnfimda0m',
-      username: 'Corporat',
-      isSelecting: true
+      username: 'Corporat'
     },
     {
       background:
@@ -50,8 +49,7 @@ function setupLocalStorage() {
       color: '#009144',
       selectionColor: 'rgba(0,255,121,0.24)',
       accountId: 'iasd123uahfni1j832jh8rj1fimda0m',
-      username: 'Millionaire',
-      isSelecting: true
+      username: 'Millionaire'
     }
   ]
   /* eslint-enable vue/max-len */
@@ -71,6 +69,7 @@ function setupLocalStorage() {
   removeStorage('accountId')
   removeStorage('list')
 }
+
 setupLocalStorage()
 
 export default {
@@ -602,12 +601,17 @@ export default {
     model: {
       profile: getStorage(USERS_THEMES_KEY).find(user => user.accountId === getStorage(CURRENT_USER_KEY))
     },
+    temporaryProfile: DEFAULT_COLOR_THEME,
 
     [IS_CREATING_OR_RECOVERING]: false
   },
   getters: {
+    userColorTheme(state) {
+      return state[IS_CREATING_OR_RECOVERING] ? state.temporaryProfile : state.model.profile
+    },
     currentWallets(state) {
-      return state.list.find(el => el.id === state.model.profile.accountId).wallets
+      const profileWallets = state.list.find(el => el.id === state.model.profile.accountId)
+      return profileWallets ? profileWallets.wallets : []
     },
     currentSubWallets(state, { currentWallets }) {
       return currentWallets?.reduce((acc, el) => {
@@ -624,9 +628,32 @@ export default {
   actions: {
     [SET_PROFILE]({ state, commit }, accountId) {
       setStorage(CURRENT_USER_KEY, accountId)
-      const profile = state.profiles.find(p => p.accountId === getStorage(CURRENT_USER_KEY))
+      const profile = state.profiles.find(p => p.accountId === accountId)
       commit(SET_MODEL, { name: MODULE_PROFILE, model: { profile } })
     },
+    [SET_TEMPORARY_PROFILE]({ commit }, colors) {
+      commit(UPDATE_OBJECT_PROPERTY, { path: MODULE_PROFILE, key: 'temporaryProfile', value: colors })
+    },
+    [CREATE_PROFILE]({ state, commit, dispatch }, profile) {
+      // TODO use publicKey for accountId and username
+      const { color, background, selectionColor } = profile
+      const accountId = Date.now()
+      const newProfile = { accountId, color, background, selectionColor, username: 'New User' }
+      const newProfiles = [...state.profiles]
+      newProfiles.push(newProfile)
+
+      setStorage(USERS_THEMES_KEY, newProfiles)
+      commit(UPDATE_OBJECT_PROPERTY, { path: MODULE_PROFILE, key: 'profiles', value: newProfiles })
+      dispatch(SET_PROFILE, accountId)
+      dispatch(CREATING_OR_RECOVERING_PROFILE, false)
+    },
+    [CREATING_OR_RECOVERING_PROFILE]({ commit, dispatch }, value) {
+      commit(UPDATE_OBJECT_PROPERTY, { path: MODULE_PROFILE, key: IS_CREATING_OR_RECOVERING, value })
+      if (!value) {
+        dispatch(SET_TEMPORARY_PROFILE, DEFAULT_COLOR_THEME)
+      }
+    },
+
     [UPDATE_WALLET]() {
       // TODO
       // arguments { state, commit }, wallet
@@ -648,16 +675,6 @@ export default {
       //     }
       //   }
       // }
-    },
-
-    [SET_USERS_COLORS]({ commit }, params) {
-      commit(UPDATE_MODEL, { name: MODULE_PROFILE, model: { ...params } })
-      if (!params.isSelecting) {
-        setStorage(USERS_THEMES_KEY, params)
-      }
-    },
-    [CREATING_OR_RECOVERING_PROFILE]({ commit }, value) {
-      commit(UPDATE_OBJECT_PROPERTY, { path: MODULE_PROFILE, key: IS_CREATING_OR_RECOVERING, value })
     }
     // TODO not used
     // [CREATE_WALLET]({ state, commit, getters }, wallet) {

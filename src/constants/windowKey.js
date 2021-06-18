@@ -1,3 +1,3 @@
-export const RECOVER_PROFILE = 'RecoverProfile'
+export const RECOVER_PROFILE_WINDOW = 'RecoverProfileWindow'
 
-export const CREATE_PROFILE = 'CreateProfile'
+export const CREATE_PROFILE_WINDOW = 'CreateProfileWindow'

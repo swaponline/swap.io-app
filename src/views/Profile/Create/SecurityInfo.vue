@@ -19,7 +19,6 @@
 
 <script>
 import SecurityInfoBlock from '@/components/Profile/SecurityInfoBlock.vue'
-import { CREATING_OR_RECOVERING_PROFILE } from '@/store/modules/Profile'
 import Substrate from '@/components/Profile/Substrate.vue'
 import infoBlocks from './infoBlocks'
 
@@ -34,9 +33,6 @@ export default {
       currentBlock: 1,
       infoBlocks
     }
-  },
-  created() {
-    this.$store.dispatch(CREATING_OR_RECOVERING_PROFILE, true)
   },
   methods: {
     skip() {
@@ -55,7 +51,6 @@ export default {
       }
     },
     cancel() {
-      this.$store.dispatch(CREATING_OR_RECOVERING_PROFILE, false)
       this.$router.push({ name: 'Wallets' })
     }
   }
@@ -69,6 +64,10 @@ export default {
   @include tablet {
     display: flex;
     padding-top: 15px;
+  }
+
+  &__wrapper {
+    width: 100%;
   }
 }
 </style>
