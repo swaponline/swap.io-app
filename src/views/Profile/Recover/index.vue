@@ -1,10 +1,8 @@
 <template>
-  <div class="recover-profile">
-    <substrate v-if="loading">
-      <v-loader :active="loading"></v-loader>
-    </substrate>
-    <iframe class="recover-profile__frame" name="recoverProfile" frameborder="0" />
-  </div>
+  <substrate>
+    <v-loader :active="loading"></v-loader>
+    <iframe class="recover-profile" name="recoverProfile" frameborder="0" />
+  </substrate>
 </template>
 
 <script>
@@ -50,8 +48,10 @@ export default {
             break
           case SET_BACKGROUND:
             this.actionSetBackground({
-              background: payload.selectGradient.background,
-              color: payload.selectGradient.color
+              background: payload.userColorTheme.background,
+              color: payload.userColorTheme.color,
+              selectionColor: payload.userColorTheme.selectionColor,
+              isSelecting: payload.userColorTheme.isSelecting
             })
             break
           default: {
@@ -68,16 +68,12 @@ export default {
 <style lang="scss">
 .recover-profile {
   width: 100%;
+  min-width: 1065px;
   height: 100%;
-  margin: 20px auto;
-  flex-grow: 1;
-  border-radius: 12px;
-  position: relative;
+  overflow: hidden;
 
-  &__frame {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
+  @include tablet {
+    min-width: auto;
   }
 }
 </style>
