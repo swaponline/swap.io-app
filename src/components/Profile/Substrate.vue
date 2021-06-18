@@ -51,7 +51,7 @@ export default {
 
   @include tablet {
     width: auto;
-    margin: 20px 20px 40px;
+    margin: 20px 40px 40px;
     max-height: none;
     max-width: none;
   }

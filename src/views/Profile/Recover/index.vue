@@ -1,7 +1,7 @@
 <template>
-  <substrate class="recover-profile">
+  <substrate>
     <v-loader :active="loading"></v-loader>
-    <iframe class="recover-profile__frame" name="recoverProfile" frameborder="0" />
+    <iframe class="recover-profile" name="recoverProfile" frameborder="0" />
   </substrate>
 </template>
 
@@ -60,16 +60,11 @@ export default {
 <style lang="scss">
 .recover-profile {
   width: 100%;
+  min-width: 1065px;
   height: 100%;
-  margin: 20px auto;
-  flex-grow: 1;
-  border-radius: 12px;
-  position: relative;
 
-  &__frame {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
+  @include tablet {
+    min-width: auto;
   }
 }
 </style>
