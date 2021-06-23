@@ -111,7 +111,7 @@ export default {
     outline: none;
     font-size: $--font-size-extra-small-subtitle;
     line-height: 25px;
-    z-index: 100;
+    z-index: 150;
   }
 
   &__avatar {

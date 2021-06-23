@@ -1,5 +1,5 @@
 <template>
-  <v-expansion-panels v-model="panels" class="profile-list">
+  <v-expansion-panels v-model="panels" v-click-outside="closePanels" class="profile-list">
     <v-expansion-panel class="profile-list__inner">
       <v-expansion-panel-header class="profile-list__header" :hide-actions="isDesktop">
         <v-avatar
@@ -76,10 +76,13 @@ export default {
     ...mapActions({
       actionSetProfile: SET_PROFILE
     }),
+    closePanels() {
+      this.panels = []
+    },
     setProfile(id) {
       this.actionSetProfile(id)
       this.$router.push({ name: 'Wallets', query: null })
-      this.panels = []
+      this.closePanels()
     },
     getAvatar({ accountId }) {
       const { background } = this.profiles.find(p => p.accountId === accountId)
