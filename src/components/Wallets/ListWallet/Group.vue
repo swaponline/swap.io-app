@@ -1,9 +1,14 @@
 <template>
-  <v-list-group class="list-wallet-group" color="black" active-class="list-wallet-group--active" append-icon="">
+  <v-list-group
+    v-model="isOpen"
+    class="list-wallet-group"
+    color="black"
+    active-class="list-wallet-group--active"
+    append-icon=""
+  >
     <template #activator>
-      <v-list-item-icon class="list-wallet-group__icon-wrapper">
-        <cryptoicon :symbol="currencyName.toLowerCase()" size="45" />
-      </v-list-item-icon>
+      <item-icon :currency-name="currencyName" :network="network" :badge="isOpen ? 0 : notificationsCount" />
+
       <v-list-item-title class="list-wallet-group__header">
         <span class="list-wallet-group__currency">{{ currencyName }} </span>
         <span>{{ value }}</span>
@@ -20,7 +25,11 @@
     >
       <v-list-item-content class="list-wallet-group__item-content">
         <v-list-item-title class="list-wallet-group__item-info">
-          <span>{{ subWallet.name }}</span>
+          <span>
+            <v-badge color="red" :content="subWallet.notifications" :value="!!subWallet.notifications" inline>
+              {{ subWallet.name || minifyAddress(subWallet.address) }}
+            </v-badge>
+          </span>
           <span>{{ subWallet.value }}</span>
         </v-list-item-title>
       </v-list-item-content>
@@ -29,8 +38,12 @@
 </template>
 
 <script>
+import ItemIcon from '@/components/Wallets/ListWallet/ItemIcon.vue'
+import { minifyAddress } from '@/utils/common'
+
 export default {
   name: 'ListWalletGroup',
+  components: { ItemIcon },
   props: {
     name: {
       type: String,
@@ -47,8 +60,23 @@ export default {
     subWallets: {
       type: Array,
       required: true
+    },
+    network: {
+      type: String,
+      default: ''
     }
-  }
+  },
+  data() {
+    return {
+      isOpen: false
+    }
+  },
+  computed: {
+    notificationsCount() {
+      return this.subWallets.reduce((acc, { notifications }) => (notifications ? acc + notifications : acc), 0)
+    }
+  },
+  methods: { minifyAddress }
 }
 </script>
 
@@ -66,7 +94,7 @@ export default {
     min-width: 24px !important;
   }
   &--active {
-    color: rgba($--black, 0.87);
+    color: rgba($--black, 0.75);
   }
   &__header {
     display: flex;
@@ -103,18 +131,9 @@ export default {
   &__currency {
     font-weight: $--font-weight-semi-bold;
   }
-  &__icon-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    min-width: 45px;
-    height: 45px;
-    margin: 15px 14px 15px 0 !important;
-  }
   &__name {
     width: 100%;
-    font-size: $--font-size-extra-small-subtitle;
+    font-size: $--font-size-medium;
     color: $--grey;
   }
 }
