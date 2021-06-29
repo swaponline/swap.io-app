@@ -1,20 +1,31 @@
 <template>
-  <v-list-item
-    link
-    exact
-    active-class="list-wallet-item--active"
-    class="list-wallet-item"
-    :to="{ name: 'Wallet', params: { walletAddress: subWallets[0].address } }"
+  <v-badge
+    class="flex-grow-1"
+    bottom
+    :content="notificationsCount"
+    :value="notificationsCount"
+    color="red"
+    offset-x="40"
+    offset-y="36"
   >
-    <item-icon :currency-name="currencyName" :network="network" :badge="notificationsCount" />
-    <v-list-item-content>
-      <v-list-item-title class="list-wallet-item__title">
-        <span class="list-wallet-item__currency-name">{{ currencyName }}</span>
-        <span>{{ value }}</span>
-        <span class="list-wallet-item__name">{{ subWallets[0].name || minifyAddress(subWallets[0].address) }}</span>
-      </v-list-item-title>
-    </v-list-item-content>
-  </v-list-item>
+    <v-list-item
+      link
+      exact
+      active-class="list-wallet-item--active"
+      class="list-wallet-item"
+      :to="{ name: 'Wallet', params: { walletAddress: subWallets[0].address } }"
+    >
+      <item-icon :currency-name="currencyName" :network="network" />
+
+      <v-list-item-content>
+        <v-list-item-title class="list-wallet-item__title">
+          <span class="list-wallet-item__currency-name">{{ currencyName }}</span>
+          <span>{{ value }}</span>
+          <span class="list-wallet-item__name">{{ subWallets[0].name || minifyAddress(subWallets[0].address) }}</span>
+        </v-list-item-title>
+      </v-list-item-content>
+    </v-list-item>
+  </v-badge>
 </template>
 
 <script>

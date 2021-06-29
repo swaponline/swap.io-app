@@ -1,40 +1,50 @@
 <template>
-  <v-list-group
-    v-model="isOpen"
-    class="list-wallet-group"
-    color="black"
-    active-class="list-wallet-group--active"
-    append-icon=""
+  <v-badge
+    class="flex-grow-1"
+    bottom
+    :content="notificationsCount"
+    :value="notificationsCount && !isOpen"
+    color="red"
+    offset-x="40"
+    offset-y="36"
   >
-    <template #activator>
-      <item-icon :currency-name="currencyName" :network="network" :badge="isOpen ? 0 : notificationsCount" />
-
-      <v-list-item-title class="list-wallet-group__header">
-        <span class="list-wallet-group__currency">{{ currencyName }} </span>
-        <span>{{ value }}</span>
-        <span class="list-wallet-group__name">{{ subWallets.length }} wallet</span>
-      </v-list-item-title>
-    </template>
-    <v-list-item
-      v-for="(subWallet, i) in subWallets"
-      :key="i"
-      link
-      exact
-      class="list-wallet-group__item"
-      :to="{ name: 'Wallet', params: { walletAddress: subWallet.address } }"
+    <v-list-group
+      v-model="isOpen"
+      class="list-wallet-group"
+      color="black"
+      active-class="list-wallet-group--active"
+      append-icon=""
     >
-      <v-list-item-content class="list-wallet-group__item-content">
-        <v-list-item-title class="list-wallet-group__item-info">
-          <span>
-            <v-badge color="red" :content="subWallet.notifications" :value="!!subWallet.notifications" inline>
-              {{ subWallet.name || minifyAddress(subWallet.address) }}
-            </v-badge>
-          </span>
-          <span>{{ subWallet.value }}</span>
+      <template #activator>
+        <item-icon :currency-name="currencyName" :network="network" />
+
+        <v-list-item-title class="list-wallet-group__header">
+          <span class="list-wallet-group__currency">{{ currencyName }} </span>
+          <span>{{ value }}</span>
+          <span class="list-wallet-group__name">{{ subWallets.length }} wallet</span>
         </v-list-item-title>
-      </v-list-item-content>
-    </v-list-item>
-  </v-list-group>
+      </template>
+      <v-list-item
+        v-for="(subWallet, i) in subWallets"
+        :key="i"
+        link
+        exact
+        class="list-wallet-group__item"
+        :to="{ name: 'Wallet', params: { walletAddress: subWallet.address } }"
+      >
+        <v-list-item-content class="list-wallet-group__item-content">
+          <v-list-item-title class="list-wallet-group__item-info">
+            <span>
+              <v-badge color="red" :content="subWallet.notifications" :value="!!subWallet.notifications" inline>
+                {{ subWallet.name || minifyAddress(subWallet.address) }}
+              </v-badge>
+            </span>
+            <span>{{ subWallet.value }}</span>
+          </v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+    </v-list-group>
+  </v-badge>
 </template>
 
 <script>
@@ -82,17 +92,22 @@ export default {
 
 <style lang="scss">
 .list-wallet-group {
-  width: 100%;
   border-radius: 12px;
   overflow: hidden;
   margin: 5px 10px;
   padding: 0 0;
   .v-list-item {
     padding: 0 15px;
+
+    &:hover:before {
+      opacity: 0.1;
+      background: $--black;
+    }
   }
   .v-list-item__icon.v-list-group__header__append-icon {
     min-width: 24px !important;
   }
+
   &--active {
     color: rgba($--black, 0.75);
   }

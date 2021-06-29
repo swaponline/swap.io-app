@@ -128,7 +128,7 @@ export default {
             subWallets: [
               {
                 currencyName: 'USDT',
-                name: '',
+                name: 'Default',
                 value: 100.1,
                 address: 'GUzPzmRhx5VgsYH3vZjGjLgtFQMHkJzyHU'
               }
@@ -146,7 +146,7 @@ export default {
             subWallets: [
               {
                 currencyName: 'ETH',
-                name: '',
+                name: 'Default',
                 value: 40.0561,
                 address: '0xd19615f2Eab2ABfBF7ca16618b5eD43386374DD0'
               }
@@ -166,7 +166,7 @@ export default {
             subWallets: [
               {
                 currencyName: 'BTC',
-                name: '',
+                name: 'Default',
                 value: 0.056734,
                 address: '1C9Uae6kyDtPo4ykzd5AJaLzLEZSpEbP3y'
               }
@@ -179,7 +179,7 @@ export default {
             subWallets: [
               {
                 currencyName: 'ETH',
-                name: '',
+                name: 'Default',
                 notifications: 2,
                 value: 40.0561,
                 address: '0xd19615f2Eab2ABfBF7ca16618b5eD43386374DD0'
@@ -206,7 +206,8 @@ export default {
             subWallets: [
               {
                 currencyName: 'USDT',
-                name: '',
+                name: 'Default',
+                notifications: 2,
                 value: 100.1,
                 address: 'GUzPzmRhx5VgsYH3vZjGjLgtFQMHkJzyHU'
               }
@@ -220,7 +221,7 @@ export default {
             subWallets: [
               {
                 currencyName: 'BTCP',
-                name: '',
+                name: 'Default',
                 value: 0.056734,
                 address: '1C9Uae6kyDtPo4ykzd5AdJaLzLEZSpEbP3y'
               }
@@ -234,7 +235,7 @@ export default {
               {
                 currencyName: 'CC',
                 notifications: 5,
-                name: '',
+                name: 'Default',
                 value: 120.1,
                 address: 'GUzPzamRhx5VgsYH3vZjGjLgtFQMHkJzyHU'
               }
@@ -248,7 +249,8 @@ export default {
             subWallets: [
               {
                 currencyName: 'ETN',
-                name: '',
+                name: 'Default',
+                notifications: 1,
                 value: 0.056734,
                 address: '1C9Uae6kyDtPos4ykzd5AJaLzLEZSpEbP3y'
               }
@@ -262,7 +264,7 @@ export default {
             subWallets: [
               {
                 currencyName: 'DASH',
-                name: '',
+                name: 'Default',
                 value: 0.056734,
                 address: '1C9dUae6kyDtPo4ykzd5AJaLzLEZSpEbP3y'
               }
@@ -274,7 +276,7 @@ export default {
             subWallets: [
               {
                 currencyName: 'DBC',
-                name: '',
+                name: 'Default',
                 value: 100.1,
                 address: 'GUzPzmRhx5VgsYH3vfZjGjLgtFQMHkJzyHU'
               }
@@ -288,7 +290,7 @@ export default {
             subWallets: [
               {
                 currencyName: 'ENTRP',
-                name: '',
+                name: 'Default',
                 value: 0.056734,
                 address: '1C9Uae6kvyDtPo4ykzd5AJaLzLEZSpEbP3y'
               }
@@ -300,7 +302,7 @@ export default {
             subWallets: [
               {
                 currencyName: 'EOS',
-                name: '',
+                name: 'Default',
                 value: 100.1,
                 address: 'GUzPzmRhx5VcgsYH3vZjGjLgtFQMHkJzyHU'
               }
@@ -314,7 +316,7 @@ export default {
             subWallets: [
               {
                 currencyName: 'CND',
-                name: '',
+                name: 'Default',
                 value: 0.056734,
                 address: '1C9Uae6kyxDtPo4ykzd5AJaLzLEZSpEbP3y'
               }
@@ -326,7 +328,7 @@ export default {
             subWallets: [
               {
                 currencyName: 'CVC',
-                name: '',
+                name: 'Default',
                 value: 100.1,
                 address: 'GUzzPzmRhx5VgsYH3vZjGjLgtFQMHkJzyHU'
               }
@@ -340,7 +342,7 @@ export default {
             subWallets: [
               {
                 currencyName: 'ICX',
-                name: '',
+                name: 'Default',
                 value: 0.056734,
                 address: '1C9Uae6kyDtPo4ykzd5sAJaLzLEZSpEbP3y'
               }
@@ -352,7 +354,7 @@ export default {
             subWallets: [
               {
                 currencyName: 'INK',
-                name: '',
+                name: 'Default',
                 value: 100.1,
                 address: 'GUzPzmRhx5VgsYH3vZjGjLgtFQMHkJzywHU'
               }
@@ -366,7 +368,7 @@ export default {
             subWallets: [
               {
                 currencyName: 'IGNIS',
-                name: '',
+                name: 'Default',
                 value: 0.056734,
                 address: '1C9Uae6kyDtPo4ykzd5AJaLzLEZeSpEbP3y'
               }
@@ -378,7 +380,7 @@ export default {
             subWallets: [
               {
                 currencyName: 'EQUA',
-                name: '',
+                name: 'Default',
                 value: 100.1,
                 address: 'GUzPzmRhx5VgsYH3vZjGjLgtFQMHkJzyrHU'
               }
@@ -392,7 +394,7 @@ export default {
             subWallets: [
               {
                 currencyName: 'BTC',
-                name: '',
+                name: 'Default',
                 value: 0.056734,
                 address: '1C9Uae6kyDtPo4ykzd5AJaLzLEZSpEbP3y'
               }
@@ -405,7 +407,7 @@ export default {
             subWallets: [
               {
                 currencyName: 'ETH',
-                name: '',
+                name: 'Default',
                 value: 40.0561,
                 address: '0xd19615f2Eab2ABfBF7ca16618b5eD43386374DD0'
               },
@@ -430,7 +432,7 @@ export default {
             subWallets: [
               {
                 currencyName: 'USDT',
-                name: '',
+                name: 'Default',
                 value: 100.1,
                 address: 'GUzPzmRhx5VgsYH3vZjGjLgtFQMHkJzyHU'
               }
@@ -444,7 +446,7 @@ export default {
             subWallets: [
               {
                 currencyName: 'BTCP',
-                name: '',
+                name: 'Default',
                 value: 0.056734,
                 address: '1C9Uae6kyDtPo4ykzd5AdJaLzLEZSpEbP3y'
               }
@@ -457,7 +459,7 @@ export default {
             subWallets: [
               {
                 currencyName: 'CC',
-                name: '',
+                name: 'Default',
                 value: 100.1,
                 address: 'GUzPzamRhx5VgsYH3vZjGjLgtFQMHkJzyHU'
               }
@@ -471,7 +473,7 @@ export default {
             subWallets: [
               {
                 currencyName: 'ETN',
-                name: '',
+                name: 'Default',
                 value: 0.056734,
                 address: '1C9Uae6kyDtPos4ykzd5AJaLzLEZSpEbP3y'
               }
@@ -485,7 +487,7 @@ export default {
             subWallets: [
               {
                 currencyName: 'DASH',
-                name: '',
+                name: 'Default',
                 value: 0.056734,
                 address: '1C9dUae6kyDtPo4ykzd5AJaLzLEZSpEbP3y'
               }
@@ -497,7 +499,7 @@ export default {
             subWallets: [
               {
                 currencyName: 'DBC',
-                name: '',
+                name: 'Default',
                 value: 100.1,
                 address: 'GUzPzmRhx5VgsYH3vfZjGjLgtFQMHkJzyHU'
               }
@@ -511,7 +513,7 @@ export default {
             subWallets: [
               {
                 currencyName: 'ENTRP',
-                name: '',
+                name: 'Default',
                 value: 0.056734,
                 address: '1C9Uae6kvyDtPo4ykzd5AJaLzLEZSpEbP3y'
               }
@@ -523,7 +525,7 @@ export default {
             subWallets: [
               {
                 currencyName: 'EOS',
-                name: '',
+                name: 'Default',
                 value: 100.1,
                 address: 'GUzPzmRhx5VcgsYH3vZjGjLgtFQMHkJzyHU'
               }
@@ -537,7 +539,7 @@ export default {
             subWallets: [
               {
                 currencyName: 'CND',
-                name: '',
+                name: 'Default',
                 value: 0.056734,
                 address: '1C9Uae6kyxDtPo4ykzd5AJaLzLEZSpEbP3y'
               }
@@ -549,7 +551,7 @@ export default {
             subWallets: [
               {
                 currencyName: 'CVC',
-                name: '',
+                name: 'Default',
                 value: 100.1,
                 address: 'GUzzPzmRhx5VgsYH3vZjGjLgtFQMHkJzyHU'
               }
@@ -563,7 +565,7 @@ export default {
             subWallets: [
               {
                 currencyName: 'ICX',
-                name: '',
+                name: 'Default',
                 value: 0.056734,
                 address: '1C9Uae6kyDtPo4ykzd5sAJaLzLEZSpEbP3y'
               }
@@ -575,7 +577,7 @@ export default {
             subWallets: [
               {
                 currencyName: 'INK',
-                name: '',
+                name: 'Default',
                 value: 100.1,
                 address: 'GUzPzmRhx5VgsYH3vZjGjLgtFQMHkJzywHU'
               }
@@ -589,7 +591,7 @@ export default {
             subWallets: [
               {
                 currencyName: 'IGNIS',
-                name: '',
+                name: 'Default',
                 value: 0.056734,
                 address: '1C9Uae6kyDtPo4ykzd5AJaLzLEZeSpEbP3y'
               }
@@ -601,7 +603,7 @@ export default {
             subWallets: [
               {
                 currencyName: 'EQUA',
-                name: '',
+                name: 'Default',
                 value: 100.1,
                 address: 'GUzPzmRhx5VgsYH3vZjGjLgtFQMHkJzyrHU'
               }
