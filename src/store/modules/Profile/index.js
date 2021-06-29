@@ -420,7 +420,7 @@ export default {
             subWallets: [
               {
                 currencyName: 'USDT',
-                name: 'Default',
+                name: 'USDT additional',
                 value: 100.1,
                 address: 'GUzPzmRhx5VgsYH3vZjGjLgtFQMHkJzyHU'
               }

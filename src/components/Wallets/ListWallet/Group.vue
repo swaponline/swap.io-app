@@ -54,7 +54,6 @@ export default {
 
 <style lang="scss">
 .list-wallet-group {
-  width: 100%;
   border-radius: 12px;
   overflow: hidden;
   margin: 5px 10px;
