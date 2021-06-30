@@ -6,7 +6,7 @@
     :value="notificationsCount"
     color="red"
     offset-x="40"
-    offset-y="32"
+    offset-y="36"
   >
     <v-list-item
       link
@@ -70,7 +70,7 @@ export default {
 .list-wallet-item {
   min-height: 40px;
   border-radius: 12px;
-  margin: 5px 10px;
+  margin: 0 10px;
   padding: 0 15px;
   overflow: hidden;
   &:hover {

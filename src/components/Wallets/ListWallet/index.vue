@@ -104,6 +104,7 @@ export default {
     z-index: 1;
   }
   &__item {
+    padding: 5px 0;
     &:first-child {
       margin-top: 5px;
     }
