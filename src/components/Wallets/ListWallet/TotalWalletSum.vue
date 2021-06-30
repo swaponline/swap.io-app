@@ -14,7 +14,7 @@
       :menu-props="{ 'content-class': 'total-wallet-sum__selector-menu' }"
     >
     </v-select>
-    <v-badge left :content="accountNotifications" :value="accountNotifications" color="red" offset-x="90%">
+    <v-badge left :content="accountNotifications" :value="accountNotifications" color="red" offset-x="120%">
       <div class="total-wallet-sum__value">{{ accountBalance }}</div>
     </v-badge>
   </div>

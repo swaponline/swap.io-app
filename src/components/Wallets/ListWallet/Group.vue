@@ -1,12 +1,12 @@
 <template>
   <v-badge
-    class="flex-grow-1"
+    class="d-block"
     bottom
     :content="notificationsCount"
     :value="notificationsCount && !isOpen"
     color="red"
     offset-x="40"
-    offset-y="36"
+    offset-y="32"
   >
     <v-list-group
       v-model="isOpen"
