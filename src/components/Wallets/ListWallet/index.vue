@@ -8,10 +8,15 @@
         <total-wallet-sum />
       </div>
       <v-list class="list-wallet__body pt-0 ">
-        <v-list-item v-for="wallet in wallets" :key="wallet.name" class="list-wallet__item px-0">
-          <list-item v-if="wallet.subWallets.length === 1" v-bind="wallet"></list-item>
-          <list-group v-else v-bind="wallet"></list-group>
-        </v-list-item>
+        <template v-for="wallet in filteredWallets">
+          <list-item
+            v-if="wallet.subWallets.length === 1"
+            :key="wallet.name"
+            v-bind="wallet"
+            class="list-wallet__item"
+          />
+          <list-group v-else :key="wallet.name" v-bind="wallet" class="list-wallet__item" />
+        </template>
       </v-list>
     </div>
   </div>
@@ -71,12 +76,15 @@ export default {
     z-index: 1;
   }
   &__item {
-    justify-content: center;
+    &:first-child {
+      margin-top: 5px;
+    }
     &:after {
       content: '';
       position: absolute;
       top: 100%;
-      width: calc(100% - 30px);
+      left: 18px;
+      width: calc(100% - 36px);
       min-height: 1px;
       background: $--light-grey;
     }

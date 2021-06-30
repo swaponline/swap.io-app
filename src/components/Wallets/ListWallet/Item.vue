@@ -1,12 +1,12 @@
 <template>
   <v-badge
-    class="flex-grow-1"
+    class="d-block"
     bottom
     :content="notificationsCount"
     :value="notificationsCount"
     color="red"
     offset-x="40"
-    offset-y="36"
+    offset-y="32"
   >
     <v-list-item
       link
@@ -75,9 +75,6 @@ export default {
   overflow: hidden;
   &:hover {
     background: #f7f7f7;
-  }
-  &:first-child {
-    margin-top: 5px;
   }
   &::before {
     background-color: rgba($--black, 0.75);
