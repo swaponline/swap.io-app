@@ -6,12 +6,13 @@
     <div class="list-wallet__wrapper">
       <div class="list-wallet__header">
         <total-wallet-sum />
+        <wallet-search v-if="isSearchVisible" v-model="search" />
       </div>
       <v-list class="list-wallet__body pt-0 ">
-        <v-list-item v-for="wallet in wallets" :key="wallet.name" class="list-wallet__item px-0">
-          <list-item v-if="wallet.subWallets.length === 1" v-bind="wallet"></list-item>
-          <list-group v-else v-bind="wallet"></list-group>
-        </v-list-item>
+        <template v-for="wallet in filteredWallets">
+          <list-item v-if="wallet.subWallets.length === 1" :key="wallet.name" v-bind="wallet" />
+          <list-group v-else :key="wallet.name" v-bind="wallet" />
+        </template>
       </v-list>
     </div>
   </div>
@@ -20,6 +21,7 @@
 <script>
 import { MatchMedia } from 'vue-component-media-queries'
 //  components
+import WalletSearch from './Search.vue'
 import ProfileList from '../ProfileList.vue'
 import TotalWalletSum from './TotalWalletSum.vue'
 import ListGroup from './Group.vue'
@@ -27,10 +29,36 @@ import ListItem from './Item.vue'
 
 export default {
   name: 'ListWallet',
-  components: { ProfileList, TotalWalletSum, MatchMedia, ListGroup, ListItem },
+  components: { ProfileList, WalletSearch, TotalWalletSum, MatchMedia, ListGroup, ListItem },
+  data() {
+    return {
+      search: ''
+    }
+  },
   computed: {
     wallets() {
       return this.$store.getters.currentWallets
+    },
+    filteredWallets() {
+      const { wallets } = this
+      const search = this.search.toLowerCase()
+
+      if (!this.search) return wallets
+
+      const filteredByCurrency = wallets.filter(w => w.currencyName.toLowerCase().includes(search))
+      const filteredBySubname = wallets.filter(wallet => {
+        const { subWallets } = wallet
+        return !!subWallets.find(sw => sw.name.toLowerCase().includes(search))
+      })
+      const filteredByAddress = wallets.filter(wallet => {
+        const { subWallets } = wallet
+        return !!subWallets.find(sw => sw.address.toLowerCase().includes(search))
+      })
+
+      return new Set([...filteredByCurrency, ...filteredBySubname, ...filteredByAddress])
+    },
+    isSearchVisible() {
+      return this.wallets.length > 8
     }
   }
 }
@@ -69,17 +97,6 @@ export default {
     top: 0;
     background: $--white;
     z-index: 1;
-  }
-  &__item {
-    justify-content: center;
-    &:after {
-      content: '';
-      position: absolute;
-      top: 100%;
-      width: calc(100% - 30px);
-      min-height: 1px;
-      background: $--light-grey;
-    }
   }
 }
 </style>
