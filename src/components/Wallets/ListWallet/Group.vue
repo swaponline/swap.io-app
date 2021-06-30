@@ -6,7 +6,7 @@
     :value="notificationsCount && !isOpen"
     color="red"
     offset-x="40"
-    offset-y="32"
+    offset-y="36"
   >
     <v-list-group
       v-model="isOpen"
@@ -94,7 +94,7 @@ export default {
 .list-wallet-group {
   border-radius: 12px;
   overflow: hidden;
-  margin: 5px 10px;
+  margin: 0 10px;
   padding: 0 0;
   .v-list-item {
     padding: 0 15px;
