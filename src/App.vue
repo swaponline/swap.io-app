@@ -10,7 +10,10 @@
 <script>
 import { MediaQueryProvider } from 'vue-component-media-queries'
 import Canvg from 'canvg'
+import { getFaviconInColorFTheme } from '@/utils/favicon'
 import messageHandler from './messageHandler'
+
+const FAVICON_REDRAWING_TIME = 290
 
 const queries = {
   desktop: '(min-width: 1281px)',
@@ -41,15 +44,20 @@ export default {
     userColorTheme: {
       immediate: true,
       deep: true,
-      handler(newTheme) {
-        document.documentElement.style.setProperty('--main-color', newTheme.color)
-        document.documentElement.style.setProperty('--selection-color', newTheme.selectionColor)
+      handler({ color, selectionColor, background }) {
+        this.setFavicon(color)
+        this.setColorThemeOfAddressBar(color)
 
-        if (newTheme.background.includes('linear-gradient')) {
-          document.documentElement.style.setProperty('--background-app', newTheme.background)
+        setTimeout(() => {
+          document.documentElement.style.setProperty('--main-color', color)
+          document.documentElement.style.setProperty('--selection-color', selectionColor)
+        }, FAVICON_REDRAWING_TIME)
+
+        if (background.includes('linear-gradient')) {
+          document.documentElement.style.setProperty('--background-app', background)
         } else {
           document.documentElement.style.setProperty('--background-app', '')
-          this.backgroundSvg = newTheme.background
+          this.backgroundSvg = background
           this.$nextTick(() => this.setBackground())
         }
       }
@@ -99,6 +107,19 @@ export default {
       const canvg = Canvg.fromString(ctx, resSvg, options)
 
       canvg.start()
+    },
+    setFavicon(color) {
+      const attributeFaviconSvg =
+        'link[rel="icon"], link[type="image/svg+xml"], link[href="./favicons/defaultSvgFavicon.svg"]'
+
+      const faviconBase64 = getFaviconInColorFTheme(color)
+      const dynamicSvgFavicon = document.querySelector(attributeFaviconSvg)
+
+      dynamicSvgFavicon.setAttribute('href', `${faviconBase64}`)
+    },
+    setColorThemeOfAddressBar(color) {
+      const colorThemeOfAddressBar = document.querySelector('meta[name="theme-color"]')
+      colorThemeOfAddressBar.setAttribute('color', `${color}`)
     }
   }
 }
