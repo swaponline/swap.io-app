@@ -1,33 +1,35 @@
 <template>
-  <form-selector
+  <v-select
     v-model="localSelectedAddress"
     :items="items"
     return-object
-    label="Your wallet"
-    outlined
+    append-icon=""
+    hide-details
+    flat
+    filled
+    item-color
     class="wallet-selector"
+    placeholder="Select wallet"
   >
     <template #item="{item}">
       <cryptoicon :symbol="item.currencyName.toLowerCase()" size="32" class="wallet-selector__icon" />
-      <span class="wallet-selector__name">{{ item.name }}</span>
-      <span class="wallet-selector__address">{{ minifyAddress(item.address) }}</span>
+      <span class="wallet-selector__short-name">{{ item.name }} ({{ item.value }})</span>
+      <span class="wallet-selector__short-address">{{ minifyAddress(item.address) }}</span>
     </template>
 
     <template #selection="{item}">
-      <cryptoicon :symbol="item.currencyName.toLowerCase()" size="32" class="wallet-selector__icon" />
-      <span class="wallet-selector__name">{{ item.name }}</span>
-      <span class="wallet-selector__address">{{ minifyAddress(item.address) }}</span>
+      <wallet-preview v-bind="item" />
     </template>
-  </form-selector>
+  </v-select>
 </template>
 
 <script>
-import FormSelector from '@/components/UI/Forms/Selector.vue'
+import WalletPreview from '@/components/Wallets/WalletPreview.vue'
 import { minifyAddress } from '@/utils/common'
 
 export default {
   name: 'WalletSelector',
-  components: { FormSelector },
+  components: { WalletPreview },
   model: {
     prop: 'address',
     event: 'update:address'
@@ -54,15 +56,40 @@ export default {
 
 <style lang="scss">
 .wallet-selector {
+  border-radius: $--main-border-radius;
+
+  .v-select__selections {
+    input::placeholder {
+      font-size: 1.15em;
+      padding: 0 20px;
+    }
+  }
+  .v-input__slot {
+    height: 74px;
+    padding: 0 !important;
+    background-color: $--light-grey-2 !important;
+
+    &:hover {
+      background-color: $--light-grey-5 !important;
+    }
+    &:before,
+    &:after {
+      display: none;
+    }
+  }
   &__icon {
     margin-right: 12px;
   }
-  &__name {
+
+  &__short-name {
     font-weight: 600;
-    max-width: 120px;
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
     margin-right: 8px;
+  }
+  &__short-address {
+    margin-left: auto;
   }
 }
 </style>

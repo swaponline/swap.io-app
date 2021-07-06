@@ -19,10 +19,8 @@ import { mapMutations } from 'vuex'
 import { CLOSE_MODAL, CLOSE_ALL_MODAL, TOGGLE_MODAL, MODULE_NAME as MODALS_MODULE } from '@/store/modules/Modals'
 
 import CopyMenu from './CopyMenu.vue'
-import InvoiceForm from './InvoiceForm.vue'
-import InvoicePreview from './InvoicePreview.vue'
-import SendForm from './SendForm.vue'
-import SendPreview from './SendPreview.vue'
+import InvoiceForm from './InvoiceForm/index.vue'
+import SendForm from './SendForm/index.vue'
 import TransactionDetails from './TransactionDetails.vue'
 import EditFee from './EditFee.vue'
 import ShareModal from './ShareModal.vue'
@@ -35,9 +33,7 @@ export default {
   components: {
     CopyMenu,
     InvoiceForm,
-    InvoicePreview,
     SendForm,
-    SendPreview,
     EditFee,
     ShareModal,
     WalletSettings,
