@@ -9,15 +9,10 @@
         <wallet-search v-if="isSearchVisible" v-model="search" />
       </div>
       <v-list class="list-wallet__body pt-0 ">
-        <template v-for="wallet in filteredWallets">
-          <list-item
-            v-if="wallet.subWallets.length === 1"
-            :key="wallet.name"
-            v-bind="wallet"
-            class="list-wallet__item"
-          />
-          <list-group v-else :key="wallet.name" v-bind="wallet" class="list-wallet__item" />
-        </template>
+        <div v-for="wallet in filteredWallets" :key="wallet.name" class="list-wallet__item">
+          <list-item v-if="wallet.subWallets.length === 1" v-bind="wallet" />
+          <list-group v-else v-bind="wallet" />
+        </div>
       </v-list>
     </div>
   </div>
@@ -104,6 +99,7 @@ export default {
     z-index: 1;
   }
   &__item {
+    position: relative;
     padding: 5px 0;
     &:first-child {
       margin-top: 5px;
