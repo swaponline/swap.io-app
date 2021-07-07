@@ -8,17 +8,17 @@
     </div>
 
     <div v-for="(field, index) in fields" :key="index" class="d-flex">
-      <div class="invoice-preview__field invoice-preview__field--long mb-2">
+      <div class="invoice-preview__field invoice-preview__field--long">
         <span class="invoice-preview__label">Description</span>
         <span class="invoice-preview__value">{{ field.description }}</span>
       </div>
-      <div class="invoice-preview__field invoice-preview__field--short mb-2">
+      <div class="invoice-preview__field invoice-preview__field--short">
         <span class="invoice-preview__label">Amount</span>
         <span class="invoice-preview__value">{{ field.amount }}</span>
       </div>
     </div>
 
-    <v-divider class="my-4" />
+    <v-divider class="invoice-preview__divider" />
 
     <div class="invoice-preview__amount">
       <span>Amount: </span>
@@ -62,6 +62,7 @@ export default {
     margin-bottom: 16px;
   }
   &__field {
+    margin-bottom: 8px;
     padding: 6px 14px 8px;
     display: flex;
     flex-direction: column;
@@ -99,6 +100,9 @@ export default {
       margin: 20px 0;
       font-size: $--font-size-medium;
     }
+  }
+  &__divider {
+    margin: 16px 0;
   }
 }
 </style>

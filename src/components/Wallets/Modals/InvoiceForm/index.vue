@@ -52,7 +52,7 @@
           <v-btn class="invoice-form__add-button" depressed @click="addAmountField">Add item</v-btn>
         </div>
 
-        <div v-for="(field, index) in amountFields" :key="index" class="d-flex align-center invoice-form__item">
+        <div v-for="(field, index) in amountFields" :key="index" class="invoice-form__item">
           <form-text-field v-model="field.description" label="Description" class="invoice-form__long-field mb-0" />
 
           <form-text-field
@@ -276,6 +276,8 @@ export default {
     }
   }
   &__item {
+    display: flex;
+    align-items: center;
     &:not(:last-child) {
       margin-bottom: 12px;
     }
