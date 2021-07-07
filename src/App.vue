@@ -40,6 +40,9 @@ export default {
     },
     isDefaultTheme() {
       return this.userColorTheme.background.includes('linear-gradient')
+    },
+    accountNotifications() {
+      return this.$store.getters.accountNotifications
     }
   },
   watch: {
@@ -70,11 +73,11 @@ export default {
     this.resize()
     messageHandler()
     // ! Mock
-    const count = 4
+    const { accountNotifications } = this
     const title = `
-        ${count}
-        ${pluralizeNumeral(count, 'новая', 'новых')} 
-        ${pluralizeNumeral(count, 'транзакция', 'транзакции', 'транзакций')}
+        ${accountNotifications}
+        new
+        ${pluralizeNumeral(accountNotifications, 'transaction', 'transactions', 'transactions')}
       `
     const notificationInTabTitle = new NotificationInTabTitle()
     setTimeout(() => {
