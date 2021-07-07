@@ -1,4 +1,4 @@
-import Transaction from '@/api/swap.json'
+import Transaction from '@/api/swap'
 import { SET_LIST, UPDATE_MODEL, LOADING, LOADED } from '@/store/common/mutations.types'
 import { getDate } from '@/utils/date'
 
