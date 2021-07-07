@@ -23,7 +23,7 @@ export default {
 
 <style lang="scss">
 .form-text-field {
-  border: 1px solid $--black;
+  border: 2px solid $--border-grey;
   border-radius: $--main-border-radius;
   display: flex;
   align-items: center;
@@ -53,6 +53,7 @@ export default {
   .v-input {
     padding: 0 0;
     transition: 0.2s;
+
     &:focus-within {
       margin-top: var(--mt-value) !important;
     }
@@ -86,6 +87,10 @@ export default {
     &__append-inner {
       margin-top: -3px;
     }
+  }
+  .v-label {
+    font-weight: 600;
+    font-size: 18px;
   }
 
   .v-text-field {

@@ -3,22 +3,21 @@
     <match-media v-slot="{ desktop }">
       <profile-list v-if="!desktop"></profile-list>
     </match-media>
-    <div class="list-wallet__wrapper">
+    <div class="list-wallet__container">
       <div class="list-wallet__header">
         <total-wallet-sum />
-        <wallet-search v-if="isSearchVisible" v-model="search" />
+        <component :is="isSearchVisible ? 'v-slide-y-transition' : 'v-slide-y-reverse-transition'">
+          <wallet-search v-if="isSearchVisible" v-model="search" />
+        </component>
       </div>
-      <v-list class="list-wallet__body pt-0 ">
-        <template v-for="wallet in filteredWallets">
-          <list-item
-            v-if="wallet.subWallets.length === 1"
-            :key="wallet.name"
-            v-bind="wallet"
-            class="list-wallet__item"
-          />
-          <list-group v-else :key="wallet.name" v-bind="wallet" class="list-wallet__item" />
-        </template>
-      </v-list>
+      <div class="list-wallet__wrapper" @scroll="scroll">
+        <v-list class="list-wallet__body" :class="{ 'list-wallet__body--offset': isSearchVisible }">
+          <div v-for="wallet in filteredWallets" :key="wallet.name" class="list-wallet__item" @scroll="scroll">
+            <list-item v-if="wallet.subWallets.length === 1" v-bind="wallet" />
+            <list-group v-else v-bind="wallet" />
+          </div>
+        </v-list>
+      </div>
     </div>
   </div>
 </template>
@@ -37,7 +36,8 @@ export default {
   components: { ProfileList, WalletSearch, TotalWalletSum, MatchMedia, ListGroup, ListItem },
   data() {
     return {
-      search: ''
+      search: '',
+      isSearchVisible: false
     }
   },
   computed: {
@@ -61,9 +61,11 @@ export default {
       })
 
       return new Set([...filteredByCurrency, ...filteredBySubname, ...filteredByAddress])
-    },
-    isSearchVisible() {
-      return this.wallets.length > 8
+    }
+  },
+  methods: {
+    scroll(e) {
+      this.isSearchVisible = e.target.scrollTop > 0 || this.search
     }
   }
 }
@@ -83,12 +85,13 @@ export default {
     max-width: none;
   }
   &__wrapper {
-    position: relative;
     height: 100%;
     overflow: auto;
     background: $--white;
     border-radius: 12px 12px 0 0 !important;
     padding-bottom: 100px;
+    transition: all 0.5s;
+
     @include tablet {
       border-radius: 0 !important;
       padding-bottom: 75px;
@@ -97,13 +100,30 @@ export default {
       padding-bottom: 0;
     }
   }
+  &__container {
+    position: relative;
+    height: 100%;
+    overflow: auto;
+  }
+  &__body {
+    z-index: 50;
+    padding-top: 80px;
+    transition: all 0.5s;
+
+    &--offset {
+      padding-top: 140px;
+    }
+  }
   &__header {
-    position: sticky;
+    position: absolute;
     top: 0;
-    background: $--white;
+    left: 0;
+    right: 0;
+
     z-index: 1;
   }
   &__item {
+    position: relative;
     padding: 5px 0;
     &:first-child {
       margin-top: 5px;

@@ -1,31 +1,25 @@
 <template>
-  <v-badge
-    class="d-block"
-    bottom
-    :content="notificationsCount"
-    :value="notificationsCount"
-    color="red"
-    offset-x="40"
-    offset-y="36"
+  <v-list-item
+    link
+    exact
+    active-class="list-wallet-item--active"
+    class="list-wallet-item"
+    :to="{ name: 'Wallet', params: { walletAddress: subWallets[0].address } }"
   >
-    <v-list-item
-      link
-      exact
-      active-class="list-wallet-item--active"
-      class="list-wallet-item"
-      :to="{ name: 'Wallet', params: { walletAddress: subWallets[0].address } }"
-    >
-      <item-icon :currency-name="currencyName" :network="network" />
+    <item-icon :currency-name="currencyName" :network="network" />
 
-      <v-list-item-content>
-        <v-list-item-title class="list-wallet-item__title">
+    <v-list-item-content>
+      <v-list-item-title class="list-wallet-item__title">
+        <div class="list-wallet-item__text">
           <span class="list-wallet-item__currency-name">{{ currencyName }}</span>
-          <span>{{ value }}</span>
           <span class="list-wallet-item__name">{{ subWallets[0].name || minifyAddress(subWallets[0].address) }}</span>
-        </v-list-item-title>
-      </v-list-item-content>
-    </v-list-item>
-  </v-badge>
+        </div>
+        <v-badge :content="notificationsCount" :value="notificationsCount" color="red" left offset-x="100%">
+          <span class="list-wallet-item__value">{{ value }}</span>
+        </v-badge>
+      </v-list-item-title>
+    </v-list-item-content>
+  </v-list-item>
 </template>
 
 <script>
@@ -36,26 +30,11 @@ export default {
   name: 'ListWalletItem',
   components: { ItemIcon },
   props: {
-    name: {
-      type: String,
-      default: ''
-    },
-    currencyName: {
-      type: String,
-      default: ''
-    },
-    value: {
-      type: Number,
-      default: 0
-    },
-    subWallets: {
-      type: Array,
-      default: () => []
-    },
-    network: {
-      type: String,
-      default: ''
-    }
+    name: { type: String, default: '' },
+    currencyName: { type: String, default: '' },
+    value: { type: Number, default: 0 },
+    subWallets: { type: Array, default: () => [] },
+    network: { type: String, default: '' }
   },
   computed: {
     notificationsCount() {
@@ -71,8 +50,9 @@ export default {
   min-height: 40px;
   border-radius: 12px;
   margin: 0 10px;
-  padding: 0 15px;
+  padding: 0 5px 0 15px;
   overflow: hidden;
+
   &:hover {
     background: #f7f7f7;
   }
@@ -96,6 +76,16 @@ export default {
     width: 100%;
     color: $--grey;
     font-size: $--font-size-medium;
+  }
+  &__text {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  &__value {
+    margin-left: auto;
+    padding-right: 10px;
   }
 }
 </style>

@@ -1,50 +1,46 @@
 <template>
-  <v-badge
-    class="d-block"
-    bottom
-    :content="notificationsCount"
-    :value="notificationsCount && !isOpen"
-    color="red"
-    offset-x="40"
-    offset-y="36"
+  <v-list-group
+    v-model="isOpen"
+    class="list-wallet-group"
+    color="black"
+    active-class="list-wallet-group--active"
+    append-icon=""
   >
-    <v-list-group
-      v-model="isOpen"
-      class="list-wallet-group"
-      color="black"
-      active-class="list-wallet-group--active"
-      append-icon=""
-    >
-      <template #activator>
-        <item-icon :currency-name="currencyName" :network="network" />
+    <template #activator>
+      <item-icon :currency-name="currencyName" :network="network" />
 
-        <v-list-item-title class="list-wallet-group__header">
+      <v-list-item-title class="list-wallet-group__header">
+        <div class="list-wallet-group__text">
           <span class="list-wallet-group__currency">{{ currencyName }} </span>
-          <span>{{ value }}</span>
           <span class="list-wallet-group__name">{{ subWallets.length }} wallet</span>
+        </div>
+        <v-badge left :content="notificationsCount" :value="notificationsCount && !isOpen" color="red" offset-x="100%">
+          <span class="list-wallet-group__value">{{ value }}</span>
+        </v-badge>
+      </v-list-item-title>
+    </template>
+    <v-list-item
+      v-for="(subWallet, i) in subWallets"
+      :key="i"
+      link
+      exact
+      class="list-wallet-group__item"
+      :to="{ name: 'Wallet', params: { walletAddress: subWallet.address } }"
+    >
+      <v-list-item-content class="list-wallet-group__item-content">
+        <v-list-item-title class="list-wallet-group__item-info">
+          <span>
+            {{ subWallet.name || minifyAddress(subWallet.address) }}
+          </span>
+          <span>
+            <v-badge color="red" :content="subWallet.notifications" :value="!!subWallet.notifications" inline>
+              {{ subWallet.value }}
+            </v-badge>
+          </span>
         </v-list-item-title>
-      </template>
-      <v-list-item
-        v-for="(subWallet, i) in subWallets"
-        :key="i"
-        link
-        exact
-        class="list-wallet-group__item"
-        :to="{ name: 'Wallet', params: { walletAddress: subWallet.address } }"
-      >
-        <v-list-item-content class="list-wallet-group__item-content">
-          <v-list-item-title class="list-wallet-group__item-info">
-            <span>
-              <v-badge color="red" :content="subWallet.notifications" :value="!!subWallet.notifications" inline>
-                {{ subWallet.name || minifyAddress(subWallet.address) }}
-              </v-badge>
-            </span>
-            <span>{{ subWallet.value }}</span>
-          </v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-    </v-list-group>
-  </v-badge>
+      </v-list-item-content>
+    </v-list-item>
+  </v-list-group>
 </template>
 
 <script>
@@ -95,14 +91,17 @@ export default {
   border-radius: 12px;
   overflow: hidden;
   margin: 0 10px;
-  padding: 0 0;
+
   .v-list-item {
-    padding: 0 15px;
+    padding: 0 5px 0 15px;
 
     &:hover:before {
       opacity: 0.1;
       background: $--black;
     }
+  }
+  .v-list-group__header {
+    padding: 0 5px 0 15px !important;
   }
   .v-list-item__icon.v-list-group__header__append-icon {
     min-width: 24px !important;
@@ -117,11 +116,22 @@ export default {
     flex-wrap: wrap;
     line-height: 25px !important;
   }
+  &__text {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  &__value {
+    margin-left: auto;
+    padding-right: 10px;
+    font-size: 18px;
+  }
   &__item {
     min-height: 40px;
     border-radius: 12px;
     margin: 5px 0;
-    padding: 0 15px;
+    padding: 0 2px 0 15px !important;
     overflow: hidden;
     &:first-child {
       margin-top: 5px;

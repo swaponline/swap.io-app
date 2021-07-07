@@ -8,6 +8,7 @@
       :min="min"
       :step="step"
       hide-details
+      track-color="grey"
       @input="$emit('input', $event)"
     >
       <template v-slot:prepend>
@@ -25,49 +26,24 @@
         </v-tooltip>
       </template>
     </v-slider>
-    <form-text-field
-      :value="value"
-      hide-details
-      single-line
-      :max="max"
-      :min="min"
-      :step="step"
-      type="number"
-      class="slider-fee__field"
-      @input="$emit('input', $event)"
-    ></form-text-field>
+
+    <div class="slider-fee__labels">
+      <span>Min</span>
+      <span>Recomended fee</span>
+      <span>Max</span>
+    </div>
   </div>
 </template>
 
 <script>
-import FormTextField from '../UI/Forms/TextField.vue'
-
 export default {
   name: 'SliderFee',
-  components: {
-    FormTextField
-  },
   props: {
-    value: {
-      type: [Number, String],
-      default: 0
-    },
-    recommendedFee: {
-      type: Number,
-      default: 0
-    },
-    max: {
-      type: Number,
-      default: 100
-    },
-    min: {
-      type: Number,
-      default: 0
-    },
-    step: {
-      type: Number,
-      default: 0.001
-    }
+    value: { type: [Number, String], default: 0 },
+    recommendedFee: { type: Number, default: 0 },
+    max: { type: Number, default: 100 },
+    min: { type: Number, default: 0 },
+    step: { type: Number, default: 0.001 }
   },
   async mounted() {
     // нормализуем работу слайдера на oversize экранах
@@ -97,26 +73,33 @@ export default {
 
 <style lang="scss">
 .slider-fee {
-  display: flex;
-  flex-grow: 1;
-  align-items: center;
   &__slider {
-    margin: 0 20px;
     position: relative;
     align-items: center;
     .v-slider {
       margin: 0 0;
     }
     .v-slider__track-container {
-      background: $--grey;
-      div {
-        display: none;
+      .v-slider__track-fill {
+        background: var(--main-color) !important;
+        height: 4px;
       }
     }
+    .v-slider__track-background {
+      background-color: $--light-grey-4 !important;
+      height: 4px;
+    }
     .v-slider__thumb {
-      width: 14px;
-      height: 14px;
-      background: $--black !important;
+      width: 16px;
+      height: 16px;
+      background: $--white !important;
+      box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.18), 0px 0px 13px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      transform-origin: center;
+
+      &:hover {
+        box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25), 0px 0px 13px rgba(0, 0, 0, 0.2);
+      }
       &::before {
         display: none;
       }
@@ -139,7 +122,8 @@ export default {
     justify-content: center;
     align-items: center;
     border-radius: 50%;
-    background: var(--main-color);
+    border: 1px solid var(--main-color);
+    background: $--white;
   }
   &__field {
     margin: 0 0;
@@ -151,6 +135,19 @@ export default {
       &:focus-within {
         margin-top: 0;
       }
+    }
+  }
+  &__labels {
+    margin-top: -6px;
+    margin-bottom: 6px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    font-size: $--font-size-small;
+
+    @include phone {
+      margin-top: 0;
+      margin-bottom: 0;
     }
   }
 }

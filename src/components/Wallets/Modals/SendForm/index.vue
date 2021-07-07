@@ -2,28 +2,39 @@
   <modal-wrapper
     :value="value"
     confirm-button-label="Send"
-    title="Send form"
+    :title="step === 1 ? 'Send' : 'Confirm send'"
+    :back-icon="step === 2"
     @input="hide"
     @submit="submit"
     @cancel="close"
   >
-    <div class="send-form">
-      <form-indent v-if="selectedWallet" title="Wallet ID:" :text="selectedWallet.address" />
+    <div v-if="step === 1" class="send-form">
+      <wallet-selector v-if="!address" v-model="selectedWallet" :items="wallets" class="mb-10" />
 
-      <form-indent
-        v-if="selectedWallet"
-        title="Wallet balance:"
-        :text="`${selectedWallet.value} ${selectedWallet.currencyName}`"
-      />
-
-      <wallet-selector v-if="!address" v-model="selectedWallet" :items="wallets" />
+      <div class="send-form__toggle-wrapper">
+        <div
+          class="send-form__toggle"
+          :class="{ 'send-form__toggle--active': !isMultipleRecepients }"
+          @click="isMultipleRecepients = !isMultipleRecepients"
+        >
+          Single recipient
+        </div>
+        <div
+          class="send-form__toggle"
+          :class="{ 'send-form__toggle--active': isMultipleRecepients }"
+          @click="isMultipleRecepients = !isMultipleRecepients"
+        >
+          Multiple recipients
+        </div>
+      </div>
 
       <v-textarea
         v-if="isMultipleRecepients"
         v-model="listRecipient"
         outlined
         :hint="listRecipientHint"
-        class="send-form__multiple-list rounded-lg"
+        hide-details
+        class="send-form__textarea rounded-lg"
         placeholder="Enter a list of outputs in the 'Pay to' field. 
   One output per line. 
   Format: address, amount"
@@ -31,14 +42,14 @@
 
       <div v-else class="d-flex">
         <form-text-field
-          v-model="recipient.address"
+          v-model="recipients[0].address"
           required
           label="Send to"
           class="send-form__long-field"
         ></form-text-field>
 
         <form-text-field
-          v-model="recipient.amount"
+          v-model="recipients[0].amount"
           :max="maxAmount"
           type="number"
           step="any"
@@ -50,22 +61,13 @@
         </form-text-field>
       </div>
 
-      <v-btn
-        class="send-form__multiple-button"
-        color="var(--main-color)"
-        text
-        @click="isMultipleRecepients = !isMultipleRecepients"
-      >
-        <span class="text-left flex-grow-1">{{
-          isMultipleRecepients ? 'Single recipient' : 'Multple recipients'
-        }}</span>
-      </v-btn>
-
-      <v-divider class="send-form__divider" />
-
       <template v-if="selectedWallet">
-        <div class="send-form__result-row">
-          <span>Transaction fee: </span>
+        <div class="send-form__fee-wrapper">
+          <div class="send-form__fee-row" @click="editFeeShow">
+            <span>Transaction fee: </span>
+
+            <form-text-field v-model="fee" class="send-form__fee-input" @click.stop />
+          </div>
 
           <slider-fee
             v-if="isEditingFee"
@@ -73,20 +75,8 @@
             :recommended-fee="recommendedFee"
             v-bind="sliderParams"
             class="send-form__slider"
+            @click.stop
           />
-
-          <span v-else>
-            <v-btn icon small @click="editFeeShow">
-              <svg-icon class="send-form__edit-icon" name="edit"></svg-icon>
-            </v-btn>
-
-            <v-tooltip top>
-              <template #activator="{on}">
-                <span v-on="on"><span class="send-form__currency-name">USD </span>{{ fee }}</span>
-              </template>
-              <span>Recommended fee</span>
-            </v-tooltip>
-          </span>
         </div>
 
         <div class="send-form__result-row">
@@ -101,29 +91,45 @@
             >
           </span>
         </div>
+
+        <v-divider class="send-form__divider" />
+
+        <v-btn v-if="!hasMemo" small depressed class="send-form__add-memo" @click="hasMemo = true">
+          <v-icon color="grey lighten-1" small class="mr-1">mdi-bookmark</v-icon>Add a memo
+        </v-btn>
+
+        <v-textarea
+          v-if="hasMemo"
+          v-model="memo"
+          outlined
+          class="send-form__textarea rounded-lg"
+          hide-details
+          placeholder="Enter a memo"
+        ></v-textarea>
       </template>
     </div>
+
+    <send-preview v-if="step === 2" :address="selectedWallet.address" :fee="fee" :recipients="recipients" />
   </modal-wrapper>
 </template>
 
 <script>
 import { mapMutations } from 'vuex'
 import { ADD_MODAL } from '@/store/modules/Modals'
-import { EDIT_FEE, SEND_PREVIEW } from '@/store/modules/Modals/names'
+import { EDIT_FEE } from '@/store/modules/Modals/names'
 import { MODULE_NAME as TRANSACTIONS_MODULE } from '@/store/modules/Transactions'
 
 import ModalWrapper from '@/components/UI/ModalWrapper.vue'
 import FormTextField from '@/components/UI/Forms/TextField.vue'
-import FormIndent from '@/components/UI/Forms/Indent.vue'
 import SliderFee from '@/components/Wallets/SliderFee.vue'
 import WalletSelector from '@/components/Wallets/WalletSelector.vue'
-
 import { convertAmountToOtherCurrency } from '@/services/converter'
+import SendPreview from './Preview.vue'
 
 export default {
   name: 'SendForm',
   inject: ['mediaQueries'],
-  components: { ModalWrapper, FormTextField, SliderFee, FormIndent, WalletSelector },
+  components: { ModalWrapper, FormTextField, SliderFee, WalletSelector, SendPreview },
   props: {
     value: { type: Boolean, required: true },
     address: { type: String, default: '' }
@@ -137,11 +143,14 @@ export default {
       },
       fee: 0.545,
       recommendedFee: 0.545,
-      recipient: { address: null, amount: null },
+      recipients: [{ address: null, amount: null }],
       isMultipleRecepients: false,
       isEditingFee: false,
       listRecipient: '',
-      selectedWallet: null
+      selectedWallet: null,
+      hasMemo: false,
+      memo: '',
+      step: 1
     }
   },
   computed: {
@@ -167,7 +176,7 @@ export default {
       return `Balance: ${balance}`
     },
     totalBalanceChange() {
-      return (this.isMultipleRecepients ? this.multipleSum : this.recipient.amount) || '0'
+      return (this.isMultipleRecepients ? this.multipleSum : this.recipients[0].amount) || '0'
     },
     totalConvertedBalanceChange() {
       return convertAmountToOtherCurrency(this.totalBalanceChange, this.selectedWallet.currencyName, 'USD')
@@ -190,26 +199,45 @@ export default {
       mutationAddModal: ADD_MODAL
     }),
     submit() {
-      const recipients = this.isMultipleRecepients ? this.getRecipients() : [this.recipient]
-      this.mutationAddModal({
-        name: SEND_PREVIEW,
-        info: {
-          fee: this.fee,
-          recipient: this.recipient,
-          listRecipient: this.listRecipient,
-          address: this.selectedWallet.address,
-          isMultipleRecepients: this.isMultipleRecepients,
-          recipients
+      if (this.step === 1) {
+        if (this.isMultipleRecepients) {
+          this.recipients = this.getRecipients()
         }
-      })
+        this.step = 2
+        return
+      }
+      if (this.step === 2) {
+        this.$emit('close-all')
+      }
     },
     close() {
-      this.$emit('close')
+      if (this.step === 2) {
+        this.step = 1
+      } else {
+        this.$emit('close')
+        this.resetState()
+      }
     },
     hide() {
       this.$emit('toggle', false)
+      this.resetState()
+    },
+    resetState() {
+      this.selectedWallet = null
+      this.listRecipient = ''
+      this.fee = 0.545
+      this.recipients = [{ address: null, amount: null }]
+      this.isMultipleRecepients = false
+      this.isEditingFee = false
+      this.hasMemo = false
+      this.memo = ''
+      this.step = 1
     },
     editFeeShow() {
+      if (this.isEditingFee) {
+        this.isEditingFee = false
+        return
+      }
       if (!this.mediaQueries.desktop) {
         this.mutationAddModal({
           name: EDIT_FEE,
@@ -238,6 +266,30 @@ export default {
 
 <style lang="scss">
 .send-form {
+  &__toggle-wrapper {
+    margin-bottom: 30px;
+    width: 100%;
+    display: flex;
+    padding: 3px;
+    border-radius: $--main-border-radius;
+    background-color: $--light-grey-2;
+  }
+  &__toggle {
+    width: 50%;
+    padding: 10px;
+    border-radius: $--main-border-radius;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 600;
+    transition: all 0.3s;
+    cursor: pointer;
+
+    &--active {
+      background-color: $--white;
+      box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.12), 0px 3px 1px rgba(0, 0, 0, 0.04);
+    }
+  }
+
   &__long-field {
     flex-grow: 1;
     width: 65%;
@@ -245,13 +297,10 @@ export default {
   &__short-field {
     flex-grow: 0;
     width: 35%;
-    margin-left: 16px !important;
-    @include phone {
-      margin-left: 8px !important;
-    }
+    margin-left: 8px !important;
   }
-  &__multiple-list {
-    margin: 0 0 !important;
+  &__textarea {
+    margin: 0 0 20px !important;
     font-size: $--font-size-extra-small-subtitle;
     flex-grow: 0;
 
@@ -260,35 +309,50 @@ export default {
       --color-fieldset: var(--main-color);
     }
     .v-input__slot {
+      border: 2px solid $--border-grey;
       margin-bottom: 0;
     }
     fieldset {
       color: var(--color-fieldset) !important;
-      border-width: 1px !important;
+      border: none !important;
       legend {
         width: 0 !important;
       }
     }
   }
-  &__multiple-button {
-    font-weight: $--font-weight-bold;
-    text-transform: none;
-    flex-grow: 0;
-    padding: 0 0 !important;
-    margin: 10px 0;
-    width: 100%;
-    span {
-      letter-spacing: 0.01em;
-      color: var(--main-color);
-      font-size: $--font-size-medium;
-    }
-  }
+
   &__edit-icon {
     height: 11px;
     width: 12px;
   }
   &__divider {
     margin-bottom: 25px;
+  }
+  &__fee-wrapper {
+    margin-bottom: 30px;
+    line-height: 21px;
+    font-weight: $--font-weight-semi-bold;
+    font-size: $--font-size-extra-small-subtitle;
+    background-color: $--light-grey-2;
+    padding: 8px 8px 8px 12px;
+    color: $--dark-grey;
+    border-radius: $--main-border-radius;
+    cursor: pointer;
+    transition: all 0.3s;
+
+    &:hover {
+      background-color: $--light-grey-5;
+    }
+  }
+  &__fee-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  &__fee-input {
+    max-width: 130px;
+    min-height: 40px;
+    margin-bottom: 0 !important;
   }
   &__result-row {
     margin-bottom: 15px;
@@ -298,18 +362,27 @@ export default {
     line-height: 21px;
     font-weight: $--font-weight-semi-bold;
     font-size: $--font-size-extra-small-subtitle;
+    color: $--dark-grey;
   }
   &__amount {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
+    color: $--black;
+    font-size: $--font-size-extra-small-subtitle;
   }
   &__amount-fiat {
-    font-size: $--font-size-small;
+    font-size: $--font-size-medium;
     line-height: 16px;
   }
   &__currency-name {
     color: $--dark-grey;
+  }
+  &__add-memo {
+    margin-bottom: 30px;
+    text-transform: none;
+    padding: 0 8px !important;
+    letter-spacing: 0 !important;
   }
 }
 </style>

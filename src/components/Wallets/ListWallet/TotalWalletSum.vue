@@ -45,6 +45,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   border-bottom: 2px solid $--light-grey;
+  background: $--white;
 
   &__title {
     font-size: $--font-size-small-subtitle;
