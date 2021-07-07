@@ -11,6 +11,8 @@
 import { MediaQueryProvider } from 'vue-component-media-queries'
 import Canvg from 'canvg'
 import { getFaviconInColorFTheme } from '@/utils/favicon'
+import { NotificationInTabTitle } from '@/services/notificationInTabTitle'
+import { pluralizeNumeral } from '@/utils/pluralization'
 import messageHandler from './messageHandler'
 
 const FAVICON_REDRAWING_TIME = 290
@@ -67,6 +69,21 @@ export default {
     window.addEventListener('resize', this.resize)
     this.resize()
     messageHandler()
+    // ! Mock
+    const count = 4
+    const title = `
+        ${count}
+        ${pluralizeNumeral(count, 'новая', 'новых')} 
+        ${pluralizeNumeral(count, 'транзакция', 'транзакции', 'транзакций')}
+      `
+    const notificationInTabTitle = new NotificationInTabTitle()
+    setTimeout(() => {
+      notificationInTabTitle.set(title)
+    }, 4000)
+
+    setTimeout(() => {
+      notificationInTabTitle.reset()
+    }, 30000)
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.resize)
