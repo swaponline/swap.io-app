@@ -3,16 +3,21 @@
     <match-media v-slot="{ desktop }">
       <profile-list v-if="!desktop"></profile-list>
     </match-media>
-    <div class="list-wallet__wrapper">
+    <div class="list-wallet__container">
       <div class="list-wallet__header">
         <total-wallet-sum />
+        <component :is="isSearchVisible ? 'v-slide-y-transition' : 'v-slide-y-reverse-transition'">
+          <wallet-search v-if="isSearchVisible" v-model="search" />
+        </component>
       </div>
-      <v-list class="list-wallet__body pt-0 ">
-        <v-list-item v-for="wallet in wallets" :key="wallet.name" class="list-wallet__item px-0">
-          <list-item v-if="wallet.subWallets.length === 1" v-bind="wallet"></list-item>
-          <list-group v-else v-bind="wallet"></list-group>
-        </v-list-item>
-      </v-list>
+      <div class="list-wallet__wrapper" @scroll="scroll">
+        <v-list class="list-wallet__body" :class="{ 'list-wallet__body--offset': isSearchVisible }">
+          <div v-for="wallet in filteredWallets" :key="wallet.name" class="list-wallet__item" @scroll="scroll">
+            <list-item v-if="wallet.subWallets.length === 1" v-bind="wallet" />
+            <list-group v-else v-bind="wallet" />
+          </div>
+        </v-list>
+      </div>
     </div>
   </div>
 </template>
@@ -20,6 +25,7 @@
 <script>
 import { MatchMedia } from 'vue-component-media-queries'
 //  components
+import WalletSearch from './Search.vue'
 import ProfileList from '../ProfileList.vue'
 import TotalWalletSum from './TotalWalletSum.vue'
 import ListGroup from './Group.vue'
@@ -27,10 +33,39 @@ import ListItem from './Item.vue'
 
 export default {
   name: 'ListWallet',
-  components: { ProfileList, TotalWalletSum, MatchMedia, ListGroup, ListItem },
+  components: { ProfileList, WalletSearch, TotalWalletSum, MatchMedia, ListGroup, ListItem },
+  data() {
+    return {
+      search: '',
+      isSearchVisible: false
+    }
+  },
   computed: {
     wallets() {
       return this.$store.getters.currentWallets
+    },
+    filteredWallets() {
+      const { wallets } = this
+      const search = this.search.toLowerCase()
+
+      if (!this.search) return wallets
+
+      const filteredByCurrency = wallets.filter(w => w.currencyName.toLowerCase().includes(search))
+      const filteredBySubname = wallets.filter(wallet => {
+        const { subWallets } = wallet
+        return !!subWallets.find(sw => sw.name.toLowerCase().includes(search))
+      })
+      const filteredByAddress = wallets.filter(wallet => {
+        const { subWallets } = wallet
+        return !!subWallets.find(sw => sw.address.toLowerCase().includes(search))
+      })
+
+      return new Set([...filteredByCurrency, ...filteredBySubname, ...filteredByAddress])
+    }
+  },
+  methods: {
+    scroll(e) {
+      this.isSearchVisible = e.target.scrollTop > 0 || this.search
     }
   }
 }
@@ -50,12 +85,13 @@ export default {
     max-width: none;
   }
   &__wrapper {
-    position: relative;
     height: 100%;
     overflow: auto;
     background: $--white;
     border-radius: 12px 12px 0 0 !important;
     padding-bottom: 100px;
+    transition: all 0.5s;
+
     @include tablet {
       border-radius: 0 !important;
       padding-bottom: 75px;
@@ -64,19 +100,40 @@ export default {
       padding-bottom: 0;
     }
   }
+  &__container {
+    position: relative;
+    height: 100%;
+    overflow: auto;
+  }
+  &__body {
+    z-index: 50;
+    padding-top: 80px;
+    transition: all 0.5s;
+
+    &--offset {
+      padding-top: 140px;
+    }
+  }
   &__header {
-    position: sticky;
+    position: absolute;
     top: 0;
-    background: $--white;
+    left: 0;
+    right: 0;
+
     z-index: 1;
   }
   &__item {
-    justify-content: center;
+    position: relative;
+    padding: 5px 0;
+    &:first-child {
+      margin-top: 5px;
+    }
     &:after {
       content: '';
       position: absolute;
       top: 100%;
-      width: calc(100% - 30px);
+      left: 18px;
+      width: calc(100% - 36px);
       min-height: 1px;
       background: $--light-grey;
     }

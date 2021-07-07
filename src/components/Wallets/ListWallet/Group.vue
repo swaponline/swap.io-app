@@ -1,13 +1,22 @@
 <template>
-  <v-list-group class="list-wallet-group" color="black" active-class="list-wallet-group--active" append-icon="">
+  <v-list-group
+    v-model="isOpen"
+    class="list-wallet-group"
+    color="black"
+    active-class="list-wallet-group--active"
+    append-icon=""
+  >
     <template #activator>
-      <v-list-item-icon class="list-wallet-group__icon-wrapper">
-        <cryptoicon :symbol="currencyName.toLowerCase()" size="45" />
-      </v-list-item-icon>
+      <item-icon :currency-name="currencyName" :network="network" />
+
       <v-list-item-title class="list-wallet-group__header">
-        <span class="list-wallet-group__currency">{{ currencyName }} </span>
-        <span>{{ value }}</span>
-        <span class="list-wallet-group__name">{{ subWallets.length }} wallet</span>
+        <div class="list-wallet-group__text">
+          <span class="list-wallet-group__currency">{{ currencyName }} </span>
+          <span class="list-wallet-group__name">{{ subWallets.length }} wallet</span>
+        </div>
+        <v-badge left :content="notificationsCount" :value="notificationsCount && !isOpen" color="red" offset-x="100%">
+          <span class="list-wallet-group__value">{{ value }}</span>
+        </v-badge>
       </v-list-item-title>
     </template>
     <v-list-item
@@ -20,8 +29,14 @@
     >
       <v-list-item-content class="list-wallet-group__item-content">
         <v-list-item-title class="list-wallet-group__item-info">
-          <span>{{ subWallet.name }}</span>
-          <span>{{ subWallet.value }}</span>
+          <span>
+            {{ subWallet.name || minifyAddress(subWallet.address) }}
+          </span>
+          <span>
+            <v-badge color="red" :content="subWallet.notifications" :value="!!subWallet.notifications" inline>
+              {{ subWallet.value }}
+            </v-badge>
+          </span>
         </v-list-item-title>
       </v-list-item-content>
     </v-list-item>
@@ -29,8 +44,12 @@
 </template>
 
 <script>
+import ItemIcon from '@/components/Wallets/ListWallet/ItemIcon.vue'
+import { minifyAddress } from '@/utils/common'
+
 export default {
   name: 'ListWalletGroup',
+  components: { ItemIcon },
   props: {
     name: {
       type: String,
@@ -47,26 +66,49 @@ export default {
     subWallets: {
       type: Array,
       required: true
+    },
+    network: {
+      type: String,
+      default: ''
     }
-  }
+  },
+  data() {
+    return {
+      isOpen: false
+    }
+  },
+  computed: {
+    notificationsCount() {
+      return this.subWallets.reduce((acc, { notifications }) => (notifications ? acc + notifications : acc), 0)
+    }
+  },
+  methods: { minifyAddress }
 }
 </script>
 
 <style lang="scss">
 .list-wallet-group {
-  width: 100%;
   border-radius: 12px;
   overflow: hidden;
-  margin: 5px 10px;
-  padding: 0 0;
+  margin: 0 10px;
+
   .v-list-item {
-    padding: 0 15px;
+    padding: 0 5px 0 15px;
+
+    &:hover:before {
+      opacity: 0.1;
+      background: $--black;
+    }
+  }
+  .v-list-group__header {
+    padding: 0 5px 0 15px !important;
   }
   .v-list-item__icon.v-list-group__header__append-icon {
     min-width: 24px !important;
   }
+
   &--active {
-    color: rgba($--black, 0.87);
+    color: rgba($--black, 0.75);
   }
   &__header {
     display: flex;
@@ -74,11 +116,22 @@ export default {
     flex-wrap: wrap;
     line-height: 25px !important;
   }
+  &__text {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  &__value {
+    margin-left: auto;
+    padding-right: 10px;
+    font-size: 18px;
+  }
   &__item {
     min-height: 40px;
     border-radius: 12px;
     margin: 5px 0;
-    padding: 0 15px;
+    padding: 0 2px 0 15px !important;
     overflow: hidden;
     &:first-child {
       margin-top: 5px;
@@ -103,18 +156,9 @@ export default {
   &__currency {
     font-weight: $--font-weight-semi-bold;
   }
-  &__icon-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    min-width: 45px;
-    height: 45px;
-    margin: 15px 14px 15px 0 !important;
-  }
   &__name {
     width: 100%;
-    font-size: $--font-size-extra-small-subtitle;
+    font-size: $--font-size-medium;
     color: $--grey;
   }
 }
