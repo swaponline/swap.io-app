@@ -9,7 +9,7 @@
     @cancel="close"
   >
     <div v-if="step === 1" class="send-form">
-      <wallet-selector v-if="!address" v-model="selectedWallet" :items="wallets" class="mb-10" />
+      <wallet-selector v-model="selectedWallet" :items="wallets" class="mb-10" />
 
       <div class="send-form__toggle-wrapper">
         <div
@@ -223,7 +223,9 @@ export default {
       this.resetState()
     },
     resetState() {
-      this.selectedWallet = null
+      if (!this.address) {
+        this.selectedWallet = null
+      }
       this.listRecipient = ''
       this.fee = 0.545
       this.recipients = [{ address: null, amount: null }]

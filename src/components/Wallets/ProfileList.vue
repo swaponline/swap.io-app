@@ -139,6 +139,7 @@ export default {
     flex: 0 !important;
     border-radius: 50% !important;
     position: relative;
+    background-size: 100% 100%;
   }
   &__avatar-icon {
     color: white !important;
