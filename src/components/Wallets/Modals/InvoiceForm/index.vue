@@ -8,12 +8,7 @@
     @cancel="close"
   >
     <div v-if="step === 1" class="invoice-form">
-      <wallet-selector
-        v-if="!address"
-        v-model="selectedWallet"
-        :items="wallets"
-        class="invoice-form__wallet-selector"
-      />
+      <wallet-selector v-model="selectedWallet" :items="wallets" class="invoice-form__wallet-selector" />
 
       <form-text-field v-model="contact" color="grey" required label="Bill to" class="mb-10" />
 
@@ -183,7 +178,9 @@ export default {
       }
     },
     resetState() {
-      this.selectedWallet = null
+      if (!this.address) {
+        this.selectedWallet = null
+      }
       this.contact = ''
       this.amountFields = [generateFieldModel()]
       ;[this.currency] = currencies
