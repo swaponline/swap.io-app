@@ -1,5 +1,5 @@
 <template>
-  <match-media v-slot="{ desktop }" wrapper-tab="div" class="security-info-block">
+  <match-media v-slot="{ desktop }" wrapper-tag="div" class="security-info-block">
     <div class="security-info-block__wrapper">
       <swap-button-go-back v-if="!desktop" class="security-info-block__button-i-back" @click="back" />
 
@@ -95,8 +95,8 @@ export default {
 
   &__button-i-back {
     position: absolute;
-    left: 40px;
-    top: 25px;
+    left: 37px;
+    top: 21px;
 
     @include phone {
       left: 25px;

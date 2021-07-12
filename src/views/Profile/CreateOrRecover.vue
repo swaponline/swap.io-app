@@ -1,5 +1,5 @@
 <template>
-  <match-media v-slot="{ desktop }" wrapper-tab="div">
+  <match-media v-slot="{ desktop }" wrapper-tag="div">
     <substrate class="create-or-recover">
       <swap-button-go-back v-if="!desktop" class="create-or-recover__button-i-back" @click="cancel" />
       <div class="create-or-recover__wrapper">
@@ -54,8 +54,8 @@ export default {
 .create-or-recover {
   &__button-i-back {
     position: absolute;
-    top: 25px;
-    left: 25px;
+    left: 37px;
+    top: 21px;
   }
 
   &__wrapper {
