@@ -9,9 +9,9 @@
       <h2 class="main-header__logo-text">Swap.io</h2>
     </router-link>
     <v-button-cancel v-if="isCreatingOrRecoveringProfile && phone" class="main-header__button-cancel" @click="cancel" />
-    <div class="main-header__content d-flex flex-grow-1">
-      <main-header-tabs v-if="desktop" class="main-header__tabs"></main-header-tabs>
-      <div v-if="desktop && !isCreatingOrRecoveringProfile" class="main-header__profile">
+    <div v-if="desktop" class="main-header__content">
+      <main-header-tabs class="main-header__tabs"></main-header-tabs>
+      <div v-if="!isCreatingOrRecoveringProfile" class="main-header__profile">
         <profile-list></profile-list>
       </div>
     </div>
@@ -102,6 +102,11 @@ export default {
   &__button-cancel {
     position: relative;
     margin-right: 10px;
+  }
+
+  &__content {
+    display: flex;
+    flex-grow: 1;
   }
 
   &__profile {
