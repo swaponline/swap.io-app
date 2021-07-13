@@ -55,7 +55,7 @@ export default {
   height: 100%;
   display: flex;
   position: relative;
-  margin-top: 25px;
+  margin-top: 20px;
   max-height: calc(var(--vh, 1vh) * 100);
   overflow: hidden;
   @include tablet {

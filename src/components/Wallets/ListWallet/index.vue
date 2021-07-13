@@ -107,7 +107,7 @@ export default {
   }
   &__body {
     z-index: 50;
-    padding-top: 80px;
+    padding-top: 42px;
     transition: all 0.5s;
 
     &--offset {

@@ -100,7 +100,7 @@ export default {
 .profile-list {
   display: flex;
   overflow: visible;
-  height: 80px;
+  height: $--header-height;
   min-width: 200px;
 
   @include tablet {
@@ -109,7 +109,6 @@ export default {
     z-index: 10;
   }
   @include phone {
-    height: 70px;
     margin: 8px;
   }
   &__inner {
@@ -127,7 +126,7 @@ export default {
   &__header {
     margin: 0;
     padding: 0 25px;
-    min-height: 80px !important;
+    min-height: $--header-height !important;
     background: $--white;
     border-radius: 12px;
     @include phone {

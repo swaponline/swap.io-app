@@ -2,7 +2,7 @@
   <match-media v-slot="{ desktop, phone }" tag="div" class="main-header">
     <div v-if="isCreatingOrRecoveringProfile" class="main-header__logo">
       <svg-icon class="main-header__logo-icon" name="logo" />
-      <h2 class="main-header__logo-text">Swap.io</h2>
+      <h2 class="main-header__logo-text">SwapOnline</h2>
     </div>
     <router-link v-else :to="{ name: 'Wallet' }" class="main-header__logo">
       <svg-icon class="main-header__logo-icon" name="logo" />
@@ -12,7 +12,7 @@
     <div class="main-header__content d-flex flex-grow-1">
       <main-header-tabs v-if="desktop" class="main-header__tabs"></main-header-tabs>
       <div v-if="desktop && !isCreatingOrRecoveringProfile" class="main-header__profile">
-        <profile-list></profile-list>
+        <profile-list />
       </div>
     </div>
   </match-media>
@@ -45,7 +45,7 @@ export default {
 <style lang="scss">
 .main-header {
   width: 100%;
-  min-height: 85px;
+  min-height: $--header-height;
   display: flex;
   background: $--white;
   box-shadow: 0 0 20px rgba(17, 17, 17, 0.02);
@@ -76,15 +76,15 @@ export default {
   }
 
   &__logo-icon {
-    width: 48px;
-    height: 45px;
+    width: 42px;
+    height: 39px;
     margin-right: 20px;
-    margin-left: 30px;
+    margin-left: 28px;
     fill: var(--main-color);
 
     @include tablet {
-      width: 45px;
-      height: 42px;
+      width: 42px;
+      height: 39px;
     }
 
     @include small-phone {
@@ -97,6 +97,7 @@ export default {
 
   &__logo-text {
     color: var(--main-color);
+    font-size: $--font-size-extra-small-subtitle;
   }
 
   &__button-cancel {

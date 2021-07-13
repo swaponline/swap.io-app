@@ -1,6 +1,6 @@
 <template>
   <div ref="transaction" class="list-transaction" :class="{ 'list-transaction--stretch': isCompressedWallet }">
-    <div v-for="transaction in transactions" :key="transaction.date" class="list-transaction__block">
+    <div v-for="transaction in filteredTransactions" :key="transaction.date" class="list-transaction__block">
       <v-subheader ref="headers" class="list-transaction__title">
         <span>{{ transaction.date }}</span>
       </v-subheader>
@@ -27,23 +27,34 @@ export default {
     TransactionItem
   },
   props: {
-    filterType: {
-      type: String,
-      default: 'all'
-    },
-    address: {
-      type: String,
-      required: true
-    },
-    isCompressedWallet: {
-      type: Boolean,
-      default: false
-    }
+    filterType: { type: String, default: 'all' },
+    address: { type: String, required: true },
+    isCompressedWallet: { type: Boolean, default: false },
+    search: { type: String, default: '' }
   },
   computed: {
     ...mapGetters(['listTransactionsSortByDate']),
     transactions() {
       return this.listTransactionsSortByDate(this.address)
+    },
+    filteredTransactions() {
+      const { transactions } = this
+      const search = this.search.toLowerCase()
+
+      if (!this.search) return transactions
+
+      const filtered = transactions.map(({ date, list }) => ({
+        date,
+        list: list.filter(
+          ({ from, hash, to, value }) =>
+            from.toLowerCase().includes(search) ||
+            hash.toLowerCase().includes(search) ||
+            to.toLowerCase().includes(search) ||
+            value.toString().includes(search)
+        )
+      }))
+
+      return filtered.filter(({ list }) => list.length > 0)
     }
   },
   mounted() {

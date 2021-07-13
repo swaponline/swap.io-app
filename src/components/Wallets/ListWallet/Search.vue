@@ -1,7 +1,14 @@
 <template>
   <v-list-item class="wallet-search">
     <v-list-item-content>
-      <v-text-field v-model="localValue" hide-details dense placeholder="Search" class="wallet-search__input" />
+      <v-text-field
+        v-model="localValue"
+        hide-details
+        dense
+        placeholder="Search"
+        class="wallet-search__input"
+        aria-autocomplete="false"
+      />
     </v-list-item-content>
   </v-list-item>
 </template>
@@ -32,7 +39,11 @@ export default {
 <style lang="scss">
 .wallet-search {
   background-color: $--light-grey;
-  padding: 1px 25px 5px;
+  padding: 0 25px;
+
+  .v-list-item__content {
+    padding: 8px 0 12px;
+  }
 
   &__input {
     font-size: 18px;

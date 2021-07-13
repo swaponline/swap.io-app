@@ -1,5 +1,6 @@
 <template>
   <div class="transactions">
+    <transactions-search v-model="search" />
     <v-tabs
       ref="tabs"
       v-model="activeTab"
@@ -22,6 +23,7 @@
           :class="{ 'transactions__list--stretch': isCompressedWallet }"
           :address="currentAddress"
           :filter-type="tab"
+          :search="search"
           :is-compressed-wallet="isCompressedWallet"
           @compress-wallet="$emit('compress-wallet')"
           @uncompress-wallet="$emit('uncompress-wallet')"
@@ -37,23 +39,19 @@ import { mapActions } from 'vuex'
 import { GET_TRANSACTIONS, MODULE_NAME as TRANSACTIONS_MODULE } from '@/store/modules/Transactions'
 import VLoader from '@/components/Loaders/VLoader.vue'
 import TransactionList from './List.vue'
+import TransactionsSearch from './Search.vue'
 
 export default {
   name: 'Transactions',
-  components: {
-    TransactionList,
-    VLoader
-  },
+  components: { TransactionList, VLoader, TransactionsSearch },
   props: {
-    isCompressedWallet: {
-      type: Boolean,
-      default: false
-    }
+    isCompressedWallet: { type: Boolean, default: false }
   },
   data() {
     return {
       activeTab: null,
-      tabs: ['all', 'confirmed', 'pending', 'invoices']
+      tabs: ['all', 'confirmed', 'pending', 'invoices'],
+      search: ''
     }
   },
   computed: {

@@ -63,7 +63,7 @@ export default {
   }
 
   &__item {
-    min-height: 85px;
+    min-height: $--header-height;
     max-width: 175px;
     min-width: 80px;
     margin: 0 0 !important;
