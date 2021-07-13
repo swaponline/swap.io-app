@@ -63,11 +63,11 @@ export default {
 
   @include tablet {
     display: flex;
-    padding-top: 15px;
   }
 
   &__wrapper {
     width: 100%;
+    height: 100%;
   }
 }
 </style>

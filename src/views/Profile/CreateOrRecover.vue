@@ -1,36 +1,45 @@
 <template>
-  <substrate class="create-or-recover ">
-    <div class="create-or-recover__wrapper">
-      <div class="create-or-recover__header">
-        <svg-icon class="create-or-recover__icon" name="profile" />
-      </div>
-      <div class="create-or-recover__text">
-        Create profile
-      </div>
-      <div class="create-or-recover__subtext">
-        or recover from mneminic phrase
-      </div>
-      <div class="create-or-recover__buttons">
-        <div class="create-or-recover__buttons-controls">
-          <v-btn depressed class="create-or-recover__button" block @click="create">Create</v-btn>
+  <match-media v-slot="{ desktop }" wrapper-tag="div">
+    <substrate class="create-or-recover">
+      <swap-button-go-back v-if="!desktop" class="create-or-recover__button-i-back" @click="cancel" />
+      <div class="create-or-recover__wrapper">
+        <div class="create-or-recover__header">
+          <svg-icon class="create-or-recover__icon" name="profile" />
         </div>
-        <v-btn text class="create-or-recover__button create-or-recover__button--text" block @click="goToRecover"
-          >Recover profile</v-btn
-        >
+        <div class="create-or-recover__text">
+          Create profile
+        </div>
+        <div class="create-or-recover__subtext">
+          or recover from mneminic phrase
+        </div>
+        <div class="create-or-recover__buttons">
+          <div class="create-or-recover__buttons-controls">
+            <v-btn v-if="desktop" depressed class="create-or-recover__button" block @click="cancel">Cancel</v-btn>
+            <v-btn depressed class="create-or-recover__button" block @click="create">Create</v-btn>
+          </div>
+          <v-btn text class="create-or-recover__button create-or-recover__button--text" block @click="goToRecover"
+            >Recover profile</v-btn
+          >
+        </div>
       </div>
-    </div>
-  </substrate>
+    </substrate>
+  </match-media>
 </template>
 
 <script>
 import Substrate from '@/components/Profile/Substrate.vue'
+import { MatchMedia } from 'vue-component-media-queries'
 
 export default {
   name: 'CreateOrRecover',
   components: {
+    MatchMedia,
     Substrate
   },
   methods: {
+    cancel() {
+      return this.$router.push({ name: 'Wallets' })
+    },
     create() {
       return this.$router.push({ name: 'SecurityInfo' })
     },
@@ -43,6 +52,12 @@ export default {
 
 <style lang="scss">
 .create-or-recover {
+  &__button-i-back {
+    position: absolute;
+    left: 37px;
+    top: 21px;
+  }
+
   &__wrapper {
     max-width: 256px;
     text-align: center;
