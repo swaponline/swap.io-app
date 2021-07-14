@@ -43,16 +43,17 @@ export default {
 
       if (!this.search) return transactions
 
-      const filtered = transactions.map(({ date, list }) => ({
-        date,
-        list: list.filter(
+      const filtered = transactions.map(({ date, list }) => {
+        const filteredList = list.filter(
           ({ from, hash, to, value }) =>
             from.toLowerCase().includes(search) ||
             hash.toLowerCase().includes(search) ||
             to.toLowerCase().includes(search) ||
             value.toString().includes(search)
         )
-      }))
+
+        return { date, list: filteredList }
+      })
 
       return filtered.filter(({ list }) => list.length > 0)
     }

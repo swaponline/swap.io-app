@@ -2,7 +2,7 @@
   <match-media v-slot="{ desktop, phone }" tag="div" class="main-header">
     <div v-if="isCreatingOrRecoveringProfile" class="main-header__logo">
       <svg-icon class="main-header__logo-icon" name="logo" />
-      <h2 class="main-header__logo-text">SwapOnline</h2>
+      <h2 class="main-header__logo-text">Swap.io</h2>
     </div>
     <router-link v-else :to="{ name: 'Wallet' }" class="main-header__logo">
       <svg-icon class="main-header__logo-icon" name="logo" />
