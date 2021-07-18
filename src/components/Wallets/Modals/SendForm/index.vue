@@ -94,7 +94,14 @@
 
         <v-divider class="send-form__divider" />
 
-        <v-btn v-if="!hasMemo" small depressed class="send-form__add-memo" @click="hasMemo = true">
+        <v-btn
+          v-if="!hasMemo"
+          v-tooltip="tooltipParams"
+          small
+          depressed
+          class="send-form__add-memo"
+          @click="hasMemo = true"
+        >
           <v-icon color="grey lighten-1" small class="mr-1">mdi-bookmark</v-icon>Add a memo
         </v-btn>
 
@@ -104,6 +111,8 @@
           outlined
           class="send-form__textarea rounded-lg"
           hide-details
+          auto-grow
+          rows="1"
           placeholder="Enter a memo"
         ></v-textarea>
       </template>
@@ -150,7 +159,12 @@ export default {
       selectedWallet: null,
       hasMemo: false,
       memo: '',
-      step: 1
+      step: 1,
+      tooltipParams: {
+        delay: { show: 500, hide: 100 },
+        placement: 'top-start',
+        content: 'You will see it in the tx history (not the recipient)'
+      }
     }
   },
   computed: {

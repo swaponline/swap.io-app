@@ -86,7 +86,7 @@
 
     <invoice-preview
       v-if="step === 2"
-      :wallet="selectedWallet"
+      :address="selectedWallet.address"
       :contact="contact"
       :fields="amountFields"
       :currency="currency"

@@ -1,6 +1,9 @@
 <template>
   <div class="invoice-preview">
-    <wallet-preview v-bind="wallet" class="invoice-preview__wallet" />
+    <div class="invoice-preview__field">
+      <span class="invoice-preview__label">Address</span>
+      <span class="invoice-preview__value">{{ address }}</span>
+    </div>
 
     <div class="invoice-preview__field">
       <span class="invoice-preview__label">Bill to</span>
@@ -21,7 +24,7 @@
     <v-divider class="invoice-preview__divider" />
 
     <div class="invoice-preview__amount">
-      <span>Amount: </span>
+      <span>Total: </span>
       <span>
         {{ currency }}
         <span class="invoice-form__total-value">
@@ -33,13 +36,10 @@
 </template>
 
 <script>
-import WalletPreview from '@/components/Wallets/WalletPreview.vue'
-
 export default {
   name: 'InvoicePreview',
-  components: { WalletPreview },
   props: {
-    wallet: { type: Object, required: true },
+    address: { type: String, required: true },
     contact: { type: String, required: true },
     fields: { type: Array, required: true },
     currency: { type: String, required: true },

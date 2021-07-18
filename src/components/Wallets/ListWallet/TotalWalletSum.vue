@@ -1,5 +1,5 @@
 <template>
-  <div class="total-wallet-sum">
+  <div class="total-wallet-sum" :class="{ 'total-wallet-sum--with-notification': accountNotifications }">
     <span class="total-wallet-sum__title">Total</span>
     <v-select
       append-icon="mdi-chevron-down"
@@ -14,9 +14,16 @@
       :menu-props="{ 'content-class': 'total-wallet-sum__selector-menu' }"
     >
     </v-select>
-    <v-badge left :content="accountNotifications" :value="accountNotifications" color="red" offset-x="120%">
+    <v-badge
+      v-if="accountNotifications"
+      :content="accountNotifications"
+      :value="accountNotifications"
+      color="red"
+      inline
+    >
       <div class="total-wallet-sum__value">{{ accountBalance }}</div>
     </v-badge>
+    <div v-else class="total-wallet-sum__value">{{ accountBalance }}</div>
   </div>
 </template>
 
@@ -39,7 +46,7 @@ export default {
 .total-wallet-sum {
   width: 100%;
   height: 100%;
-  min-height: 80px;
+  min-height: 42px;
   padding: 0 25px;
   display: flex;
   justify-content: space-between;
@@ -47,25 +54,32 @@ export default {
   border-bottom: 2px solid $--light-grey;
   background: $--white;
 
+  &--with-notification {
+    padding-right: 10px;
+  }
+
   &__title {
-    font-size: $--font-size-small-subtitle;
+    font-size: $--font-size-base;
     font-weight: $--font-weight-semi-bold;
     color: $--grey-3;
     flex-grow: 1;
   }
   &__selector {
     max-width: 160px;
-    margin-right: 12px !important;
+    margin-right: 6px !important;
     margin-left: auto !important;
     flex: 0 !important;
 
     .v-input__slot {
+      min-height: unset !important;
+      height: 32px !important;
       padding: 0 4px 0 8px !important;
       box-shadow: none;
       margin-bottom: 0 !important;
       font-size: $--font-size-medium;
     }
     .v-input__control {
+      min-height: unset !important;
       width: unset !important;
       flex-grow: 0;
     }
@@ -106,7 +120,7 @@ export default {
   }
 
   &__value {
-    font-size: $--font-size-small-subtitle;
+    font-size: $--font-size-base;
     font-weight: $--font-weight-semi-bold;
   }
 }

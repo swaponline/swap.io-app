@@ -10,9 +10,9 @@
     </router-link>
     <v-button-cancel v-if="isCreatingOrRecoveringProfile && phone" class="main-header__button-cancel" @click="cancel" />
     <div v-if="desktop" class="main-header__content">
-      <main-header-tabs class="main-header__tabs"></main-header-tabs>
+      <main-header-tabs class="main-header__tabs" />
       <div v-if="!isCreatingOrRecoveringProfile" class="main-header__profile">
-        <profile-list></profile-list>
+        <profile-list />
       </div>
     </div>
   </match-media>
@@ -45,7 +45,7 @@ export default {
 <style lang="scss">
 .main-header {
   width: 100%;
-  min-height: 85px;
+  min-height: $--header-height;
   display: flex;
   background: $--white;
   box-shadow: 0 0 20px rgba(17, 17, 17, 0.02);
@@ -76,15 +76,15 @@ export default {
   }
 
   &__logo-icon {
-    width: 48px;
-    height: 45px;
+    width: 42px;
+    height: 39px;
     margin-right: 20px;
-    margin-left: 30px;
+    margin-left: 28px;
     fill: var(--main-color);
 
     @include tablet {
-      width: 45px;
-      height: 42px;
+      width: 42px;
+      height: 39px;
     }
 
     @include small-phone {
@@ -97,6 +97,7 @@ export default {
 
   &__logo-text {
     color: var(--main-color);
+    font-size: $--font-size-extra-small-subtitle;
   }
 
   &__button-cancel {
