@@ -3,7 +3,6 @@ import vuetify from '@/plugins/vuetify'
 import UI from '@/components/UI'
 import icons from 'vue-cryptoicon/src/icons'
 import Cryptoicon from 'vue-cryptoicon'
-import VTooltip from 'v-tooltip'
 import App from './App.vue'
 import router from './router'
 import store from './store'
@@ -15,7 +14,6 @@ Vue.config.productionTip = false
 
 Cryptoicon.add(icons)
 
-Vue.use(VTooltip)
 Vue.use(Cryptoicon, { generic: true })
 Vue.use(UI)
 

@@ -111,7 +111,7 @@ export default {
     transition: all 0.5s;
 
     &--offset {
-      padding-top: 140px;
+      padding-top: 100px;
     }
   }
   &__header {

@@ -16,9 +16,10 @@ export const UPDATE_WALLET = 'updateWallet'
 export const USERS_THEMES_KEY = 'usersThemes'
 const CURRENT_USER_KEY = 'currentAccount'
 const WALLETS_LIST_KEY = 'walletsList'
+const HAS_PROFILE_KEY = 'hasProfile'
 
 export const DEFAULT_COLOR_THEME = {
-  background: 'linear-gradient(0deg, rgba(189,189,189,1) 0%, rgba(255,255,255,1) 100%)',
+  background: 'linear-gradient(0deg, rgba(237,237,237,1) 0%, rgba(247,247,247,1) 100%)',
   color: '#6144E5',
   selectionColor: ''
 }
@@ -57,12 +58,16 @@ function setupLocalStorage() {
 
   const profiles = getStorage(USERS_THEMES_KEY)
   const account = getStorage(CURRENT_USER_KEY)
+  const hasProfile = getStorage(HAS_PROFILE_KEY)
 
   if (!profiles) {
     setStorage(USERS_THEMES_KEY, defaultProfiles)
   }
   if (!account) {
     setStorage(CURRENT_USER_KEY, defaultAccount)
+  }
+  if (hasProfile === undefined || hasProfile === null) {
+    setStorage(HAS_PROFILE_KEY, true)
   }
 
   removeStorage('colorTheme')
@@ -72,9 +77,12 @@ function setupLocalStorage() {
 
 setupLocalStorage()
 
+const hasProfileFlag = getStorage(HAS_PROFILE_KEY)
+const userThemes = hasProfileFlag ? getStorage(USERS_THEMES_KEY) : null
+
 export default {
   state: {
-    profiles: getStorage(USERS_THEMES_KEY),
+    profiles: userThemes,
     list: getStorage(WALLETS_LIST_KEY) || [
       {
         id: 'iasduah415fni1j832jh8rjnfimda0m',
@@ -613,17 +621,19 @@ export default {
       }
     ],
     model: {
-      profile: getStorage(USERS_THEMES_KEY).find(user => user.accountId === getStorage(CURRENT_USER_KEY))
+      profile: hasProfileFlag ? userThemes.find(user => user.accountId === getStorage(CURRENT_USER_KEY)) : null
     },
     temporaryProfile: DEFAULT_COLOR_THEME,
 
     [IS_CREATING_OR_RECOVERING]: false
   },
   getters: {
-    userColorTheme(state) {
+    userColorTheme(state, { hasProfile }) {
+      if (!hasProfile) return DEFAULT_COLOR_THEME
       return state[IS_CREATING_OR_RECOVERING] ? state.temporaryProfile : state.model.profile
     },
-    currentWallets(state) {
+    currentWallets(state, { hasProfile }) {
+      if (!hasProfile) return []
       const profileWallets = state.list.find(el => el.id === state.model.profile.accountId)
       return profileWallets ? profileWallets.wallets : []
     },
@@ -640,6 +650,9 @@ export default {
     },
     accountNotifications(state, { currentSubWallets }) {
       return currentSubWallets?.reduce((acc, { notifications }) => (notifications ? acc + notifications : acc), 0)
+    },
+    hasProfile(state) {
+      return !!state.model.profile
     }
   },
   actions: {

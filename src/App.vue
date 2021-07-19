@@ -39,7 +39,7 @@ export default {
       return this.$store.getters.userColorTheme
     },
     isDefaultTheme() {
-      return this.userColorTheme.background.includes('linear-gradient')
+      return this.$store.getters.hasProfile // this.userColorTheme.background.includes('linear-gradient')
     },
     accountNotifications() {
       return this.$store.getters.accountNotifications
@@ -49,7 +49,10 @@ export default {
     userColorTheme: {
       immediate: true,
       deep: true,
-      handler({ color, selectionColor, background }) {
+      handler(theme) {
+        if (!theme) return
+
+        const { color, selectionColor, background } = theme
         this.setFavicon(color)
         this.setColorThemeOfAddressBar(color)
 
@@ -126,6 +129,7 @@ export default {
 
       const canvg = Canvg.fromString(ctx, resSvg, options)
 
+      canvas.style.display = 'block'
       canvg.start()
     },
     setFavicon(color) {

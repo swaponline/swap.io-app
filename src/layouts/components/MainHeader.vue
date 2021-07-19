@@ -1,17 +1,15 @@
 <template>
   <match-media v-slot="{ desktop, phone }" tag="div" class="main-header">
     <div v-if="isCreatingOrRecoveringProfile" class="main-header__logo">
-      <svg-icon class="main-header__logo-icon" name="logo" />
-      <h2 class="main-header__logo-text">Swap.io</h2>
+      <swap-logo />
     </div>
     <router-link v-else :to="{ name: 'Wallet' }" class="main-header__logo">
-      <svg-icon class="main-header__logo-icon" name="logo" />
-      <h2 class="main-header__logo-text">Swap.io</h2>
+      <swap-logo />
     </router-link>
     <v-button-cancel v-if="isCreatingOrRecoveringProfile && phone" class="main-header__button-cancel" @click="cancel" />
     <div v-if="desktop" class="main-header__content">
       <main-header-tabs class="main-header__tabs" />
-      <div v-if="!isCreatingOrRecoveringProfile" class="main-header__profile">
+      <div v-if="!isCreatingOrRecoveringProfile && hasProfile" class="main-header__profile">
         <profile-list />
       </div>
     </div>
@@ -23,14 +21,18 @@ import { MatchMedia } from 'vue-component-media-queries'
 import ProfileList from '@/components/Wallets/ProfileList.vue'
 import { MODULE_PROFILE, IS_CREATING_OR_RECOVERING, CREATING_OR_RECOVERING_PROFILE } from '@/store/modules/Profile'
 import VButtonCancel from '@/components/Profile/VButtonCancel.vue'
+import SwapLogo from '@/components/UI/SwapLogo.vue'
 import MainHeaderTabs from './Tabs.vue'
 
 export default {
   name: 'MainHeader',
-  components: { ProfileList, MainHeaderTabs, MatchMedia, VButtonCancel },
+  components: { ProfileList, MainHeaderTabs, MatchMedia, VButtonCancel, SwapLogo },
   computed: {
     isCreatingOrRecoveringProfile() {
       return this.$store.state[MODULE_PROFILE][IS_CREATING_OR_RECOVERING]
+    },
+    hasProfile() {
+      return this.$store.getters.hasProfile
     }
   },
   methods: {
@@ -66,38 +68,7 @@ export default {
     text-decoration: none;
     min-width: 305px;
     margin-right: 20px;
-    display: flex;
-    align-items: center;
-
-    @include tablet {
-      min-width: 0;
-      flex-grow: 1;
-    }
-  }
-
-  &__logo-icon {
-    width: 42px;
-    height: 39px;
-    margin-right: 20px;
     margin-left: 28px;
-    fill: var(--main-color);
-
-    @include tablet {
-      width: 42px;
-      height: 39px;
-    }
-
-    @include small-phone {
-      margin-right: 15px;
-      margin-left: 15px;
-      width: 30px;
-      height: 30px;
-    }
-  }
-
-  &__logo-text {
-    color: var(--main-color);
-    font-size: $--font-size-extra-small-subtitle;
   }
 
   &__button-cancel {
