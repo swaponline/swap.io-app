@@ -14,9 +14,7 @@
           <span class="list-wallet-item__currency-name">{{ currencyName }}</span>
           <span class="list-wallet-item__name">{{ subWallets[0].name || minifyAddress(subWallets[0].address) }}</span>
         </div>
-        <v-badge :content="notificationsCount" :value="notificationsCount" color="red" left offset-x="100%">
-          <span class="list-wallet-item__value">{{ value }}</span>
-        </v-badge>
+        <span class="list-wallet-item__value">{{ value }}</span>
       </v-list-item-title>
     </v-list-item-content>
   </v-list-item>
@@ -35,11 +33,6 @@ export default {
     value: { type: Number, default: 0 },
     subWallets: { type: Array, default: () => [] },
     network: { type: String, default: '' }
-  },
-  computed: {
-    notificationsCount() {
-      return this.subWallets.reduce((acc, { notifications }) => (notifications ? acc + notifications : acc), 0)
-    }
   },
   methods: { minifyAddress }
 }

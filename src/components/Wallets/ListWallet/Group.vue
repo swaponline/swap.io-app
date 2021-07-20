@@ -14,9 +14,7 @@
           <span class="list-wallet-group__currency">{{ currencyName }} </span>
           <span class="list-wallet-group__name">{{ subWallets.length }} wallet</span>
         </div>
-        <v-badge left :content="notificationsCount" :value="notificationsCount && !isOpen" color="red" offset-x="100%">
-          <span class="list-wallet-group__value">{{ value }}</span>
-        </v-badge>
+        <span class="list-wallet-group__value">{{ value }}</span>
       </v-list-item-title>
     </template>
     <v-list-item
@@ -32,11 +30,7 @@
           <span>
             {{ subWallet.name || minifyAddress(subWallet.address) }}
           </span>
-          <span>
-            <v-badge color="red" :content="subWallet.notifications" :value="!!subWallet.notifications" inline>
-              {{ subWallet.value }}
-            </v-badge>
-          </span>
+          <span>{{ subWallet.value }}</span>
         </v-list-item-title>
       </v-list-item-content>
     </v-list-item>
@@ -51,35 +45,15 @@ export default {
   name: 'ListWalletGroup',
   components: { ItemIcon },
   props: {
-    name: {
-      type: String,
-      default: 'my wallet'
-    },
-    currencyName: {
-      type: String,
-      default: ''
-    },
-    value: {
-      type: Number,
-      default: 0
-    },
-    subWallets: {
-      type: Array,
-      required: true
-    },
-    network: {
-      type: String,
-      default: ''
-    }
+    name: { type: String, default: 'my wallet' },
+    currencyName: { type: String, default: '' },
+    value: { type: Number, default: 0 },
+    subWallets: { type: Array, required: true },
+    network: { type: String, default: '' }
   },
   data() {
     return {
       isOpen: false
-    }
-  },
-  computed: {
-    notificationsCount() {
-      return this.subWallets.reduce((acc, { notifications }) => (notifications ? acc + notifications : acc), 0)
     }
   },
   methods: { minifyAddress }

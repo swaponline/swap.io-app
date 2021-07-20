@@ -14,16 +14,8 @@
       :menu-props="{ 'content-class': 'total-wallet-sum__selector-menu' }"
     >
     </v-select>
-    <v-badge
-      v-if="accountNotifications"
-      :content="accountNotifications"
-      :value="accountNotifications"
-      color="red"
-      inline
-    >
-      <div class="total-wallet-sum__value">{{ accountBalance }}</div>
-    </v-badge>
-    <div v-else class="total-wallet-sum__value">{{ accountBalance }}</div>
+
+    <div class="total-wallet-sum__value">{{ accountBalance }}</div>
   </div>
 </template>
 
@@ -34,9 +26,6 @@ export default {
     accountBalance() {
       const balance = this.$store.getters.accountBalance
       return Math.round(balance * 100) / 100
-    },
-    accountNotifications() {
-      return this.$store.getters.accountNotifications
     }
   }
 }
