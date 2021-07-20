@@ -105,7 +105,7 @@ export default {
     min-height: 40px;
     border-radius: 12px;
     margin: 5px 0;
-    padding: 0 2px 0 15px !important;
+    padding: 0 15px !important;
     overflow: hidden;
     &:first-child {
       margin-top: 5px;
