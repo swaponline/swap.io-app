@@ -65,7 +65,7 @@ export default {
   },
   methods: {
     scroll(e) {
-      this.isSearchVisible = e.target.scrollTop > 0 || this.search
+      if (this.wallets.length > 6) this.isSearchVisible = e.target.scrollTop > 0 || this.search
     }
   }
 }

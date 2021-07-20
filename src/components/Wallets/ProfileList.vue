@@ -3,13 +3,13 @@
     <v-expansion-panel class="profile-list__inner">
       <v-expansion-panel-header class="profile-list__header" :hide-actions="isDesktop">
         <v-avatar
-          height="50"
-          width="50"
-          min-width="50"
+          height="40"
+          width="40"
+          min-width="40"
           class="profile-list__avatar-wrapper"
           :style="`background-image: ${getAvatar(currentProfile)}`"
         >
-          <v-icon size="60" class="profile-list__avatar-icon">mdi-account-circle</v-icon>
+          <v-icon size="50" class="profile-list__avatar-icon">mdi-account-circle</v-icon>
         </v-avatar>
         <span class="profile-list__name">{{ currentProfile.username }}</span>
       </v-expansion-panel-header>
@@ -22,13 +22,13 @@
             @click="setProfile(profile.accountId)"
           >
             <v-avatar
-              height="50"
-              width="50"
-              min-width="50"
+              height="40"
+              width="40"
+              min-width="40"
               class="profile-list__avatar-wrapper"
               :style="`background-image: ${getAvatar(profile)}`"
             >
-              <v-icon size="60" class="profile-list__avatar-icon">mdi-account-circle</v-icon>
+              <v-icon size="50" class="profile-list__avatar-icon">mdi-account-circle</v-icon>
             </v-avatar>
             <span>{{ profile.username }}</span>
           </v-list-item>
@@ -149,7 +149,7 @@ export default {
   }
   &__list-item {
     padding: 0 25px;
-    height: 80px;
+    height: 60px;
   }
   &__add-new-profile {
     width: 100%;
