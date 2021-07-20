@@ -1,5 +1,5 @@
 <template>
-  <div class="total-wallet-sum" :class="{ 'total-wallet-sum--with-notification': accountNotifications }">
+  <div class="total-wallet-sum">
     <span class="total-wallet-sum__title">Total</span>
     <v-select
       append-icon="mdi-chevron-down"
@@ -42,10 +42,6 @@ export default {
   align-items: center;
   border-bottom: 2px solid $--light-grey;
   background: $--white;
-
-  &--with-notification {
-    padding-right: 10px;
-  }
 
   &__title {
     font-size: $--font-size-base;

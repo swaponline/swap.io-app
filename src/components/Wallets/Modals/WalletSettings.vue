@@ -1,5 +1,5 @@
 <template>
-  <modal-wrapper value title="Wallet settings" @input="hide" @submit="save" @cancel="close">
+  <modal-wrapper value title="Wallet settings" @input="close" @submit="save" @cancel="close">
     <div class="wallet-settings-modal">
       <form-field v-model="name" placeholder="label"></form-field>
     </div>
@@ -14,15 +14,9 @@ import FormField from '@/components/UI/Forms/TextField.vue'
 
 export default {
   name: 'ShareModal',
-  components: {
-    ModalWrapper,
-    FormField
-  },
+  components: { ModalWrapper, FormField },
   props: {
-    walletId: {
-      type: String,
-      default: ''
-    }
+    walletId: { type: String, default: '' }
   },
   data() {
     return {
@@ -49,9 +43,6 @@ export default {
     ...mapActions({
       actionUpdateWallet: UPDATE_WALLET
     }),
-    hide() {
-      this.$emit('toggle', false)
-    },
     close() {
       this.$emit('close')
     },
