@@ -1,3 +1,6 @@
+import { GUEST_INVOICE_ROUTE_NAME } from '@/constants/routes'
+import { openInvoice } from './middleware'
+
 /* eslint-disable import/extensions */
 export default [
   {
@@ -15,6 +18,18 @@ export default [
           {
             path: '/wallet/:walletAddress?',
             name: 'Wallet',
+            component: () => import(/* webpackChunkName: 'Wallet' */ '@/views/Wallets/Wallet.vue')
+          }
+        ]
+      },
+      {
+        path: '/invoice',
+        component: () => import(/* webpackChunkName: 'Wallets' */ '@/layouts/WalletLayout'),
+        meta: { middleware: [openInvoice] },
+        children: [
+          {
+            path: '',
+            name: 'Invoice',
             component: () => import(/* webpackChunkName: 'Wallet' */ '@/views/Wallets/Wallet.vue')
           }
         ]
@@ -51,6 +66,18 @@ export default [
         path: '/security-info',
         name: 'SecurityInfo',
         component: () => import(/* webpackChunkName: 'SecurityInfo' */ '@/views/Profile/Create/SecurityInfo.vue')
+      }
+    ]
+  },
+  {
+    path: '/',
+    name: 'DefaultLayout',
+    component: () => import(/* webpackChunkName: 'DefaultLayout' */ '@/layouts/DefaultLayout'),
+    children: [
+      {
+        path: '/invoice',
+        name: GUEST_INVOICE_ROUTE_NAME,
+        component: () => import(/* webpackChunkName: 'GuestInvoice' */ '@/views/GuestInvoice.vue')
       }
     ]
   }

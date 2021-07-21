@@ -1,4 +1,5 @@
-export const currencies = ['USD', 'BTC', 'ETH']
+export const fiatCurrencies = ['USD', 'EUR']
+export const currencies = [...fiatCurrencies, 'BTC', 'ETH']
 
 /* eslint-disable no-unused-vars */
 export function convertAmountToOtherCurrency(amount, currency, targetCurrency) {

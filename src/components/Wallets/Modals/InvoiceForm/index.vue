@@ -10,65 +10,63 @@
     <div v-if="step === 1" class="invoice-form">
       <wallet-selector v-model="selectedWallet" :items="wallets" class="invoice-form__wallet-selector" />
 
-      <form-text-field v-model="contact" color="grey" required label="Bill to" class="mb-10" />
+      <form-text-field v-model="contact" color="grey" required label="Bill to" class="mb-8" />
 
-      <div class="invoice-form__items">
-        <h3 class="invoice-form__subtitle">Invoice Items</h3>
+      <h3 class="invoice-form__subtitle">Invoice Items</h3>
 
-        <div class="d-flex invoice-form__selectors">
-          <v-select
-            v-model="invoiceType"
-            return-object
-            item-text="label"
-            item-value="id"
-            class="invoice-form__long-field invoice-form__item-select"
-            hide-details
-            item-color
-            dense
-            flat
-            filled
-            append-icon="mdi-chevron-down"
-            :menu-props="{ 'content-class': 'invoice-form__select-menu' }"
-            :items="$options.INVOICE_TYPES"
-          />
-          <v-select
-            v-model="currency"
-            item-color
-            hide-details
-            dense
-            flat
-            filled
-            append-icon="mdi-chevron-down"
-            :items="$options.CURRENCIES"
-            :menu-props="{ 'content-class': 'invoice-form__select-menu' }"
-            class="invoice-form__short-field invoice-form__item-select"
-          />
+      <div class="d-flex invoice-form__selectors">
+        <v-select
+          v-model="invoiceType"
+          return-object
+          item-text="label"
+          item-value="id"
+          class="invoice-form__long-field invoice-form__item-select"
+          hide-details
+          item-color
+          dense
+          flat
+          filled
+          append-icon="mdi-chevron-down"
+          :menu-props="{ 'content-class': 'invoice-form__select-menu' }"
+          :items="$options.INVOICE_TYPES"
+        />
+        <v-select
+          v-model="currency"
+          item-color
+          hide-details
+          dense
+          flat
+          filled
+          append-icon="mdi-chevron-down"
+          :items="currencyItems"
+          :menu-props="{ 'content-class': 'invoice-form__select-menu' }"
+          class="invoice-form__short-field invoice-form__item-select"
+        />
 
-          <v-btn class="invoice-form__add-button" depressed @click="addAmountField">Add item</v-btn>
-        </div>
+        <v-btn class="invoice-form__add-button" depressed @click="addAmountField">Add item</v-btn>
+      </div>
 
-        <div v-for="(field, index) in amountFields" :key="index" class="invoice-form__item">
-          <form-text-field v-model="field.description" label="Description" class="invoice-form__long-field mb-0" />
+      <div v-for="(field, index) in amountFields" :key="index" class="invoice-form__item">
+        <form-text-field v-model="field.description" label="Description" class="invoice-form__long-field mb-0" />
 
-          <form-text-field
-            v-if="invoiceType.id !== 1"
-            v-model="field.quantity"
-            :label="invoiceType.labelQuantity"
-            class="invoice-form__short-field mb-0"
-          />
+        <form-text-field
+          v-if="invoiceType.id !== 1"
+          v-model="field.quantity"
+          :label="invoiceType.labelQuantity"
+          class="invoice-form__short-field mb-0"
+        />
 
-          <form-text-field
-            v-model="field.amount"
-            type="number"
-            min="0"
-            class="invoice-form__short-field mb-0"
-            :label="invoiceType.labelItemPrice"
-          />
+        <form-text-field
+          v-model="field.amount"
+          type="number"
+          min="0"
+          class="invoice-form__short-field mb-0"
+          :label="invoiceType.labelItemPrice"
+        />
 
-          <v-btn depressed icon class="invoice-form__remove-button" min-width="20" @click="removeField(field)">
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-        </div>
+        <v-btn depressed icon class="invoice-form__remove-button" min-width="20" @click="removeField(field)">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
       </div>
 
       <v-divider></v-divider>
@@ -100,7 +98,7 @@ import FormTextField from '@/components/UI/Forms/TextField.vue'
 import ModalWrapper from '@/components/UI/ModalWrapper.vue'
 import WalletSelector from '@/components/Wallets/WalletSelector.vue'
 
-import { currencies, convertAmountToOtherCurrency } from '@/services/converter'
+import { fiatCurrencies, convertAmountToOtherCurrency } from '@/services/converter'
 import InvoicePreview from './Preview.vue'
 
 const INVOICE_TYPES = [
@@ -117,7 +115,6 @@ export default {
   name: 'InvoiceForm',
   components: { ModalWrapper, FormTextField, WalletSelector, InvoicePreview },
   INVOICE_TYPES,
-  CURRENCIES: currencies,
   props: {
     value: { type: Boolean, default: false },
     address: { type: String, default: '' }
@@ -127,7 +124,7 @@ export default {
       selectedWallet: null,
       contact: '',
       amountFields: [generateFieldModel()],
-      currency: currencies[0],
+      currency: fiatCurrencies[0],
       invoiceType: INVOICE_TYPES[0],
       step: 1
     }
@@ -135,6 +132,9 @@ export default {
   computed: {
     wallets() {
       return this.$store.getters.currentSubWallets
+    },
+    currencyItems() {
+      return this.selectedWallet ? [...fiatCurrencies, this.selectedWallet.currencyName] : [...fiatCurrencies]
     },
     sumAmount() {
       return this.amountFields.reduce((sum, el) => {
@@ -183,7 +183,7 @@ export default {
       }
       this.contact = ''
       this.amountFields = [generateFieldModel()]
-      ;[this.currency] = currencies
+      ;[this.currency] = fiatCurrencies
       ;[this.invoiceType] = INVOICE_TYPES
       this.step = 1
     },
@@ -205,15 +205,9 @@ export default {
     margin-bottom: 40px !important;
   }
   &__subtitle {
-    font-size: $--font-size-small-subtitle;
+    font-size: $--font-size-extra-small-subtitle;
     font-weight: $--font-weight-semi-bold;
     margin-bottom: 16px;
-  }
-  &__items {
-    border-radius: $--main-border-radius;
-    background-color: $--light-grey-2 !important;
-    padding: 16px 12px 20px;
-    margin-bottom: 30px;
   }
   &__item-select {
     border-radius: $--main-border-radius;
@@ -275,7 +269,8 @@ export default {
   &__item {
     display: flex;
     align-items: center;
-    &:not(:last-child) {
+    margin-bottom: 52px;
+    &:not(:last-of-type) {
       margin-bottom: 12px;
     }
   }

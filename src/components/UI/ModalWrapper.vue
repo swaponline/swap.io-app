@@ -48,38 +48,14 @@ export default {
   name: 'ModalWrapper',
   inheritAttrs: false,
   props: {
-    value: {
-      type: Boolean,
-      default: false
-    },
-    confirmButtonLabel: {
-      type: String,
-      default: 'Confirm'
-    },
-    cancelButtonLabel: {
-      type: String,
-      default: 'Cancel'
-    },
-    title: {
-      type: String,
-      default: ''
-    },
-    modificator: {
-      type: String,
-      default: ''
-    },
-    backIcon: {
-      type: Boolean,
-      default: false
-    },
-    transition: {
-      type: [String, Boolean],
-      default: 'slide-x-reverse-transition'
-    },
-    disableConfirmButton: {
-      type: Boolean,
-      default: false
-    }
+    value: { type: Boolean, default: false },
+    confirmButtonLabel: { type: String, default: 'Confirm' },
+    cancelButtonLabel: { type: String, default: 'Cancel' },
+    title: { type: String, default: '' },
+    modificator: { type: String, default: '' },
+    backIcon: { type: Boolean, default: false },
+    transition: { type: [String, Boolean], default: 'slide-x-reverse-transition' },
+    disableConfirmButton: { type: Boolean, default: false }
   },
   methods: {
     cancel() {

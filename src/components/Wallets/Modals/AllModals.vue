@@ -27,6 +27,7 @@ import ShareModal from './ShareModal.vue'
 import WalletSettings from './WalletSettings.vue'
 import WalletCreate from './WalletCreate.vue'
 import AddNewCurrency from './AddNewCurrency.vue'
+import IncomingInvoice from './IncomingInvoice.vue'
 
 export default {
   name: 'AllModalsWallet',
@@ -39,7 +40,8 @@ export default {
     WalletSettings,
     TransactionDetails,
     WalletCreate,
-    AddNewCurrency
+    AddNewCurrency,
+    IncomingInvoice
   },
   computed: {
     modals() {
