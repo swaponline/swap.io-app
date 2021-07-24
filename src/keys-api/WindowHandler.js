@@ -1,5 +1,7 @@
-import windowsStorage from '@/windowsStorage'
+/* eslint-disable */
 
+import windowsStorage from './windowsStorage'
+console.log(process.env.VUE_APP_KEYS_URL)
 export default class WindowHandler {
   static host = process.env.VUE_APP_KEYS_URL
 
@@ -10,21 +12,42 @@ export default class WindowHandler {
    * @param {string} key ключ для сохранения в объекте всех открытых окон и возможности к легкому доступу к нему
    * @param {} callback
    */
-  constructor(nameFrame, additionalUrl, key, callback) {
+  constructor(options) {
+    const {
+      nameFrame,
+      additionalUrl,
+      key,
+      callback,
+      silent
+    } = options
+
     this.w = window
     this.url = WindowHandler.host + additionalUrl
     this.name = nameFrame
     this.key = key
     this.callback = callback
+    this.silent = silent
 
     this.frame = null
     this.resolve = undefined
     this.reject = undefined
     this.isOpen = false
+    this.iframeDom = null
     this.init()
   }
 
   init() {
+    if (this.silent) {
+      this.iframeDom = document.createElement('IFRAME')
+      this.iframeDom.setAttribute('name', this.name)
+      this.iframeDom.style.visibility = 'hidden'
+      this.iframeDom.style.position = 'absolute'
+      this.iframeDom.style.left = '-100px'
+      this.iframeDom.style.top = '-100px'
+      this.iframeDom.style.width = '10px'
+      this.iframeDom.style.height = '10px'
+      document.body.appendChild(this.iframeDom)
+    }
     this.frame = this.w.open(this.url, this.name)
     windowsStorage[this.key] = this
     windowsStorage.lastWindowOpen = this.key
@@ -68,6 +91,9 @@ export default class WindowHandler {
     this.reject = undefined
     this.callback = undefined
     this.frame = undefined
+    if (this.silent && this.iframeDom) {
+      document.body.removeChild(this.iframeDom)
+    }
     delete windowsStorage[this.key]
   }
 }

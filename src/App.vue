@@ -13,7 +13,6 @@ import Canvg from 'canvg'
 import { getFaviconInColorFTheme } from '@/utils/favicon'
 import { NotificationInTabTitle } from '@/services/notificationInTabTitle'
 import { pluralizeNumeral } from '@/utils/pluralization'
-import messageHandler from './messageHandler'
 
 const FAVICON_REDRAWING_TIME = 290
 
@@ -74,7 +73,6 @@ export default {
   mounted() {
     window.addEventListener('resize', this.resize)
     this.resize()
-    messageHandler()
     // ! Mock
     const { accountNotifications } = this
     const title = `

@@ -6,7 +6,8 @@ module.exports = {
     // https: true,
     disableHostCheck: true,
     watchOptions: {
-      poll: true
+      ignored: /node_modules/,
+      poll: 1000
     }
     // proxy: ''
   },

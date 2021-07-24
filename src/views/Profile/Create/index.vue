@@ -8,10 +8,9 @@
 <script>
 import Substrate from '@/components/Profile/Substrate.vue'
 import VLoader from '@/components/Loaders/VLoader.vue'
-import WindowHandler from '@/WindowHandler'
 import { SET_TEMPORARY_PROFILE, CREATING_OR_RECOVERING_PROFILE, CREATE_PROFILE } from '@/store/modules/Profile'
-import { IFRAME_INITED, THEME_SELECTED, PROFILE_CREATED } from '@/constants/createProfile'
-import { CREATE_PROFILE_WINDOW } from '@/constants/windowKey'
+
+import SwapKeysApi from '@/keys-api'
 
 export default {
   name: 'CreateProfile',
@@ -31,23 +30,25 @@ export default {
   methods: {
     openFrame() {
       this.loading = true
-      this.frame = new WindowHandler('createProfile', '/choose-style', CREATE_PROFILE_WINDOW, ({ message }) => {
-        const { payload } = message
-        switch (message.type) {
-          case IFRAME_INITED:
-            this.loading = false
-            this.$store.dispatch(CREATING_OR_RECOVERING_PROFILE, true)
-            break
-          case THEME_SELECTED:
-            this.$store.dispatch(SET_TEMPORARY_PROFILE, payload.theme)
-            break
-          case PROFILE_CREATED:
-            this.$store.dispatch(CREATE_PROFILE, payload.profile)
-            this.$router.push({ name: 'Wallets' })
-            break
-          default: {
-            // ! implementation will appear in the future
-            this.loading = false
+      this.frame = SwapKeysApi.createProfile({
+        callback: message => {
+          const { payload, type } = message
+          switch (type) {
+            case SwapKeysApi.createProfileAnswers.IFRAME_INITED:
+              this.loading = false
+              this.$store.dispatch(CREATING_OR_RECOVERING_PROFILE, true)
+              break
+            case SwapKeysApi.createProfileAnswers.THEME_SELECTED:
+              this.$store.dispatch(SET_TEMPORARY_PROFILE, payload.theme)
+              break
+            case SwapKeysApi.createProfileAnswers.PROFILE_CREATED:
+              this.$store.dispatch(CREATE_PROFILE, payload.profile)
+              this.$router.push({ name: 'Wallets' })
+              break
+            default: {
+              // ! implementation will appear in the future
+              this.loading = false
+            }
           }
         }
       })

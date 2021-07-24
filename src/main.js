@@ -3,6 +3,7 @@ import vuetify from '@/plugins/vuetify'
 import UI from '@/components/UI'
 import icons from 'vue-cryptoicon/src/icons'
 import Cryptoicon from 'vue-cryptoicon'
+import SwapKeysApi from '@/keys-api'
 import App from './App.vue'
 import router from './router'
 import store from './store'
@@ -16,6 +17,9 @@ Cryptoicon.add(icons)
 
 Vue.use(Cryptoicon, { generic: true })
 Vue.use(UI)
+
+// @ts-ignore
+window.keysApi = SwapKeysApi
 
 const lang = getLanguage()
 loadLanguageAsync(lang).then(() => {
