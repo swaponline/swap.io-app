@@ -97,24 +97,28 @@ export default {
   },
   methods: {
     dragStart(e) {
-      this.isMoved = true
-      e.preventDefault()
+      if (this.mediaQueries.desktop) {
+        this.isMoved = true
+        e.preventDefault()
+      }
       return false
     },
     handleResize() {
       this.setButtonPosition(this.currentSpot)
     },
     start(e) {
-      this.clickDebounce = setTimeout(() => {
-        const button = this.$refs.menuButton.$el
+      if (this.mediaQueries.desktop) {
+        this.clickDebounce = setTimeout(() => {
+          const button = this.$refs.menuButton.$el
 
-        const coords = getCoords(button)
-        this.offset = { x: e.pageX - coords.left, y: e.pageY - coords.top }
-        this.move(e)
+          const coords = getCoords(button)
+          this.offset = { x: e.pageX - coords.left, y: e.pageY - coords.top }
+          this.move(e)
 
-        this.isDragging = true
-        document.onmousemove = this.move
-      }, 200)
+          this.isDragging = true
+          document.onmousemove = this.move
+        }, 200)
+      }
     },
     move(e) {
       const button = this.$refs.menuButton.$el
