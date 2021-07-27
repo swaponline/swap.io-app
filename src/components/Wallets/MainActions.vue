@@ -24,7 +24,7 @@
         ref="menuButton"
         class="main-actions__button"
         :class="{ 'main-actions__button--dragging': isDragging }"
-        :direction="openDirection"
+        :direction="desktop ? openDirection : 'top'"
         :draggable="desktop"
         @dragstart="dragStart"
         @mousedown="start"
@@ -63,7 +63,7 @@ export default {
     return {
       isDragging: false,
       isMoved: false,
-      currentSpot: 1,
+      currentSpot: null,
       offset: {},
       activeSpot: null,
       clickDebounce: null,
@@ -87,7 +87,8 @@ export default {
     }
   },
   mounted() {
-    this.currentSpot = getStorage(CURRENT_SPOT_KEY) || 1
+    this.currentSpot = getStorage(CURRENT_SPOT_KEY)
+    if (this.currentSpot === null) this.currentSpot = 1
     window.addEventListener('resize', this.handleResize)
     this.setButtonPosition(this.currentSpot)
   },
