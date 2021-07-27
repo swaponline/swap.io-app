@@ -1,6 +1,6 @@
 <template>
   <match-media v-slot="{ desktop }" wrapper-tag="div">
-    <substrate class="create-or-recover">
+    <div class="create-or-recover">
       <swap-button-go-back v-if="!desktop" class="create-or-recover__button-i-back" @click="cancel" />
       <div class="create-or-recover__wrapper">
         <div class="create-or-recover__header">
@@ -22,19 +22,17 @@
           >
         </div>
       </div>
-    </substrate>
+    </div>
   </match-media>
 </template>
 
 <script>
-import Substrate from '@/components/Profile/Substrate.vue'
 import { MatchMedia } from 'vue-component-media-queries'
 
 export default {
   name: 'CreateOrRecover',
   components: {
-    MatchMedia,
-    Substrate
+    MatchMedia
   },
   methods: {
     cancel() {
