@@ -44,6 +44,7 @@ import { getStorage, setStorage } from '@/utils/storage'
 
 const CURRENT_SPOT_KEY = 'buttonSpot'
 const SPOT_ACTIVATION_DISTANCE = 300
+const DRAGSTART_TIMEOUT_MS = 200
 
 const spots = [
   { left: '8px', bottom: '52%' },
@@ -117,7 +118,7 @@ export default {
 
           this.isDragging = true
           document.onmousemove = this.move
-        }, 200)
+        }, DRAGSTART_TIMEOUT_MS)
       }
     },
     move(e) {
