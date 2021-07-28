@@ -18,7 +18,7 @@ class SwapKeysApi {
   getProfiles(options) {
     const {
       callback
-    } = options
+    } = options || {}
 
     return new Promise((resolve) => {
       const frame = new WindowHandler({
@@ -46,7 +46,7 @@ class SwapKeysApi {
   createProfile(options) {
     const {
       callback
-    } = options
+    } = options || {}
 
     const frame = new WindowHandler({
       nameFrame: 'createProfile',
@@ -66,7 +66,7 @@ class SwapKeysApi {
   restoreProfile(options) {
     const {
       callback
-    } = options
+    } = options || {}
 
     const frame = new WindowHandler({
       nameFrame: 'recoverProfile',
@@ -79,8 +79,8 @@ class SwapKeysApi {
 
   async getNetworks(options) {
     const {
-      callback
-    } = options
+      callback,
+    } = options || {}
 
     return new Promise((resolve) => {
       if (this._cachedNetworks.length) {
@@ -110,7 +110,7 @@ class SwapKeysApi {
     const {
       callback,
       name
-    } = options
+    } = options || {}
 
     return new Promise(async (resolve) => {
       const networks = await this.getNetworks({})
@@ -124,7 +124,53 @@ class SwapKeysApi {
   }
 
   async createWallet(options) {
-    
+    const {
+      callback,
+      profileId,
+      profileUnlockPassword,
+      networkId,
+      coin,
+      walletNumber = 0
+    } = options || {}
+
+    return new Promise(async (resolve, reject) => {
+      if (!profileId) {
+        reject(`profileId required`)
+        return
+      }
+      if (profileUnlockPassword === undefined) {
+        reject(`Profile unlock password required`)
+        return
+      }
+      if (!networkId) {
+        reject(`networkId required`)
+        return
+      }
+      if (!coin) {
+        reject(`coin slug required`)
+        return
+      }
+
+      const apiFrame = new WindowHandler({
+        nameFrame: 'createWallet',
+        additionalUrl: '/create-wallet',
+        key: WINDOW_KEYS.CREATE_WALLET,
+        callback: ({ message }) => {
+          const { type } = message
+          if (type === `iframeInited`) {
+            apiFrame.sendMessage({
+              type: 'CreateWallet',
+              walletData: {
+                
+              }
+            })
+          }
+          console.log('Create wallet frame answers', message)
+        },
+        silent: true,
+      })
+      window.createWalletFrame = apiFrame
+    })
   }
 
 }
