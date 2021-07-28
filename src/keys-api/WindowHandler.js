@@ -40,12 +40,7 @@ export default class WindowHandler {
     if (this.silent) {
       this.iframeDom = document.createElement('IFRAME')
       this.iframeDom.setAttribute('name', this.name)
-      this.iframeDom.style.visibility = 'hidden'
-      this.iframeDom.style.position = 'absolute'
-      this.iframeDom.style.left = '-100px'
-      this.iframeDom.style.top = '-100px'
-      this.iframeDom.style.width = '10px'
-      this.iframeDom.style.height = '10px'
+      this.hideFrame()
       document.body.appendChild(this.iframeDom)
     }
     this.frame = this.w.open(this.url, this.name)
@@ -73,6 +68,43 @@ export default class WindowHandler {
     } catch (e) {
       console.error(`error in windowHandler: ${e}`)
       return e
+    }
+  }
+
+  appendFrame(parentDom) {
+    // Показать фоновый фрейм в элементе DOM (по примеру createWallet)
+  }
+
+  // Отобразить фоновый фрейм поверх
+  popupFrame(options) {
+    const {
+      fullScreen = false,
+      transparent = false,
+    } = options || {}
+    console.log('>>>> call popupFrame')
+    if (this.iframeDom) {
+      this.iframeDom.style.visibility = 'visible'
+      this.iframeDom.style.left = '0px'
+      this.iframeDom.style.top = '0px'
+      this.iframeDom.style.border = 'none'
+      this.iframeDom.border = 'none'
+      this.iframeDom.style.width = '100%'
+      this.iframeDom.style.height = '100%'
+      this.iframeDom.style.display = 'block'
+      this.iframeDom.style.zIndex = '10001'
+      if (!transparent) this.iframeDom.style.background = '#fff'
+    }
+  }
+
+  // Скрыть фрейм (без уничтожения)
+  hideFrame() {
+    if (this.iframeDom) {
+      this.iframeDom.style.visibility = 'hidden'
+      this.iframeDom.style.position = 'absolute'
+      this.iframeDom.style.left = '-100px'
+      this.iframeDom.style.top = '-100px'
+      this.iframeDom.style.width = '10px'
+      this.iframeDom.style.height = '10px'
     }
   }
 

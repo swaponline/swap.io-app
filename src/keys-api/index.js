@@ -127,7 +127,6 @@ class SwapKeysApi {
     const {
       callback,
       profileId,
-      profileUnlockPassword,
       networkId,
       coin,
       walletNumber = 0
@@ -136,10 +135,6 @@ class SwapKeysApi {
     return new Promise(async (resolve, reject) => {
       if (!profileId) {
         reject(`profileId required`)
-        return
-      }
-      if (profileUnlockPassword === undefined) {
-        reject(`Profile unlock password required`)
         return
       }
       if (!networkId) {
@@ -161,9 +156,31 @@ class SwapKeysApi {
             apiFrame.sendMessage({
               type: 'CreateWallet',
               walletData: {
-                
+                profileId,
+                networkId,
+                coin,
+                walletNumber,
               }
             })
+            apiFrame.popupFrame()
+          }
+          if (type === `WalletCreated`) {
+            const answer = {
+              status: 'generated',
+              wallet: message.wallet
+            }
+            resolve(answer)
+            if (callback) callback(answer)
+            apiFrame.close()
+          }
+          if (type === `CancelCreateWallet`) {
+            const answer = {
+              status: `cancelled`
+            }
+            resolve(answer)
+            if (callback) callback(answer)
+            apiFrame.close()
+            
           }
           console.log('Create wallet frame answers', message)
         },
