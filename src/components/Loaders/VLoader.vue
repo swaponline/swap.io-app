@@ -1,5 +1,5 @@
 <template>
-  <vue-element-loading :active="active">
+  <vue-element-loading :active="active" class="loader-wrapper">
     <svg
       :width="width"
       :height="height"
@@ -51,6 +51,9 @@ export default {
 </script>
 
 <style lang="scss">
+.loader-wrapper {
+  z-index: 150 !important;
+}
 .loader-animation > path {
   &:nth-child(1) {
     animation: loader-animation 1.3s infinite;

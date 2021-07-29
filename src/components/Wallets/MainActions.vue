@@ -166,10 +166,6 @@ export default {
         }
         this.setButtonPosition(this.currentSpot)
 
-        this.openDirection = 'top'
-        if (this.currentSpot === 0) this.openDirection = 'right'
-        if (this.currentSpot === 5) this.openDirection = 'left'
-
         this.isDragging = false
         this.activeSpot = null
         document.onmousemove = null
@@ -181,6 +177,10 @@ export default {
       if (this.mediaQueries.desktop) {
         const coords = getCoords(this.$refs.spot[spotIndex])
         button.style = `left: ${coords.left}px; top: ${coords.top}px;`
+
+        this.openDirection = 'top'
+        if (this.currentSpot === 0) this.openDirection = 'right'
+        if (this.currentSpot === 5) this.openDirection = 'left'
 
         setStorage(CURRENT_SPOT_KEY, spotIndex)
       } else {
@@ -201,7 +201,7 @@ export default {
     top: 0;
     right: 0;
     bottom: 0;
-    z-index: 1000;
+    z-index: 170;
     background-color: rgba($--black, 0.5);
     display: flex;
     justify-content: center;
@@ -222,7 +222,7 @@ export default {
     top: 0;
     right: 0;
     bottom: 0;
-    z-index: 1010;
+    z-index: 171;
     pointer-events: none;
 
     &--active {
