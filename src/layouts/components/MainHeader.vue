@@ -12,7 +12,12 @@
       <div class="main-header__notifications">
         <v-menu offset-y left content-class="main-header__notifications-menu">
           <template v-slot:activator="{ on, attrs }">
-            <div class="main-header__notifications-wrapper" v-bind="attrs" v-on="on">
+            <div
+              v-if="!isCreatingOrRecoveringProfile"
+              class="main-header__notifications-wrapper"
+              v-bind="attrs"
+              v-on="on"
+            >
               <v-badge :content="notifications.length" :value="notifications.length" color="red" overlap>
                 <v-icon size="26" color="black">mdi-bell-outline</v-icon>
               </v-badge>
@@ -162,7 +167,6 @@ export default {
     border: 1px solid $--light-grey-6;
     border-top: none;
     border-bottom: none;
-
     cursor: pointer;
     transition: all 0.2s;
 
@@ -170,12 +174,14 @@ export default {
       background-color: $--light-grey-6;
     }
   }
+
   &__notifications-wrapper {
     height: $--header-height;
     display: flex;
     justify-content: center;
     align-items: center;
   }
+
   &__notifications-menu {
     width: 280px;
     border-radius: $--main-border-radius;
@@ -189,10 +195,12 @@ export default {
       }
     }
   }
+
   &__notification {
     display: flex;
     align-items: center;
   }
+
   &__notification-icon {
     flex: 0 0 30px;
     height: 30px;
@@ -203,15 +211,18 @@ export default {
     justify-content: center;
     margin-right: 16px;
   }
+
   &__notification-text {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
   }
+
   &__notification-title {
     line-height: 19px;
     font-size: $--font-size-base;
   }
+
   &__notification-value {
     font-size: $--font-size-small;
 
