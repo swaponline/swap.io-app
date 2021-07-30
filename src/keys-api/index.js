@@ -123,6 +123,58 @@ class SwapKeysApi {
     })
   }
 
+  async createWallets(options) {
+    const {
+      callback,
+      profileId,
+      wallets = []
+    } = options || {}
+
+    return new Promise(async (resolve, reject) => {
+      if (!profileId) {
+        reject(`profileId required`)
+        return
+      }
+      if (!wallets.length) {
+        reject(`wallets required`)
+        return
+      } else {
+        // check wallets options
+        let hasBadWalletOptions = false
+        wallets.forEach((walletData, walletIndex) => {
+          const {
+            networkId,
+            coin,
+            walletNumber = 0
+          } = walletData || {}
+          if (!networkId) {
+            hasBadWalletOptions = `networkId required for wallet #${walletIndex}`
+            return
+          }
+          if (!coin) {
+            hasBadWalletOptions = `coin required for wallet #${walletIndex}`
+            return
+          }
+        })
+        if (hasBadWalletOptions) {
+          reject(hasBadWalletOptions)
+          return
+        }
+      }
+      
+/*
+      const apiFrame = new WindowHandler({
+        nameFrame: 'createWallets',
+        additionalUrl: '/create-wallets',
+        key: WINDOW_KEYS.CREATE_WALLETS,
+        callback: ({ message }) => {
+          
+        }
+      })
+      */
+    })
+  }
+
   async createWallet(options) {
     const {
       callback,

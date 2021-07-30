@@ -3,5 +3,6 @@ export const WINDOW_KEYS = {
   CREATE_PROFILE: 'CreateProfileWindow',
   GET_PROFILES: 'GetProfilesWindow',
   GET_NETWORKS: 'GetNetworksWindow',
-  CREATE_WALLET: 'CreateWalletWindow'
+  CREATE_WALLET: 'CreateWalletWindow',
+  CREATE_WALLETS: 'CreateWalletsWindow'
 }
