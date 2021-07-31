@@ -161,17 +161,45 @@ class SwapKeysApi {
           return
         }
       }
-      
-/*
+
       const apiFrame = new WindowHandler({
         nameFrame: 'createWallets',
         additionalUrl: '/create-wallets',
         key: WINDOW_KEYS.CREATE_WALLETS,
         callback: ({ message }) => {
-          
-        }
+          const { type } = message
+          if (type === `iframeInited`) {
+            apiFrame.sendMessage({
+              type: 'CreateWallets',
+              walletsData: {
+                profileId,
+                wallets
+              }
+            })
+            apiFrame.popupFrame()
+          }
+          if (type === `WalletsCreated`) {
+            const answer = {
+              status: 'generated',
+              wallets: message.wallets
+            }
+            resolve(answer)
+            if (callback) callback(answer)
+            apiFrame.close()
+          }
+          if (type === `CancelCreateWallets`) {
+            const answer = {
+              status: `cancelled`
+            }
+            resolve(answer)
+            if (callback) callback(answer)
+            apiFrame.close()
+            
+          }
+          console.log('Create wallet frame answers', message)
+        },
+        silent: true,
       })
-      */
     })
   }
 
