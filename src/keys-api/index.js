@@ -196,7 +196,6 @@ class SwapKeysApi {
             apiFrame.close()
             
           }
-          console.log('Create wallet frame answers', message)
         },
         silent: true,
       })
@@ -262,7 +261,6 @@ class SwapKeysApi {
             apiFrame.close()
             
           }
-          console.log('Create wallet frame answers', message)
         },
         silent: true,
       })

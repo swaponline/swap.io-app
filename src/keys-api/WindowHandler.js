@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 import windowsStorage from './windowsStorage'
-console.log(process.env.VUE_APP_KEYS_URL)
+
 export default class WindowHandler {
   static host = process.env.VUE_APP_KEYS_URL
 
@@ -81,7 +81,6 @@ export default class WindowHandler {
       fullScreen = false,
       transparent = false,
     } = options || {}
-    console.log('>>>> call popupFrame')
     if (this.iframeDom) {
       this.iframeDom.style.visibility = 'visible'
       this.iframeDom.style.left = '0px'
