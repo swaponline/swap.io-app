@@ -42,7 +42,7 @@ function setupLocalStorage() {
       color: '#680091',
       selectionColor: 'rgba(184,0,255,0.24)',
       accountId: 'iasd123uahfni1j832jh8rjnfimda0m',
-      username: 'Corporat'
+      username: 'Poorman'
     },
     {
       background:
@@ -147,20 +147,7 @@ export default {
       {
         id: 'iasd123uahfni1j832jh8rjnfimda0m',
         // name: 'Corporat',
-        wallets: [
-          {
-            currencyName: 'ETH',
-            value: 43.0561,
-            subWallets: [
-              {
-                currencyName: 'ETH',
-                name: 'Default',
-                value: 40.0561,
-                address: '0xd19615f2Eab2ABfBF7ca16618b5eD43386374DD0'
-              }
-            ]
-          }
-        ]
+        wallets: []
       },
       {
         id: 'iasd123uahfni1j832jh8rj1fimda0m',
