@@ -64,6 +64,9 @@ export default {
     currentWallets: {
       immediate: true,
       handler(val) {
+        if (val.length === 0) {
+          this.isCreatingWallet = false
+        }
         if (!this.currentWallet && val.length > 0) {
           this.$router.replace({
             name: 'Wallet',
