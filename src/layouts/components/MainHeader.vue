@@ -14,7 +14,7 @@
           <template v-slot:activator="{ on, attrs }">
             <div class="main-header__notifications-wrapper" v-bind="attrs" v-on="on">
               <v-badge :content="notifications.length" :value="notifications.length" color="red" overlap>
-                <v-icon size="26" color="black">mdi-bell-outline</v-icon>
+                <v-icon size="26">mdi-bell-outline</v-icon>
               </v-badge>
             </div>
           </template>
@@ -83,21 +83,41 @@ export default {
     cancel() {
       this.$store.dispatch(CREATING_OR_RECOVERING_PROFILE, false)
       return this.$router.push({ name: 'Wallets' })
+    },
+    sliderColor() {
+      return this.isCreatingOrRecoveringProfile ? 'transparent' : 'var(--main-color)'
     }
   }
 }
 </script>
 
 <style lang="scss">
+// @import '~vuetify/src/styles/styles.sass';
+
+// // @include theme(main-header) using ($material) {
+// //   background-color: map-get($material, 'cards');
+
+// //   .main-header__avatar {
+// //     background-color: map-get($material, 'cards');
+// //   }
+// // }
+
+// // .theme--dark {
+// //   .main-header {
+// //     background: $--black;
+// //   }
+// // }
+
 .main-header {
   width: 100%;
   min-height: $--header-height;
   display: flex;
-  background: $--white;
+  background-color: var(--primary-background);
   box-shadow: 0 0 20px rgba(17, 17, 17, 0.02);
   border-radius: 0 0 12px 12px;
   justify-content: space-between;
   align-items: center;
+  transition: $--theme-transition;
 
   @include tablet {
     min-height: 80px;
@@ -130,7 +150,8 @@ export default {
     justify-content: center;
     align-items: center;
     outline: none;
-    font-size: $--font-size-extra-small-subtitle;
+    font-size: $--font-size-medium;
+    font-weight: $--font-weight-semi-bold;
     line-height: 25px;
     z-index: 150;
   }
@@ -142,7 +163,6 @@ export default {
     justify-content: center;
     align-items: center;
     overflow: hidden;
-    background: white;
     border-radius: 50%;
     margin-right: 20px;
   }
@@ -159,15 +179,14 @@ export default {
 
   &__notifications {
     flex: 0 0 60px;
-    border: 1px solid $--light-grey-6;
+    border: 1px solid var(--main-border-color);
     border-top: none;
     border-bottom: none;
-
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all $--transition-duration;
 
     &:hover {
-      background-color: $--light-grey-6;
+      background-color: var(--main-input-background);
     }
   }
   &__notifications-wrapper {
@@ -182,7 +201,7 @@ export default {
 
     .v-list-item {
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all $--transition-duration;
 
       &:hover {
         background-color: $--light-grey-6;

@@ -74,7 +74,7 @@ export default {
   margin-left: auto;
   border-radius: 0;
   overflow: auto;
-  background: $--white;
+  background: var(--primary-background);
   margin-right: 0;
   box-shadow: none;
 

@@ -62,7 +62,7 @@ export default {
 .transaction-description {
   width: 100%;
   font-size: $--font-size-medium;
-  color: $--black;
+  color: var(--primary-text);
   &__input {
     width: 100%;
     &:focus {

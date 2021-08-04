@@ -90,46 +90,57 @@ export default {
     flex-wrap: wrap;
     line-height: 25px !important;
   }
+
   &__text {
     align-self: stretch;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
   }
+
   &__value {
     margin-left: auto;
     padding-right: 10px;
     font-size: 18px;
+    color: var(--primary-text);
   }
+
   &__item {
     min-height: 40px;
     border-radius: 12px;
     margin: 5px 0;
     padding: 0 15px !important;
     overflow: hidden;
+
     &:first-child {
       margin-top: 5px;
     }
+
     &:before {
       z-index: 0;
       background: $--black;
     }
   }
+
   &__item-content {
     padding: 0 0;
   }
+
   &__item-info {
     display: flex;
     justify-content: space-between;
     letter-spacing: 0.03em;
     line-height: 25px;
-    color: $--black;
+    color: var(--primary-text);
     font-weight: $--font-weight-semi-bold;
     font-size: $--font-size-extra-small-subtitle;
   }
+
   &__currency {
     font-weight: $--font-weight-semi-bold;
+    color: var(--primary-text);
   }
+
   &__name {
     width: 100%;
     font-size: $--font-size-medium;

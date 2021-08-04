@@ -174,14 +174,14 @@ export default {
   position: relative;
   padding: 20px 25px 25px;
   overflow: hidden;
-  background: $--white;
+  background: var(--primary-background);
   height: 250px;
   border-radius: 12px;
-  transition: 0.5s;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: stretch;
+  transition: $--theme-transition;
 
   @include tablet {
     height: 220px;

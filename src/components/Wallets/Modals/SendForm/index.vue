@@ -281,7 +281,7 @@ export default {
     display: flex;
     padding: 3px;
     border-radius: $--main-border-radius;
-    background-color: $--light-grey-2;
+    background-color: var(--main-input-background);
   }
   &__toggle {
     width: 50%;
@@ -294,7 +294,7 @@ export default {
     cursor: pointer;
 
     &--active {
-      background-color: $--white;
+      background-color: var(--primary-background);
       box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.12), 0px 3px 1px rgba(0, 0, 0, 0.04);
     }
   }
@@ -342,7 +342,7 @@ export default {
     line-height: 21px;
     font-weight: $--font-weight-semi-bold;
     font-size: $--font-size-extra-small-subtitle;
-    background-color: $--light-grey-2;
+    background-color: var(--main-input-background);
     padding: 8px 8px 8px 12px;
     color: $--dark-grey;
     border-radius: $--main-border-radius;

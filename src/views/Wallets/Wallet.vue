@@ -98,7 +98,7 @@ export default {
     justify-content: center;
     align-items: center;
     border-radius: 12px;
-    background: $--white;
+    background: var(--primary-background);
     @include tablet {
       display: none;
     }

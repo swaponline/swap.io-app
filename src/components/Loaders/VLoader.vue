@@ -1,5 +1,5 @@
 <template>
-  <vue-element-loading :active="active">
+  <vue-element-loading :active="active" background-color="var(--primary-background)">
     <svg
       :width="width"
       :height="height"

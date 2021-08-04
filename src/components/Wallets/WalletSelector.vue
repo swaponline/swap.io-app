@@ -67,7 +67,7 @@ export default {
   .v-input__slot {
     height: 74px;
     padding: 0 !important;
-    background-color: $--light-grey-2 !important;
+    background-color: var(--main-input-background) !important;
 
     &:hover {
       background-color: $--light-grey-5 !important;

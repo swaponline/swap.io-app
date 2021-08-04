@@ -148,8 +148,8 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    border-top: 1px solid $--light-grey;
-    border-bottom: 1px solid $--light-grey;
+    border-top: 1px solid var(--main-border-color);
+    border-bottom: 1px solid var(--main-border-color);
     @include tablet {
       border-color: transparent;
       order: 4;
@@ -193,25 +193,30 @@ export default {
     margin-bottom: 20px;
     color: $--dark-grey;
     font-size: $--font-size-medium;
+
     @include tablet {
       margin-bottom: 35px;
     }
+
     span {
       display: block;
     }
   }
+
   &__copy-button {
     width: auto;
     outline: none;
-    color: $--black;
+    color: var(--primary-text);
     font-size: $--font-size-extra-small-subtitle;
     padding: 4px 0;
     word-break: break-all;
     text-align: left;
     transition: 0.3s;
+
     &:hover {
       background: $--light-grey;
     }
+
     svg {
       margin-bottom: -3px;
       margin-left: 5px;

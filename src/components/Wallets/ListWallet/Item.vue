@@ -39,6 +39,12 @@ export default {
 </script>
 
 <style lang="scss">
+.v-list-item--link {
+  &::before {
+    background-color: transparent;
+  }
+}
+
 .list-wallet-item {
   min-height: 40px;
   border-radius: 12px;
@@ -47,10 +53,11 @@ export default {
   overflow: hidden;
 
   &:hover {
-    background: #f7f7f7;
+    background-color: var(--wallets-item-background);
   }
-  &::before {
-    background-color: rgba($--black, 0.75);
+
+  &--active {
+    background-color: var(--wallets-item-background);
   }
 
   &__title {
