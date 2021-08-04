@@ -1,17 +1,24 @@
 <template>
   <div class="wallet-layout">
     <list-wallet
+      v-if="hasWallets"
       class="wallet-layout__list-wallet"
       :class="{ 'wallet-layout__list-wallet--show': showListWallet }"
     ></list-wallet>
 
-    <div class="wallet-layout__router" :class="{ 'wallet-layout__router--hide': showListWallet }">
+    <div
+      class="wallet-layout__router"
+      :class="{
+        'wallet-layout__router--hide': showListWallet,
+        'wallet-layout__router--created': !hasWallets
+      }"
+    >
       <transition-translate :reverse="metaBack">
         <router-view :key="currentRoute" class="wallet-layout__router-content"></router-view>
       </transition-translate>
     </div>
 
-    <main-actions />
+    <main-actions v-if="hasWallets" />
     <all-modals />
   </div>
 </template>
@@ -37,6 +44,9 @@ export default {
         return this.$route.name
       }
       return this.$route.name + JSON.stringify(this.$route.params)
+    },
+    hasWallets() {
+      return !!this.$store.getters.currentWallets.length
     },
     walletParam() {
       return this.$route.params.walletAddress
@@ -86,6 +96,13 @@ export default {
     height: 100%;
     width: 100%;
     overflow: hidden;
+
+    @include only-desktop {
+      &--created {
+        margin: 15px 100px 0;
+      }
+    }
+
     @include tablet {
       overflow: visible;
       position: absolute;
@@ -93,6 +110,9 @@ export default {
       transition: 0.5s;
       &--hide {
         transform: translateX(100vw);
+      }
+      &--created {
+        margin: 15px 0;
       }
     }
   }
