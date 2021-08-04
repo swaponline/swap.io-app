@@ -15,7 +15,7 @@
       @uncompress-wallet="compressed = false"
     ></transaction-block>
   </div>
-  <div v-else class="wallet__info-block">
+  <div v-else class="wallet__info-block" :class="{ 'wallet__info-block--centered': isCreatingWallet }">
     <div v-if="!currentWallets.length" class="wallet__create-new">
       <template v-if="!isCreatingWallet">
         <smiles-icon class="wallet__create-new-image" />
@@ -135,6 +135,13 @@ export default {
     align-items: center;
     border-radius: 12px;
     background: $--white;
+
+    &--centered {
+      width: 450px;
+      flex-grow: 0;
+      margin: 0 auto;
+      padding: 20px;
+    }
   }
 
   &__create-new {

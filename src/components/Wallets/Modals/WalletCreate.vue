@@ -165,7 +165,6 @@ export default {
     width: 412px;
     height: 608px;
     overflow: hidden;
-    padding: 32px 0;
     display: flex;
     flex-direction: column;
   }
@@ -174,11 +173,11 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin-bottom: 20px;
   }
   &__title {
     font-size: $--font-size-extra-small-subtitle;
     font-weight: $--font-weight-semi-bold;
-    margin: 20px 0;
   }
   &__search {
     margin-bottom: 14px;
