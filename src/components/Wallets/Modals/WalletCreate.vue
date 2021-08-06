@@ -1,91 +1,156 @@
 <template>
-  <modal-wrapper
+  <component
+    :is="wrapperComponent"
+    class="wallet-create-modal"
+    :class="{ 'wallet-create-modal--block': asBlock }"
     value
-    title="Creating a wallet"
-    :disable-confirm-button="selectedType === ''"
+    :title="modalTitle"
+    :disable-confirm-button="!selectedCurrency || !selectedNetwork"
     :confirm-button-label="confirmButtonLabel"
+    modificator="full-height"
     @input="close"
     @submit="create"
     @cancel="close"
   >
-    <div class="wallet-create-modal">
-      <div class="wallet-create-modal__cards">
-        <type-currency-card
-          class="wallet-create-modal__card"
-          name="Custom"
-          icon-name="custom"
-          :selected="selectedType === 'custom'"
-          @select="selectedType = 'custom'"
-        ></type-currency-card>
-        <type-currency-card
-          v-for="i in $options.currencies"
-          :key="i"
-          class="wallet-create-modal__card"
-          :name="i.toUpperCase()"
-          :icon-name="i"
-          :selected="selectedType === i"
-          @select="selectedType = i"
-        ></type-currency-card>
+    <div v-if="asBlock" class="wallet-create-modal__header">
+      <div class="wallet-create-modal__title">{{ modalTitle }}</div>
+      <v-btn icon @click="close">
+        <v-icon size="32">mdi-close</v-icon>
+      </v-btn>
+    </div>
+    <template v-if="!selectedCurrency">
+      <form-text-field
+        v-model="currencySearchString"
+        placeholder="Enter name of currency"
+        class="wallet-create-modal__search"
+      />
+
+      <div class="wallet-create-modal__chips">
+        <div class="wallet-create-modal__subtitle">Most popular</div>
+        <v-chip-group v-model="selectedCurrency" column>
+          <v-chip v-for="(item, index) in mostPopular" :key="index" class="wallet-create-modal__chip" :value="item">
+            <cryptoicon :symbol="item.code.toLowerCase()" size="20" class="wallet-create-modal__chip-icon" />
+            {{ item.name }}
+          </v-chip>
+        </v-chip-group>
       </div>
-    </div>
-    <div class="wallet-create-modal__links">
-      <a class="wallet-create-modal__link">Restore from 24-word seed</a>
-      <a class="wallet-create-modal__link">Connect wallet</a>
-    </div>
-  </modal-wrapper>
+
+      <v-divider class="wallet-create-modal__divider" />
+
+      <div class="wallet-create-modal__list">
+        <div
+          v-for="(item, index) in filteredCurrencies"
+          :key="index"
+          class="wallet-create-modal__currency"
+          @click="selectedCurrency = item"
+        >
+          <cryptoicon :symbol="item.code.toLowerCase()" size="40" class="wallet-create-modal__currency-icon" />
+          <span class="wallet-create-modal__currency-name">{{ item.name }}</span>
+        </div>
+      </div>
+
+      <div v-if="asBlock" class="wallet-create-modal__tip">Select currency</div>
+    </template>
+
+    <template v-else>
+      <div class="wallet-create-modal__selected-currency">
+        <cryptoicon
+          :symbol="selectedCurrency.code.toLowerCase()"
+          size="46"
+          class="wallet-create-modal__selected-currency-icon"
+        />
+        {{ selectedCurrency.name }}
+        <button class="wallet-create-modal__reset-currency" @click="reset">Change</button>
+      </div>
+
+      <div class="wallet-create-modal__chips">
+        <div class="wallet-create-modal__subtitle">Networks</div>
+        <v-chip-group v-model="selectedNetwork" column>
+          <v-chip v-for="item in networks" :key="item" class="wallet-create-modal__chip" :value="item">
+            {{ item }}
+          </v-chip>
+        </v-chip-group>
+      </div>
+
+      <swap-button v-if="asBlock" :disabled="!selectedNetwork" class="wallet-create-modal__submit" @click="create"
+        >Create</swap-button
+      >
+    </template>
+  </component>
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
-import { ADD_MODAL } from '@/store/modules/Modals'
-import { ADD_NEW_CURRENCY } from '@/store/modules/Modals/names'
 import ModalWrapper from '@/components/UI/ModalWrapper.vue'
-import TypeCurrencyCard from '../TypeCurrencyCard.vue'
+import TypeCurrencyCard from '@/components/Wallets/TypeCurrencyCard.vue'
+import FormTextField from '@/components/UI/Forms/TextField.vue'
 
 const currencies = [
-  'btc',
-  'btcp',
-  'cc',
-  'etn',
-  'dash',
-  'dbc',
-  'entrp',
-  'eos',
-  'cnd',
-  'cvc',
-  'icx',
-  'ink',
-  'ignis',
-  'equa'
+  { name: 'Bitcoin', code: 'btc' },
+  { name: 'BTCP', code: 'btcp' },
+  { name: 'CC', code: 'cc' },
+  { name: 'Ethereum', code: 'eth' },
+  { name: 'Dash', code: 'dash' },
+  { name: 'DVC', code: 'dbc' },
+  { name: 'ENTRP', code: 'entrp' },
+  { name: 'EOS', code: 'eos' },
+  { name: 'CND', code: 'cnd' },
+  { name: 'CVC', code: 'cvc' },
+  { name: 'ICX', code: 'icx' },
+  { name: 'INK', code: 'ink' },
+  { name: 'Ignis', code: 'ignis' },
+  { name: 'EQUA', code: 'equa' }
 ]
 export default {
   currencies,
   name: 'WalletCreate',
-  components: {
-    ModalWrapper,
-    TypeCurrencyCard
+  components: { ModalWrapper, TypeCurrencyCard, FormTextField },
+  props: {
+    asBlock: { type: Boolean, default: false }
   },
   data() {
     return {
-      selectedType: ''
+      currencySearchString: '',
+      selectedCurrency: '',
+      selectedNetwork: ''
     }
   },
   computed: {
+    wrapperComponent() {
+      return this.asBlock ? 'div' : ModalWrapper
+    },
+    mostPopular() {
+      return [
+        { name: 'Bitcoin', code: 'btc' },
+        { name: 'BTCP', code: 'btcp' },
+        { name: 'Dash', code: 'dash' },
+        { name: 'Bitcoin', code: 'btc' },
+        { name: 'CC', code: 'cc' },
+        { name: 'Dash', code: 'dash' },
+        { name: 'Ethereum', code: 'eth' }
+      ]
+    },
+    networks() {
+      return ['Ethereum', 'Bitcoin', 'Binance Smart Chain', 'Kusama']
+    },
+    filteredCurrencies() {
+      const search = this.currencySearchString.toLowerCase()
+      return currencies.filter(({ code, name }) => code.includes(search) || name.toLowerCase().includes(search))
+    },
+    modalTitle() {
+      if (this.selectedCurrency) return 'Choose network'
+      return 'New wallet'
+    },
     confirmButtonLabel() {
-      return this.selectedType === 'custom' ? 'Next' : 'Confirm'
+      return this.selectedCurrency === 'custom' ? 'Next' : 'Confirm'
     }
   },
   methods: {
-    ...mapMutations({
-      mutationAddModal: ADD_MODAL
-    }),
+    reset() {
+      this.selectedCurrency = null
+      this.selectedNetwork = null
+    },
     create() {
       this.close()
-      if (this.selectedType === 'custom') {
-        this.mutationAddModal({
-          name: ADD_NEW_CURRENCY
-        })
-      }
     },
     close() {
       this.$emit('close')
@@ -96,49 +161,95 @@ export default {
 
 <style lang="scss">
 .wallet-create-modal {
-  &__cards {
-    width: auto;
-    margin: 25px -8px 0;
-    display: flex;
-    flex-wrap: wrap;
-    @include tablet {
-      margin: 25px -11.5px 0;
-    }
-    @include phone {
-      margin: 25px -7.5px 0;
-    }
-  }
-  &__card {
-    width: calc(20% - 16px);
-    margin: 0 8px 16px;
-    @include tablet {
-      width: calc(16.66% - 23px);
-      margin: 0 11.5px 23px;
-    }
-    @include phone {
-      width: calc(25% - 15px);
-      margin: 0 7.5px 16px;
-    }
-    @include small-phone {
-      width: calc(33.3% - 15px);
-      margin: 0 7.5px 16px;
-    }
-  }
-  &__links {
-    margin: 14px 0;
+  &--block {
+    width: 412px;
+    height: 608px;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
   }
-  &__link {
-    width: 100%;
-    text-decoration: none;
-    font-weight: $--font-weight-semi-bold;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  &__title {
     font-size: $--font-size-extra-small-subtitle;
-    line-height: 25px;
-    color: var(--main-color) !important;
-    &:not(:first-child) {
-      margin-top: 12px;
+    font-weight: $--font-weight-semi-bold;
+  }
+  &__search {
+    margin-bottom: 14px;
+  }
+  &__chips {
+    margin-bottom: 16px;
+  }
+  &__subtitle {
+    color: $--grey-3;
+    font-weight: $--font-weight-semi-bold;
+    margin-bottom: 10px;
+  }
+  &__chip {
+    padding: 0 8px !important;
+    border-radius: 4px !important;
+    background-color: $--light-grey-2 !important;
+  }
+  &__chip-icon {
+    margin-right: 6px;
+  }
+  &__divider {
+    border-color: $--light-grey-2 !important;
+    margin-bottom: 16px;
+  }
+  &__list {
+    overflow: auto;
+    margin-bottom: 16px;
+  }
+  &__currency {
+    display: flex;
+    align-items: center;
+    padding: 8px 4px;
+    border-radius: $--main-border-radius;
+    &:hover {
+      background-color: $--light-grey-2;
+      cursor: pointer;
     }
+  }
+  &__currency-icon {
+    margin-right: 10px;
+  }
+  &__currency-name {
+    font-size: $--font-size-medium;
+  }
+
+  &__selected-currency {
+    background-color: $--light-grey-6;
+    border-radius: $--main-border-radius;
+    padding: 14px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    font-size: $--font-size-extra-small-subtitle;
+    font-weight: $--font-weight-semi-bold;
+  }
+  &__selected-currency-icon {
+    margin-right: 14px;
+  }
+  &__reset-currency {
+    margin-left: auto;
+    color: $--grey-3;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+  &__tip {
+    color: $--grey-3;
+    text-align: center;
+  }
+  &__submit {
+    margin-top: auto;
   }
 }
 </style>

@@ -67,6 +67,8 @@ export default {
 
 <style lang="scss">
 .modal-wrapper {
+  $this: &;
+
   position: relative;
   height: 100%;
   max-height: calc(var(--vh, 1vh) * 100) !important;
@@ -80,6 +82,11 @@ export default {
 
   &--flat {
     box-shadow: none;
+  }
+  &--full-height {
+    #{$this}__inner {
+      height: 100%;
+    }
   }
 
   @include tablet {

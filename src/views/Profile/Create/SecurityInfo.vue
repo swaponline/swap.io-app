@@ -1,5 +1,5 @@
 <template>
-  <substrate class="security-info">
+  <div class="security-info">
     <div class="security-info__wrapper">
       <security-info-block
         v-for="infoBlock in infoBlocks"
@@ -14,19 +14,17 @@
       >
       </security-info-block>
     </div>
-  </substrate>
+  </div>
 </template>
 
 <script>
 import SecurityInfoBlock from '@/components/Profile/SecurityInfoBlock.vue'
-import Substrate from '@/components/Profile/Substrate.vue'
 import infoBlocks from './infoBlocks'
 
 export default {
   name: 'SecurityInfo',
   components: {
-    SecurityInfoBlock,
-    Substrate
+    SecurityInfoBlock
   },
   data() {
     return {

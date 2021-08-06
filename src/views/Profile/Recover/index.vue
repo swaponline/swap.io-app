@@ -1,22 +1,21 @@
 <template>
-  <substrate>
+  <div>
     <v-loader :active="loading"></v-loader>
     <iframe class="recover-profile" name="recoverProfile" frameborder="0" />
-  </substrate>
+  </div>
 </template>
 
 <script>
-import Substrate from '@/components/Profile/Substrate.vue'
 import VLoader from '@/components/Loaders/VLoader.vue'
 import WindowHandler from '@/WindowHandler'
-import { IFRAME_INITED, PROFILE_RECOVERED, RECOVER_CANCELED } from '@/constants/createProfile'
+import { IFRAME_INITED, PROFILE_RECOVERED, CANCELED } from '@/constants/createProfile'
 import { CREATING_OR_RECOVERING_PROFILE, CREATE_PROFILE } from '@/store/modules/Profile'
+
 import { RECOVER_PROFILE_WINDOW } from '@/constants/windowKey'
 
 export default {
   name: 'RecoverProfile',
   components: {
-    Substrate,
     VLoader
   },
   data() {
@@ -38,7 +37,7 @@ export default {
             this.loading = false
             this.$store.dispatch(CREATING_OR_RECOVERING_PROFILE, true)
             break
-          case RECOVER_CANCELED:
+          case CANCELED:
             this.$store.dispatch(CREATING_OR_RECOVERING_PROFILE, false)
             this.$router.push({ name: 'Wallets' })
             break

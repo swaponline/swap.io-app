@@ -9,15 +9,27 @@
 import { CREATING_OR_RECOVERING_PROFILE } from '@/store/modules/Profile'
 import VButtonCancel from '@/components/Profile/VButtonCancel.vue'
 
+const ESCAPE = 'Escape'
+
 export default {
   name: 'Substrate',
   components: {
     VButtonCancel
   },
+  created() {
+    document.addEventListener('keydown', this.closeByPressingESC)
+  },
+  beforeDestroy() {
+    document.removeEventListener('keydown', this.closeByPressingESC)
+  },
   methods: {
     cancel() {
       this.$store.dispatch(CREATING_OR_RECOVERING_PROFILE, false)
       return this.$router.push({ name: 'Wallets' })
+    },
+    closeByPressingESC({ key }) {
+      if (!(key === ESCAPE)) return
+      this.cancel()
     }
   }
 }

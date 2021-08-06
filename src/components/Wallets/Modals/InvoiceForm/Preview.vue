@@ -130,7 +130,6 @@ export default {
   &__field {
     background-color: $--light-grey-4;
     border-radius: $--main-border-radius;
-    margin-bottom: 16px;
     margin-bottom: 8px;
     padding: 6px 14px 8px;
     display: flex;

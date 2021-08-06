@@ -86,9 +86,9 @@
               <span class="send-form__currency-name">{{ selectedWallet.currencyName }}</span>
               {{ totalBalanceChange }}
             </span>
-            <span class="send-form__amount-fiat"
-              ><span class="grey--text">~USD</span> {{ totalConvertedBalanceChange }}</span
-            >
+            <span class="send-form__amount-fiat">
+              <span class="grey--text">~USD</span> {{ totalConvertedBalanceChange }}
+            </span>
           </span>
         </div>
 
@@ -106,17 +106,17 @@
         <v-textarea
           v-if="hasMemo"
           v-model="memo"
-          outlined
           class="send-form__textarea rounded-lg"
+          label="Memo"
           hide-details
+          color="grey"
           auto-grow
           rows="1"
-          placeholder="Enter a memo"
         ></v-textarea>
       </template>
     </div>
 
-    <send-preview v-if="step === 2" :address="selectedWallet.address" :fee="fee" :recipients="recipients" />
+    <send-preview v-if="step === 2" :wallet="selectedWallet" :fee="fee" :recipients="recipients" :memo="memo" />
   </modal-wrapper>
 </template>
 
@@ -309,17 +309,22 @@ export default {
     margin-left: 8px !important;
   }
   &__textarea {
+    padding: 14px 12px;
     margin: 0 0 20px !important;
     font-size: $--font-size-extra-small-subtitle;
     flex-grow: 0;
+    border: 2px solid $--border-grey;
 
     --color-fieldset: $--black;
     &:focus-within {
       --color-fieldset: var(--main-color);
     }
     .v-input__slot {
-      border: 2px solid $--border-grey;
       margin-bottom: 0;
+      &:before,
+      &:after {
+        display: none;
+      }
     }
     fieldset {
       color: var(--color-fieldset) !important;
