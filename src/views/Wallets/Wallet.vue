@@ -24,9 +24,7 @@
           You have created a profile for yourself.<br />
           Now you can very easily add crypto wallets.
         </div>
-        <swap-button class="wallet__create-new-button" color="var(--main-color)" @click="createWallet"
-          >Create wallet</swap-button
-        >
+        <swap-button class="wallet__create-new-button" @click="createWallet">Create wallet</swap-button>
       </template>
 
       <wallet-create v-else as-block @close="isCreatingWallet = false" />
@@ -170,9 +168,17 @@ export default {
   }
   &__create-new-button {
     color: $--white !important;
+    background-color: var(--main-color) !important;
     min-height: 45px;
     padding: 0 36px !important;
     margin-bottom: 100px;
+
+    &:hover {
+      background-color: var(--main-color) !important;
+      &:before {
+        background-color: rgba($--black, 0.15) !important;
+      }
+    }
   }
 }
 </style>
