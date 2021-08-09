@@ -1,5 +1,5 @@
 <template>
-  <v-tabs fixed-tabs height="auto" color="#000000" :slider-color="sliderColor" slider-size="4" class="tabs">
+  <v-tabs fixed-tabs height="auto" :slider-color="sliderColor" slider-size="4" class="tabs">
     <v-tab v-for="tab in tabs" :key="tab.id" :disabled="isCreatingOrRecoveringProfile" :to="tab.to" class="tabs__item">
       {{ tab.label }}
     </v-tab>
@@ -23,17 +23,12 @@ export default {
           id: 2,
           label: 'Swap',
           to: { name: 'Swap' }
+        },
+        {
+          id: 4,
+          label: 'Settings',
+          to: { name: 'Settings' }
         }
-        // {
-        //   id: 3,
-        //   label: 'Frame',
-        //   to: { name: 'Frame' }
-        // }
-        // {
-        //   id: 4,
-        //   label: 'Settings',
-        //   to: { name: 'Settings' }
-        // }
       ]
     }
   },
@@ -51,7 +46,11 @@ export default {
 <style lang="scss">
 .tabs {
   margin-top: auto;
-  background: $--white;
+
+  .v-tabs-bar {
+    background-color: var(--primary-background) !important;
+    transition: $--theme-transition;
+  }
 
   @include tablet {
     padding: 0 40px;
@@ -69,7 +68,7 @@ export default {
     margin: 0 0 !important;
     font-weight: $--font-weight-semi-bold;
     font-size: $--font-size-small-subtitle;
-    color: $--black !important;
+    color: var(--primary-text) !important;
     line-height: 27px;
     letter-spacing: 0.01em;
     text-transform: none;

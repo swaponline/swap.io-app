@@ -14,6 +14,9 @@ import { getFaviconInColorFTheme } from '@/utils/favicon'
 import { NotificationInTabTitle } from '@/services/notificationInTabTitle'
 import { pluralizeNumeral } from '@/utils/pluralization'
 import messageHandler from './messageHandler'
+import { getStorage } from './utils/storage'
+import { DARK_THEME_KEY, LIGHT_THEME_KEY, SYSTEM_THEME_KEY, THEME_KEY } from './constants/theme'
+import { getUserSystemTheme } from './utils/theme'
 
 const FAVICON_REDRAWING_TIME = 290
 
@@ -72,6 +75,23 @@ export default {
     }
   },
   mounted() {
+    // SET CURRENT THEME
+    const theme = getStorage(THEME_KEY) || LIGHT_THEME_KEY
+
+    let appTheme = theme
+    if (theme === SYSTEM_THEME_KEY) {
+      appTheme = getUserSystemTheme()
+    }
+
+    if (appTheme === LIGHT_THEME_KEY) {
+      this.$vuetify.theme.light = true
+      this.$vuetify.theme.dark = false
+    }
+    if (appTheme === DARK_THEME_KEY) {
+      this.$vuetify.theme.dark = true
+      this.$vuetify.theme.light = false
+    }
+
     window.addEventListener('resize', this.resize)
     this.resize()
     messageHandler()

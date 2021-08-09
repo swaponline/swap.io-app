@@ -37,8 +37,9 @@ export default {
 
 <style lang="scss">
 .transactions-search {
-  background-color: $--light-grey;
+  background-color: var(--main-input-background);
   padding: 5px 22px;
+
   &__input {
     margin-top: 0;
     font-size: 14px;

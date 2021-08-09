@@ -45,7 +45,7 @@ export default {
   height: 100%;
   max-height: 555px;
   margin: 20px auto 25px auto;
-  background: $--white;
+  background: var(--primary-background);
   flex-grow: 1;
   border-radius: 12px;
   overflow-y: auto;

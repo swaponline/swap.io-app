@@ -134,13 +134,17 @@ export default {
     justify-content: center;
     align-items: center;
     border-radius: 12px;
-    background: $--white;
+    background: var(--primary-background);
 
     &--centered {
       width: 450px;
       flex-grow: 0;
       margin: 0 auto;
       padding: 20px;
+    }
+
+    @include tablet {
+      display: none;
     }
   }
 

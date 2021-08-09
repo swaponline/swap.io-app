@@ -95,36 +95,13 @@ export default {
     PendingLoader
   },
   props: {
-    hash: {
-      type: String,
-      required: true
-    },
-    status: {
-      type: String,
-      default: 'pending'
-    },
-    fee: {
-      type: [Number, String],
-      required: true
-    },
-    decimal: {
-      type: Number,
-      default: 1
-    },
-    currentDecimal: {
-      type: Number,
-      default: 1
-    },
-    entries: {
-      type: Array,
-      default: () => []
-    },
-    journal: {
-      type: Array,
-      default() {
-        return []
-      }
-    }
+    hash: { type: String, required: true },
+    status: { type: String, default: 'pending' },
+    fee: { type: [Number, String], required: true },
+    decimal: { type: Number, default: 1 },
+    currentDecimal: { type: Number, default: 1 },
+    entries: { type: Array, default: () => [] },
+    journal: { type: Array, default: () => [] }
   },
   data() {
     return {
@@ -215,14 +192,14 @@ export default {
   &__copy-button {
     width: auto;
     outline: none;
-    color: $--black;
+    color: var(--primary-text);
     font-size: $--font-size-extra-small-subtitle;
     padding: 4px 0;
     word-break: break-all;
     text-align: left;
     transition: 0.3s;
     &:hover {
-      background: $--light-grey;
+      background: var(--main-button-background);
     }
     svg {
       margin-bottom: -3px;

@@ -1,6 +1,6 @@
 <template>
   <div class="total-wallet-sum">
-    <span class="total-wallet-sum__title">Total</span>
+    <span class="total-wallet-sum__title">Total:</span>
     <v-select
       append-icon="mdi-chevron-down"
       class="total-wallet-sum__selector"
@@ -40,8 +40,9 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 2px solid $--light-grey;
-  background: $--white;
+  border-bottom: 2px solid var(--main-border-color);
+  background: var(--primary-background);
+  transition: $--theme-transition;
 
   &__title {
     font-size: $--font-size-base;
@@ -61,7 +62,9 @@ export default {
       padding: 0 4px 0 8px !important;
       box-shadow: none;
       margin-bottom: 0 !important;
-      font-size: $--font-size-medium;
+      font-size: $--font-size-base;
+      font-weight: $--font-weight-semi-bold;
+      background: transparent !important;
     }
     .v-input__control {
       min-height: unset !important;

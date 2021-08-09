@@ -38,6 +38,11 @@ export default [
         path: '/swap',
         name: 'Swap',
         component: () => import(/* webpackChunkName: 'Swap' */ '@/views/Swap')
+      },
+      {
+        path: '/settings',
+        name: 'Settings',
+        component: () => import(/* webpackChunkName: 'Settings' */ '@/views/Settings')
       }
     ]
   },
