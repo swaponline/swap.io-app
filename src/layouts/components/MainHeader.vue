@@ -97,22 +97,6 @@ export default {
 </script>
 
 <style lang="scss">
-// @import '~vuetify/src/styles/styles.sass';
-
-// // @include theme(main-header) using ($material) {
-// //   background-color: map-get($material, 'cards');
-
-// //   .main-header__avatar {
-// //     background-color: map-get($material, 'cards');
-// //   }
-// // }
-
-// // .theme--dark {
-// //   .main-header {
-// //     background: $--black;
-// //   }
-// // }
-
 .main-header {
   width: 100%;
   min-height: $--header-height;
@@ -206,12 +190,16 @@ export default {
     width: 280px;
     border-radius: $--main-border-radius;
 
+    .v-list {
+      background-color: var(--primary-background);
+    }
+
     .v-list-item {
       cursor: pointer;
       transition: all $--transition-duration;
 
       &:hover {
-        background-color: $--light-grey-6;
+        background-color: var(--main-input-background);
       }
     }
   }
@@ -225,7 +213,7 @@ export default {
     flex: 0 0 30px;
     height: 30px;
     border-radius: 50%;
-    background-color: $--light-grey;
+    background-color: var(--field-background);
     display: flex;
     align-items: center;
     justify-content: center;

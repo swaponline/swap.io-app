@@ -1,31 +1,54 @@
 <template>
   <div class="settings">
-    <h1>Theme</h1>
-    <v-radio-group v-model="selectTheme">
-      <v-radio v-for="(theme, index) in themes" :key="index" :label="theme" :value="theme"></v-radio>
+    <h2>Theme</h2>
+    <v-radio-group v-model="selectedTheme">
+      <v-radio
+        v-for="theme in $options.THEMES"
+        :key="theme.key"
+        color="var(--main-color)"
+        :label="theme.text"
+        :value="theme.key"
+      />
     </v-radio-group>
   </div>
 </template>
 
 <script>
-const THEMES = ['dark', 'light', 'As in the system']
+import { getStorage, setStorage } from '@/utils/storage'
+import { THEMES, THEME_KEY, SYSTEM_THEME_KEY, LIGHT_THEME_KEY, DARK_THEME_KEY } from '@/constants/theme'
+import { getUserSystemTheme } from '@/utils/theme'
 
 export default {
   THEMES,
   name: 'Settings',
   data() {
     return {
-      selectTheme: 'dark',
-      themes: ['dark', 'light', 'As in the system']
+      selectedTheme: null
     }
   },
-  computed: {
-    darkThemeBasedOnUserSystem() {
-      return window.matchMedia('(prefers-color-scheme: dark)').matches
-    },
-    lightThemeBasedOnUserSystem() {
-      return window.matchMedia('(prefers-color-scheme: light)').matches
+  watch: {
+    selectedTheme: {
+      handler(theme) {
+        setStorage(THEME_KEY, theme)
+
+        let appTheme = theme
+        if (theme === SYSTEM_THEME_KEY) {
+          appTheme = getUserSystemTheme()
+        }
+
+        if (appTheme === LIGHT_THEME_KEY) {
+          this.$vuetify.theme.light = true
+          this.$vuetify.theme.dark = false
+        }
+        if (appTheme === DARK_THEME_KEY) {
+          this.$vuetify.theme.dark = true
+          this.$vuetify.theme.light = false
+        }
+      }
     }
+  },
+  created() {
+    this.selectedTheme = getStorage(THEME_KEY) || LIGHT_THEME_KEY
   }
 }
 </script>
@@ -34,8 +57,9 @@ export default {
 .settings {
   margin-top: 20px;
   background: var(--primary-background);
-  height: 100%;
+  min-height: 400px;
   padding: 40px;
+  border-radius: 12px;
 
   &__theme {
     &-block {

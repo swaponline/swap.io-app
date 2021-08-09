@@ -211,18 +211,18 @@ export default {
   }
   &__item-select {
     border-radius: $--main-border-radius;
-    color: $--dark-grey !important;
+    color: var(--primary-text) !important;
 
     &:focus-within {
       .v-input__icon .v-icon {
-        color: $--black !important;
+        color: var(--primary-text) !important;
       }
     }
     .v-input__slot {
-      background-color: $--light-grey-3 !important;
+      background-color: var(--main-button-background) !important;
 
       &:hover {
-        background-color: $--light-grey-1 !important;
+        background-color: var(--main-button-background-hover) !important;
       }
       &:before,
       &:after {
@@ -251,7 +251,7 @@ export default {
     }
   }
   &__add-button {
-    background-color: $--light-grey-3 !important;
+    background-color: var(--main-button-background) !important;
     font-weight: $--font-weight-semi-bold;
     border-radius: $--main-border-radius;
     text-transform: none;
@@ -259,7 +259,7 @@ export default {
     height: 40px !important;
     margin-left: 8px;
     span {
-      color: $--black;
+      color: var(--primary-text);
     }
     @include phone {
       margin: 8px 0 0;

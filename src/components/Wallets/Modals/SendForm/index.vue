@@ -349,13 +349,13 @@ export default {
     font-size: $--font-size-extra-small-subtitle;
     background-color: var(--main-input-background);
     padding: 8px 8px 8px 12px;
-    color: $--dark-grey;
+    color: var(--secondary-text);
     border-radius: $--main-border-radius;
     cursor: pointer;
     transition: all 0.3s;
 
     &:hover {
-      background-color: $--light-grey-5;
+      background-color: var(--main-button-background-hover);
     }
   }
   &__fee-row {
@@ -376,13 +376,13 @@ export default {
     line-height: 21px;
     font-weight: $--font-weight-semi-bold;
     font-size: $--font-size-extra-small-subtitle;
-    color: $--dark-grey;
+    color: var(--secondary-text);
   }
   &__amount {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    color: $--black;
+    color: var(--primary-text);
     font-size: $--font-size-extra-small-subtitle;
   }
   &__amount-fiat {
@@ -390,7 +390,7 @@ export default {
     line-height: 16px;
   }
   &__currency-name {
-    color: $--dark-grey;
+    color: var(--secondary-text);
   }
   &__add-memo {
     margin-bottom: 30px;

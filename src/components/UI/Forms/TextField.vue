@@ -23,7 +23,7 @@ export default {
 
 <style lang="scss">
 .form-text-field {
-  border: 2px solid $--border-grey;
+  border: 2px solid var(--main-border-color);
   border-radius: $--main-border-radius;
   display: flex;
   align-items: center;

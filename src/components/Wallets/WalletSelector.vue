@@ -10,6 +10,7 @@
     item-color
     class="wallet-selector"
     placeholder="Select wallet"
+    :menu-props="{ 'content-class': 'wallet-selector__menu' }"
   >
     <template #item="{item}">
       <cryptoicon :symbol="item.currencyName.toLowerCase()" size="32" class="wallet-selector__icon" />
@@ -70,7 +71,9 @@ export default {
     background-color: var(--main-input-background) !important;
 
     &:hover {
-      background-color: $--light-grey-5 !important;
+      .wallet-preview {
+        background-color: var(--main-button-background-hover) !important;
+      }
     }
     &:before,
     &:after {
@@ -79,6 +82,12 @@ export default {
   }
   &__icon {
     margin-right: 12px;
+  }
+
+  &__menu {
+    .v-list-item:hover {
+      background-color: var(--main-button-background-hover);
+    }
   }
 
   &__short-name {

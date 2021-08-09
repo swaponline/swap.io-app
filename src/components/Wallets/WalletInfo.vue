@@ -3,12 +3,12 @@
     <cryptoicon class="wallet-info__background-icon" :symbol="currencyName.toLowerCase()" size="500" />
 
     <div class="wallet-info__optional-buttons">
-      <v-btn icon class="wallet-info__optional-button" @click="openShareModal">
-        <svg-icon name="share" class="wallet-info__icon"></svg-icon>
-      </v-btn>
-      <v-btn icon class="wallet-info__optional-button" @click="openSettingsModal">
-        <svg-icon name="settings" class="wallet-info__icon"></svg-icon>
-      </v-btn>
+      <button icon class="wallet-info__optional-button" @click="openShareModal">
+        <v-icon class="wallet-info__icon">mdi-export-variant</v-icon>
+      </button>
+      <button class="wallet-info__optional-button" @click="openSettingsModal">
+        <v-icon class="wallet-info__icon">mdi-tune</v-icon>
+      </button>
     </div>
 
     <header class="wallet-info__header">
@@ -168,7 +168,7 @@ export default {
   --icon-opacity: 0;
   --margin-button-address: 0;
   --height-header: 70px;
-  --backgroun-icon-top: -30%;
+  --background-icon-top: -30%;
 
   outline: none;
   position: relative;
@@ -197,7 +197,7 @@ export default {
   &--compressed {
     --margin-button-address: 22px;
     --height-header: 0;
-    --backgroun-icon-top: -70%;
+    --background-icon-top: -70%;
 
     height: 140px;
     cursor: pointer;
@@ -222,7 +222,7 @@ export default {
     position: absolute;
     z-index: 0;
     right: -15%;
-    top: var(--backgroun-icon-top);
+    top: var(--background-icon-top);
     width: 500px;
     height: 500px;
     transform: rotate(-30deg);
@@ -262,14 +262,14 @@ export default {
     }
   }
   &__optional-button {
-    &:before {
-      opacity: 0.5;
-      background-color: $--light-grey-1;
-    }
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    position: relative;
+    background-color: var(--primary-background);
+
     &:hover {
-      &:before {
-        opacity: 0.3 !important;
-      }
+      background-color: var(--main-input-background);
     }
     &:not(:last-child) {
       margin-right: 6px;
@@ -299,6 +299,7 @@ export default {
   &__icon {
     width: 18px;
     height: 23px;
+    color: var(--main-icon-color) !important;
   }
   &__address-wrapper {
     position: relative;

@@ -36,7 +36,7 @@ export default {
     position: absolute;
     right: -8px;
     bottom: -6px;
-    border: 2px solid $--white;
+    border: 2px solid var(--primary-background);
     border-radius: 50%;
   }
 }

@@ -3,7 +3,6 @@
     <v-expansion-panel class="profile-list__inner">
       <v-expansion-panel-header class="profile-list__header" :hide-actions="isDesktop">
         <div class="profile-list__header-wrapper">
-          <span class="profile-list__name">{{ currentProfile.username }}</span>
           <v-avatar
             height="25"
             width="21"
@@ -13,6 +12,7 @@
           >
             <svg-icon name="user" class="profile-list__avatar-icon"></svg-icon>
           </v-avatar>
+          <span class="profile-list__name">{{ currentProfile.username }}</span>
         </div>
         <svg-icon
           name="arrow"
@@ -27,7 +27,6 @@
             class="profile-list__list-item"
             @click="setProfile(profile.accountId)"
           >
-            <span>{{ profile.username }}</span>
             <v-avatar
               height="25"
               width="25"
@@ -37,6 +36,7 @@
             >
               <svg-icon name="user" class="profile-list__avatar-icon"></svg-icon>
             </v-avatar>
+            <span>{{ profile.username }}</span>
           </v-list-item>
           <button class="profile-list__add-new-profile" @click="toSecurityInfo">+ Add profile</button>
         </v-list>
@@ -110,7 +110,7 @@ export default {
   display: flex;
   overflow: visible;
   height: $--header-height;
-  width: 132px;
+  width: 160px;
 
   @include tablet {
     width: auto;
@@ -140,17 +140,29 @@ export default {
 
   &__header {
     margin: 0;
-    padding: 0 8px 0 19px;
+    padding: 0 12px 0 12px;
     min-height: $--header-height !important;
     background: var(--primary-background);
     transition: $--theme-transition;
     border-radius: 12px;
+    display: flex;
+    align-items: center;
+
+    &:hover {
+      background-color: var(--main-input-background);
+    }
 
     @include phone {
       min-height: 70px !important;
     }
 
     &-wrapper {
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      flex: 1 0 100%;
+      padding-right: 8px;
+
       @include tablet {
         display: flex;
         flex-direction: row-reverse;
@@ -165,6 +177,7 @@ export default {
     border-radius: 50% !important;
     position: relative;
     background-size: 100% 100%;
+    margin-right: 10px;
 
     @include tablet {
       margin-right: 15px;
@@ -183,6 +196,8 @@ export default {
     }
 
     display: none;
+    flex-grow: 0 !important;
+    flex-shrink: 0 !important;
     width: 9px;
     height: 9px;
     fill: var(--main-icon-color);
@@ -199,8 +214,12 @@ export default {
   }
 
   &__list-item {
-    padding: 0 19px;
+    padding: 0 14px;
     height: 60px;
+
+    &:hover {
+      background-color: var(--main-input-background);
+    }
 
     @include tablet {
       width: auto;
@@ -212,8 +231,6 @@ export default {
     > span {
       overflow: hidden;
       text-overflow: ellipsis;
-      width: 57px;
-      margin-right: 3px;
 
       @include tablet {
         width: auto;
@@ -226,6 +243,9 @@ export default {
     border-top: 1px solid var(--main-border-color);
     padding: 16px 10px 15px 10px;
     color: var(--primary-text);
+    &:hover {
+      background-color: var(--main-input-background);
+    }
   }
 
   &__name {
@@ -233,8 +253,6 @@ export default {
     font-size: $--font-size-medium;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 57px;
-    margin-right: 17px;
 
     @include tablet {
       max-width: inherit;

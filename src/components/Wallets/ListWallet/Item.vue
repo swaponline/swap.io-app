@@ -74,7 +74,7 @@ export default {
   }
   &__name {
     width: 100%;
-    color: $--grey;
+    color: var(--secondary-text);
     font-size: $--font-size-medium;
   }
   &__text {

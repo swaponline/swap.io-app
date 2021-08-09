@@ -28,7 +28,7 @@
         <span>Total: </span>
         <span>
           {{ currency }}
-          <span class="invoice-form__total-value">
+          <span class="invoice-preview__total-value">
             {{ totalAmount }}
           </span>
         </span>
@@ -44,12 +44,12 @@
       <div class="invoice-preview__actions">
         <v-tooltip v-model="copyTooltip.value" top :open-on-hover="false">
           <template #activator="{}">
-            <swap-button color="white" class="invoice-preview__action" @click="copyLink">Copy link</swap-button>
+            <swap-button class="invoice-preview__action" @click="copyLink">Copy link</swap-button>
           </template>
           <span>Copied</span>
         </v-tooltip>
 
-        <swap-button color="white" class="invoice-preview__action">Send</swap-button>
+        <swap-button class="invoice-preview__action">Send</swap-button>
       </div>
     </div>
   </div>
@@ -123,12 +123,12 @@ export default {
   &__wrapper {
     padding: 16px 12px;
     border-radius: $--main-border-radius;
-    background-color: $--light-grey-2 !important;
+    background-color: var(--main-input-background) !important;
     margin-bottom: 30px;
   }
 
   &__field {
-    background-color: $--light-grey-4;
+    background-color: var(--field-background);
     border-radius: $--main-border-radius;
     margin-bottom: 8px;
     padding: 6px 14px 8px;
@@ -154,11 +154,11 @@ export default {
     letter-spacing: 0.01em;
   }
   &__label {
-    color: $--dark-grey;
+    color: var(--secondary-text);
     font-size: $--font-size-small;
   }
   &__value {
-    color: $--black;
+    color: var(--primary-text);
     font-size: $--font-size-extra-small-subtitle;
   }
   &__amount {
@@ -166,11 +166,14 @@ export default {
     justify-content: space-between;
     font-weight: $--font-weight-semi-bold;
     font-size: $--font-size-extra-small-subtitle;
-    color: $--dark-grey;
+    color: var(--secondary-text);
     @include phone {
       margin: 20px 0;
       font-size: $--font-size-medium;
     }
+  }
+  &__total-value {
+    color: var(--primary-text);
   }
   &__divider {
     margin: 16px 0;
@@ -190,6 +193,7 @@ export default {
     justify-content: space-between;
   }
   &__action {
+    background-color: var(--additional-button-background) !important;
     flex: 0 1 50%;
     margin-right: 8px;
 
