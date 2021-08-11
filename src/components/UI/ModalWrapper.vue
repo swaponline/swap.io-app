@@ -11,7 +11,7 @@
       <slot name="header">
         <header v-if="title" class="modal-wrapper__title" :class="{ 'modal-wrapper__title--with-back': backIcon }">
           <span>
-            <v-btn v-if="backIcon" color="black" icon class="mr-2" @click="cancel">
+            <v-btn v-if="backIcon" icon class="mr-2" @click="cancel">
               <v-icon size="30">mdi-chevron-left</v-icon>
             </v-btn>
             {{ title }}
@@ -67,6 +67,8 @@ export default {
 
 <style lang="scss">
 .modal-wrapper {
+  $this: &;
+
   position: relative;
   height: 100%;
   max-height: calc(var(--vh, 1vh) * 100) !important;
@@ -74,12 +76,17 @@ export default {
   margin-left: auto;
   border-radius: 0;
   overflow: auto;
-  background: $--white;
+  background: var(--primary-background);
   margin-right: 0;
   box-shadow: none;
 
   &--flat {
     box-shadow: none;
+  }
+  &--full-height {
+    #{$this}__inner {
+      height: 100%;
+    }
   }
 
   @include tablet {

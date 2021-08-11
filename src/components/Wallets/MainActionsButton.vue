@@ -25,8 +25,7 @@
         <v-btn
           fab
           dark
-          color="green"
-          class="main-actions-button__button"
+          class="main-actions-button__button main-actions-button__button--green"
           height="auto"
           width="auto"
           v-bind="attrs"
@@ -44,8 +43,7 @@
           fab
           dark
           :to="{ name: 'CreateOrRecover' }"
-          color="blue"
-          class="main-actions-button__button"
+          class="main-actions-button__button main-actions-button__button--blue"
           height="auto"
           width="auto"
           v-bind="attrs"
@@ -61,8 +59,7 @@
         <v-btn
           fab
           dark
-          color="indigo"
-          class="main-actions-button__button main-actions-button__button--rotate"
+          class="main-actions-button__button main-actions-button__button--indigo main-actions-button__button--rotate"
           height="auto"
           width="auto"
           v-bind="attrs"
@@ -79,8 +76,7 @@
         <v-btn
           fab
           dark
-          color="indigo"
-          class="main-actions-button__button main-actions-button__button--rotate"
+          class="main-actions-button__button main-actions-button__button--indigo main-actions-button__button--rotate"
           height="auto"
           width="auto"
           v-bind="attrs"
@@ -144,12 +140,19 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1050;
 
   &__open-button {
     background: var(--main-color) !important;
     min-width: 65px;
     min-height: 65px;
+
+    &:hover {
+      background: var(--main-color) !important;
+
+      &:before {
+        background-color: rgba($--black, 0.15) !important;
+      }
+    }
 
     @include tablet {
       min-width: 75px;
@@ -180,6 +183,30 @@ export default {
   &__button {
     min-width: 55px;
     min-height: 55px;
+
+    &--green {
+      background-color: $--green !important;
+
+      &:hover {
+        background-color: $--green !important;
+      }
+    }
+    &--blue {
+      background-color: $--light-blue !important;
+      &:hover {
+        background-color: $--light-blue !important;
+      }
+    }
+    &--indigo {
+      background-color: $--blue !important;
+      &:hover {
+        background-color: $--blue !important;
+      }
+    }
+
+    &:hover:before {
+      background-color: rgba($--black, 0.15) !important;
+    }
 
     @include tablet {
       min-width: 45px;

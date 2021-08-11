@@ -222,7 +222,7 @@ export default {
     text-transform: none;
 
     .v-btn__content {
-      color: $--black;
+      color: var(--primary-text);
     }
 
     &--skip {

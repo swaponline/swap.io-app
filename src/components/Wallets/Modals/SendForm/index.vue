@@ -86,9 +86,9 @@
               <span class="send-form__currency-name">{{ selectedWallet.currencyName }}</span>
               {{ totalBalanceChange }}
             </span>
-            <span class="send-form__amount-fiat"
-              ><span class="grey--text">~USD</span> {{ totalConvertedBalanceChange }}</span
-            >
+            <span class="send-form__amount-fiat">
+              <span class="grey--text">~USD</span> {{ totalConvertedBalanceChange }}
+            </span>
           </span>
         </div>
 
@@ -106,17 +106,17 @@
         <v-textarea
           v-if="hasMemo"
           v-model="memo"
-          outlined
           class="send-form__textarea rounded-lg"
+          label="Memo"
           hide-details
+          color="grey"
           auto-grow
           rows="1"
-          placeholder="Enter a memo"
         ></v-textarea>
       </template>
     </div>
 
-    <send-preview v-if="step === 2" :address="selectedWallet.address" :fee="fee" :recipients="recipients" />
+    <send-preview v-if="step === 2" :wallet="selectedWallet" :fee="fee" :recipients="recipients" :memo="memo" />
   </modal-wrapper>
 </template>
 
@@ -281,7 +281,7 @@ export default {
     display: flex;
     padding: 3px;
     border-radius: $--main-border-radius;
-    background-color: $--light-grey-2;
+    background-color: var(--main-input-background);
   }
   &__toggle {
     width: 50%;
@@ -294,7 +294,7 @@ export default {
     cursor: pointer;
 
     &--active {
-      background-color: $--white;
+      background-color: var(--primary-background);
       box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.12), 0px 3px 1px rgba(0, 0, 0, 0.04);
     }
   }
@@ -309,17 +309,22 @@ export default {
     margin-left: 8px !important;
   }
   &__textarea {
+    padding: 14px 12px;
     margin: 0 0 20px !important;
     font-size: $--font-size-extra-small-subtitle;
     flex-grow: 0;
+    border: 2px solid $--border-grey;
 
     --color-fieldset: $--black;
     &:focus-within {
       --color-fieldset: var(--main-color);
     }
     .v-input__slot {
-      border: 2px solid $--border-grey;
       margin-bottom: 0;
+      &:before,
+      &:after {
+        display: none;
+      }
     }
     fieldset {
       color: var(--color-fieldset) !important;
@@ -342,15 +347,15 @@ export default {
     line-height: 21px;
     font-weight: $--font-weight-semi-bold;
     font-size: $--font-size-extra-small-subtitle;
-    background-color: $--light-grey-2;
+    background-color: var(--main-input-background);
     padding: 8px 8px 8px 12px;
-    color: $--dark-grey;
+    color: var(--secondary-text);
     border-radius: $--main-border-radius;
     cursor: pointer;
     transition: all 0.3s;
 
     &:hover {
-      background-color: $--light-grey-5;
+      background-color: var(--main-button-background-hover);
     }
   }
   &__fee-row {
@@ -371,13 +376,13 @@ export default {
     line-height: 21px;
     font-weight: $--font-weight-semi-bold;
     font-size: $--font-size-extra-small-subtitle;
-    color: $--dark-grey;
+    color: var(--secondary-text);
   }
   &__amount {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    color: $--black;
+    color: var(--primary-text);
     font-size: $--font-size-extra-small-subtitle;
   }
   &__amount-fiat {
@@ -385,7 +390,7 @@ export default {
     line-height: 16px;
   }
   &__currency-name {
-    color: $--dark-grey;
+    color: var(--secondary-text);
   }
   &__add-memo {
     margin-bottom: 30px;

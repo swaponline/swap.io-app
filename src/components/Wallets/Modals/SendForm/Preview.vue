@@ -1,84 +1,130 @@
 <template>
   <div class="send-preview">
-    <form-indent v-if="address" title="From:" :text="address" class="send-preview__from-indent"> </form-indent>
+    <div class="send-preview__wrapper">
+      <wallet-preview v-bind="wallet" class="send-preview__wallet" />
 
-    <div class="send-preview__recipients">
-      <div v-for="recipient in recipients" :key="recipient.address" class="send-preview__recipient">
-        <form-indent title="To:">
-          <span>{{ recipient.address }}</span>
-        </form-indent>
-        <form-indent title="Amount:">
-          <span>{{ recipient.amount }} <span class="send-preview__currency-name">USD </span></span>
-        </form-indent>
+      <div v-for="recipient in recipients" :key="recipient.address" class="send-preview__row">
+        <div class="send-preview__field send-preview__field--long">
+          <span class="send-preview__label">Send to</span>
+          <span class="send-preview__value">{{ recipient.address }}</span>
+        </div>
+        <div class="send-preview__field send-preview__field--short">
+          <span class="send-preview__label">Amount</span>
+          <span class="send-preview__value">{{ recipient.amount }}</span>
+        </div>
+      </div>
+
+      <v-divider class="send-preview__divider" />
+
+      <div class="send-preview__results">
+        <span class="send-preview__result-label">Transaction fee: </span>
+        <div class="send-preview__result-value">
+          <div>
+            <span class="send-preview__currency-name">{{ wallet.currencyName }}</span>
+            {{ fee }}
+          </div>
+          <div><span class="send-preview__currency-name">~USD</span>{{ convertedFee }}</div>
+        </div>
+      </div>
+
+      <div class="send-preview__results">
+        <span class="send-preview__result-label">Total balance change: </span>
+        <div class="send-preview__result-value">
+          <div>
+            <span class="send-preview__currency-name">{{ wallet.currencyName }}</span>
+            {{ totalBalanceChange }}
+          </div>
+          <div><span class="send-preview__currency-name">~USD</span>{{ totalConvertedBalanceChange }}</div>
+        </div>
       </div>
     </div>
 
-    <v-divider class="send-preview__divider"></v-divider>
-
-    <span class="send-preview__results">
-      <span class="mr-5">Transaction fee: </span>
-      <span class="send-preview__fee">
-        <span>
-          <span class="send-preview__currency-name">USD </span>
-          {{ fee }}
-        </span>
-      </span>
-    </span>
-
-    <span class="send-preview__results">
-      <span class="mr-5">Total balance change: </span>
-      <span class="send-preview__fee">
-        <span><span class="send-preview__currency-name">USD </span>39</span>
-      </span>
-    </span>
+    <div class="send-preview__memo">
+      <span class="send-preview__label">Memo</span>
+      <span class="send-preview__value">{{ memo }}</span>
+    </div>
   </div>
 </template>
 
 <script>
-import FormIndent from '@/components/UI/Forms/Indent.vue'
+import WalletPreview from '@/components/Wallets/WalletPreview.vue'
+import { convertAmountToOtherCurrency } from '@/services/converter'
 
 export default {
   name: 'SendPreview',
-  components: { FormIndent },
+  components: { WalletPreview },
   props: {
-    address: { type: String, required: true },
+    wallet: { type: Object, required: true },
+    recipients: { type: Array, default: () => [] },
     fee: { type: Number, required: true },
-    recipients: { type: Array, default: () => [] }
+    memo: { type: String, default: '' }
+  },
+  computed: {
+    totalBalanceChange() {
+      return this.recipients.reduce((acc, { amount }) => acc + Number.parseFloat(amount), 0)
+    },
+    totalConvertedBalanceChange() {
+      return convertAmountToOtherCurrency(this.totalBalanceChange, this.wallet.currencyName, 'USD')
+    },
+    convertedFee() {
+      return convertAmountToOtherCurrency(this.fee, this.wallet.currencyName, 'USD')
+    }
   }
 }
 </script>
 
 <style lang="scss">
 .send-preview {
-  p {
-    margin: 0 0;
+  &__wrapper {
+    padding: 16px 12px;
+    border-radius: $--main-border-radius;
+    background-color: var(--main-input-background) !important;
+    margin-bottom: 20px;
   }
-  &__recipients {
-    padding: 8px 0 13px;
+  &__wallet {
+    background-color: var(--main-button-background-active);
+    border-radius: $--main-border-radius;
+    margin-bottom: 16px;
   }
-  &__recipient {
-    position: relative;
-    padding: 12px 0;
-    &:not(:first-child) {
-      &::before {
-        position: absolute;
-        top: 0;
-        width: 100%;
-        height: 1px;
-        content: '';
-        display: block;
-        background: rgba($--black, 0.12);
-      }
+  &__row {
+    display: flex;
+    margin-bottom: 12px;
+  }
+  &__field {
+    background-color: var(--main-button-background-active);
+    border-radius: $--main-border-radius;
+    padding: 6px 14px 8px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &--long {
+      flex: 1 0 60%;
     }
-    > p {
-      margin: 0 0;
-      &:first-of-type {
-        margin-bottom: 12px;
-      }
+    &--short {
+      margin-left: 8px;
+      flex: 1 0 35%;
     }
+    &--scrollable {
+      overflow-x: auto;
+    }
+  }
+  &__label,
+  &__value {
+    font-weight: $--font-weight-semi-bold;
+    letter-spacing: 0.01em;
+  }
+  &__label {
+    color: var(--secondary-text);
+    font-size: $--font-size-small;
+  }
+  &__value {
+    color: var(--primary-text);
+    font-size: $--font-size-extra-small-subtitle;
   }
   &__divider {
-    margin-bottom: 25px;
+    margin: 16px 0;
   }
   &__results {
     display: flex;
@@ -90,13 +136,28 @@ export default {
     font-weight: $--font-weight-semi-bold;
     font-size: $--font-size-extra-small-subtitle;
   }
-  &__fee {
+  &__result-label {
+    color: var(--secondary-text);
+  }
+  &__result-value {
     display: flex;
-    align-items: center;
-    line-height: 21px;
+    flex-direction: column;
+    align-items: flex-end;
   }
   &__currency-name {
-    color: $--dark-grey;
+    color: var(--secondary-text);
+    margin-right: 4px;
+  }
+
+  &__memo {
+    padding: 10px 14px;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    border-radius: $--main-border-radius;
+    background-color: var(--main-input-background);
+    border: 1px solid var(--main-border-color);
+    margin-bottom: 32px;
   }
 }
 </style>

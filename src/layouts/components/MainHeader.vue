@@ -12,9 +12,14 @@
       <div class="main-header__notifications">
         <v-menu offset-y left content-class="main-header__notifications-menu">
           <template v-slot:activator="{ on, attrs }">
-            <div class="main-header__notifications-wrapper" v-bind="attrs" v-on="on">
+            <div
+              v-if="!isCreatingOrRecoveringProfile"
+              class="main-header__notifications-wrapper"
+              v-bind="attrs"
+              v-on="on"
+            >
               <v-badge :content="notifications.length" :value="notifications.length" color="red" overlap>
-                <v-icon size="26" color="black">mdi-bell-outline</v-icon>
+                <v-icon size="26">mdi-bell-outline</v-icon>
               </v-badge>
             </div>
           </template>
@@ -83,6 +88,9 @@ export default {
     cancel() {
       this.$store.dispatch(CREATING_OR_RECOVERING_PROFILE, false)
       return this.$router.push({ name: 'Wallets' })
+    },
+    sliderColor() {
+      return this.isCreatingOrRecoveringProfile ? 'transparent' : 'var(--main-color)'
     }
   }
 }
@@ -93,11 +101,12 @@ export default {
   width: 100%;
   min-height: $--header-height;
   display: flex;
-  background: $--white;
+  background-color: var(--primary-background);
   box-shadow: 0 0 20px rgba(17, 17, 17, 0.02);
   border-radius: 0 0 12px 12px;
   justify-content: space-between;
   align-items: center;
+  transition: $--theme-transition;
 
   @include tablet {
     min-height: 80px;
@@ -130,9 +139,10 @@ export default {
     justify-content: center;
     align-items: center;
     outline: none;
-    font-size: $--font-size-extra-small-subtitle;
+    font-size: $--font-size-medium;
+    font-weight: $--font-weight-semi-bold;
     line-height: 25px;
-    z-index: 150;
+    z-index: 100;
   }
 
   &__avatar {
@@ -142,7 +152,6 @@ export default {
     justify-content: center;
     align-items: center;
     overflow: hidden;
-    background: white;
     border-radius: 50%;
     margin-right: 20px;
   }
@@ -159,59 +168,69 @@ export default {
 
   &__notifications {
     flex: 0 0 60px;
-    border: 1px solid $--light-grey-6;
+    border: 1px solid var(--main-border-color);
     border-top: none;
     border-bottom: none;
-
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all $--transition-duration;
 
     &:hover {
-      background-color: $--light-grey-6;
+      background-color: var(--main-input-background);
     }
   }
+
   &__notifications-wrapper {
     height: $--header-height;
     display: flex;
     justify-content: center;
     align-items: center;
   }
+
   &__notifications-menu {
     width: 280px;
     border-radius: $--main-border-radius;
 
+    .v-list {
+      background-color: var(--primary-background);
+    }
+
     .v-list-item {
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all $--transition-duration;
 
       &:hover {
-        background-color: $--light-grey-6;
+        background-color: var(--main-input-background);
       }
     }
   }
+
   &__notification {
     display: flex;
     align-items: center;
   }
+
   &__notification-icon {
     flex: 0 0 30px;
     height: 30px;
     border-radius: 50%;
-    background-color: $--light-grey;
+    background-color: var(--field-background);
     display: flex;
     align-items: center;
     justify-content: center;
     margin-right: 16px;
   }
+
   &__notification-text {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
   }
+
   &__notification-title {
     line-height: 19px;
     font-size: $--font-size-base;
   }
+
   &__notification-value {
     font-size: $--font-size-small;
 

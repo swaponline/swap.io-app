@@ -2,6 +2,8 @@
 @import 'media';
 @import '~normalize.css';
 @import 'stylesheet';
+@import '~vuetify/src/styles/styles.sass';
+@import 'theme-variable';
 
 * {
   box-sizing: border-box;

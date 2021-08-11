@@ -115,17 +115,20 @@ export default {
     width: 100%;
     text-align: left;
     z-index: 100;
-    background: $--white;
+    background: var(--primary-background);
     top: 0;
     display: flex;
     justify-content: space-between;
     padding: 0 25px;
-    color: $--black !important;
+    color: var(--primary-text) !important;
     font-size: $--font-size-medium;
+    transition: $--theme-transition;
+
     &.sticky {
       position: sticky;
     }
   }
+
   &__up-button {
     display: var(--button-display);
     border-radius: 12px;

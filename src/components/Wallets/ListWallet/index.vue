@@ -24,7 +24,6 @@
 
 <script>
 import { MatchMedia } from 'vue-component-media-queries'
-//  components
 import WalletSearch from './Search.vue'
 import ProfileList from '../ProfileList.vue'
 import TotalWalletSum from './TotalWalletSum.vue'
@@ -74,6 +73,7 @@ export default {
 <style lang="scss">
 .list-wallet {
   position: relative;
+  background: var(--primary-background);
   max-width: 305px;
   width: 100%;
   height: 100%;
@@ -81,13 +81,19 @@ export default {
   flex-direction: column;
   border-radius: 12px 12px 0 0;
   overflow-y: hidden;
+
+  .v-list {
+    background: var(--primary-background);
+  }
+
   @include tablet {
     max-width: none;
   }
+
   &__wrapper {
     height: 100%;
     overflow: auto;
-    background: $--white;
+    background: var(--primary-background);
     border-radius: 12px 12px 0 0 !important;
     padding-bottom: 100px;
     transition: all 0.5s;
@@ -96,46 +102,52 @@ export default {
       border-radius: 0 !important;
       padding-bottom: 75px;
     }
+
     @include phone {
       padding-bottom: 0;
     }
   }
+
   &__container {
     position: relative;
     height: 100%;
     overflow: auto;
   }
+
   &__body {
     z-index: 50;
     padding-top: 42px;
-    transition: all 0.5s;
+    transition: all $--theme-transition;
 
     &--offset {
       padding-top: 100px;
     }
   }
+
   &__header {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-
     z-index: 1;
   }
+
   &__item {
     position: relative;
     padding: 5px 0;
+
     &:first-child {
       margin-top: 5px;
     }
-    &:after {
+
+    &::after {
       content: '';
       position: absolute;
       top: 100%;
       left: 18px;
       width: calc(100% - 36px);
       min-height: 1px;
-      background: $--light-grey;
+      background: var(--main-border-color);
     }
   }
 }

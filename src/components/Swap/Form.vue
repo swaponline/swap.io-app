@@ -148,7 +148,7 @@ export default {
 <style lang="scss">
 .swap-form {
   z-index: 2;
-  background: $--white;
+  background: var(--primary-background);
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -232,6 +232,7 @@ export default {
     line-height: 22px;
     letter-spacing: 0.01em;
     color: rgba($--black, 0.5);
+
     &--select {
       color: $--black;
     }
@@ -266,7 +267,7 @@ export default {
   }
   &__info {
     margin: 19px 0 30px;
-    color: $--dark-grey;
+    color: $--grey-3;
     font-weight: $--font-weight-semi-bold;
     font-size: $--font-size-medium;
     line-height: 22px;

@@ -5,5 +5,5 @@ services:
       context: .
       dockerfile: './Dockerfile'
     ports:
-      - '8080:80'
+      - '127.0.0.1:${PORT}:80'
     command: ['nginx', '-g', 'daemon off;']

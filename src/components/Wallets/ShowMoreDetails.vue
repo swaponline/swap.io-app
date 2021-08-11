@@ -98,6 +98,7 @@ export default {
     }
   }
   &__header-content {
+    padding: 8px 12px;
     display: flex;
     align-items: center;
   }
@@ -113,7 +114,7 @@ export default {
     padding: 2px 8px;
     display: flex;
     align-items: center;
-    background: $--light-grey;
+    background: var(--main-button-background);
     color: $--dark-grey;
     &--select {
       color: var(--main-color);
@@ -122,13 +123,12 @@ export default {
   &__content {
     > div {
       padding: 0 0;
-      padding-top: 15px;
     }
   }
   &__entries {
     border-radius: 12px;
     padding: 6px 20px;
-    background: #f6f6f6;
+    background: var(--main-button-background-hover);
   }
   &__entry {
     position: relative;

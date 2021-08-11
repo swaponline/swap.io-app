@@ -1,21 +1,21 @@
 <template>
-  <substrate>
+  <div>
     <v-loader :active="loading"></v-loader>
     <iframe class="recover-profile" name="recoverProfile" frameborder="0" />
-  </substrate>
+  </div>
 </template>
 
 <script>
-import Substrate from '@/components/Profile/Substrate.vue'
 import VLoader from '@/components/Loaders/VLoader.vue'
+
 import { CREATING_OR_RECOVERING_PROFILE, CREATE_PROFILE } from '@/store/modules/Profile'
 
 import SwapKeysApi from '@/keys-api'
 
+
 export default {
   name: 'RecoverProfile',
   components: {
-    Substrate,
     VLoader
   },
   data() {
@@ -30,6 +30,7 @@ export default {
   methods: {
     openFrame() {
       this.loading = true
+
       this.frame = SwapKeysApi.restoreProfile({
         callback: message => {
           const { payload } = message

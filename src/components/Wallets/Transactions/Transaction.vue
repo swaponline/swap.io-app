@@ -207,11 +207,14 @@ export default {
 
 <style lang="scss">
 .transaction-item {
-  border-bottom: 1px solid rgba($color: $--black, $alpha: 0.05) !important;
-  border-top: 1px solid rgba($color: $--black, $alpha: 0.05) !important;
+  border-bottom: 1px solid var(--main-border-color) !important;
+  border-top: 1px solid var(--main-border-color) !important;
   padding: 20px 0;
   margin: 0 20px;
   border-radius: 0px !important;
+  background-color: var(--primary-background) !important;
+  transition: $--theme-transition;
+
   &:after {
     display: none;
   }
