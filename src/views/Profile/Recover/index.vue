@@ -12,7 +12,6 @@ import { CREATING_OR_RECOVERING_PROFILE, CREATE_PROFILE } from '@/store/modules/
 
 import SwapKeysApi from '@/keys-api'
 
-
 export default {
   name: 'RecoverProfile',
   components: {
