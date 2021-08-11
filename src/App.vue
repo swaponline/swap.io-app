@@ -76,7 +76,7 @@ export default {
   },
   mounted() {
     // SET CURRENT THEME
-    const theme = getStorage(THEME_KEY) || LIGHT_THEME_KEY
+    const theme = getStorage(THEME_KEY) || SYSTEM_THEME_KEY
 
     let appTheme = theme
     if (theme === SYSTEM_THEME_KEY) {
