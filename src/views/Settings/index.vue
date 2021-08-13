@@ -48,7 +48,7 @@ export default {
     }
   },
   created() {
-    this.selectedTheme = getStorage(THEME_KEY) || LIGHT_THEME_KEY
+    this.selectedTheme = getStorage(THEME_KEY) || SYSTEM_THEME_KEY
   }
 }
 </script>

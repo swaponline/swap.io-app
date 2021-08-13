@@ -1,5 +1,6 @@
 export const fiatCurrencies = ['USD', 'EUR']
-export const currencies = [...fiatCurrencies, 'BTC', 'ETH']
+export const cryptoCurrencies = ['BTC', 'ETH']
+export const currencies = [...fiatCurrencies, ...cryptoCurrencies]
 
 /* eslint-disable no-unused-vars */
 export function convertAmountToOtherCurrency(amount, currency, targetCurrency) {
