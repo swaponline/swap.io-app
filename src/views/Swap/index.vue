@@ -1,59 +1,142 @@
 <template>
-  <div class="swap" :class="{ 'swap--open-list': isOpenMenu }">
-    <swap-form
-      :is-open-to-list="currentWallet === 'to'"
-      :is-open-from-list="currentWallet === 'from'"
-      :to-wallet="wallets.to"
-      :from-wallet="wallets.from"
-      :class="{ 'swap__form--open-list': isOpenMenu }"
-      @openList="openList"
-      @submit="submit"
-    />
-    <swap-wallet-list
-      class="swap__wallet-list"
-      :class="{ 'swap__wallet-list--open-list': isOpenMenu }"
-      @setWallet="setWallet"
-    />
+  <div class="swap">
+    <form class="swap-form" @submit.prevent="$emit('submit')">
+      <header class="swap-form__header">
+        <span>Swap</span>
+        <span class="swap-form__balance"
+          >Balance: {{ from && from.value ? `${from.currencyName.toUpperCase()} ${from.value}` : '0.0' }}</span
+        >
+      </header>
+      <div class="swap-form__row">
+        <form-text-field class="swap-form__input" hide-details label="From">
+          <template #form-field-append>
+            <v-btn depressed small class="swap-form__input-button" @click="selectWallet('from')">
+              <template v-if="!from">Select wallet</template>
+              <template v-else>
+                <cryptoicon :symbol="from.currencyName.toLowerCase()" size="17" class="swap-form__button-icon" />
+                <span class="swap-form__button-currency">{{ from.currencyName.toUpperCase() }}</span>
+                <span class="swap-form__button-name">{{ from.name || minifyAddress(from.address) }}</span>
+              </template>
+            </v-btn>
+          </template>
+        </form-text-field>
+      </div>
+
+      <div class="swap-form__row">
+        <v-btn class="swap-form__swap-button" icon height="auto" min-height="none" @click="swapWallet">
+          <svg-icon class="swap-form__swap-icon" name="swap" />
+        </v-btn>
+      </div>
+
+      <div class="swap-form__row">
+        <form-text-field class="swap-form__input" hide-details label="To">
+          <template #form-field-append>
+            <v-btn depressed small class="swap-form__input-button" @click="selectWallet('to')">
+              <template v-if="!to">Select wallet</template>
+              <template v-else>
+                <cryptoicon :symbol="to.currencyName.toLowerCase()" size="17" class="swap-form__button-icon" />
+                <span class="swap-form__button-currency">{{ to.currencyName.toUpperCase() }}</span>
+                <span class="swap-form__button-name">{{ to.name || minifyAddress(to.address) }}</span>
+              </template>
+            </v-btn>
+          </template>
+        </form-text-field>
+      </div>
+
+      <div class="swap-form__info">
+        <v-divider />
+
+        <span class="swap-form__info-row">
+          <span>Rate:</span>
+          <span>
+            {{ from ? `1 ${from.currencyName.toUpperCase()}` : '0.00' }} =
+            {{ to ? `${conversionRate} ${to.currencyName.toUpperCase()}` : '0.00' }}
+          </span>
+        </span>
+        <span class="swap-form__info-row">
+          <span>Inverse rate:</span>
+          <span>
+            {{ to ? `1 ${to.currencyName.toUpperCase()}` : '0.00' }} =
+            {{ from && to ? `${inverseConversionRate} ${from.currencyName.toUpperCase()}` : '0.00' }}
+          </span>
+        </span>
+        <span class="swap-form__info-row">
+          <span>USD Price:</span>
+          <span>
+            {{ from ? `1 ${from.currencyName.toUpperCase()}` : '0.00' }} =
+            {{ from ? `$${usdConversion}` : '0.00' }}
+          </span>
+        </span>
+        <span class="swap-form__info-row">
+          <span>Estimated Fee:</span>
+          <span>~ ${{ from ? estimatedFee : '0.00' }}</span>
+        </span>
+
+        <v-divider />
+      </div>
+
+      <swap-button type="submit" class="swap-form__button" :disabled="!from || !to">Swap</swap-button>
+    </form>
+
+    <swap-select-wallet-dialog :value.sync="isSelectWalletDialogVisible" @select="handleSelectedWallet" />
   </div>
 </template>
 
 <script>
-import SwapForm from '@/components/Swap/Form.vue'
-import SwapWalletList from '@/components/Swap/WalletList.vue'
+import FormTextField from '@/components/UI/Forms/TextField.vue'
+import SwapSelectWalletDialog from '@/components/Swap/SelectWalletDialog.vue'
+import { convertAmountToOtherCurrency } from '@/services/converter'
+import { minifyAddress } from '@/utils/common'
 
 export default {
   name: 'Swap',
-  components: {
-    SwapForm,
-    SwapWalletList
-  },
+  components: { FormTextField, SwapSelectWalletDialog },
+
   data() {
     return {
-      openWalletList: false,
-      wallets: {
-        to: {},
-        from: {}
-      },
-      currentWallet: null
+      to: null,
+      from: null,
+
+      isSelectWalletDialogVisible: false,
+      selectionType: null
     }
   },
+
   computed: {
-    queryWallet() {
-      return this.$route.query.wallet
+    conversionRate() {
+      return '1.231412'
     },
-    isOpenMenu() {
-      return this.currentWallet !== null
+    inverseConversionRate() {
+      return '0.812076'
+    },
+    usdConversion() {
+      return convertAmountToOtherCurrency(1, this.from.currencyName, 'USD')
+    },
+    estimatedFee() {
+      return '213'
     }
   },
+
   methods: {
-    openList(key) {
-      this.currentWallet = this.currentWallet === key ? null : key
+    minifyAddress,
+    selectWallet(type) {
+      this.isSelectWalletDialogVisible = true
+      this.selectionType = type
     },
-    setWallet(event) {
-      this.wallets[this.currentWallet] = event
-      this.currentWallet = null
+    handleSelectedWallet(wallet) {
+      if (this.selectionType === 'from') {
+        this.from = wallet
+      }
+      if (this.selectionType === 'to') {
+        this.to = wallet
+      }
+      this.isSelectWalletDialogVisible = false
     },
-    submit() {}
+    swapWallet() {
+      const wrap = { ...this.to }
+      this.to = { ...this.from }
+      this.from = { ...wrap }
+    }
   }
 }
 </script>
@@ -76,16 +159,9 @@ export default {
   overflow-x: hidden;
   overflow-y: auto;
   transition: 0.5s;
-  &--open-list {
-    left: 152px;
-    max-width: 675px;
-  }
+
   @include tablet {
     margin-top: 20px;
-    &--open-list {
-      left: 0px;
-      max-width: 370px;
-    }
   }
   @include phone {
     max-width: none;
@@ -95,22 +171,109 @@ export default {
   @include small-phone {
     max-height: 415px;
   }
-  &__form {
-    &--open-list {
-      box-shadow: 0px 0px 15px rgba(17, 17, 17, 0.05);
-      @include tablet {
-        box-shadow: none;
-      }
+}
+.swap-form {
+  z-index: 2;
+  background: var(--primary-background);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  overflow-y: auto;
+  width: 100%;
+  max-width: 370px;
+  border-radius: 12px;
+  @include tablet {
+    max-width: none;
+  }
+  @include small-phone {
+    padding: 16px 12px 14px;
+  }
+  &__header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: $--font-weight-semi-bold;
+    font-size: $--font-size-extra-small-subtitle;
+    margin-bottom: 16px;
+  }
+  &__balance {
+    color: $--grey-3;
+    font-size: $--font-size-base;
+  }
+  &__row {
+    display: flex;
+    justify-content: center;
+    height: auto;
+    margin-bottom: 12px;
+    flex-shrink: 0;
+  }
+
+  &__input {
+    margin-bottom: 0;
+    height: 54px;
+  }
+  &__input-button {
+    padding: 0 8px !important;
+    text-transform: unset;
+    font-size: $--font-size-base !important;
+    font-weight: $--font-weight-semi-bold;
+    letter-spacing: 0;
+  }
+  &__button-icon {
+    margin-right: 4px;
+  }
+  &__button-currency {
+    color: $--grey-3;
+    margin-right: 4px;
+  }
+
+  &__loader {
+    width: 36px;
+    height: 32px;
+  }
+
+  &__swap-button {
+    padding: 5px 0;
+    background-color: transparent !important;
+  }
+  &__swap-icon {
+    width: 22px;
+    height: 22px;
+  }
+
+  &__info {
+    margin: 18px 0 40px;
+    color: $--grey-3;
+    font-weight: $--font-weight-semi-bold;
+    font-size: $--font-size-base;
+
+    .v-divider {
+      border-color: var(--main-border-color);
     }
   }
-  &__wallet-list {
-    z-index: 0;
-    @include tablet {
-      z-index: 2;
-      top: -100%;
-      &--open-list {
-        top: 0;
-      }
+  &__info-row {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+
+    &:first-of-type {
+      margin-top: 5px;
+    }
+    &:last-of-type {
+      margin-bottom: 5px;
+    }
+  }
+  &__button {
+    margin-top: auto;
+    width: 100%;
+    @include phone {
+      min-height: 52px;
+    }
+    @include phone {
+      min-height: 42px;
     }
   }
 }

@@ -5,6 +5,9 @@
         <slot name="append"></slot>
       </template>
     </v-text-field>
+    <div v-if="$slots['form-field-append']" class="form-text-field__append">
+      <slot name="form-field-append" />
+    </div>
   </div>
 </template>
 
