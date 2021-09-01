@@ -1,23 +1,40 @@
 <template>
   <modal-wrapper value title="Share" @input="close" @cancel="close">
     <div class="share-modal">
-      <div class="share-modal__qr-image">
-        <img :src="qrCodeSrc" />
-      </div>
+      <div class="share-modal__wrapper">
+        <img class="share-modal__qr-image" :src="qrCodeSrc" />
 
-      <div v-if="isSystemShared" class="share-modal__buttons">
-        <v-btn class="share-modal__button" depressed @click="close">Cancel</v-btn>
-        <v-btn class="share-modal__button" depressed @click="systemShare">Share</v-btn>
-      </div>
+        <form-indent class="share-modal__indent share-modal__indent-url">
+          <v-tooltip v-model="copyUrlTooltip.value" top :open-on-hover="false">
+            <template #activator="{ on }">
+              <button
+                class="share-modal__copy-button share-modal__copy-button--url"
+                @click="copy(shareUrl, 'copyUrlTooltip')"
+              >
+                <span class="share-modal__url">{{ shareUrl }}</span>
+                <svg-icon name="copy" v-on="on" />
+              </button>
+            </template>
+            <span>Copied</span>
+          </v-tooltip>
+        </form-indent>
 
-      <div v-else class="share-modal__buttons">
-        <button v-for="social in socials" :key="social" class="share-modal__social-button" @click="clickSocial(social)">
-          <svg-icon :name="`share-${social}`" />
-        </button>
+        <div v-if="!isSystemShared" class="share-modal__social-buttons">
+          <a
+            v-for="social in $options.SOCIALS"
+            :key="social.name"
+            class="share-modal__social-button"
+            :class="`share-modal__social-button--${social.name}`"
+            target="_blank"
+            :href="`${social.link}${shareUrl}/`"
+          >
+            <svg-icon class="share-modal__social-icon" :name="`share-${social.name}`" />
+          </a>
+        </div>
       </div>
 
       <div class="share-modal__info">
-        <form-indent :title="isWallet ? 'Wallet ID:' : 'Hash:'">
+        <form-indent class="share-modal__indent" :title="isWallet ? 'Wallet id' : 'Hash'">
           <v-tooltip v-model="copyDataTooltip.value" top :open-on-hover="false">
             <template #activator="{ on }">
               <button class="share-modal__copy-button" @click="copy(data, 'copyDataTooltip')">
@@ -28,40 +45,39 @@
             <span>Copied</span>
           </v-tooltip>
         </form-indent>
-
-        <form-indent :title="`Link to ${type}:`">
-          <v-tooltip v-model="copyUrlTooltip.value" top :open-on-hover="false">
-            <template #activator="{ on }">
-              <button class="share-modal__copy-button" @click="copy(shareUrl, 'copyUrlTooltip')">
-                {{ shareUrl }}
-                <svg-icon name="copy" v-on="on" />
-              </button>
-            </template>
-            <span>Copied</span>
-          </v-tooltip>
-        </form-indent>
       </div>
     </div>
-    <template #footer> <div></div></template>
+
+    <template #footer>
+      <swap-button v-if="isSystemShared" class="share-modal__button" depressed @click="systemShare">Share</swap-button>
+      <div v-else></div>
+    </template>
   </modal-wrapper>
 </template>
 
 <script>
 import ModalWrapper from '@/components/UI/ModalWrapper.vue'
+import SwapButton from '@/components/UI/SwapButton.vue'
 import FormIndent from '@/components/UI/Forms/Indent.vue'
 import copy from '@/utils/copy'
 import QRCode from 'qrcode-generator'
 
+const SOCIALS = [
+  { name: 'telegram', link: 'https://t.me/share/url?url=' },
+  { name: 'facebook', link: 'https://www.facebook.com/sharer/sharer.php?u=' },
+  { name: 'whatsapp', link: 'https://web.whatsapp.com/send?text=' }
+]
+
 export default {
   name: 'ShareModal',
-  components: { ModalWrapper, FormIndent },
+  components: { ModalWrapper, FormIndent, SwapButton },
+  SOCIALS,
   props: {
     type: { type: String, default: '' },
     data: { type: String, default: '' }
   },
   data() {
     return {
-      socials: ['telegram', 'facebook', 'whatsapp'],
       isSystemShared: navigator ? navigator.canShare : false,
       copyDataTooltip: {
         value: false,
@@ -84,7 +100,7 @@ export default {
       return qr.createDataURL(4, 0)
     },
     shareUrl() {
-      return `${window.location.origin}/${this.type}/${this.data} `
+      return `${window.location.origin}/${this.type}/${this.data}`
     }
   },
   beforeDestroy() {
@@ -124,68 +140,91 @@ export default {
 </script>
 
 <style lang="scss">
+$--color-telegram: #2c92d9;
+$--color-facebook: #4267b2;
+$--color-whatsapp: #25d366;
+
 .share-modal {
   display: flex;
   flex-direction: column;
-  &__qr-image {
+
+  &__wrapper {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    margin-top: 15px;
-    @include tablet {
-      margin-bottom: 55px;
-    }
-    img {
-      height: 202px;
-      width: 202px;
-      object-fit: cover;
-      object-position: center center;
-    }
-  }
-  &__buttons {
-    padding: 20px 0;
-    margin: 50px 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-top: 1px solid var(--main-border-color);
-    border-bottom: 1px solid var(--main-border-color);
-    @include tablet {
-      border-color: transparent;
-      order: 4;
-      padding: 0 0;
-      margin: auto 0 0;
-    }
-  }
-  &__info {
-    margin-top: 25px;
-  }
-  &__button {
-    width: calc(50% - 16px);
+    padding: 30px 12px;
     border-radius: $--main-border-radius;
-    margin: auto 8px;
+    background-color: var(--main-input-background);
+  }
+
+  &__indent {
+    margin-bottom: 0 !important;
+    border-color: $--border-grey;
+  }
+
+  &__indent-url {
+    max-width: 400px;
+    width: 100%;
+  }
+
+  &__url {
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__qr-image {
+    margin-bottom: 40px;
+    height: 180px;
+    width: 180px;
+    object-fit: cover;
+    object-position: center center;
+    background: $--white;
+    padding: 10px;
+  }
+
+  &__social-buttons {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__social-button {
+    background: transparent;
+    color: $--grey-3 !important;
+    margin: 0 13px;
+    transition: 0.3s;
+
+    &--telegram:hover {
+      color: $--color-telegram !important;
+    }
+    &--facebook:hover {
+      color: $--color-facebook !important;
+    }
+    &--whatsapp:hover {
+      color: $--color-whatsapp !important;
+    }
+  }
+
+  &__social-icon {
+    height: 40px;
+    width: 40px;
+  }
+
+  &__info {
+    margin: 40px 0 16px 0;
+  }
+
+  &__button {
+    margin: auto 0 0;
+    border-radius: $--main-border-radius;
     min-height: 52px;
     text-transform: none;
     font-weight: $--font-weight-bold;
     span {
       font-size: $--font-size-medium;
-    }
-  }
-  &__social-button {
-    background: var(--primary-background);
-    display: flex;
-    justify-content: center;
-    align-items: stretch;
-    margin: 0 13px;
-    outline: none;
-    border-radius: 50%;
-    transition: 0.3s;
-    &:hover {
-      transform: scale(1.25, 1.25);
-    }
-    svg {
-      height: 37px;
-      width: 37px;
     }
   }
 
@@ -209,6 +248,11 @@ export default {
       width: 16px;
       height: 16px;
     }
+  }
+
+  &__copy-button--url {
+    display: flex;
+    width: 100%;
   }
 }
 </style>
