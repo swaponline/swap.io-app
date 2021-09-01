@@ -12,19 +12,19 @@
                 @click="copy(shareUrl, 'copyUrlTooltip')"
               >
                 <span class="share-modal__url">{{ shareUrl }}</span>
-                <svg-icon name="copy" v-on="on" />
+                <svg-icon class="share-modal__url-copy" name="copy" v-on="on" />
               </button>
             </template>
             <span>Copied</span>
           </v-tooltip>
         </form-indent>
 
-        <div v-if="!isSystemShared" class="share-modal__social-buttons">
+        <div v-if="!isSystemShared" class="share-modal__socials">
           <a
             v-for="social in $options.SOCIALS"
             :key="social.name"
-            class="share-modal__social-button"
-            :class="`share-modal__social-button--${social.name}`"
+            class="share-modal__social-link"
+            :class="`share-modal__social-link--${social.name}`"
             target="_blank"
             :href="`${social.link}${shareUrl}/`"
           >
@@ -174,6 +174,10 @@ $--color-whatsapp: #25d366;
     text-overflow: ellipsis;
   }
 
+  &__url-copy {
+    flex-shrink: 0;
+  }
+
   &__qr-image {
     margin-bottom: 40px;
     height: 180px;
@@ -184,14 +188,14 @@ $--color-whatsapp: #25d366;
     padding: 10px;
   }
 
-  &__social-buttons {
+  &__socials {
     margin-top: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
   }
 
-  &__social-button {
+  &__social-link {
     background: transparent;
     color: $--grey-3 !important;
     margin: 0 13px;
