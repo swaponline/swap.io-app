@@ -4,7 +4,7 @@
       <div class="share-modal__wrapper">
         <img class="share-modal__qr-image" :src="qrCodeSrc" />
 
-        <form-indent class="share-modal__indent share-modal__indent-url">
+        <form-indent class="share-modal__indent share-modal__indent--url">
           <v-tooltip v-model="copyUrlTooltip.value" top :open-on-hover="false">
             <template #activator="{ on }">
               <button
@@ -57,7 +57,6 @@
 
 <script>
 import ModalWrapper from '@/components/UI/ModalWrapper.vue'
-import SwapButton from '@/components/UI/SwapButton.vue'
 import FormIndent from '@/components/UI/Forms/Indent.vue'
 import copy from '@/utils/copy'
 import QRCode from 'qrcode-generator'
@@ -70,7 +69,7 @@ const SOCIALS = [
 
 export default {
   name: 'ShareModal',
-  components: { ModalWrapper, FormIndent, SwapButton },
+  components: { ModalWrapper, FormIndent },
   SOCIALS,
   props: {
     type: { type: String, default: '' },
@@ -162,7 +161,7 @@ $--color-whatsapp: #25d366;
     border-color: $--border-grey;
   }
 
-  &__indent-url {
+  &__indent--url {
     max-width: 400px;
     width: 100%;
   }
