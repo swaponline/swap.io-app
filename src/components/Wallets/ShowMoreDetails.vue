@@ -1,75 +1,74 @@
 <template>
-  <v-expansion-panels v-model="showMore" class="show-more-details">
-    <v-expansion-panel class="show-more-details__inner">
-      <v-expansion-panel-header class="show-more-details__header" expand-icon="mdi-chevron-down">
-        <span class="show-more-details__header-content">
-          <span>Show entries</span>
-          <span v-if="journal.length > 0" class="show-more-details__categories">
-            <span
-              v-for="category in categories"
-              :key="category"
-              class="show-more-details__category"
-              :class="{ 'show-more-details__category--select': selectCategory === category }"
-              @click="select($event, category)"
-              >{{ category }}</span
-            >
-          </span>
-        </span>
-      </v-expansion-panel-header>
+  <v-expansion-panels v-model="showMore" flat class="show-more-details">
+    <v-expansion-panel class="show-more-details__panel">
       <v-expansion-panel-content class="show-more-details__content">
         <div class="show-more-details__entries">
-          <div v-for="(entry, index) in entries" :key="index" class="show-more-details__entry">
-            <form-indent title="Wallet:" :text="entry.wallet"></form-indent>
-            <form-indent title="Value:" :text="getValue(entry.value) + ' BTC'"></form-indent>
-          </div>
+          <transaction-details-entry
+            v-for="(entry, index) in entries"
+            :key="index"
+            :value="getValue(entry.value)"
+            :wallet="entry.wallet"
+            can-copy
+          />
         </div>
       </v-expansion-panel-content>
+
+      <div class="show-more-details__bottom">
+        <v-expansion-panel-header hide-actions class="show-more-details__header" expand-icon="mdi-chevron-down">
+          <form-indent
+            class="show-more-details__header-content"
+            :text="isOpen ? 'Hide entries' : `Show ${entries.length} more entries`"
+          />
+        </v-expansion-panel-header>
+
+        <swap-copy-wrapper>
+          <template #default="{ copy, tooltipOn }">
+            <button
+              type="button"
+              class="show-more-details__copy-button"
+              v-on="tooltipOn"
+              @click="copy(JSON.stringify(entries))"
+            >
+              <svg-icon class="show-more-details__copy-icon" name="copy" /> Copy
+            </button>
+          </template>
+        </swap-copy-wrapper>
+      </div>
     </v-expansion-panel>
   </v-expansion-panels>
 </template>
 
 <script>
+import SwapCopyWrapper from '@/components/UI/SwapCopyWrapper.vue'
 import FormIndent from '../UI/Forms/Indent.vue'
+import TransactionDetailsEntry from './Transactions/TransactionDetailsEntry.vue'
 
 export default {
   name: 'ShowMoreDetails',
   components: {
-    FormIndent
+    FormIndent,
+    TransactionDetailsEntry,
+    SwapCopyWrapper
   },
   props: {
-    entries: {
-      type: Array,
-      default: () => []
-    },
-    currentDecimal: {
-      type: Number,
-      default: 1
-    },
-    decimal: {
-      type: Number,
-      default: 1
-    },
-    journal: {
-      type: Array,
-      default: () => []
-    }
+    entries: { type: Array, default: () => [] },
+    currentDecimal: { type: Number, default: 1 },
+    decimal: { type: Number, default: 1 },
+    journal: { type: Array, default: () => [] }
   },
   data() {
     return {
-      showMore: undefined,
-      selectCategory: 'ALL',
-      categories: ['ALL', 'BTC', 'ETH']
+      showMore: undefined
+    }
+  },
+  computed: {
+    isOpen() {
+      return this.showMore !== undefined
     }
   },
   methods: {
     getValue(value) {
       return (value * 10 ** (this.decimal * -1)).toFixed(this.currentDecimal)
-    },
-    select(e, category) {
-      if (this.showMore !== undefined) {
-        e.stopPropagation()
-      }
-      this.selectCategory = category
     }
   }
 }
@@ -77,79 +76,61 @@ export default {
 
 <style lang="scss">
 .show-more-details {
-  margin-bottom: 25px;
-  &__inner {
-    &::before {
-      display: none;
-    }
+  &__panel {
+    background: transparent !important;
   }
   &__header {
-    padding: 0 0;
+    padding: 0;
     min-height: 0 !important;
-    color: var(--main-color);
     font-weight: $--font-weight-semi-bold;
     font-size: $--font-size-medium;
-    border: none;
-    &:focus::before {
-      opacity: 0 !important;
-    }
-    .v-icon {
-      color: var(--main-color) !important;
-    }
   }
+
   &__header-content {
-    padding: 8px 12px;
-    display: flex;
-    align-items: center;
-  }
-  &__categories {
-    display: inline-flex;
-    margin: 0 5px;
-    font-weight: $--font-weight-semi-bold;
+    text-align: center;
     font-size: $--font-size-base;
-    line-height: 19px;
-  }
-  &__category {
-    margin: 0 5px;
-    padding: 2px 8px;
-    display: flex;
-    align-items: center;
+    margin: 0 !important;
     background: var(--main-button-background);
-    color: $--dark-grey;
-    &--select {
-      color: var(--main-color);
+    transition: background 0.3s;
+
+    &:hover {
+      background: var(--main-button-background-hover);
     }
   }
+
   &__content {
     > div {
       padding: 0 0;
     }
   }
-  &__entries {
-    border-radius: 12px;
-    padding: 6px 20px;
-    background: var(--main-button-background-hover);
+
+  &__bottom {
+    display: flex;
+    flex-direction: row;
   }
-  &__entry {
-    position: relative;
-    padding: 8px 0;
-    &:not(:first-child) {
-      &::before {
-        position: absolute;
-        top: 0;
-        width: 100%;
-        height: 1px;
-        content: '';
-        display: block;
-        background: rgba($--black, 0.12);
-      }
+
+  &__copy-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--main-button-background);
+    border-radius: $--main-border-radius;
+    height: auto;
+    margin-left: 8px;
+    padding: 9px;
+    font-weight: $--font-weight-semi-bold;
+    font-size: $--font-size-extra-small;
+    transition: background 0.3s;
+
+    &:hover {
+      background: var(--main-button-background-hover);
     }
-    > p {
-      margin: 0 0;
-      &:first-of-type {
-        margin-bottom: 8px;
-      }
-    }
+  }
+
+  &__copy-icon {
+    width: 11px;
+    height: 11px;
+    margin-right: 5px;
   }
 }
 </style>

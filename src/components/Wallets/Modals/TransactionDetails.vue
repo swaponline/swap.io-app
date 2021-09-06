@@ -10,15 +10,14 @@
   >
     <div class="transaction-details">
       <form-indent title="Hash:">
-        <v-tooltip v-model="copyHashTooltip.value" top :open-on-hover="false">
-          <template #activator="{ on }">
-            <button class="transaction-details__copy-button" @click="copy">
+        <swap-copy-wrapper>
+          <template #default="{ copy, tooltipOn }">
+            <button class="transaction-details__copy-button" type="button" @click="copy(hash)" v-on="tooltipOn">
               {{ hash }}
-              <svg-icon name="copy" v-on="on" />
+              <svg-icon name="copy" />
             </button>
           </template>
-          <span>Copied</span>
-        </v-tooltip>
+        </swap-copy-wrapper>
       </form-indent>
 
       <form-indent v-if="status" title="Status">
@@ -27,6 +26,10 @@
           <pending-loader v-if="status === 'pending'" />
         </span>
       </form-indent>
+
+      <v-divider class="transaction-details__divider"></v-divider>
+
+      <transaction-details-entry :wallet="`Default ${minifiedWallet}`" value="0.9301" />
 
       <show-more-details
         :entries="entries"
@@ -37,36 +40,7 @@
 
       <v-divider class="transaction-details__divider"></v-divider>
 
-      <span class="transaction-details__results">
-        <span class="mr-5 align-self-center">Transaction fee: </span>
-
-        <slider-fee
-          v-if="editFee"
-          v-model="currentFee"
-          :recommended-fee="recommendedFee"
-          v-bind="sliderParams"
-        ></slider-fee>
-
-        <span v-else class="transaction-details__fee">
-          <v-btn v-if="status === 'pending'" icon small @click="editFeeShow">
-            <svg-icon class="transaction-details__edit-icon" name="edit"></svg-icon>
-          </v-btn>
-          <span>
-            <span class="transaction-details__currency-name">USD </span>
-            {{ fee }}
-          </span>
-        </span>
-      </span>
-
-      <span class="transaction-details__results">
-        <span class="mr-5 align-self-center">Total balance change: </span>
-        <span class="transaction-details__fee">
-          <span>
-            <span class="transaction-details__currency-name">USD </span>
-            {{ fee }}
-          </span>
-        </span>
-      </span>
+      <transaction-details-entry wallet="Default" title="Transaction fee:" :value="fee" />
     </div>
   </modal-wrapper>
 </template>
@@ -76,13 +50,14 @@ import { mapMutations } from 'vuex'
 import { ADD_MODAL } from '@/store/modules/Modals'
 import { MODULE_NAME as TRANSACTIONS_MODULE } from '@/store/modules/Transactions'
 import { EDIT_FEE, SHARE_MODAL } from '@/store/modules/Modals/names'
-import Copy from '@/utils/copy'
+import { minifyAddress } from '@/utils/common'
 
 import ModalWrapper from '@/components/UI/ModalWrapper.vue'
 import FormIndent from '@/components/UI/Forms/Indent.vue'
-import SliderFee from '@/components/Wallets/SliderFee.vue'
+
 import ShowMoreDetails from '@/components/Wallets/ShowMoreDetails.vue'
 import PendingLoader from '@/components/Loaders/VLoaderDots.vue'
+import TransactionDetailsEntry from '@/components/Wallets/Transactions/TransactionDetailsEntry.vue'
 
 export default {
   name: 'TransactionDetails',
@@ -91,8 +66,8 @@ export default {
     ModalWrapper,
     FormIndent,
     ShowMoreDetails,
-    SliderFee,
-    PendingLoader
+    PendingLoader,
+    TransactionDetailsEntry
   },
   props: {
     hash: { type: String, required: true },
@@ -105,18 +80,9 @@ export default {
   },
   data() {
     return {
-      sliderParams: {
-        min: 0.1,
-        max: 1,
-        step: 0.001
-      },
-      recommendedFee: 0.545,
-      copyHashTooltip: {
-        value: false,
-        timer: 0
-      },
       editFee: false,
-      currentFee: 0
+      currentFee: 0,
+      wallet: '0x912fD21d7a69678227fE6d08C64222Db41477bA0'
     }
   },
   computed: {
@@ -125,6 +91,9 @@ export default {
     },
     wasEditFee() {
       return this.fee === this.currentFee
+    },
+    minifiedWallet() {
+      return minifyAddress(this.wallet)
     }
   },
   watch: {
@@ -133,9 +102,6 @@ export default {
         this.currentFee = val
       }
     }
-  },
-  beforeDestroy() {
-    clearTimeout(this.copyHashTooltip.timer)
   },
   methods: {
     ...mapMutations({
@@ -153,21 +119,6 @@ export default {
         }
       })
       this.$emit('close')
-    },
-    copy() {
-      Copy(this.hash)
-        .then(() => {
-          this.copyHashTooltip.value = true
-          if (this.copyHashTooltip.timer) {
-            clearTimeout(this.copyHashTooltip.timer)
-          }
-          this.copyHashTooltip.timer = setTimeout(() => {
-            this.copyHashTooltip.value = false
-          }, 1500)
-        })
-        .catch(err => {
-          console.log('Значение не скопировано', err)
-        })
     },
     editFeeShow() {
       if (!this.mediaQueries.desktop) {
@@ -217,7 +168,7 @@ export default {
     font-size: $--font-size-extra-small-subtitle;
   }
   &__divider {
-    margin-bottom: 25px;
+    margin: 16px 0;
   }
   &__edit-icon {
     height: 11px;
