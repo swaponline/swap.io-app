@@ -1,5 +1,5 @@
 <template>
-  <v-card flat class="transaction-item d-flex justify-space-between" @click="openTransactionDetailsModal">
+  <v-card flat class="transaction-item d-flex justify-space-between" @click="openDetails">
     <div class="transaction-item__time">
       <v-icon
         class="transaction-item__icon lighten-1"
@@ -49,10 +49,6 @@
 </template>
 
 <script>
-import { ADD_MODAL } from '@/store/modules/Modals'
-import { TRANSACTION_DETAILS } from '@/store/modules/Modals/names'
-import { mapMutations } from 'vuex'
-
 import TransactionDescription from './TransactionDescription.vue'
 
 const NUMBER_REMAINING_CHARACTERS = 4
@@ -179,23 +175,8 @@ export default {
     }
   },
   methods: {
-    ...mapMutations({
-      mutationAddModal: ADD_MODAL
-    }),
-    // мб перенесем выше в родительский компонент чтобы данные было проще прокинуть
-    openTransactionDetailsModal() {
-      this.mutationAddModal({
-        name: TRANSACTION_DETAILS,
-        id: this.hash,
-        info: {
-          hash: this.hash,
-          fee: this.transactionFee,
-          entries: this.entries,
-          decimal: this.decimal,
-          currentDecimal: this.currentDecimal,
-          journal: this.journal
-        }
-      })
+    openDetails() {
+      this.$emit('open-transaction')
     },
     shortString(string) {
       const initialNumber = string.split('').length - NUMBER_REMAINING_CHARACTERS
