@@ -11,6 +11,8 @@ import WindowHandler from '@/WindowHandler'
 import { SET_TEMPORARY_PROFILE, CREATING_OR_RECOVERING_PROFILE, CREATE_PROFILE } from '@/store/modules/Profile'
 import { IFRAME_INITED, THEME_SELECTED, PROFILE_CREATED, CANCELED } from '@/constants/createProfile'
 import { CREATE_PROFILE_WINDOW } from '@/constants/windowKey'
+import { getStorage } from '@/utils/storage'
+import { THEME_KEY, SET_APP_THEME } from '@/constants/theme'
 
 export default {
   name: 'CreateProfile',
@@ -30,9 +32,18 @@ export default {
     openFrame() {
       this.loading = true
       this.frame = new WindowHandler('createProfile', '/choose-style', CREATE_PROFILE_WINDOW, ({ message }) => {
-        const { payload } = message
-        switch (message.type) {
+        const { payload, type } = message
+        switch (type) {
           case IFRAME_INITED:
+            this.frame.sendMessage({
+              message: {
+                type: SET_APP_THEME,
+                payload: {
+                  theme: getStorage(THEME_KEY)
+                }
+              }
+            })
+
             this.loading = false
             this.$store.dispatch(CREATING_OR_RECOVERING_PROFILE, true)
             break

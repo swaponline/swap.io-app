@@ -24,7 +24,8 @@
 
       <div class="swap-form__row">
         <v-btn class="swap-form__swap-button" icon height="auto" min-height="none" @click="swapWallet">
-          <svg-icon class="swap-form__swap-icon" name="swap" />
+          <svg-icon v-if="$vuetify.theme.dark" class="swap-form__swap-icon" name="swapLight" />
+          <svg-icon v-else class="swap-form__swap-icon" name="swap" />
         </v-btn>
       </div>
 

@@ -17,6 +17,7 @@
 import { getStorage, setStorage } from '@/utils/storage'
 import { THEMES, THEME_KEY, SYSTEM_THEME_KEY, LIGHT_THEME_KEY, DARK_THEME_KEY } from '@/constants/theme'
 import { getUserSystemTheme } from '@/utils/theme'
+import { setCSSCustomProperty } from '@/utils/common'
 
 export default {
   THEMES,
@@ -26,10 +27,22 @@ export default {
       selectedTheme: null
     }
   },
+
+  computed: {
+    getCurrentUserTheme() {
+      const usersThemes = getStorage('usersThemes')
+      const currentAccountId = getStorage('currentAccount')
+
+      return usersThemes.filter(userTheme => userTheme.accountId === currentAccountId)[0]
+    }
+  },
+
   watch: {
     selectedTheme: {
       handler(theme) {
         setStorage(THEME_KEY, theme)
+
+        const { color, colorForDarkTheme } = this.getCurrentUserTheme
 
         let appTheme = theme
         if (theme === SYSTEM_THEME_KEY) {
@@ -39,10 +52,13 @@ export default {
         if (appTheme === LIGHT_THEME_KEY) {
           this.$vuetify.theme.light = true
           this.$vuetify.theme.dark = false
+          setCSSCustomProperty('--main-color', color)
         }
+
         if (appTheme === DARK_THEME_KEY) {
           this.$vuetify.theme.dark = true
           this.$vuetify.theme.light = false
+          setCSSCustomProperty('--main-color', colorForDarkTheme)
         }
       }
     }
