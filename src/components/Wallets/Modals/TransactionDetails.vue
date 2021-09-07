@@ -9,11 +9,16 @@
     @submit="share"
   >
     <div class="transaction-details">
-      <form-indent title="Hash:">
+      <form-indent title="Transaction hash:">
         <swap-copy-wrapper>
           <template #default="{ copy, tooltipOn }">
-            <button class="transaction-details__copy-button" type="button" @click="copy(hash)" v-on="tooltipOn">
-              {{ hash }}
+            <button
+              class="transaction-details__copy-button"
+              type="button"
+              @click="copy(transaction.hash)"
+              v-on="tooltipOn"
+            >
+              {{ transaction.hash }}
               <svg-icon name="copy" />
             </button>
           </template>
@@ -21,26 +26,59 @@
       </form-indent>
 
       <form-indent v-if="status" title="Status">
-        <span :class="{ 'transaction-details__send-status': status === 'send' }">
-          {{ status }}
-          <pending-loader v-if="status === 'pending'" />
-        </span>
+        <span v-if="isPending">pending<pending-loader /></span>
+        <span v-else class="transaction-details__send-status">success</span>
       </form-indent>
 
       <v-divider class="transaction-details__divider"></v-divider>
 
-      <transaction-details-entry :wallet="`Default ${minifiedWallet}`" value="0.9301" />
+      <transaction-details-entry
+        v-for="(entry, i) in entriesCurrentWallet"
+        :key="i"
+        v-bind="entry"
+        :wallet="minifyAddress(entry.wallet)"
+      />
 
-      <show-more-details
-        :entries="entries"
-        :decimal="decimal"
-        :current-decimal="currentDecimal"
-        :journal="journal"
-      ></show-more-details>
+      <show-more-details :entries="entriesOtherWallet">
+        <template #actions>
+          <swap-copy-wrapper>
+            <template #default="{ copy, tooltipOn }">
+              <swap-button
+                type="button"
+                class="transaction-details__copy-entry"
+                v-on="tooltipOn"
+                @click.stop="copy(JSON.stringify(transaction))"
+              >
+                <svg-icon class="transaction-details__copy-entry-icon" name="copy" />Copy
+              </swap-button>
+            </template>
+          </swap-copy-wrapper>
+        </template>
+      </show-more-details>
 
       <v-divider class="transaction-details__divider"></v-divider>
 
-      <transaction-details-entry wallet="Default" title="Transaction fee:" :value="fee" />
+      <transaction-fee
+        v-if="isEditingFee"
+        :gas="transaction.gas_used"
+        :gas-price="transaction.gas_price"
+        :decimals="editableEntry.decimals"
+        :currency="editableEntry.currency"
+        :fee="editableEntry.value"
+        class="transaction-details__edit-fee mb-3"
+        @update-fee="updateTransactionFee"
+      />
+
+      <transaction-details-entry
+        v-for="(fee, i) in feeCurrentWallet"
+        v-else
+        :key="`fee-${i}`"
+        title="Transaction fee:"
+        v-bind="fee"
+        wallet="Default"
+        :editable="isPending"
+        @edit-entry="toggleEditableFee(true, fee)"
+      />
     </div>
   </modal-wrapper>
 </template>
@@ -48,8 +86,7 @@
 <script>
 import { mapMutations } from 'vuex'
 import { ADD_MODAL } from '@/store/modules/Modals'
-import { MODULE_NAME as TRANSACTIONS_MODULE } from '@/store/modules/Transactions'
-import { EDIT_FEE, SHARE_MODAL } from '@/store/modules/Modals/names'
+import { SHARE_MODAL } from '@/store/modules/Modals/names'
 import { minifyAddress } from '@/utils/common'
 
 import ModalWrapper from '@/components/UI/ModalWrapper.vue'
@@ -58,52 +95,55 @@ import FormIndent from '@/components/UI/Forms/Indent.vue'
 import ShowMoreDetails from '@/components/Wallets/ShowMoreDetails.vue'
 import PendingLoader from '@/components/Loaders/VLoaderDots.vue'
 import TransactionDetailsEntry from '@/components/Wallets/Transactions/TransactionDetailsEntry.vue'
+import TransactionFee from '@/components/Wallets/Transactions/TransactionFee.vue'
 
 export default {
   name: 'TransactionDetails',
-  inject: ['mediaQueries'],
   components: {
     ModalWrapper,
     FormIndent,
     ShowMoreDetails,
     PendingLoader,
-    TransactionDetailsEntry
+    TransactionDetailsEntry,
+    TransactionFee
   },
   props: {
-    hash: { type: String, required: true },
-    status: { type: String, default: 'pending' },
-    fee: { type: [Number, String], required: true },
-    decimal: { type: Number, default: 1 },
-    currentDecimal: { type: Number, default: 1 },
-    entries: { type: Array, default: () => [] },
-    journal: { type: Array, default: () => [] }
+    currentWallet: { type: String, default: '' },
+    transaction: { type: Object, required: true },
+    status: { type: String, default: 'pending' }
   },
   data() {
     return {
-      editFee: false,
-      currentFee: 0,
-      wallet: '0x912fD21d7a69678227fE6d08C64222Db41477bA0'
+      isEditingFee: false,
+      editableEntry: null
     }
   },
   computed: {
-    storeFee() {
-      return this.$store.state[TRANSACTIONS_MODULE].model
+    isPending() {
+      return this.status === 'pending'
     },
-    wasEditFee() {
-      return this.fee === this.currentFee
+    allEntries() {
+      return this.transaction.journal.reduce((entries, item) => {
+        const newEntries = item.entries.map(entry => {
+          const { symbol, ...assets } = item.asset
+          return { ...assets, currency: symbol, ...entry }
+        })
+
+        return [...entries, ...newEntries]
+      }, [])
     },
-    minifiedWallet() {
-      return minifyAddress(this.wallet)
-    }
-  },
-  watch: {
-    storeFee: {
-      handler(val) {
-        this.currentFee = val
-      }
+    feeCurrentWallet() {
+      return this.allEntries.filter(e => e.wallet === this.currentWallet && e.label === 'Transaction fee')
+    },
+    entriesCurrentWallet() {
+      return this.allEntries.filter(e => e.wallet === this.currentWallet && e.label !== 'Transaction fee')
+    },
+    entriesOtherWallet() {
+      return this.allEntries.filter(e => e.wallet !== this.currentWallet)
     }
   },
   methods: {
+    minifyAddress,
     ...mapMutations({
       mutationAddModal: ADD_MODAL
     }),
@@ -114,25 +154,17 @@ export default {
       this.mutationAddModal({
         name: SHARE_MODAL,
         info: {
-          data: this.hash,
+          data: this.transaction.hash,
           type: 'transaction'
         }
       })
-      this.$emit('close')
     },
-    editFeeShow() {
-      if (!this.mediaQueries.desktop) {
-        this.mutationAddModal({
-          name: EDIT_FEE,
-          info: {
-            sliderParams: this.sliderParams,
-            recommendedFee: +this.recommendedFee,
-            fee: +this.fee
-          }
-        })
-      } else {
-        this.editFee = true
-      }
+    toggleEditableFee(value, entry) {
+      this.isEditingFee = value
+      this.editableEntry = entry
+    },
+    updateTransactionFee() {
+      this.toggleEditableFee(false)
     }
   }
 }
@@ -141,49 +173,53 @@ export default {
 <style lang="scss">
 .transaction-details {
   &__copy-button {
-    width: auto;
-    outline: none;
-    color: var(--primary-text);
-    font-size: $--font-size-extra-small-subtitle;
     padding: 4px 0;
     word-break: break-all;
     text-align: left;
     transition: 0.3s;
+    display: flex;
+    align-items: flex-start;
     &:hover {
-      background: var(--main-button-background);
+      background: var(--main-button-background-hover);
     }
     svg {
-      margin-bottom: -3px;
-      margin-left: 5px;
+      flex-shrink: 0;
+      margin-left: 20px;
       width: 16px;
       height: 16px;
     }
   }
-  &__results {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    margin-bottom: 10px;
-    font-weight: $--font-weight-semi-bold;
-    font-size: $--font-size-extra-small-subtitle;
-  }
+
   &__divider {
     margin: 16px 0;
   }
-  &__edit-icon {
-    height: 11px;
-    width: 11px;
-  }
-  &__fee {
-    display: flex;
-    align-items: center;
-    line-height: 21px;
-  }
-  &__currency-name {
-    color: $--dark-grey;
-  }
+
   &__send-status {
     color: $--green;
+  }
+
+  &__copy-entry {
+    min-height: 0 !important;
+    min-width: 0 !important;
+    letter-spacing: initial;
+    margin-left: 8px;
+    flex-grow: 0;
+
+    &.v-btn.v-size--default {
+      height: auto;
+      padding: 8px;
+    }
+
+    .v-btn__content {
+      font-weight: $--font-weight-semi-bold;
+      font-size: $--font-size-extra-small;
+    }
+  }
+
+  &__copy-entry-icon {
+    width: 11px;
+    height: 11px;
+    margin-right: 5px;
   }
 }
 </style>

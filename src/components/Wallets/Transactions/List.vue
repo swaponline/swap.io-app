@@ -11,7 +11,7 @@
         :transaction="item"
         :address="address"
         class="list-transaction__item"
-        @open-transaction="openTransactionModal"
+        @open-transaction="openTransactionModal(item)"
       />
     </div>
     <v-btn class="list-transaction__up-button" depressed @click="unCompressWallet">UP</v-btn>
@@ -76,7 +76,10 @@ export default {
       this.mutationAddModal({
         name: TRANSACTION_DETAILS,
         id: this.hash,
-        info: { transaction }
+        info: {
+          currentWallet: this.address,
+          transaction
+        }
       })
     },
     eventScroll(e) {
