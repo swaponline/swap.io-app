@@ -1,5 +1,10 @@
 <template>
-  <form-indent class="transaction-entry" :class="{ 'transaction-entry--editable': editable }">
+  <form-indent
+    class="transaction-entry"
+    :class="{ 'transaction-entry--editable': editable }"
+    @mouseover="showEditButton"
+    @mouseleave="hideEditButton"
+  >
     <div class="transaction-entry__column">
       <span class="transaction-entry__title">{{ title }}</span>
       <swap-copy-wrapper v-if="canCopy">
@@ -28,15 +33,17 @@
         <span>{{ wallet }}</span>
       </div>
     </div>
-    <div class="transaction-entry__column transaction-entry__column--right">
-      <span class="transaction-entry__value" :class="{ 'transaction-entry__value--expense': isExpense }"
-        >{{ getValue(value) }} {{ currency }}</span
-      >
-      <span class="transaction-entry__sum">~USD 323.00</span>
-    </div>
-    <button v-if="editable" class="transaction-entry__edit" @click="editEntry">
-      Edit
-    </button>
+    <transition name="fade" mode="out-in">
+      <button v-if="isShowEditButton && editable" class="transaction-entry__edit" @click="editEntry">
+        Edit
+      </button>
+      <div v-else class="transaction-entry__column transaction-entry__column--right">
+        <span class="transaction-entry__value" :class="{ 'transaction-entry__value--expense': isExpense }"
+          >{{ getValue(value) }} {{ currency }}</span
+        >
+        <span class="transaction-entry__sum">~USD 323.00</span>
+      </div>
+    </transition>
   </form-indent>
 </template>
 
@@ -60,6 +67,11 @@ export default {
     canCopy: { type: Boolean, default: false },
     editable: { type: Boolean, default: false }
   },
+  data() {
+    return {
+      isShowEditButton: false
+    }
+  },
   computed: {
     isExpense() {
       return this.value < 0
@@ -78,6 +90,12 @@ export default {
     }
   },
   methods: {
+    showEditButton() {
+      this.isShowEditButton = true
+    },
+    hideEditButton() {
+      this.isShowEditButton = false
+    },
     getValue(value) {
       return convertToDecimalNotation(value, this.decimals).toFixed(this.currentDecimal)
     },
@@ -90,23 +108,11 @@ export default {
 
 <style lang="scss">
 .transaction-entry {
-  $this: &;
   display: flex;
   justify-content: space-between;
   font-weight: $--font-weight-semi-bold;
   font-size: $--font-size-base;
   line-height: 19px;
-
-  &--editable {
-    &:hover {
-      #{$this}__edit {
-        display: block;
-      }
-      #{$this}__column--right {
-        display: none;
-      }
-    }
-  }
 
   &__column {
     display: flex;
@@ -162,8 +168,16 @@ export default {
   }
 
   &__edit {
-    display: none;
     color: $--grey-3;
+  }
+
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.1s;
+  }
+  .fade-enter,
+  .fade-leave-to {
+    opacity: 0;
   }
 }
 </style>
