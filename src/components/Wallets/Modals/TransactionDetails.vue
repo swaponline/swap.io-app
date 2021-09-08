@@ -69,16 +69,16 @@
         @update-fee="updateTransactionFee"
       />
 
-      <transaction-details-entry
-        v-for="(fee, i) in feeCurrentWallet"
-        v-else
-        :key="`fee-${i}`"
-        title="Transaction fee:"
-        v-bind="fee"
-        wallet="Default"
-        :editable="isPending"
-        @edit-entry="toggleEditableFee(true, fee)"
-      />
+      <template v-else>
+        <transaction-details-entry
+          v-for="(fee, i) in feeCurrentWallet"
+          :key="`fee-${i}`"
+          v-bind="fee"
+          wallet="Default"
+          :editable="isPending"
+          @edit-entry="toggleEditableFee(true, fee)"
+        />
+      </template>
     </div>
   </modal-wrapper>
 </template>
@@ -88,6 +88,7 @@ import { mapMutations } from 'vuex'
 import { ADD_MODAL } from '@/store/modules/Modals'
 import { SHARE_MODAL } from '@/store/modules/Modals/names'
 import { minifyAddress } from '@/utils/common'
+import { TRANSACTION_PENDING } from '@/constants/transactionStatus'
 
 import ModalWrapper from '@/components/UI/ModalWrapper.vue'
 import FormIndent from '@/components/UI/Forms/Indent.vue'
@@ -110,7 +111,7 @@ export default {
   props: {
     currentWallet: { type: String, default: '' },
     transaction: { type: Object, required: true },
-    status: { type: String, default: 'pending' }
+    status: { type: String, default: TRANSACTION_PENDING }
   },
   data() {
     return {
@@ -120,7 +121,7 @@ export default {
   },
   computed: {
     isPending() {
-      return this.status === 'pending'
+      return this.status === TRANSACTION_PENDING
     },
     allEntries() {
       return this.transaction.journal.reduce((entries, item) => {
@@ -165,6 +166,7 @@ export default {
     },
     updateTransactionFee() {
       this.toggleEditableFee(false)
+      this.editableEntry = null
     }
   }
 }

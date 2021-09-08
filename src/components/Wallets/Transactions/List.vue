@@ -8,7 +8,6 @@
         v-for="item in transaction.list"
         :key="item.hash"
         v-bind="item"
-        :transaction="item"
         :address="address"
         class="list-transaction__item"
         @open-transaction="openTransactionModal(item)"
