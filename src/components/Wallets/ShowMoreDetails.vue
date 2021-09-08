@@ -69,7 +69,10 @@ export default {
     min-width: 0 !important;
     letter-spacing: initial;
     flex-grow: 1;
-    min-width: 100%;
+
+    @include phone {
+      width: auto;
+    }
 
     &.v-btn.v-size--default {
       height: auto;

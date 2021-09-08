@@ -207,6 +207,10 @@ export default {
     margin-left: 8px;
     flex-grow: 0;
 
+    @include phone {
+      width: auto;
+    }
+
     &.v-btn.v-size--default {
       height: auto;
       padding: 8px;
