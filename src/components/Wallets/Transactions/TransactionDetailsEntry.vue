@@ -1,45 +1,45 @@
 <template>
-  <form-indent class="transaction-entry" @mouseover="showEditButton" @mouseleave="hideEditButton">
-    <div class="transaction-entry__column">
-      <span class="transaction-entry__title">{{ title }}</span>
-      <swap-copy-wrapper v-if="canCopy">
-        <template #default="{ copy, tooltipOn }">
-          <button class="transaction-entry__copy-button" type="button" v-on="tooltipOn" @click="copy(wallet)">
-            <div class="transaction-entry__wallet">
-              <cryptoicon
-                v-if="currency"
-                class="transaction-entry__currency-icon"
-                :symbol="currency.toLowerCase()"
-                size="14"
-              />
-              <span>{{ wallet }}</span>
-              <svg-icon class="transaction-entry__copy-icon" name="copy" />
-            </div>
-          </button>
-        </template>
-      </swap-copy-wrapper>
-      <div v-else class="transaction-entry__wallet">
-        <cryptoicon
-          v-if="currency"
-          class="transaction-entry__currency-icon"
-          :symbol="currency.toLowerCase()"
-          size="14"
-        />
-        <span>{{ wallet }}</span>
+  <v-hover #default="{ hover }">
+    <form-indent class="transaction-entry">
+      <div class="transaction-entry__column">
+        <span class="transaction-entry__title">{{ title }}</span>
+        <swap-copy-wrapper v-if="canCopy">
+          <template #default="{ copy, tooltipOn }">
+            <button class="transaction-entry__copy-button" type="button" v-on="tooltipOn" @click="copy(wallet)">
+              <div class="transaction-entry__wallet">
+                <cryptoicon
+                  v-if="currency"
+                  class="transaction-entry__currency-icon"
+                  :symbol="currency.toLowerCase()"
+                  size="14"
+                />
+                <span>{{ wallet }}</span>
+                <svg-icon class="transaction-entry__copy-icon" name="copy" />
+              </div>
+            </button>
+          </template>
+        </swap-copy-wrapper>
+        <div v-else class="transaction-entry__wallet">
+          <cryptoicon
+            v-if="currency"
+            class="transaction-entry__currency-icon"
+            :symbol="currency.toLowerCase()"
+            size="14"
+          />
+          <span>{{ wallet }}</span>
+        </div>
       </div>
-    </div>
-    <transition name="fade" mode="out-in">
-      <button v-if="isShowEditButton && editable" class="transaction-entry__edit" @click="editEntry">
-        Edit
-      </button>
-      <div v-else class="transaction-entry__column transaction-entry__column--right">
-        <span class="transaction-entry__value" :class="{ 'transaction-entry__value--expense': isExpense }"
-          >{{ getValue(value) }} {{ currency }}</span
-        >
-        <span class="transaction-entry__sum">~USD 323.00</span>
-      </div>
-    </transition>
-  </form-indent>
+      <transition name="fade" mode="out-in">
+        <button v-if="hover && editable" class="transaction-entry__edit" @click="editEntry">Edit</button>
+        <div v-else class="transaction-entry__column transaction-entry__column--right">
+          <span class="transaction-entry__value" :class="{ 'transaction-entry__value--expense': isExpense }"
+            >{{ getValue(value) }} {{ currency }}</span
+          >
+          <span class="transaction-entry__sum">~USD 323.00</span>
+        </div>
+      </transition>
+    </form-indent>
+  </v-hover>
 </template>
 
 <script>
@@ -62,11 +62,6 @@ export default {
     canCopy: { type: Boolean, default: false },
     editable: { type: Boolean, default: false }
   },
-  data() {
-    return {
-      isShowEditButton: false
-    }
-  },
   computed: {
     isExpense() {
       return this.value < 0
@@ -85,12 +80,6 @@ export default {
     }
   },
   methods: {
-    showEditButton() {
-      this.isShowEditButton = true
-    },
-    hideEditButton() {
-      this.isShowEditButton = false
-    },
     getValue(value) {
       return convertToDecimalNotation(value, this.decimals).toFixed(this.currentDecimal)
     },
