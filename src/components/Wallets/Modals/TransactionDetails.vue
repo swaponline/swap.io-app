@@ -58,16 +58,23 @@
 
       <v-divider class="transaction-details__divider"></v-divider>
 
-      <transaction-fee
-        v-if="isEditingFee"
-        :gas="transaction.gas_used"
-        :gas-price="transaction.gas_price"
-        :decimals="editableEntry.decimals"
-        :currency="editableEntry.currency"
-        :fee="editableEntry.value"
-        class="transaction-details__edit-fee mb-3"
-        @update-fee="updateTransactionFee"
-      />
+      <template v-if="isEditingFee">
+        <fee-edit-gas
+          v-if="checkGasFee(editableEntry.currency)"
+          :gas="transaction.gas_used"
+          :gas-price="transaction.gas_price"
+          :decimals="editableEntry.decimals"
+          :currency="editableEntry.currency"
+          @save-fee="updateTransactionFee"
+        />
+        <fee-edit-value
+          v-else
+          :decimals="editableEntry.decimals"
+          :currency="editableEntry.currency"
+          :fee="editableEntry.value"
+          @save-fee="updateTransactionFee"
+        />
+      </template>
 
       <template v-else>
         <transaction-details-entry
@@ -96,7 +103,10 @@ import FormIndent from '@/components/UI/Forms/Indent.vue'
 import ShowMoreDetails from '@/components/Wallets/ShowMoreDetails.vue'
 import PendingLoader from '@/components/Loaders/VLoaderDots.vue'
 import TransactionDetailsEntry from '@/components/Wallets/Transactions/TransactionDetailsEntry.vue'
-import TransactionFee from '@/components/Wallets/Transactions/TransactionFee.vue'
+import FeeEditValue from '@/components/Wallets/Transactions/FeeEditValue.vue'
+import FeeEditGas from '@/components/Wallets/Transactions/FeeEditGas.vue'
+
+const ETH_CURRENCY = 'ETH'
 
 export default {
   name: 'TransactionDetails',
@@ -106,7 +116,8 @@ export default {
     ShowMoreDetails,
     PendingLoader,
     TransactionDetailsEntry,
-    TransactionFee
+    FeeEditValue,
+    FeeEditGas
   },
   props: {
     currentWallet: { type: String, default: '' },
@@ -167,6 +178,9 @@ export default {
     updateTransactionFee() {
       this.toggleEditableFee(false)
       this.editableEntry = null
+    },
+    checkGasFee(currency) {
+      return currency === ETH_CURRENCY
     }
   }
 }

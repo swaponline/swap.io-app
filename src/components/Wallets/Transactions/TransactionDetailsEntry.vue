@@ -1,10 +1,5 @@
 <template>
-  <form-indent
-    class="transaction-entry"
-    :class="{ 'transaction-entry--editable': editable }"
-    @mouseover="showEditButton"
-    @mouseleave="hideEditButton"
-  >
+  <form-indent class="transaction-entry" @mouseover="showEditButton" @mouseleave="hideEditButton">
     <div class="transaction-entry__column">
       <span class="transaction-entry__title">{{ title }}</span>
       <swap-copy-wrapper v-if="canCopy">
