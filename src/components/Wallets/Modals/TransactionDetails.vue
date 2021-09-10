@@ -176,8 +176,7 @@ export default {
       this.editableEntry = entry
     },
     updateTransactionFee() {
-      this.toggleEditableFee(false)
-      this.editableEntry = null
+      this.toggleEditableFee(false, null)
     },
     checkGasFee(currency) {
       return currency === ETH_CURRENCY

@@ -74,7 +74,7 @@ export default {
     openTransactionModal(transaction) {
       this.mutationAddModal({
         name: TRANSACTION_DETAILS,
-        id: this.hash,
+        id: transaction.hash,
         info: {
           currentWallet: this.address,
           transaction

@@ -1,5 +1,5 @@
 <template>
-  <p class="form-indent" v-on="$listeners">
+  <p class="form-indent">
     <slot name="title">
       <span v-if="title" class="form-indent__title">{{ title }}</span>
     </slot>
