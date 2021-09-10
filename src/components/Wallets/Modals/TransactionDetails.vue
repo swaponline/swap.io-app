@@ -145,13 +145,13 @@ export default {
       }, [])
     },
     feeCurrentWallet() {
-      return this.allEntries.filter(e => e.wallet === this.currentWallet && e.label === 'Transaction fee')
+      return this.allEntries.filter(entry => entry.wallet === this.currentWallet && entry.label === 'Transaction fee')
     },
     entriesCurrentWallet() {
-      return this.allEntries.filter(e => e.wallet === this.currentWallet && e.label !== 'Transaction fee')
+      return this.allEntries.filter(entry => entry.wallet === this.currentWallet && entry.label !== 'Transaction fee')
     },
     entriesOtherWallet() {
-      return this.allEntries.filter(e => e.wallet !== this.currentWallet)
+      return this.allEntries.filter(entry => entry.wallet !== this.currentWallet)
     }
   },
   methods: {
