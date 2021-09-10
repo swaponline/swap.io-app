@@ -1,5 +1,5 @@
 <template>
-  <v-expansion-panels v-model="showMore" flat class="show-more-details">
+  <v-expansion-panels flat class="show-more-details">
     <v-expansion-panel>
       <v-expansion-panel-content class="show-more-details__content">
         <transaction-details-entry
@@ -11,10 +11,10 @@
       </v-expansion-panel-content>
 
       <div class="show-more-details__bottom">
-        <v-expansion-panel-header hide-actions class="show-more-details__header" expand-icon="mdi-chevron-down">
+        <v-expansion-panel-header #default="{ open }" hide-actions class="show-more-details__header">
           <div class="show-more-details__header-content">
             <swap-button type="button" class="show-more-details__button">
-              {{ isOpen ? 'Hide entries' : `Show ${entries.length} more entries` }}
+              {{ open ? 'Hide entries' : `Show ${entries.length} more entries` }}
             </swap-button>
             <slot name="actions" />
           </div>
@@ -32,16 +32,6 @@ export default {
   components: { TransactionDetailsEntry },
   props: {
     entries: { type: Array, default: () => [] }
-  },
-  data() {
-    return {
-      showMore: undefined
-    }
-  },
-  computed: {
-    isOpen() {
-      return this.showMore !== undefined
-    }
   }
 }
 </script>
