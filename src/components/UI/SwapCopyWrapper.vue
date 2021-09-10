@@ -1,7 +1,7 @@
 <template>
   <v-tooltip v-model="copyTooltip.value" top internal-activator :open-on-hover="false">
     <template #activator="{ on }">
-      <slot :copy="copy" :tooplip-on="on" />
+      <slot :copy="copyData" :tooplip-on="on" />
     </template>
     <span>Copied</span>
   </v-tooltip>
@@ -24,7 +24,7 @@ export default {
     clearTimeout(this.copyTooltip.timer)
   },
   methods: {
-    copy(data) {
+    copyData(data) {
       copy(data)
         .then(() => {
           this.copyTooltip.value = true
