@@ -11,14 +11,14 @@
       <slot name="header">
         <header v-if="title" class="modal-wrapper__title" :class="{ 'modal-wrapper__title--with-back': backIcon }">
           <span>
-            <v-btn v-if="backIcon" icon class="mr-2" @click="cancel">
+            <swap-button v-if="backIcon" icon class="mr-2" @click="cancel">
               <v-icon size="30">mdi-chevron-left</v-icon>
-            </v-btn>
+            </swap-button>
             {{ title }}
           </span>
-          <v-btn icon @click="cancel">
+          <swap-button icon @click="cancel">
             <v-icon size="32">mdi-close</v-icon>
-          </v-btn>
+          </swap-button>
         </header>
       </slot>
 

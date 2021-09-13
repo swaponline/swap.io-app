@@ -146,12 +146,12 @@ export default {
     min-width: 65px;
     min-height: 65px;
 
-    &:hover {
-      background: var(--main-color) !important;
+    &:before {
+      background-color: rgba($--black, 0.15);
+    }
 
-      &:before {
-        background-color: rgba($--black, 0.15) !important;
-      }
+    &:hover:before {
+      opacity: 1 !important;
     }
 
     @include tablet {

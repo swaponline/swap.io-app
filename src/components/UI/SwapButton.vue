@@ -16,7 +16,16 @@ export default {
   letter-spacing: initial;
   font-weight: $--font-weight-semi-bold;
 
-  &:not(.v-btn--round) {
+  &.theme--dark.v-btn:hover:before,
+  &.theme--light.v-btn:hover:before {
+    opacity: 1;
+  }
+
+  &.v-btn::before {
+    background-color: var(--main-button-background-hover);
+  }
+
+  &:not(.v-btn--round):not(.v-btn--tile) {
     border-radius: $--main-border-radius;
   }
 

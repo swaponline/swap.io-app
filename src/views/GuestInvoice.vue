@@ -226,6 +226,14 @@ export default {
   }
   &__button {
     margin-top: 20px;
+
+    &.v-btn::before {
+      background-color: rgba($--black, 0.15);
+    }
+
+    &:hover:before {
+      opacity: 1 !important;
+    }
   }
 }
 </style>

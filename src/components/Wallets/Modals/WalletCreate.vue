@@ -14,9 +14,9 @@
   >
     <div v-if="asBlock" class="wallet-create-modal__header">
       <div class="wallet-create-modal__title">{{ modalTitle }}</div>
-      <v-btn icon @click="close">
+      <swap-button icon @click="close">
         <v-icon size="32">mdi-close</v-icon>
-      </v-btn>
+      </swap-button>
     </div>
     <template v-if="!selectedCurrency">
       <form-text-field

@@ -171,6 +171,14 @@ export default {
     background-color: var(--main-color) !important;
     padding: 0 36px !important;
     margin-bottom: 100px;
+
+    &.v-btn::before {
+      background-color: rgba($--black, 0.15);
+    }
+
+    &:hover:before {
+      opacity: 1 !important;
+    }
   }
 }
 </style>
