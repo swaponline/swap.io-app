@@ -58,7 +58,7 @@
         easily settle and share invoices.</span
       >
 
-      <swap-button class="guest-invoice__button">Pay by Credit card via Partner</swap-button>
+      <swap-button large block class="guest-invoice__button">Pay by Credit card via Partner</swap-button>
     </div>
   </div>
 </template>
@@ -120,11 +120,6 @@ export default {
   &__action {
     background-color: var(--main-color) !important;
     color: $--white !important;
-    min-height: unset !important;
-
-    @include phone {
-      width: unset;
-    }
   }
 
   &__wrapper {
@@ -231,10 +226,6 @@ export default {
   }
   &__button {
     margin-top: 20px;
-    width: 100%;
-    span {
-      font-weight: $--font-weight-semi-bold;
-    }
   }
 }
 </style>

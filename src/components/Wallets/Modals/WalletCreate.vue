@@ -72,7 +72,7 @@
         </v-chip-group>
       </div>
 
-      <swap-button v-if="asBlock" :disabled="!selectedNetwork" class="wallet-create-modal__submit" @click="create"
+      <swap-button v-if="asBlock" large :disabled="!selectedNetwork" class="wallet-create-modal__submit" @click="create"
         >Create</swap-button
       >
     </template>
