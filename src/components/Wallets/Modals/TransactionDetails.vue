@@ -10,19 +10,7 @@
   >
     <div class="transaction-details">
       <form-indent title="Transaction hash:">
-        <swap-copy-wrapper>
-          <template #default="{ copy, tooltipOn }">
-            <button
-              class="transaction-details__copy-button"
-              type="button"
-              @click="copy(transaction.hash)"
-              v-on="tooltipOn"
-            >
-              {{ transaction.hash }}
-              <svg-icon name="copy" />
-            </button>
-          </template>
-        </swap-copy-wrapper>
+        <swap-copy-button :value="transaction.hash" :label="transaction.hash" />
       </form-indent>
 
       <form-indent v-if="status" title="Status">
@@ -44,7 +32,7 @@
           <swap-copy-wrapper>
             <template #default="{ copy, tooltipOn }">
               <swap-button
-                type="button"
+                small
                 class="transaction-details__copy-entry"
                 v-on="tooltipOn"
                 @click.stop="copy(JSON.stringify(transaction))"
@@ -187,24 +175,6 @@ export default {
 
 <style lang="scss">
 .transaction-details {
-  &__copy-button {
-    padding: 4px 0;
-    word-break: break-all;
-    text-align: left;
-    transition: 0.3s;
-    display: flex;
-    align-items: flex-start;
-    &:hover {
-      background: var(--main-button-background-hover);
-    }
-    svg {
-      flex-shrink: 0;
-      margin-left: 20px;
-      width: 16px;
-      height: 16px;
-    }
-  }
-
   &__divider {
     margin: 16px 0;
   }
@@ -214,23 +184,11 @@ export default {
   }
 
   &__copy-entry {
-    min-height: 0 !important;
-    min-width: 0 !important;
     letter-spacing: initial;
     margin-left: 8px;
     flex-grow: 0;
 
-    @include phone {
-      width: auto;
-    }
-
-    &.v-btn.v-size--default {
-      height: auto;
-      padding: 8px;
-    }
-
     .v-btn__content {
-      font-weight: $--font-weight-semi-bold;
       font-size: $--font-size-extra-small;
     }
   }

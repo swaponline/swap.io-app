@@ -14,11 +14,11 @@
         </div>
         <div class="create-or-recover__buttons">
           <div class="create-or-recover__buttons-controls">
-            <v-btn v-if="desktop" depressed class="create-or-recover__button" block @click="cancel">Cancel</v-btn>
-            <v-btn depressed class="create-or-recover__button" block @click="create">Create</v-btn>
+            <swap-button v-if="desktop" class="create-or-recover__button" block @click="cancel">Cancel</swap-button>
+            <swap-button class="create-or-recover__button" block @click="create">Create</swap-button>
           </div>
-          <v-btn text class="create-or-recover__button create-or-recover__button--text" block @click="goToRecover"
-            >Recover profile</v-btn
+          <swap-button text class="create-or-recover__button create-or-recover__button--text" block @click="goToRecover"
+            >Recover profile</swap-button
           >
         </div>
       </div>
@@ -119,14 +119,6 @@ export default {
     min-width: 174px !important;
     min-height: 48px;
     margin-bottom: 15px;
-    border-radius: $--main-border-radius;
-
-    .v-btn__content {
-      font-weight: $--font-weight-semi-bold;
-      font-size: $--font-size-button;
-      text-transform: none;
-      color: var(--primary-text);
-    }
 
     &--text {
       .v-btn__content {

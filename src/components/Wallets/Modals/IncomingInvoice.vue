@@ -17,7 +17,7 @@
         :total-amount="totalAmount"
       />
 
-      <swap-button class="incoming-invoice__button-pay">Pay</swap-button>
+      <swap-button large block class="incoming-invoice__button-pay">Pay</swap-button>
     </div>
   </modal-wrapper>
 </template>
@@ -82,7 +82,6 @@ export default {
   justify-content: space-between;
 
   &__button-pay {
-    width: 100%;
     margin-top: 24px;
     margin-bottom: 16px;
   }
