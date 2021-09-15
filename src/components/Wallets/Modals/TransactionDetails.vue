@@ -154,8 +154,8 @@ export default {
       this.mutationAddModal({
         name: SHARE_MODAL,
         info: {
-          data: this.transaction.hash,
-          type: 'transaction'
+          data: { value: this.transaction.hash, label: 'Hash' },
+          shareUrl: `${window.location.origin}/transaction/${this.transaction.hash}`
         }
       })
     },

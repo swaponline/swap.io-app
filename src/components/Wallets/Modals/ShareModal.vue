@@ -1,5 +1,5 @@
 <template>
-  <modal-wrapper value title="Share" @input="close" @cancel="close">
+  <modal-wrapper value :title="title" :back-icon="backIcon" @input="close" @cancel="close">
     <div class="share-modal">
       <div class="share-modal__wrapper">
         <img class="share-modal__qr-image" :src="qrCodeSrc" />
@@ -24,9 +24,9 @@
         </div>
       </div>
 
-      <div class="share-modal__info">
-        <form-indent class="share-modal__indent" :title="isWallet ? 'Wallet id' : 'Hash'">
-          <swap-copy-button :value="data" :label="data" />
+      <div v-if="data" class="share-modal__info">
+        <form-indent class="share-modal__indent" :title="data.label">
+          <swap-copy-button :value="data.value" :label="data.value" />
         </form-indent>
       </div>
     </div>
@@ -54,8 +54,10 @@ export default {
   components: { ModalWrapper, FormIndent },
   SOCIALS,
   props: {
-    type: { type: String, default: '' },
-    data: { type: String, default: '' }
+    data: { type: Object, default: null },
+    shareUrl: { type: String, required: true },
+    title: { type: String, default: 'Share' },
+    backIcon: { type: Boolean, default: false }
   },
   data() {
     return {
@@ -63,25 +65,16 @@ export default {
     }
   },
   computed: {
-    isWallet() {
-      return this.type === 'wallet'
-    },
     qrCodeSrc() {
       const qr = new QRCode(0, 'M')
       qr.addData(this.shareUrl)
       qr.make()
       return qr.createDataURL(4, 0)
-    },
-    shareUrl() {
-      return `${window.location.origin}/${this.type}/${this.data}`
     }
   },
   methods: {
     close() {
       this.$emit('close')
-    },
-    clickSocial(name) {
-      console.log('shareSocial', name)
     },
     systemShare() {
       navigator.share({
@@ -119,6 +112,7 @@ $--color-whatsapp: #25d366;
   &__indent--url {
     max-width: 400px;
     width: 100%;
+    padding: 12px;
   }
 
   &__url {
