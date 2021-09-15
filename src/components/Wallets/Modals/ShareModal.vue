@@ -24,7 +24,7 @@
         </div>
       </div>
 
-      <div v-if="data" class="share-modal__info">
+      <div v-if="hasData" class="share-modal__info">
         <form-indent class="share-modal__indent" :title="data.label">
           <swap-copy-button :value="data.value" :label="data.value" />
         </form-indent>
@@ -49,14 +49,16 @@ const SOCIALS = [
   { name: 'whatsapp', link: 'https://web.whatsapp.com/send?text=' }
 ]
 
+const DEFAULT_TITLE = 'Share'
+
 export default {
   name: 'ShareModal',
   components: { ModalWrapper, FormIndent },
   SOCIALS,
   props: {
-    data: { type: Object, default: null },
+    data: { type: Object, default: () => {} },
     shareUrl: { type: String, required: true },
-    title: { type: String, default: 'Share' },
+    title: { type: String, default: DEFAULT_TITLE },
     backIcon: { type: Boolean, default: false }
   },
   data() {
@@ -70,6 +72,9 @@ export default {
       qr.addData(this.shareUrl)
       qr.make()
       return qr.createDataURL(4, 0)
+    },
+    hasData() {
+      return this.data?.value
     }
   },
   methods: {
