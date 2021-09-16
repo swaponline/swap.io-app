@@ -92,8 +92,8 @@ export default {
       this.mutationAddModal({
         name: SHARE_MODAL,
         info: {
-          type: 'wallet',
-          data: this.walletAddress
+          data: { value: this.walletAddress, label: 'Wallet id:' },
+          shareUrl: `${window.location.origin}/wallet/${this.walletAddress}`
         }
       })
     },
