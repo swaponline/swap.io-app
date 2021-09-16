@@ -11,34 +11,35 @@
       <slot name="header">
         <header v-if="title" class="modal-wrapper__title" :class="{ 'modal-wrapper__title--with-back': backIcon }">
           <span>
-            <v-btn v-if="backIcon" icon class="mr-2" @click="cancel">
+            <swap-button v-if="backIcon" icon class="mr-2" @click="cancel">
               <v-icon size="30">mdi-chevron-left</v-icon>
-            </v-btn>
+            </swap-button>
             {{ title }}
           </span>
-          <v-btn icon @click="cancel">
+          <swap-button icon @click="cancel">
             <v-icon size="32">mdi-close</v-icon>
-          </v-btn>
+          </swap-button>
         </header>
       </slot>
 
       <slot></slot>
 
-      <slot name="footer">
-        <div class="modal-wrapper__footer">
-          <swap-button v-if="cancelButtonLabel" class="modal-wrapper__button" type="button" @click="cancel">
-            {{ cancelButtonLabel }}
-          </swap-button>
-          <swap-button
-            v-if="confirmButtonLabel"
-            class="modal-wrapper__button"
-            :disabled="disableConfirmButton"
-            type="submit"
-          >
-            {{ confirmButtonLabel }}
-          </swap-button>
-        </div>
-      </slot>
+      <div class="modal-wrapper__footer">
+        <slot name="footer">
+          <v-row dense>
+            <v-col v-if="cancelButtonLabel" align-self="end">
+              <swap-button block large @click="cancel">
+                {{ cancelButtonLabel }}
+              </swap-button>
+            </v-col>
+            <v-col v-if="confirmButtonLabel" align-self="end">
+              <swap-button block large :disabled="disableConfirmButton" type="submit">
+                {{ confirmButtonLabel }}
+              </swap-button>
+            </v-col>
+          </v-row>
+        </slot>
+      </div>
     </form>
   </v-dialog>
 </template>
@@ -73,6 +74,7 @@ export default {
   height: 100%;
   max-height: calc(var(--vh, 1vh) * 100) !important;
   width: 40%;
+  max-width: 650px;
   margin-left: auto;
   border-radius: 0;
   overflow: auto;
@@ -130,22 +132,7 @@ export default {
   }
 
   &__footer {
-    margin: auto -8px 0;
-
-    @include phone {
-      margin: auto -4px 0;
-    }
-  }
-
-  &__button {
-    width: calc(50% - 16px);
-    margin: auto 8px 0;
-
-    @include phone {
-      min-width: 0 !important;
-      width: calc(50% - 8px);
-      margin: auto 4px 0;
-    }
+    margin-top: auto;
   }
 }
 </style>
