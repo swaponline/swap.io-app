@@ -18,11 +18,11 @@
         <v-select
           v-model="invoiceType"
           return-object
+          height="42"
           item-text="label"
           item-value="id"
           class="invoice-form__long-field invoice-form__item-select"
           hide-details
-          item-color
           dense
           flat
           filled
@@ -32,7 +32,7 @@
         />
         <v-select
           v-model="currency"
-          item-color
+          height="42"
           hide-details
           dense
           flat
@@ -43,7 +43,7 @@
           class="invoice-form__short-field invoice-form__item-select"
         />
 
-        <v-btn class="invoice-form__add-button" depressed @click="addAmountField">Add item</v-btn>
+        <swap-button class="invoice-form__add-button" @click="addAmountField">Add item</swap-button>
       </div>
 
       <div v-for="(field, index) in amountFields" :key="index" class="invoice-form__item">
@@ -84,7 +84,7 @@
 
     <invoice-preview
       v-if="step === 2"
-      :address="selectedWallet.address"
+      :address="selectedWallet"
       :contact="contact"
       :fields="amountFields"
       :currency="currency"
@@ -98,7 +98,11 @@ import FormTextField from '@/components/UI/Forms/TextField.vue'
 import ModalWrapper from '@/components/UI/ModalWrapper.vue'
 import WalletSelector from '@/components/Wallets/WalletSelector.vue'
 
+import { mapMutations } from 'vuex'
+import { ADD_MODAL } from '@/store/modules/Modals'
+import { SHARE_MODAL } from '@/store/modules/Modals/names'
 import { fiatCurrencies, convertAmountToOtherCurrency } from '@/services/converter'
+import { encodeObjectToQueryParameters } from '@/utils/http'
 import InvoicePreview from './Preview.vue'
 
 const INVOICE_TYPES = [
@@ -146,6 +150,19 @@ export default {
       return this.selectedWallet
         ? convertAmountToOtherCurrency(this.sumAmount, this.selectedWallet.currencyName, this.currency)
         : 0
+    },
+    shareUrl() {
+      // Example: bitcoincash:qp0qca2j3jey9af7x69r6ata6wlnxz90sqhyzxdsvu?amount=1&message=test%20me%20please
+      const params = {
+        address: this.selectedWallet.address,
+        contact: this.contact,
+        currency: this.selectedWallet.currencyName,
+        description: this.amountFields.map(f => f.description || ''),
+        amount: this.amountFields.map(f => f.amount)
+      }
+      const queryParams = encodeObjectToQueryParameters(params)
+
+      return `${window.location.origin}/invoice?${queryParams}`
     }
   },
   created() {
@@ -155,6 +172,9 @@ export default {
   },
   methods: {
     convertAmountToOtherCurrency,
+    ...mapMutations({
+      mutationAddModal: ADD_MODAL
+    }),
 
     hide() {
       this.$emit('toggle', false)
@@ -174,8 +194,18 @@ export default {
         return
       }
       if (this.step === 2) {
-        this.$emit('close-all')
+        this.openShareModal()
       }
+    },
+    openShareModal() {
+      this.mutationAddModal({
+        name: SHARE_MODAL,
+        info: {
+          title: 'Invoice',
+          shareUrl: this.shareUrl,
+          backIcon: true
+        }
+      })
     },
     resetState() {
       if (!this.address) {
@@ -251,16 +281,8 @@ export default {
     }
   }
   &__add-button {
-    background-color: var(--main-button-background) !important;
-    font-weight: $--font-weight-semi-bold;
-    border-radius: $--main-border-radius;
-    text-transform: none;
     flex: 1 0 140px;
-    height: 40px !important;
     margin-left: 8px;
-    span {
-      color: var(--primary-text);
-    }
     @include phone {
       margin: 8px 0 0;
       flex: 0 0 100%;
@@ -269,7 +291,7 @@ export default {
   &__item {
     display: flex;
     align-items: center;
-    margin-bottom: 52px;
+    margin-bottom: 20px;
     &:not(:last-of-type) {
       margin-bottom: 12px;
     }
