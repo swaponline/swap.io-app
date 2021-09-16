@@ -28,21 +28,12 @@ export default {
     }
   },
 
-  computed: {
-    getCurrentUserTheme() {
-      const usersThemes = getStorage('usersThemes')
-      const currentAccountId = getStorage('currentAccount')
-
-      return usersThemes.filter(userTheme => userTheme.accountId === currentAccountId)[0]
-    }
-  },
-
   watch: {
     selectedTheme: {
       handler(theme) {
         setStorage(THEME_KEY, theme)
 
-        const { color, colorForDarkTheme } = this.getCurrentUserTheme
+        const { color, colorForDarkTheme } = this.getCurrentUserTheme()
 
         let appTheme = theme
         if (theme === SYSTEM_THEME_KEY) {
@@ -52,19 +43,28 @@ export default {
         if (appTheme === LIGHT_THEME_KEY) {
           this.$vuetify.theme.light = true
           this.$vuetify.theme.dark = false
-          setCSSCustomProperty('--main-color', color)
+          setCSSCustomProperty('main-color', color)
         }
 
         if (appTheme === DARK_THEME_KEY) {
           this.$vuetify.theme.dark = true
           this.$vuetify.theme.light = false
-          setCSSCustomProperty('--main-color', colorForDarkTheme)
+          setCSSCustomProperty('main-color', colorForDarkTheme)
         }
       }
     }
   },
   created() {
     this.selectedTheme = getStorage(THEME_KEY) || SYSTEM_THEME_KEY
+  },
+
+  methods: {
+    getCurrentUserTheme() {
+      const usersThemes = getStorage('usersThemes')
+      const currentAccountId = getStorage('currentAccount')
+
+      return usersThemes.filter(userTheme => userTheme.accountId === currentAccountId)[0]
+    }
   }
 }
 </script>

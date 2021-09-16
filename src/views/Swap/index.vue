@@ -230,6 +230,7 @@ export default {
   &__swap-icon {
     width: 22px;
     height: 22px;
+    color: var(--main-icon-color);
   }
 
   &__info {
