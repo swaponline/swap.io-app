@@ -32,5 +32,5 @@ export function getDistance(pointA, pointB) {
 }
 
 export function setCSSCustomProperty(propertyName, value) {
-  document.documentElement.style.setProperty(propertyName, value)
+  document.documentElement.style.setProperty(`--${propertyName}`, value)
 }

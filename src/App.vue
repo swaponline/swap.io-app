@@ -110,10 +110,10 @@ export default {
       } else {
         vh = window.innerHeight * 0.01
       }
-      setCSSCustomProperty('--vh', `${vh}px`)
+      setCSSCustomProperty('vh', `${vh}px`)
 
       const vw = window.innerWidth * 0.01
-      setCSSCustomProperty('--vw', `${vw}`)
+      setCSSCustomProperty('vw', `${vw}`)
 
       this.setBackground()
     },
@@ -150,17 +150,17 @@ export default {
       const { colorForDarkTheme, color, selectionColor, background } = theme
 
       if (this.$vuetify.theme.dark) {
-        setCSSCustomProperty('--main-color', colorForDarkTheme)
+        setCSSCustomProperty('main-color', colorForDarkTheme)
       } else {
-        setCSSCustomProperty('--main-color', color)
+        setCSSCustomProperty('main-color', color)
       }
 
-      setCSSCustomProperty('--selection-color', selectionColor)
+      setCSSCustomProperty('selection-color', selectionColor)
 
       if (background.includes('linear-gradient')) {
-        setCSSCustomProperty('--background-app', background)
+        setCSSCustomProperty('background-app', background)
       } else {
-        setCSSCustomProperty('--background-app', '')
+        setCSSCustomProperty('background-app', '')
         this.$nextTick(() => this.setBackground(background))
       }
     },
