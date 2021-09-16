@@ -3,17 +3,22 @@
     <form-indent class="transaction-entry">
       <div class="transaction-entry__column">
         <span class="transaction-entry__title">{{ title }}</span>
-        <swap-copy-button v-if="canCopy" :value="wallet" small>
-          <div class="transaction-entry__wallet">
-            <cryptoicon
-              v-if="currency"
-              class="transaction-entry__currency-icon"
-              :symbol="currency.toLowerCase()"
-              size="14"
-            />
-            <span>{{ wallet }}</span>
-          </div>
-        </swap-copy-button>
+        <swap-copy-wrapper v-if="canCopy">
+          <template #default="{ copy, tooltipOn }">
+            <button class="transaction-entry__copy-button" type="button" v-on="tooltipOn" @click="copy(wallet)">
+              <div class="transaction-entry__wallet">
+                <cryptoicon
+                  v-if="currency"
+                  class="transaction-entry__currency-icon"
+                  :symbol="currency.toLowerCase()"
+                  size="14"
+                />
+                <span>{{ wallet }}</span>
+                <svg-icon class="transaction-entry__copy-icon" name="copy" />
+              </div>
+            </button>
+          </template>
+        </swap-copy-wrapper>
         <div v-else class="transaction-entry__wallet">
           <cryptoicon
             v-if="currency"
@@ -25,9 +30,7 @@
         </div>
       </div>
       <transition name="fade" mode="out-in">
-        <swap-button v-if="hover && editable" text small class="transaction-entry__edit" @click="editEntry">
-          Edit
-        </swap-button>
+        <button v-if="hover && editable" class="transaction-entry__edit" @click="editEntry">Edit</button>
         <div v-else class="transaction-entry__column transaction-entry__column--right">
           <span class="transaction-entry__value" :class="{ 'transaction-entry__value--expense': isExpense }"
             >{{ getValue(value) }} {{ currency }}</span
@@ -40,13 +43,14 @@
 </template>
 
 <script>
+import SwapCopyWrapper from '@/components/UI/SwapCopyWrapper.vue'
 import FormIndent from '@/components/UI/Forms/Indent.vue'
 
 import { convertToDecimalNotation } from '@/utils/common'
 
 export default {
   name: 'TrnasactionEntry',
-  components: { FormIndent },
+  components: { FormIndent, SwapCopyWrapper },
   props: {
     wallet: { type: String, default: '' },
     value: { type: [Number, String], default: 0 },
@@ -90,7 +94,6 @@ export default {
 .transaction-entry {
   display: flex;
   justify-content: space-between;
-  align-items: center;
   font-weight: $--font-weight-semi-bold;
   font-size: $--font-size-base;
   line-height: 19px;
@@ -120,6 +123,20 @@ export default {
     flex-shrink: 0;
   }
 
+  &__copy-button {
+    text-align: left;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  &__copy-icon {
+    width: 14px;
+    height: 14px;
+    margin-left: 8px;
+    flex-shrink: 0;
+  }
+
   &__sum {
     color: $--grey-3;
     white-space: nowrap;
@@ -132,6 +149,10 @@ export default {
 
   &__value--expense {
     color: $--text-color-error;
+  }
+
+  &__edit {
+    color: $--grey-3;
   }
 
   .fade-enter-active,

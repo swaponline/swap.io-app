@@ -13,11 +13,12 @@ import Canvg from 'canvg'
 import { getFaviconInColorFTheme } from '@/utils/favicon'
 import { NotificationInTabTitle } from '@/services/notificationInTabTitle'
 import { pluralizeNumeral } from '@/utils/pluralization'
-import { getUserSystemTheme } from '@/utils/theme'
-import { setCSSCustomProperty } from '@/utils/common'
 import messageHandler from './messageHandler'
 import { getStorage } from './utils/storage'
 import { DARK_THEME_KEY, LIGHT_THEME_KEY, SYSTEM_THEME_KEY, THEME_KEY } from './constants/theme'
+import { getUserSystemTheme } from './utils/theme'
+
+const FAVICON_REDRAWING_TIME = 290
 
 const queries = {
   desktop: '(min-width: 1281px)',
@@ -32,7 +33,8 @@ export default {
   },
   data() {
     return {
-      queries
+      queries,
+      backgroundSvg: null
     }
   },
   computed: {
@@ -53,10 +55,22 @@ export default {
       handler(theme) {
         if (!theme) return
 
-        const { color } = theme
+        const { color, selectionColor, background } = theme
         this.setFavicon(color)
         this.setColorThemeOfAddressBar(color)
-        this.setCustomColorCSSVariables(theme)
+
+        setTimeout(() => {
+          document.documentElement.style.setProperty('--main-color', color)
+          document.documentElement.style.setProperty('--selection-color', selectionColor)
+        }, FAVICON_REDRAWING_TIME)
+
+        if (background.includes('linear-gradient')) {
+          document.documentElement.style.setProperty('--background-app', background)
+        } else {
+          document.documentElement.style.setProperty('--background-app', '')
+          this.backgroundSvg = background
+          this.$nextTick(() => this.setBackground())
+        }
       }
     }
   },
@@ -110,14 +124,15 @@ export default {
       } else {
         vh = window.innerHeight * 0.01
       }
-      setCSSCustomProperty('vh', `${vh}px`)
+      document.documentElement.style.setProperty('--vh', `${vh}px`)
 
       const vw = window.innerWidth * 0.01
-      setCSSCustomProperty('vw', `${vw}`)
+      document.documentElement.style.setProperty('--vw', `${vw}`)
 
       this.setBackground()
     },
-    setBackground(backgroundSvg) {
+    setBackground() {
+      const { backgroundSvg } = this
       if (!backgroundSvg) return
 
       const canvas = this.$refs.backgroundCanvas
@@ -145,24 +160,6 @@ export default {
       const dynamicSvgFavicon = document.querySelector(attributeFaviconSvg)
 
       dynamicSvgFavicon.setAttribute('href', `${faviconBase64}`)
-    },
-    setCustomColorCSSVariables(theme) {
-      const { colorForDarkTheme, color, selectionColor, background } = theme
-
-      if (this.$vuetify.theme.dark) {
-        setCSSCustomProperty('main-color', colorForDarkTheme)
-      } else {
-        setCSSCustomProperty('main-color', color)
-      }
-
-      setCSSCustomProperty('selection-color', selectionColor)
-
-      if (background.includes('linear-gradient')) {
-        setCSSCustomProperty('background-app', background)
-      } else {
-        setCSSCustomProperty('background-app', '')
-        this.$nextTick(() => this.setBackground(background))
-      }
     },
     setColorThemeOfAddressBar(color) {
       const colorThemeOfAddressBar = document.querySelector('meta[name="theme-color"]')

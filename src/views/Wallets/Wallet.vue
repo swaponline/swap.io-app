@@ -169,15 +169,15 @@ export default {
   &__create-new-button {
     color: $--white !important;
     background-color: var(--main-color) !important;
+    min-height: 45px;
     padding: 0 36px !important;
     margin-bottom: 100px;
 
-    &.v-btn::before {
-      background-color: rgba($--black, 0.15);
-    }
-
-    &:hover:before {
-      opacity: 1 !important;
+    &:hover {
+      background-color: var(--main-color) !important;
+      &:before {
+        background-color: rgba($--black, 0.15) !important;
+      }
     }
   }
 }

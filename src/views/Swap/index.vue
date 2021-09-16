@@ -10,33 +10,35 @@
       <div class="swap-form__row">
         <form-text-field class="swap-form__input" hide-details label="From">
           <template #form-field-append>
-            <swap-button small @click="selectWallet('from')">
+            <v-btn depressed small class="swap-form__input-button" @click="selectWallet('from')">
               <template v-if="!from">Select wallet</template>
               <template v-else>
                 <cryptoicon :symbol="from.currencyName.toLowerCase()" size="17" class="swap-form__button-icon" />
                 <span class="swap-form__button-currency">{{ from.currencyName.toUpperCase() }}</span>
                 <span class="swap-form__button-name">{{ from.name || minifyAddress(from.address) }}</span>
               </template>
-            </swap-button>
+            </v-btn>
           </template>
         </form-text-field>
       </div>
 
       <div class="swap-form__row">
-        <swap-button icon @click="swapWallet"><svg-icon class="swap-form__swap-icon" name="swap"/></swap-button>
+        <v-btn class="swap-form__swap-button" icon height="auto" min-height="none" @click="swapWallet">
+          <svg-icon class="swap-form__swap-icon" name="swap" />
+        </v-btn>
       </div>
 
       <div class="swap-form__row">
         <form-text-field class="swap-form__input" hide-details label="To">
           <template #form-field-append>
-            <swap-button small @click="selectWallet('to')">
+            <v-btn depressed small class="swap-form__input-button" @click="selectWallet('to')">
               <template v-if="!to">Select wallet</template>
               <template v-else>
                 <cryptoicon :symbol="to.currencyName.toLowerCase()" size="17" class="swap-form__button-icon" />
                 <span class="swap-form__button-currency">{{ to.currencyName.toUpperCase() }}</span>
                 <span class="swap-form__button-name">{{ to.name || minifyAddress(to.address) }}</span>
               </template>
-            </swap-button>
+            </v-btn>
           </template>
         </form-text-field>
       </div>
@@ -73,9 +75,7 @@
         <v-divider />
       </div>
 
-      <swap-button :large="!mediaQueries.phone" type="submit" class="swap-form__button" :disabled="!from || !to"
-        >Swap</swap-button
-      >
+      <swap-button type="submit" class="swap-form__button" :disabled="!from || !to">Swap</swap-button>
     </form>
 
     <swap-select-wallet-dialog :value.sync="isSelectWalletDialogVisible" @select="handleSelectedWallet" />
@@ -91,7 +91,7 @@ import { minifyAddress } from '@/utils/common'
 export default {
   name: 'Swap',
   components: { FormTextField, SwapSelectWalletDialog },
-  inject: ['mediaQueries'],
+
   data() {
     return {
       to: null,
@@ -214,6 +214,13 @@ export default {
     margin-bottom: 0;
     height: 54px;
   }
+  &__input-button {
+    padding: 0 8px !important;
+    text-transform: unset;
+    font-size: $--font-size-base !important;
+    font-weight: $--font-weight-semi-bold;
+    letter-spacing: 0;
+  }
   &__button-icon {
     margin-right: 4px;
   }
@@ -227,10 +234,13 @@ export default {
     height: 32px;
   }
 
+  &__swap-button {
+    padding: 5px 0;
+    background-color: transparent !important;
+  }
   &__swap-icon {
     width: 22px;
     height: 22px;
-    color: var(--main-icon-color);
   }
 
   &__info {
@@ -259,9 +269,11 @@ export default {
   &__button {
     margin-top: auto;
     width: 100%;
-
     @include phone {
-      height: 42px;
+      min-height: 52px;
+    }
+    @include phone {
+      min-height: 42px;
     }
   }
 }

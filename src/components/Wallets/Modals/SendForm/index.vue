@@ -35,8 +35,8 @@
         :hint="listRecipientHint"
         hide-details
         class="send-form__textarea rounded-lg"
-        placeholder="Enter a list of outputs in the 'Pay to' field.
-  One output per line.
+        placeholder="Enter a list of outputs in the 'Pay to' field. 
+  One output per line. 
   Format: address, amount"
       ></v-textarea>
 
@@ -96,9 +96,9 @@
 
         <v-tooltip top>
           <template v-slot:activator="{ on }">
-            <swap-button v-if="!hasMemo" small class="send-form__add-memo" @click="hasMemo = true" v-on="on">
+            <v-btn v-if="!hasMemo" small depressed class="send-form__add-memo" @click="hasMemo = true" v-on="on">
               <v-icon color="grey lighten-1" small class="mr-1">mdi-bookmark</v-icon>Add a memo
-            </swap-button>
+            </v-btn>
           </template>
           <span>You will see it in the tx history (not the recipient)</span>
         </v-tooltip>
@@ -394,8 +394,9 @@ export default {
   }
   &__add-memo {
     margin-bottom: 30px;
+    text-transform: none;
     padding: 0 8px !important;
-    font-size: $--font-size-small !important;
+    letter-spacing: 0 !important;
   }
 }
 </style>

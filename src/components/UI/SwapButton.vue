@@ -1,59 +1,66 @@
 <template>
   <v-btn class="swap-button" depressed v-bind="$attrs" v-on="$listeners">
-    <slot />
+    <slot></slot>
   </v-btn>
 </template>
 
 <script>
 export default {
-  name: 'SwapButton'
+  name: 'SwapButton',
+  inheritAttrs: false
 }
 </script>
 
 <style lang="scss">
+.v-btn {
+  background-color: var(--main-button-background-hover) !important;
+
+  &::before {
+    opacity: 1 !important;
+    background-color: transparent;
+  }
+
+  &:hover {
+    background-color: var(--main-button-background-hover) !important;
+
+    &::before {
+      opacity: 1 !important;
+    }
+  }
+}
+
 .swap-button {
+  min-height: 52px;
+  min-width: 142px !important;
+  border-radius: $--main-border-radius;
   text-transform: none;
-  letter-spacing: initial;
-  font-weight: $--font-weight-semi-bold;
+  background-color: var(--main-button-background) !important;
 
-  &.theme--dark.v-btn:hover:before,
-  &.theme--light.v-btn:hover:before {
-    opacity: 1;
+  --text-color: $--black;
+
+  &:disabled {
+    // обходим vuetify
+    &.v-btn.v-btn--depressed.v-btn--disabled {
+      ///
+    }
+
+    --text-color: $--dark-grey;
   }
 
-  &.v-btn::before {
-    background-color: var(--main-button-background-hover);
-  }
-
-  &:not(.v-btn--round):not(.v-btn--tile) {
-    border-radius: $--main-border-radius;
-  }
-
-  &.v-btn.theme--dark.v-btn--has-bg,
-  &.v-btn.theme--light.v-btn--has-bg {
-    background-color: var(--main-button-background);
-  }
-
-  &:not(.v-btn--round).v-size--default {
-    height: 42px;
+  > span {
+    color: var(--text-color);
+    font-weight: $--font-weight-bold;
     font-size: $--font-size-button;
   }
 
-  &:not(.v-btn--round).v-size--small {
-    height: 31px;
-    border-radius: $--border-radius-small;
-    padding: 0 10px;
-    font-size: $--font-size-base;
-  }
+  @include phone {
+    width: 100%;
+    min-height: 45px;
 
-  &.v-btn--fab.v-size--small {
-    height: 36px;
-    width: 36px;
-  }
-
-  &:not(.v-btn--round).v-size--large {
-    height: 52px;
-    font-size: $--font-size-button;
+    > span {
+      font-weight: $--font-weight-bold;
+      font-size: $--font-size-medium;
+    }
   }
 }
 </style>

@@ -30,12 +30,12 @@
     </span>
     <div class="security-info-block__buttons">
       <div class="security-info-block__buttons-group">
-        <swap-button v-if="desktop" class="security-info-block__button" @click="back">Back</swap-button>
-        <swap-button class="security-info-block__button" @click="$emit('next')">{{ nameButton }}</swap-button>
+        <v-btn v-if="desktop" depressed class="security-info-block__button" @click="back">Back</v-btn>
+        <v-btn depressed class="security-info-block__button" @click="$emit('next')">{{ nameButton }}</v-btn>
       </div>
 
-      <swap-button text class="security-info-block__button security-info-block__button--skip" @click="$emit('skip')"
-        >Skip introduction</swap-button
+      <v-btn text class="security-info-block__button security-info-block__button--skip" @click="$emit('skip')"
+        >Skip introduction</v-btn
       >
     </div>
   </match-media>
@@ -216,7 +216,10 @@ export default {
     width: 100%;
     max-width: 174px;
     min-height: 48px;
+    font-weight: $--font-weight-semi-bold;
     font-size: $--font-size-button;
+    border-radius: $--main-border-radius;
+    text-transform: none;
 
     .v-btn__content {
       color: var(--primary-text);

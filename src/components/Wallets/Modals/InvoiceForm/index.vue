@@ -64,9 +64,9 @@
           :label="invoiceType.labelItemPrice"
         />
 
-        <swap-button icon class="invoice-form__remove-button" min-width="20" @click="removeField(field)">
+        <v-btn depressed icon class="invoice-form__remove-button" min-width="20" @click="removeField(field)">
           <v-icon>mdi-close</v-icon>
-        </swap-button>
+        </v-btn>
       </div>
 
       <v-divider></v-divider>
@@ -288,6 +288,10 @@ export default {
   &__remove-button {
     color: $--grey !important;
     margin-left: 8px;
+    padding: 0 0 !important;
+    @include tablet {
+      margin-left: 8px !important;
+    }
   }
   &__amount {
     display: flex;

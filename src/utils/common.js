@@ -31,12 +31,10 @@ export function getDistance(pointA, pointB) {
   return Math.sqrt(cat1 * cat1 + cat2 * cat2)
 }
 
-export function setCSSCustomProperty(propertyName, value) {
-  document.documentElement.style.setProperty(`--${propertyName}`, value)
-}
 export function convertToDecimalNotation(value, decimals) {
   return value * 10 ** (decimals * -1)
 }
+
 export function convertToScientificNotation(value, decimals) {
   return value * 10 ** decimals
 }

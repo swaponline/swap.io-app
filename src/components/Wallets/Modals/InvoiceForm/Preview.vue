@@ -42,13 +42,14 @@
       </div>
 
       <div class="invoice-preview__actions">
-        <swap-copy-wrapper #default="{ copy, tooltipOn }">
-          <swap-button large class="invoice-preview__action" @click="copy(shareUrl)" v-on="tooltipOn"
-            >Copy link</swap-button
-          >
-        </swap-copy-wrapper>
+        <v-tooltip v-model="copyTooltip.value" top :open-on-hover="false">
+          <template #activator="{}">
+            <swap-button class="invoice-preview__action" @click="copyLink">Copy link</swap-button>
+          </template>
+          <span>Copied</span>
+        </v-tooltip>
 
-        <swap-button large class="invoice-preview__action">Send</swap-button>
+        <swap-button class="invoice-preview__action">Send</swap-button>
       </div>
     </div>
   </div>
@@ -56,6 +57,7 @@
 
 <script>
 import { encodeObjectToQueryParameters } from '@/utils/http'
+import copy from '@/utils/copy'
 import QRCode from 'qrcode-generator'
 
 export default {
@@ -66,6 +68,14 @@ export default {
     fields: { type: Array, required: true },
     currency: { type: String, required: true },
     totalAmount: { type: [String, Number], required: true }
+  },
+  data() {
+    return {
+      copyTooltip: {
+        value: false,
+        timer: 0
+      }
+    }
   },
   computed: {
     qrCodeSrc() {
@@ -86,6 +96,23 @@ export default {
       const queryParams = encodeObjectToQueryParameters(params)
 
       return `${window.location.origin}/invoice?${queryParams}`
+    }
+  },
+  methods: {
+    copyLink() {
+      copy(this.shareUrl)
+        .then(() => {
+          this.copyTooltip.value = true
+          if (this.copyTooltip.timer) {
+            clearTimeout(this.copyTooltip.timer)
+          }
+          this.copyTooltip.timer = setTimeout(() => {
+            this.copyTooltip.value = false
+          }, 1500)
+        })
+        .catch(err => {
+          console.log('Значение не скопировано', err)
+        })
     }
   }
 }

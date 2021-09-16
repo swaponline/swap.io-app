@@ -6,9 +6,9 @@
           {{ dialogTitle }}
         </span>
 
-        <swap-button icon @click="close">
+        <v-btn icon class="select-wallet__close" @click="close">
           <v-icon size="26">mdi-close</v-icon>
-        </swap-button>
+        </v-btn>
       </v-card-title>
 
       <v-card-text class="select-wallet__body">
@@ -19,7 +19,7 @@
             class="select-wallet__input"
           />
 
-          <swap-button small class="select-wallet__button" @click="openExternalWallet">Use external wallet</swap-button>
+          <v-btn small depressed class="select-wallet__button" @click="openExternalWallet">Use external wallet</v-btn>
 
           <div class="select-wallet__list">
             <wallet-preview
@@ -63,11 +63,7 @@
             />
           </div>
 
-          <swap-button
-            :disabled="isExternalSubmitDisabled"
-            large
-            class="select-wallet__submit"
-            @click="submitExternalWallet"
+          <swap-button :disabled="isExternalSubmitDisabled" class="select-wallet__submit" @click="submitExternalWallet"
             >Use external wallet</swap-button
           >
         </template>
@@ -191,10 +187,17 @@ export default {
     font-size: $--font-size-extra-small-subtitle !important;
     font-weight: $--font-weight-semi-bold !important;
   }
+  &__close {
+    background-color: transparent !important;
+  }
   &__input {
     margin-bottom: 16px;
   }
   &__button {
+    text-transform: unset;
+    font-size: $--font-size-base !important;
+    font-weight: $--font-weight-semi-bold;
+    letter-spacing: 0;
     margin-bottom: 20px;
     align-self: flex-start;
   }
