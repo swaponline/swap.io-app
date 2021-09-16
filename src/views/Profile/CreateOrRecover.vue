@@ -14,10 +14,8 @@
         </div>
         <div class="create-or-recover__buttons">
           <div class="create-or-recover__buttons-row">
-            <swap-button v-if="desktop" depressed class="create-or-recover__button" block @click="cancel"
-              >Cancel</swap-button
-            >
-            <swap-button depressed class="create-or-recover__button" block @click="create">Create</swap-button>
+            <swap-button v-if="desktop" class="create-or-recover__button" block @click="cancel">Cancel</swap-button>
+            <swap-button class="create-or-recover__button" block @click="create">Create</swap-button>
           </div>
           <swap-button text class="create-or-recover__button create-or-recover__button--text" block @click="goToRecover"
             >Recover profile</swap-button
@@ -131,13 +129,6 @@ export default {
     @include tablet {
       margin: 0 0 15px;
       width: 100%;
-    }
-
-    .v-btn__content {
-      font-weight: $--font-weight-semi-bold;
-      font-size: $--font-size-button;
-      text-transform: none;
-      color: var(--primary-text);
     }
 
     &--text {

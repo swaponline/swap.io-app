@@ -1,23 +1,20 @@
 [
    {
-    "from": "0x912fD21d7a69678227fE6d08C64222Db41477bA0",
-    "gas": 50000,
+    "to": "0x912fD21d7a69678227fE6d08C64222Db41477bA0",
     "hash": "0x145c825c8dd86fdba9a4f24621476687d7f6f4ae63c4dbd5aa34aaed4d175505",
     "nonce": 216196,
-    "to": "0xd19615f2Eab2ABfBF7ca16618b5eD43386374DD0",
+    "from": "0xd19615f2Eab2ABfBF7ca16618b5eD43386374DD0",
     "transactionIndex": 132,
     "value": 1054587495211383622,
-    "gas_used": 21000,
     "block_hash": "0x1f3e79f5fc5818cc7a3af2a5ad536cf9963cbb9bda3d5ef7217525df39e418ee",
     "block_number": 11259925,
-    "gas_price": 18000000000,
-    "timestamp": 1605410399,
+    "timestamp": 1608628830339,
     "block_miner": "0xEA674fdDe714fd979de3EdF0F56AA9716B898ec8",
     "journal": [
      {
       "asset": {
-       "symbol": "ETH",
-       "name": "Ethereum",
+       "symbol": "BTC",
+       "name": "Bitcoin",
        "decimals": 18,
        "rate": {
         "symbol": "USD",
@@ -34,7 +31,7 @@
         "value": 1054587495211383622
        },
        {
-        "wallet": "0x912fD21d7a69678227fE6d08C64222Db41477bA0",
+        "wallet": "0xd19615f2Eab2ABfBF7ca16618b5eD43386374DD0",
         "label": "Transaction fee",
         "value": -378000000000000
        },

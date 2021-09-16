@@ -10,6 +10,7 @@
         v-bind="item"
         :address="address"
         class="list-transaction__item"
+        @open-transaction="openTransactionModal(item)"
       />
     </div>
     <v-btn class="list-transaction__up-button" depressed @click="unCompressWallet">UP</v-btn>
@@ -17,7 +18,9 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { ADD_MODAL } from '@/store/modules/Modals'
+import { TRANSACTION_DETAILS } from '@/store/modules/Modals/names'
+import { mapGetters, mapMutations } from 'vuex'
 import TransactionItem from './Transaction.vue'
 
 export default {
@@ -65,6 +68,19 @@ export default {
     this.$refs.transaction.removeEventListener('scroll', this.eventScroll)
   },
   methods: {
+    ...mapMutations({
+      mutationAddModal: ADD_MODAL
+    }),
+    openTransactionModal(transaction) {
+      this.mutationAddModal({
+        name: TRANSACTION_DETAILS,
+        id: transaction.hash,
+        info: {
+          currentWallet: this.address,
+          transaction
+        }
+      })
+    },
     eventScroll(e) {
       if (this.mediaQueries.phone && this.$refs.headers && this.$refs.headers.length > 0) {
         this.$refs.headers.forEach(el => {
