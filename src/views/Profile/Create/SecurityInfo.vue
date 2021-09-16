@@ -1,55 +1,103 @@
 <template>
-  <div class="security-info">
-    <div class="security-info__wrapper">
-      <security-info-block
-        v-for="infoBlock in infoBlocks"
-        v-show="infoBlock.id === currentBlock"
-        :key="infoBlock.id"
-        v-bind="infoBlock"
-        :name-button="infoBlock.id === infoBlocks.length ? 'Create' : 'Next'"
-        @cancel="cancel"
-        @next="next(infoBlock.id)"
-        @back="back(infoBlock.id)"
-        @skip="skip"
-      >
-      </security-info-block>
+  <match-media v-slot="{ desktop }" wrapper-tag="div">
+    <div class="security-info">
+      <div class="security-info__wrapper">
+        <div v-if="desktop" class="security-info__list">
+          <security-info-block
+            v-for="securityInfoBlock in $options.securityInfoBlocks"
+            :key="securityInfoBlock.id"
+            class="security-info__item"
+          >
+            <template #header>
+              <svg-icon class="security-info__item-icon" :name="securityInfoBlock.iconName" />
+            </template>
+            <div class="security-info__item-text" v-html="securityInfoBlock.text"></div>
+          </security-info-block>
+        </div>
+        <swap-stepper v-else :active-step="activeStep" class="security-info__stepper">
+          <template v-for="securityInfoBlock in $options.securityInfoBlocks" v-slot:[securityInfoBlock.id]>
+            <security-info-block :key="securityInfoBlock.id" class="security-info__item">
+              <div class="security-info__item-wrapper"></div>
+              <template #header>
+                <svg-icon class="security-info__item-icon" :name="securityInfoBlock.iconName"></svg-icon>
+              </template>
+              <div class="security-info__item-text">
+                <div class="security-info__item-text-wrapper" v-html="securityInfoBlock.text"></div>
+              </div>
+              <template #footer>
+                <div class="security-info__dots">
+                  <span
+                    v-for="n in $options.securityInfoBlocks.length"
+                    :key="n"
+                    class="security-info__dot"
+                    :class="{ 'security-info__dot--fill': n === activeStep }"
+                  ></span>
+                </div>
+              </template>
+            </security-info-block>
+          </template>
+        </swap-stepper>
+        <div class="security-info__buttons">
+          <div class="security-info__buttons-wrapper">
+            <swap-button class="security-info__button" @click="back">Back</swap-button>
+            <swap-button class="security-info__button" @click="next">Next</swap-button>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
+  </match-media>
 </template>
 
 <script>
-import SecurityInfoBlock from '@/components/Profile/SecurityInfoBlock.vue'
-import infoBlocks from './infoBlocks'
+import { MatchMedia } from 'vue-component-media-queries'
+import SecurityInfoBlock from '@/components/Profile/SecurityInfoBlock'
+
+const securityInfoBlocks = [
+  {
+    id: 1,
+    iconName: 'securityInfo/illustration1',
+    text: 'To get started, <b>create a profile</b> that can have any number of crypto wallets.'
+  },
+  {
+    id: 2,
+    iconName: 'securityInfo/illustration2',
+    text: `The profile is based on a <b>secret mnemonic phrase</b> that is stored in your Web browser. This is all
+    you need to know to restore all your crypto wallets.`
+  },
+  {
+    id: 3,
+    iconName: 'securityInfo/illustration3',
+    text: 'Each profile has its own <b>unique color scheme.</b> This will protect you from phishing.'
+  }
+]
 
 export default {
+  securityInfoBlocks,
   name: 'SecurityInfo',
   components: {
+    MatchMedia,
     SecurityInfoBlock
   },
+  inject: ['mediaQueries'],
   data() {
     return {
-      currentBlock: 1,
-      infoBlocks
+      activeStep: 1
     }
   },
   methods: {
-    skip() {
-      this.$router.push({ name: 'CreateProfile' })
-    },
-    next(id) {
-      if (id < infoBlocks.length) {
-        this.currentBlock = id + 1
-      } else {
-        this.skip()
+    back() {
+      if (this.mediaQueries.desktop || this.activeStep === 1) {
+        this.$router.push({ name: 'Wallets' })
       }
+
+      this.activeStep -= 1
     },
-    back(id) {
-      if (id > 1) {
-        this.currentBlock = id - 1
+    next() {
+      if (this.mediaQueries.desktop || this.activeStep === securityInfoBlocks.length) {
+        this.$router.push({ name: 'CreateProfile' })
       }
-    },
-    cancel() {
-      this.$router.push({ name: 'Wallets' })
+
+      this.activeStep += 1
     }
   }
 }
@@ -57,15 +105,143 @@ export default {
 
 <style lang="scss">
 .security-info {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 35px;
 
   @include tablet {
+    display: unset;
+    height: 100%;
+  }
+
+  @include phone {
+    margin-top: 0;
+  }
+
+  &__list {
     display: flex;
+    margin-bottom: 20px;
   }
 
   &__wrapper {
-    width: 100%;
+    @include tablet {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+  }
+
+  &__stepper {
     height: 100%;
+    margin: 0 40px 20px;
+    flex: 1 1 80%;
+
+    @include phone {
+      margin: 20px;
+    }
+  }
+
+  &__item {
+    &:not(:last-child) {
+      margin-right: 20px;
+    }
+
+    &-icon {
+      width: 134px;
+      height: 157px;
+
+      @include tablet {
+        width: 284px;
+        height: 327px;
+      }
+
+      @include phone {
+        width: 134px;
+        height: 157px;
+      }
+    }
+
+    &-text {
+      font-size: $--font-size-extra-small-subtitle;
+      color: var(--primary-text);
+
+      @include only-tablet {
+        display: flex;
+        justify-content: center;
+      }
+
+      @include small-phone {
+        font-size: 13px;
+      }
+
+      &-wrapper {
+        @include only-tablet {
+          width: 407px;
+        }
+      }
+    }
+  }
+
+  &__buttons {
+    width: 100%;
+    background: var(--primary-background);
+    border-radius: 12px;
+    padding: 22px;
+
+    &-wrapper {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
+    @include tablet {
+      width: auto;
+      flex: 0 0 10%;
+      margin: 0 40px 40px;
+      padding: 26px;
+    }
+
+    @include phone {
+      margin: 0 20px 20px;
+      padding: 24px;
+    }
+  }
+
+  &__button {
+    min-width: 168px !important;
+
+    &:not(:last-child) {
+      margin-right: 10px;
+    }
+
+    @include phone {
+      width: 157px;
+      min-width: unset !important;
+    }
+
+    @include small-phone {
+      width: 120px;
+    }
+  }
+
+  &__dots {
+    margin-top: auto;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  &__dot {
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    margin: 0 5px;
+    background-color: var(--main-button-background);
+
+    &--fill {
+      background: var(--main-color);
+    }
   }
 }
 </style>

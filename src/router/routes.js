@@ -53,6 +53,11 @@ export default [
     redirect: { name: 'MainLayout' },
     children: [
       {
+        path: '/security-info',
+        name: 'SecurityInfo',
+        component: () => import(/* webpackChunkName: 'SecurityInfo' */ '@/views/Profile/Create/SecurityInfo.vue')
+      },
+      {
         path: '/create-profile',
         name: 'CreateProfile',
         component: () => import(/* webpackChunkName: 'Create' */ '@/views/Profile/Create')
@@ -66,11 +71,6 @@ export default [
         path: '/create-or-recover',
         name: 'CreateOrRecover',
         component: () => import(/* webpackChunkName: 'CreateOrRecover' */ '@/views/Profile/CreateOrRecover.vue')
-      },
-      {
-        path: '/security-info',
-        name: 'SecurityInfo',
-        component: () => import(/* webpackChunkName: 'SecurityInfo' */ '@/views/Profile/Create/SecurityInfo.vue')
       }
     ]
   },

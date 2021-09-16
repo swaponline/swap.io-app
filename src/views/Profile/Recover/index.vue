@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <substrate>
     <v-loader :active="loading"></v-loader>
     <iframe class="recover-profile" name="recoverProfile" frameborder="0" />
-  </div>
+  </substrate>
 </template>
 
 <script>
@@ -12,11 +12,13 @@ import { IFRAME_INITED, PROFILE_RECOVERED, CANCELED } from '@/constants/createPr
 import { CREATING_OR_RECOVERING_PROFILE, CREATE_PROFILE } from '@/store/modules/Profile'
 
 import { RECOVER_PROFILE_WINDOW } from '@/constants/windowKey'
+import Substrate from '@/components/Profile/Substrate.vue'
 
 export default {
   name: 'RecoverProfile',
   components: {
-    VLoader
+    VLoader,
+    Substrate
   },
   data() {
     return {

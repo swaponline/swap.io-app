@@ -40,7 +40,7 @@ export default {
       return this.$store.getters.userColorTheme
     },
     isDefaultTheme() {
-      return this.$store.getters.hasProfile // this.userColorTheme.background.includes('linear-gradient')
+      return this.userColorTheme.background.includes('linear-gradient')
     },
     accountNotifications() {
       return this.$store.getters.accountNotifications

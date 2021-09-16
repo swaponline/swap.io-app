@@ -54,7 +54,6 @@ export default {
 
   @include tablet {
     padding: 0 40px;
-    border-top: 1px solid $--grey;
   }
 
   @include phone {

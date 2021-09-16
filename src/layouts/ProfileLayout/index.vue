@@ -1,19 +1,16 @@
 <template>
   <div class="profile-layout">
     <main-header class="profile-layout__main-header"></main-header>
-    <substrate>
-      <router-view></router-view>
-    </substrate>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import Substrate from '@/components/Profile/Substrate.vue'
 import MainHeader from '../components/MainHeader.vue'
 
 export default {
   name: 'MainLayout',
-  components: { MainHeader, Substrate }
+  components: { MainHeader }
 }
 </script>
 

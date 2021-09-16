@@ -1,5 +1,5 @@
 <template>
-  <match-media v-slot="{ desktop, phone }" tag="div" class="main-header">
+  <match-media v-slot="{ desktop, phone }" wrapper-tag="div" class="main-header">
     <div v-if="isCreatingOrRecoveringProfile" class="main-header__logo">
       <swap-logo />
     </div>
