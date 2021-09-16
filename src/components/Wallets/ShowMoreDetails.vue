@@ -13,7 +13,7 @@
       <div class="show-more-details__bottom">
         <v-expansion-panel-header #default="{ open }" hide-actions class="show-more-details__header">
           <div class="show-more-details__header-content">
-            <swap-button type="button" class="show-more-details__button">
+            <swap-button small class="show-more-details__button">
               {{ open ? 'Hide entries' : `Show ${entries.length} more entries` }}
             </swap-button>
             <slot name="actions" />
@@ -55,24 +55,8 @@ export default {
   }
 
   &__button {
-    min-height: 0 !important;
-    min-width: 0 !important;
     letter-spacing: initial;
     flex-grow: 1;
-
-    @include phone {
-      width: auto;
-    }
-
-    &.v-btn.v-size--default {
-      height: auto;
-      padding: 6px;
-    }
-
-    .v-btn__content {
-      font-weight: $--font-weight-semi-bold;
-      font-size: $--font-size-base;
-    }
   }
 
   &__content {

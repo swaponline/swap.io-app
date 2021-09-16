@@ -14,9 +14,9 @@
   >
     <div v-if="asBlock" class="wallet-create-modal__header">
       <div class="wallet-create-modal__title">{{ modalTitle }}</div>
-      <v-btn icon @click="close">
+      <swap-button icon @click="close">
         <v-icon size="32">mdi-close</v-icon>
-      </v-btn>
+      </swap-button>
     </div>
     <template v-if="!selectedCurrency">
       <form-text-field
@@ -72,7 +72,7 @@
         </v-chip-group>
       </div>
 
-      <swap-button v-if="asBlock" :disabled="!selectedNetwork" class="wallet-create-modal__submit" @click="create"
+      <swap-button v-if="asBlock" large :disabled="!selectedNetwork" class="wallet-create-modal__submit" @click="create"
         >Create</swap-button
       >
     </template>
