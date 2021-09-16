@@ -10,15 +10,15 @@
     <div v-if="desktop" class="main-header__content">
       <main-header-tabs class="main-header__tabs" />
       <div class="main-header__notifications">
-        <v-menu offset-y left content-class="main-header__notifications-menu">
+        <v-menu offset-y left :disabled="isCreatingOrRecoveringProfile" content-class="main-header__notifications-menu">
           <template v-slot:activator="{ on, attrs }">
-            <div
-              v-if="!isCreatingOrRecoveringProfile"
-              class="main-header__notifications-wrapper"
-              v-bind="attrs"
-              v-on="on"
-            >
-              <v-badge :content="notifications.length" :value="notifications.length" color="red" overlap>
+            <div class="main-header__notifications-wrapper" v-bind="attrs" v-on="on">
+              <v-badge
+                :content="notifications.length"
+                :value="!isCreatingOrRecoveringProfile ? notifications.length : null"
+                color="red"
+                overlap
+              >
                 <v-icon size="26">mdi-bell-outline</v-icon>
               </v-badge>
             </div>
