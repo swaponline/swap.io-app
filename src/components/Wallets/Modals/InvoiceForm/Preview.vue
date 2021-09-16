@@ -1,7 +1,7 @@
 <template>
   <div class="invoice-preview">
     <div class="invoice-preview__address">
-      <wallet-selector read-only :address="address" :items="[address]" />
+      <wallet-selector readonly :address="address" :items="[address]" />
     </div>
     <form-indent title="Bill to:" :text="contact" />
 

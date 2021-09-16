@@ -2,7 +2,7 @@
   <v-select
     v-model="localSelectedAddress"
     :items="items"
-    :readonly="readOnly"
+    :readonly="readonly"
     return-object
     append-icon=""
     hide-details
@@ -39,7 +39,7 @@ export default {
   props: {
     address: { type: [Object, String], default: null },
     items: { type: Array, default: () => [] },
-    readOnly: { type: Boolean, default: false }
+    readonly: { type: Boolean, default: false }
   },
   computed: {
     localSelectedAddress: {

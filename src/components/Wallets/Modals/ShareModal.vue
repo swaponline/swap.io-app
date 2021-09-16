@@ -56,7 +56,7 @@ export default {
   components: { ModalWrapper, FormIndent },
   SOCIALS,
   props: {
-    data: { type: Object, default: () => {} },
+    data: { type: Object, default: () => ({}) },
     shareUrl: { type: String, required: true },
     title: { type: String, default: DEFAULT_TITLE },
     backIcon: { type: Boolean, default: false }
