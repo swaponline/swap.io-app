@@ -11,6 +11,10 @@ import { SET_TEMPORARY_PROFILE, CREATING_OR_RECOVERING_PROFILE, CREATE_PROFILE }
 
 import SwapKeysApi from '@/keys-api'
 
+import { SET_APP_THEME } from '@/constants/createProfile'
+import { getStorage } from '@/utils/storage'
+import { THEME_KEY } from '@/constants/theme'
+
 export default {
   name: 'CreateProfile',
   components: {
@@ -28,12 +32,19 @@ export default {
   methods: {
     openFrame() {
       this.loading = true
-
       this.frame = SwapKeysApi.createProfile({
         callback: message => {
           const { payload, type } = message
           switch (type) {
             case SwapKeysApi.createProfileAnswers.IFRAME_INITED:
+              this.frame.sendMessage({
+                message: {
+                  type: SET_APP_THEME,
+                  payload: {
+                    theme: getStorage(THEME_KEY)
+                  }
+                }
+              })
               this.loading = false
               this.$store.dispatch(CREATING_OR_RECOVERING_PROFILE, true)
               break
