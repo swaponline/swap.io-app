@@ -27,4 +27,31 @@ const frame = SwapKeysApi.restoreProfile({
 
 Создание кошелька/адресса
 ```
+const walletInfo = await SwapKeysApi.createWallet({
+  profileId: '023e01483c',
+  networkId: 'solana',
+  coin: 'SOL',
+  walletNumber: 0,
+  options: {
+    template: 'default',
+    templateSettings: { ... }
+  }
+})
+
+```
+
+
+Ответ
+```
+{
+  "status": "generated",
+  "wallet": {
+      "profileId": "023e01483c",
+      "networkId": "solana",
+      "coin": "SOL",
+      "walletNumber": 0,
+      "address": "3WfGVzwANjbaLh6fokA41qtwMikpFWXSJtHS7uvrJQGV",
+      "publicKey": "3WfGVzwANjbaLh6fokA41qtwMikpFWXSJtHS7uvrJQGV"
+  }
+}
 ```
