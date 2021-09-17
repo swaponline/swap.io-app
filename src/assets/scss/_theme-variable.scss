@@ -12,6 +12,9 @@
   --additional-background: #{$--light-grey-2};
   --field-background: #{$--light-grey-4};
   --additional-button-background: #{$--light-grey-4};
+  --scrollbar-thumb: #{$--grey-4};
+  --scrollbar-thumb-hover: #{$--grey-2};
+  --scrollbar-track: #{$--light-grey};
 }
 
 .theme--dark {
@@ -28,4 +31,7 @@
   --additional-background: #212f46;
   --field-background: #131b27;
   --additional-button-background: #212f46;
+  --scrollbar-thumb: #212f46;
+  --scrollbar-thumb-hover: #24344d;
+  --scrollbar-track: #20222e;
 }

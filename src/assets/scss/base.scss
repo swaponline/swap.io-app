@@ -66,3 +66,28 @@ html {
     display: none !important;
   }
 }
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: $--main-border-radius;
+
+  &:hover {
+    background:  var(--scrollbar-thumb-hover);
+  }
+}
+
+// For Firefox
+* {
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
