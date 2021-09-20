@@ -13,12 +13,7 @@
         <v-menu offset-y left :disabled="isCreatingOrRecoveringProfile" content-class="main-header__notifications-menu">
           <template v-slot:activator="{ on, attrs }">
             <div class="main-header__notifications-wrapper" v-bind="attrs" v-on="on">
-              <v-badge
-                :content="notifications.length"
-                :value="!isCreatingOrRecoveringProfile ? notifications.length : null"
-                color="red"
-                overlap
-              >
+              <v-badge :content="notifications.length" :value="notificationCount" color="red" overlap>
                 <v-icon size="26">mdi-bell-outline</v-icon>
               </v-badge>
             </div>
@@ -82,6 +77,9 @@ export default {
         { type: INCOMING_TRANSACTION, currency: 'BTC', value: '0.123' }
       ]
       return list
+    },
+    notificationCount() {
+      return !this.isCreatingOrRecoveringProfile ? this.notifications.length : null
     }
   },
   methods: {

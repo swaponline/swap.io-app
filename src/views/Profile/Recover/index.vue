@@ -10,7 +10,6 @@ import VLoader from '@/components/Loaders/VLoader.vue'
 import WindowHandler from '@/WindowHandler'
 import { IFRAME_INITED, PROFILE_RECOVERED, CANCELED } from '@/constants/createProfile'
 import { CREATING_OR_RECOVERING_PROFILE, CREATE_PROFILE } from '@/store/modules/Profile'
-
 import { RECOVER_PROFILE_WINDOW } from '@/constants/windowKey'
 import Substrate from '@/components/Profile/Substrate.vue'
 
