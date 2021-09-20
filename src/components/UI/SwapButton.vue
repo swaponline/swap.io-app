@@ -1,11 +1,5 @@
 <template>
-  <v-btn
-    class="swap-button"
-    :class="{ 'swap-button--theme-primary': primary }"
-    depressed
-    v-bind="$attrs"
-    v-on="$listeners"
-  >
+  <v-btn class="swap-button" :class="classes" depressed v-bind="$attrs" v-on="$listeners">
     <slot />
   </v-btn>
 </template>
@@ -15,6 +9,13 @@ export default {
   name: 'SwapButton',
   props: {
     primary: { type: Boolean, default: false }
+  },
+  computed: {
+    classes() {
+      return {
+        'swap-button--theme-primary': this.primary
+      }
+    }
   }
 }
 </script>
