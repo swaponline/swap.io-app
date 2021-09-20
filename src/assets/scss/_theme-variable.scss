@@ -15,6 +15,7 @@
   --scrollbar-thumb: #{$--grey-4};
   --scrollbar-thumb-hover: #{$--grey-2};
   --scrollbar-track: #{$--light-grey};
+  --selection-text-color: #{$--black};
 }
 
 .theme--dark {
@@ -34,4 +35,5 @@
   --scrollbar-thumb: #212f46;
   --scrollbar-thumb-hover: #24344d;
   --scrollbar-track: #20222e;
+  --selection-text-color: #{$--white};
 }
