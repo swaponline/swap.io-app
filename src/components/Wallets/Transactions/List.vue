@@ -1,18 +1,27 @@
 <template>
   <div ref="transaction" class="list-transaction" :class="{ 'list-transaction--stretch': isCompressedWallet }">
-    <div v-for="transaction in filteredTransactions" :key="transaction.date" class="list-transaction__block">
-      <v-subheader ref="headers" class="list-transaction__title">
-        <span>{{ transaction.date }}</span>
-      </v-subheader>
-      <transaction-item
-        v-for="item in transaction.list"
-        :key="item.hash"
-        v-bind="item"
-        :address="address"
-        class="list-transaction__item"
-        @open-transaction="openTransactionModal(item)"
-      />
+    <template v-if="filteredTransactions.length">
+      <div v-for="transaction in filteredTransactions" :key="transaction.date" class="list-transaction__block">
+        <v-subheader ref="headers" class="list-transaction__title">
+          <span>{{ transaction.date }}</span>
+        </v-subheader>
+        <transaction-item
+          v-for="item in transaction.list"
+          :key="item.hash"
+          v-bind="item"
+          :address="address"
+          class="list-transaction__item"
+          @open-transaction="openTransactionModal(item)"
+        />
+      </div>
+    </template>
+
+    <div v-else class="list-transaction__skeleton">
+      <swap-skeleton boilerplate max-width="30%" type="card-heading" />
+      <transaction-skeleton v-for="n in 5" :key="`transaction-skeleton-${n}`" />
+      <p class="list-transaction__skeleton-text">There are no transactions at this moment.</p>
     </div>
+
     <v-btn class="list-transaction__up-button" depressed @click="unCompressWallet">UP</v-btn>
   </div>
 </template>
@@ -22,13 +31,12 @@ import { ADD_MODAL } from '@/store/modules/Modals'
 import { TRANSACTION_DETAILS } from '@/store/modules/Modals/names'
 import { mapGetters, mapMutations } from 'vuex'
 import TransactionItem from './Transaction.vue'
+import TransactionSkeleton from './TransactionSkeleton.vue'
 
 export default {
   name: 'ListTransactions',
   inject: ['mediaQueries'],
-  components: {
-    TransactionItem
-  },
+  components: { TransactionItem, TransactionSkeleton },
   props: {
     filterType: { type: String, default: 'all' },
     address: { type: String, required: true },
@@ -152,6 +160,17 @@ export default {
     z-index: 200;
     right: 10px;
     top: 5px;
+  }
+
+  &__skeleton-text {
+    font-size: $--font-size-small-subtitle;
+    text-align: center;
+    width: 100%;
+    max-width: 260px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 }
 </style>
