@@ -1,21 +1,26 @@
 <template>
-  <div>
+  <substrate>
     <v-loader :active="loading"></v-loader>
     <iframe class="recover-profile" name="recoverProfile" frameborder="0" />
-  </div>
+  </substrate>
 </template>
 
 <script>
 import VLoader from '@/components/Loaders/VLoader.vue'
-
-import { CREATING_OR_RECOVERING_PROFILE, CREATE_PROFILE } from '@/store/modules/Profile'
-
 import SwapKeysApi from '@/keys-api'
+import WindowHandler from '@/WindowHandler'
+import { SET_APP_THEME } from '@/constants/createProfile'
+import { CREATING_OR_RECOVERING_PROFILE, CREATE_PROFILE } from '@/store/modules/Profile'
+import { RECOVER_PROFILE_WINDOW } from '@/constants/windowKey'
+import Substrate from '@/components/Profile/Substrate.vue'
+import { getStorage } from '@/utils/storage'
+import { THEME_KEY } from '@/constants/theme'
 
 export default {
   name: 'RecoverProfile',
   components: {
-    VLoader
+    VLoader,
+    Substrate
   },
   data() {
     return {
@@ -35,6 +40,15 @@ export default {
           const { payload } = message
           switch (message.type) {
             case SwapKeysApi.restoreProfileAnswers.IFRAME_INITED:
+              this.frame.sendMessage({
+                message: {
+                  type: SET_APP_THEME,
+                  payload: {
+                    theme: getStorage(THEME_KEY)
+                  }
+                }
+              })
+
               this.loading = false
               this.$store.dispatch(CREATING_OR_RECOVERING_PROFILE, true)
               break

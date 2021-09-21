@@ -1,12 +1,22 @@
 <template>
-  <v-btn class="swap-button" depressed v-bind="$attrs" v-on="$listeners">
+  <v-btn class="swap-button" :class="classes" depressed v-bind="$attrs" v-on="$listeners">
     <slot />
   </v-btn>
 </template>
 
 <script>
 export default {
-  name: 'SwapButton'
+  name: 'SwapButton',
+  props: {
+    primary: { type: Boolean, default: false }
+  },
+  computed: {
+    classes() {
+      return {
+        'swap-button--theme-primary': this.primary
+      }
+    }
+  }
 }
 </script>
 
@@ -34,25 +44,37 @@ export default {
     background-color: var(--main-button-background);
   }
 
+  &--theme-primary {
+    color: $--white !important;
+    background-color: var(--main-color) !important;
+    &.v-btn::before {
+      background-color: rgba($--black, 0.15);
+    }
+  }
+
   &:not(.v-btn--round).v-size--default {
-    height: 42px;
+    height: $--button-size-default;
     font-size: $--font-size-button;
   }
 
   &:not(.v-btn--round).v-size--small {
-    height: 31px;
-    border-radius: $--border-radius-small;
+    height: $--button-size-small;
+
     padding: 0 10px;
     font-size: $--font-size-base;
+
+    &:not(.v-btn--tile) {
+      border-radius: $--border-radius-small;
+    }
   }
 
   &.v-btn--fab.v-size--small {
-    height: 36px;
-    width: 36px;
+    height: $--button-size-fab-small;
+    width: $--button-size-fab-small;
   }
 
   &:not(.v-btn--round).v-size--large {
-    height: 52px;
+    height: $--button-size-large;
     font-size: $--font-size-button;
   }
 }

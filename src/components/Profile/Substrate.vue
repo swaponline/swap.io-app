@@ -1,6 +1,6 @@
 <template>
   <div class="substrate">
-    <v-button-cancel class="substrate__button-cancel" @click="cancel" />
+    <v-button-cancel v-if="!hideCloseButton" class="substrate__button-cancel" @click="cancel" />
     <slot></slot>
   </div>
 </template>
@@ -15,6 +15,12 @@ export default {
   name: 'Substrate',
   components: {
     VButtonCancel
+  },
+  props: {
+    hideCloseButton: {
+      type: Boolean,
+      default: false
+    }
   },
   created() {
     document.addEventListener('keydown', this.closeByPressingESC)
@@ -69,7 +75,7 @@ export default {
   }
 
   @include phone {
-    margin: 10px;
+    margin: 20px;
   }
 }
 </style>

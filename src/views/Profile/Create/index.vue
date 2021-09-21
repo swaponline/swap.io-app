@@ -1,12 +1,13 @@
 <template>
-  <div>
+  <substrate>
     <v-loader :active="loading"></v-loader>
     <iframe class="create-profile" name="createProfile" frameborder="0" />
-  </div>
+  </substrate>
 </template>
 
 <script>
 import VLoader from '@/components/Loaders/VLoader.vue'
+import Substrate from '@/components/Profile/Substrate.vue'
 import { SET_TEMPORARY_PROFILE, CREATING_OR_RECOVERING_PROFILE, CREATE_PROFILE } from '@/store/modules/Profile'
 
 import SwapKeysApi from '@/keys-api'
@@ -18,7 +19,8 @@ import { THEME_KEY } from '@/constants/theme'
 export default {
   name: 'CreateProfile',
   components: {
-    VLoader
+    VLoader,
+    Substrate
   },
   data() {
     return {

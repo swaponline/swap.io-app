@@ -1,5 +1,5 @@
 <template>
-  <v-expansion-panels v-model="panels" v-click-outside="closePanels" class="profile-list">
+  <v-expansion-panels v-model="panels" v-click-outside="closePanels" :disabled="disabled" class="profile-list">
     <v-expansion-panel class="profile-list__inner">
       <v-expansion-panel-header class="profile-list__header" :hide-actions="isDesktop">
         <div class="profile-list__header-wrapper">
@@ -8,9 +8,9 @@
             width="21"
             min-width="25"
             class="profile-list__avatar-wrapper"
-            :style="`background-image: ${getAvatar(currentProfile)}`"
+            :style="backgroundAvatar"
           >
-            <svg-icon name="user" class="profile-list__avatar-icon"></svg-icon>
+            <svg-icon v-if="!disabled" name="user" class="profile-list__avatar-icon"></svg-icon>
           </v-avatar>
           <span class="profile-list__name">{{ currentProfile.username }}</span>
         </div>
@@ -50,9 +50,17 @@ import { mapActions } from 'vuex'
 import { MODULE_PROFILE, SET_PROFILE } from '@/store/modules/Profile'
 import { Base64 } from 'js-base64'
 
+const BACKGROUND_COLOR_AVATAR_FOR_DISABLED = '#919191'
+
 export default {
   name: 'ProfileList',
   inject: ['mediaQueries'],
+  props: {
+    disabled: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       panels: []
@@ -79,6 +87,11 @@ export default {
     },
     restProfiles() {
       return this.profiles.filter(p => p.accountId !== this.currentProfile.accountId)
+    },
+    backgroundAvatar() {
+      if (this.disabled) return `background-color: ${BACKGROUND_COLOR_AVATAR_FOR_DISABLED}`
+
+      return `background-image: ${this.getAvatar(this.currentProfile)}`
     }
   },
   methods: {

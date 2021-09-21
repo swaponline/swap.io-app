@@ -35,7 +35,7 @@
           <v-icon>mdi-wallet</v-icon>
         </v-btn>
       </template>
-      <span>New address</span>
+      <span>New wallet</span>
     </v-tooltip>
     <v-tooltip right>
       <template #activator="{ on, attrs }">
