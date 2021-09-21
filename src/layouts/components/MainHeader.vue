@@ -1,5 +1,5 @@
 <template>
-  <match-media v-slot="{ desktop, phone }" tag="div" class="main-header">
+  <match-media v-slot="{ desktop, phone }" wrapper-tag="div" class="main-header">
     <div v-if="isCreatingOrRecoveringProfile" class="main-header__logo">
       <swap-logo />
     </div>
@@ -10,16 +10,17 @@
     <div v-if="desktop" class="main-header__content">
       <main-header-tabs class="main-header__tabs" />
       <div class="main-header__notifications">
-        <v-menu offset-y left content-class="main-header__notifications-menu">
+        <v-menu offset-y left :disabled="isCreatingOrRecoveringProfile" content-class="main-header__notifications-menu">
           <template v-slot:activator="{ on, attrs }">
-            <div
-              v-if="!isCreatingOrRecoveringProfile"
-              class="main-header__notifications-wrapper"
-              v-bind="attrs"
-              v-on="on"
-            >
-              <v-badge :content="notifications.length" :value="notifications.length" color="red" overlap>
-                <v-icon size="26">mdi-bell-outline</v-icon>
+            <div class="main-header__notifications-wrapper" v-bind="attrs" v-on="on">
+              <v-badge :content="notifications.length" :value="notificationCount" color="red" overlap>
+                <svg-icon
+                  :class="[
+                    'main-header__notifications-icon',
+                    isCreatingOrRecoveringProfile && 'main-header__notifications-icon--disabled'
+                  ]"
+                  name="bell"
+                />
               </v-badge>
             </div>
           </template>
@@ -42,8 +43,8 @@
           </v-list>
         </v-menu>
       </div>
-      <div v-if="!isCreatingOrRecoveringProfile && hasProfile" class="main-header__profile">
-        <profile-list />
+      <div v-if="hasProfile" class="main-header__profile">
+        <profile-list :disabled="isCreatingOrRecoveringProfile" />
       </div>
     </div>
   </match-media>
@@ -82,6 +83,9 @@ export default {
         { type: INCOMING_TRANSACTION, currency: 'BTC', value: '0.123' }
       ]
       return list
+    },
+    notificationCount() {
+      return !this.isCreatingOrRecoveringProfile ? this.notifications.length : null
     }
   },
   methods: {
@@ -122,6 +126,12 @@ export default {
     min-width: 305px;
     margin-right: 20px;
     margin-left: 28px;
+
+    @include phone {
+      margin-right: 0;
+      min-width: 290px;
+      margin-left: 22px;
+    }
   }
 
   &__button-cancel {
@@ -176,6 +186,16 @@ export default {
 
     &:hover {
       background-color: var(--main-input-background);
+    }
+
+    &-icon {
+      color: var(--primary-text);
+      width: 19px;
+      height: 19px;
+
+      &--disabled {
+        color: $--dark-grey;
+      }
     }
   }
 

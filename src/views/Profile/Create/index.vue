@@ -1,13 +1,14 @@
 <template>
-  <div>
+  <substrate>
     <v-loader :active="loading"></v-loader>
     <iframe class="create-profile" name="createProfile" frameborder="0" />
-  </div>
+  </substrate>
 </template>
 
 <script>
 import VLoader from '@/components/Loaders/VLoader.vue'
 import WindowHandler from '@/WindowHandler'
+import Substrate from '@/components/Profile/Substrate.vue'
 import { SET_TEMPORARY_PROFILE, CREATING_OR_RECOVERING_PROFILE, CREATE_PROFILE } from '@/store/modules/Profile'
 import { IFRAME_INITED, THEME_SELECTED, PROFILE_CREATED, CANCELED, SET_APP_THEME } from '@/constants/createProfile'
 import { CREATE_PROFILE_WINDOW } from '@/constants/windowKey'
@@ -17,7 +18,8 @@ import { THEME_KEY } from '@/constants/theme'
 export default {
   name: 'CreateProfile',
   components: {
-    VLoader
+    VLoader,
+    Substrate
   },
   data() {
     return {
