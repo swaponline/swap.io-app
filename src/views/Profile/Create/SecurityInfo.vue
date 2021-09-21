@@ -55,18 +55,18 @@ import SecurityInfoBlock from '@/components/Profile/SecurityInfoBlock'
 const securityInfoBlocks = [
   {
     id: 1,
-    iconName: 'securityInfo/illustration1',
+    iconName: 'wallet',
     text: 'To get started, <b>create a profile</b> that can have any number of crypto wallets.'
   },
   {
     id: 2,
-    iconName: 'securityInfo/illustration2',
+    iconName: 'safe',
     text: `The profile is based on a <b>secret mnemonic phrase</b> that is stored in your Web browser. This is all
     you need to know to restore all your crypto wallets.`
   },
   {
     id: 3,
-    iconName: 'securityInfo/illustration3',
+    iconName: 'palette',
     text: 'Each profile has its own <b>unique color scheme.</b> This will protect you from phishing.'
   }
 ]
