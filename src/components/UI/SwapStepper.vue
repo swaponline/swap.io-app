@@ -17,7 +17,7 @@ export default {
   },
   computed: {
     stepsCount() {
-      return Object.keys(this.$slots).length
+      return Object.keys(this.$scopedSlots).length
     }
   }
 }
