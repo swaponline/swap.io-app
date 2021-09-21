@@ -42,7 +42,7 @@ export default {
 
   &__logo-text {
     text-decoration: none;
-    color: var(--main-color);
+    color: var(--primary-text);
     font-size: $--font-size-extra-small-subtitle;
   }
 }

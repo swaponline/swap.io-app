@@ -1,6 +1,6 @@
 <template>
   <match-media v-slot="{ desktop }" wrapper-tag="div">
-    <div class="create-or-recover">
+    <substrate class="create-or-recover">
       <swap-button-go-back v-if="!desktop" class="create-or-recover__button-i-back" @click="cancel" />
       <div class="create-or-recover__wrapper">
         <div class="create-or-recover__header">
@@ -13,7 +13,7 @@
           or recover from mneminic phrase
         </div>
         <div class="create-or-recover__buttons">
-          <div class="create-or-recover__buttons-controls">
+          <div class="create-or-recover__buttons-row">
             <swap-button v-if="desktop" class="create-or-recover__button" block @click="cancel">Cancel</swap-button>
             <swap-button class="create-or-recover__button" block @click="create">Create</swap-button>
           </div>
@@ -22,17 +22,19 @@
           >
         </div>
       </div>
-    </div>
+    </substrate>
   </match-media>
 </template>
 
 <script>
 import { MatchMedia } from 'vue-component-media-queries'
+import Substrate from '@/components/Profile/Substrate.vue'
 
 export default {
   name: 'CreateOrRecover',
   components: {
-    MatchMedia
+    MatchMedia,
+    Substrate
   },
   methods: {
     cancel() {
@@ -96,8 +98,12 @@ export default {
     flex-direction: column;
     align-items: center;
 
-    &-controls {
+    &-row {
       display: flex;
+
+      @include tablet {
+        width: 100%;
+      }
 
       @include phone {
         flex-direction: column;
@@ -106,7 +112,7 @@ export default {
 
     @include tablet {
       margin: auto auto 0;
-      max-width: 400px;
+      width: 228px;
     }
 
     @include phone {
@@ -115,12 +121,19 @@ export default {
   }
 
   &__button {
-    margin: 0 5px;
+    margin: 0 5px 15px;
     min-width: 174px !important;
     min-height: 48px;
-    margin-bottom: 15px;
+    border-radius: $--main-border-radius;
+
+    @include tablet {
+      margin: 0 0 15px;
+      width: 100%;
+    }
 
     &--text {
+      background-color: transparent !important;
+
       .v-btn__content {
         color: $--dark-grey;
       }

@@ -54,7 +54,6 @@ export default {
 
   @include tablet {
     padding: 0 40px;
-    border-top: 1px solid $--grey;
   }
 
   @include phone {
@@ -66,8 +65,8 @@ export default {
     max-width: 175px;
     min-width: 80px;
     margin: 0 0 !important;
-    font-weight: $--font-weight-semi-bold;
-    font-size: $--font-size-small-subtitle;
+    font-weight: $--font-weight-regular;
+    font-size: $--font-size-extra-small-subtitle;
     color: var(--primary-text) !important;
     line-height: 27px;
     letter-spacing: 0.01em;
