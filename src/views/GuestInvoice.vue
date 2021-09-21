@@ -2,7 +2,7 @@
   <div class="guest-invoice">
     <div class="guest-invoice__header">
       <swap-logo />
-      <swap-button class="guest-invoice__action">Create wallet</swap-button>
+      <swap-button class="guest-invoice__action" primary>Create wallet</swap-button>
     </div>
 
     <div class="guest-invoice__wrapper">
@@ -226,14 +226,6 @@ export default {
   }
   &__button {
     margin-top: 20px;
-
-    &.v-btn::before {
-      background-color: rgba($--black, 0.15);
-    }
-
-    &:hover:before {
-      opacity: 1 !important;
-    }
   }
 }
 </style>
