@@ -13,9 +13,10 @@ import Canvg from 'canvg'
 import { getFaviconInColorFTheme } from '@/utils/favicon'
 import { NotificationInTabTitle } from '@/services/notificationInTabTitle'
 import { pluralizeNumeral } from '@/utils/pluralization'
+
 import { getUserSystemTheme } from '@/utils/theme'
 import { setCSSCustomProperty } from '@/utils/common'
-import messageHandler from './messageHandler'
+
 import { getStorage } from './utils/storage'
 import { DARK_THEME_KEY, LIGHT_THEME_KEY, SYSTEM_THEME_KEY, THEME_KEY } from './constants/theme'
 
@@ -80,7 +81,6 @@ export default {
 
     window.addEventListener('resize', this.resize)
     this.resize()
-    messageHandler()
     // ! Mock
     const { accountNotifications } = this
     const title = `
