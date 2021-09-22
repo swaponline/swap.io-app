@@ -10,20 +10,24 @@
       slider-color="var(--main-color)"
       slider-size="2"
     >
-      <v-tab v-for="tab in tabs" :key="tab" class="transactions__tab">{{ tab }}</v-tab>
+      <v-tab v-for="tab in tabs" :key="tab" :disabled="isEmpyTransactions" class="transactions__tab">{{ tab }}</v-tab>
     </v-tabs>
     <div class="transactions__horizontal-line"></div>
 
     <v-loader :active="loading"></v-loader>
     <v-tabs-items v-model="activeTab">
-      <v-tab-item v-for="tab in tabs" :key="tab">
+      <v-tab-item v-for="tab in tabs" :key="tab" class="transactions__tab-item">
+        <template v-if="isEmpyTransactions">
+          <swap-skeleton boilerplate max-width="30%" type="card-heading" />
+          <transaction-skeleton v-for="n in 7" :key="`transaction-skeleton-${n}`" />
+          <p class="transactions__skeleton-text">There are no transactions at this moment.</p>
+        </template>
         <transaction-list
-          ref="transaction"
+          v-else
           class="transactions__list"
           :class="{ 'transactions__list--stretch': isCompressedWallet }"
           :address="currentAddress"
-          :filter-type="tab"
-          :search="search"
+          :transactions="filteredTransactions"
           :is-compressed-wallet="isCompressedWallet"
           @compress-wallet="$emit('compress-wallet')"
           @uncompress-wallet="$emit('uncompress-wallet')"
@@ -34,27 +38,55 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 import { GET_TRANSACTIONS, MODULE_NAME as TRANSACTIONS_MODULE } from '@/store/modules/Transactions'
 import VLoader from '@/components/Loaders/VLoader.vue'
 import TransactionList from './List.vue'
 import TransactionsSearch from './Search.vue'
+import TransactionSkeleton from './TransactionSkeleton.vue'
 
 export default {
   name: 'Transactions',
-  components: { TransactionList, VLoader, TransactionsSearch },
+  components: { TransactionList, VLoader, TransactionsSearch, TransactionSkeleton },
   props: {
     isCompressedWallet: { type: Boolean, default: false }
   },
   data() {
     return {
-      activeTab: null,
+      activeTab: 0,
       tabs: ['all', 'confirmed', 'pending', 'invoices'],
       search: ''
     }
   },
   computed: {
+    ...mapGetters(['listTransactionsSortByDate']),
+    transactions() {
+      return this.listTransactionsSortByDate(this.currentAddress)
+    },
+    filteredTransactions() {
+      const { transactions } = this
+      const search = this.search.toLowerCase()
+
+      if (!this.search) return transactions
+
+      const filtered = transactions.map(({ date, list }) => {
+        const filteredList = list.filter(
+          ({ from, hash, to, value }) =>
+            from.toLowerCase().includes(search) ||
+            hash.toLowerCase().includes(search) ||
+            to.toLowerCase().includes(search) ||
+            value.toString().includes(search)
+        )
+
+        return { date, list: filteredList }
+      })
+
+      return filtered.filter(({ list }) => list.length > 0)
+    },
+    isEmpyTransactions() {
+      return this.filteredTransactions.length === 0
+    },
     currentAddress() {
       return this.$route.params.walletAddress
     },
@@ -91,10 +123,17 @@ export default {
   background: var(--primary-background);
   overflow: hidden;
   border-radius: 12px 12px 0 0;
+  display: flex;
+  flex-direction: column;
 
   .v-tabs-items {
     background: var(--primary-background) !important;
     transition: $--theme-transition;
+    height: 100%;
+  }
+
+  &__tab-item {
+    height: 100%;
   }
 
   @include tablet {
@@ -171,6 +210,17 @@ export default {
         }
       }
     }
+  }
+
+  &__skeleton-text {
+    font-size: $--font-size-small-subtitle;
+    text-align: center;
+    width: 100%;
+    max-width: 260px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 }
 </style>
