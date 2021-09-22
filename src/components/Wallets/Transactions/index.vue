@@ -38,9 +38,13 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 
-import { GET_TRANSACTIONS, MODULE_NAME as TRANSACTIONS_MODULE } from '@/store/modules/Transactions'
+import {
+  TRANSACTIONS_SORTED_BY_DATE,
+  GET_TRANSACTIONS,
+  MODULE_NAME as TRANSACTIONS_MODULE
+} from '@/store/modules/Transactions'
 import VLoader from '@/components/Loaders/VLoader.vue'
 import TransactionList from './List.vue'
 import TransactionsSearch from './Search.vue'
@@ -60,9 +64,8 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['listTransactionsSortByDate']),
     transactions() {
-      return this.listTransactionsSortByDate(this.currentAddress)
+      return this.$store.getters[TRANSACTIONS_SORTED_BY_DATE](this.currentAddress)
     },
     filteredTransactions() {
       const { transactions } = this
