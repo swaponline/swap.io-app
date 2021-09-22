@@ -268,6 +268,11 @@ class SwapKeysApi {
     })
   }
 
+  signMessage(options) => {
+  }
+
+  signTransaction(options) => {
+  }
 }
 
 if (!apiProcessor) {
