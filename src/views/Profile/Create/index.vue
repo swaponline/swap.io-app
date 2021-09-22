@@ -1,7 +1,7 @@
 <template>
   <substrate>
     <v-loader :active="loading"></v-loader>
-    <iframe class="create-profile" name="createProfile" frameborder="0" />
+    <iframe class="create-profile" name="createProfile" />
   </substrate>
 </template>
 
@@ -75,6 +75,7 @@ export default {
   min-width: 1065px;
   height: 100%;
   overflow: hidden;
+  border: 0;
 
   @include tablet {
     min-width: auto;

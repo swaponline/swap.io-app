@@ -1,17 +1,15 @@
 <template>
   <substrate>
     <v-loader :active="loading"></v-loader>
-    <iframe class="recover-profile" name="recoverProfile" frameborder="0" />
+    <iframe class="recover-profile" name="recoverProfile" />
   </substrate>
 </template>
 
 <script>
 import VLoader from '@/components/Loaders/VLoader.vue'
 import SwapKeysApi from '@/keys-api'
-import WindowHandler from '@/WindowHandler'
 import { SET_APP_THEME } from '@/constants/createProfile'
 import { CREATING_OR_RECOVERING_PROFILE, CREATE_PROFILE } from '@/store/modules/Profile'
-import { RECOVER_PROFILE_WINDOW } from '@/constants/windowKey'
 import Substrate from '@/components/Profile/Substrate.vue'
 import { getStorage } from '@/utils/storage'
 import { THEME_KEY } from '@/constants/theme'
@@ -77,6 +75,7 @@ export default {
   width: 100%;
   min-width: 1065px;
   height: 100%;
+  border: 0;
 
   @include tablet {
     min-width: auto;
