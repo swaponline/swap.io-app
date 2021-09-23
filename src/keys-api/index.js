@@ -77,7 +77,7 @@ class SwapKeysApi {
     return frame
   }
 
-  async getNetworks(options) {
+  getNetworks(options) {
     const {
       callback,
     } = options || {}
@@ -123,14 +123,14 @@ class SwapKeysApi {
     })
   }
 
-  async createWallets(options) {
+  createWallets(options) {
     const {
       callback,
       profileId,
       wallets = []
     } = options || {}
 
-    return new Promise(async (resolve, reject) => {
+    return new Promise((resolve, reject) => {
       if (!profileId) {
         reject(`profileId required`)
         return
@@ -202,7 +202,7 @@ class SwapKeysApi {
     })
   }
 
-  async createWallet(options) {
+  createWallet(options) {
     const {
       callback,
       profileId,
@@ -211,7 +211,7 @@ class SwapKeysApi {
       walletNumber = 0
     } = options || {}
 
-    return new Promise(async (resolve, reject) => {
+    return new Promise((resolve, reject) => {
       if (!profileId) {
         reject(`profileId required`)
         return
@@ -273,7 +273,7 @@ class SwapKeysApi {
       profileId,
       message
     } = options
-    return new Promise(async (resolve, reject) => {
+    return new Promise((resolve, reject) => {
       if (!profileId) {
         reject(`profileId required`)
         return

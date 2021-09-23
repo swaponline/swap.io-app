@@ -55,3 +55,15 @@ const walletInfo = await SwapKeysApi.createWallet({
   }
 }
 ```
+
+Подпись сообщения
+```
+const signedMessage = await SwapKeysApi.signMessage({
+  profileId: '023e01483c',
+  message: 'Some message for sign'
+})
+```
+
+Ответ
+```
+```
