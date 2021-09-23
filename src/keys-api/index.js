@@ -3,6 +3,8 @@
 import messageHandler from './messageHandler'
 import WindowHandler from './WindowHandler'
 import { WINDOW_KEYS } from './windowKey'
+import { API_END_POINT } from './apiEndPoint'
+
 
 let apiProcessor = null
 
@@ -23,7 +25,7 @@ class SwapKeysApi {
     return new Promise((resolve) => {
       const frame = new WindowHandler({
         nameFrame: 'getProfiles',
-        additionalUrl: '/get-profiles',
+        additionalUrl: API_END_POINT.GET_PROFILES,
         key: WINDOW_KEYS.GET_PROFILES,
         callback: ({ message }) => {
           const {
@@ -50,7 +52,7 @@ class SwapKeysApi {
 
     const frame = new WindowHandler({
       nameFrame: 'createProfile',
-      additionalUrl: '/choose-style',
+      additionalUrl: API_END_POINT.CHOSE_STYLE,
       key: WINDOW_KEYS.CREATE_PROFILE,
       callback
     })
@@ -70,7 +72,7 @@ class SwapKeysApi {
 
     const frame = new WindowHandler({
       nameFrame: 'recoverProfile',
-      additionalUrl: '/secret-phrase',
+      additionalUrl: API_END_POINT.SECRET_PHRASE,
       key: WINDOW_KEYS.RECOVER_PROFILE, 
       callback
     })
@@ -89,7 +91,7 @@ class SwapKeysApi {
       } else {
         const frame = new WindowHandler({
           nameFrame: 'getNetworks',
-          additionalUrl: '/get-networks',
+          additionalUrl: API_END_POINT.GET_NETWORKS,
           key: WINDOW_KEYS.GET_NETWORKS,
           callback: ({ message }) => {
             const {
@@ -164,7 +166,7 @@ class SwapKeysApi {
 
       const apiFrame = new WindowHandler({
         nameFrame: 'createWallets',
-        additionalUrl: '/create-wallets',
+        additionalUrl: API_END_POINT.CREATE_WALLETS,
         key: WINDOW_KEYS.CREATE_WALLETS,
         callback: ({ message }) => {
           const { type } = message
@@ -227,7 +229,7 @@ class SwapKeysApi {
 
       const apiFrame = new WindowHandler({
         nameFrame: 'createWallet',
-        additionalUrl: '/create-wallet',
+        additionalUrl: API_END_POINT.CREATE_WALLET,
         key: WINDOW_KEYS.CREATE_WALLET,
         callback: ({ message }) => {
           const { type } = message
@@ -284,7 +286,7 @@ class SwapKeysApi {
       }
       const apiFrame = new WindowHandler({
         nameFrame: 'signMessage',
-        additionalUrl: '/sign-message',
+        additionalUrl: API_END_POINT.SIGN_MESSAGE,
         key: WINDOW_KEYS.SIGN_MESSAGE,
         callback: (callbackMessage) => {
           const {
