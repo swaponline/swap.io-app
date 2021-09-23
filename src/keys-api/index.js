@@ -6,6 +6,7 @@ import { WINDOW_KEYS } from './windowKey'
 import { API_END_POINT } from './apiEndPoint'
 import { MESSAGE_TO_API } from './messageToApi'
 import { MESSAGE_FROM_API } from './messageFromApi'
+import { API_ANSWER_STATUS } from './apiAnswerStatus'
 
 let apiProcessor = null
 
@@ -183,7 +184,7 @@ class SwapKeysApi {
           }
           if (type === MESSAGE_FROM_API.WALLETS_CREATED) {
             const answer = {
-              status: 'generated',
+              status: API_ANSWER_STATUS.WALLETS_GENERATED,
               wallets: message.wallets
             }
             resolve(answer)
@@ -192,7 +193,7 @@ class SwapKeysApi {
           }
           if (type === MESSAGE_FROM_API.WALLETS_CREATE_CANCELED) {
             const answer = {
-              status: `cancelled`
+              status: API_ANSWER_STATUS.CANCELED
             }
             resolve(answer)
             if (callback) callback(answer)
@@ -248,7 +249,7 @@ class SwapKeysApi {
           }
           if (type === MESSAGE_FROM_API.WALLET_CREATED) {
             const answer = {
-              status: 'generated',
+              status: API_ANSWER_STATUS.WALLET_GENERATED,
               wallet: message.wallet
             }
             resolve(answer)
@@ -257,7 +258,7 @@ class SwapKeysApi {
           }
           if (type === MESSAGE_FROM_API.WALLET_CREATE_CANCELED) {
             const answer = {
-              status: `cancelled`
+              status: API_ANSWER_STATUS.CANCELED
             }
             resolve(answer)
             if (callback) callback(answer)
@@ -313,7 +314,7 @@ class SwapKeysApi {
               }
             } = callbackMessage
             const answer = {
-              status: 'signed',
+              status: API_ANSWER_STATUS.MESSAGE_SIGNED,
               signedMessage,
             }
             resolve(answer)
@@ -322,7 +323,7 @@ class SwapKeysApi {
           }
           if (type === MESSAGE_FROM_API.MESSAGE_SIGN_CANCELED) {
             const answer = {
-              status: `cancelled`
+              status: API_ANSWER_STATUS.CANCELED
             }
             resolve(answer)
             if (callback) callback(answer)
