@@ -4,7 +4,7 @@ import messageHandler from './messageHandler'
 import WindowHandler from './WindowHandler'
 import { WINDOW_KEYS } from './windowKey'
 import { API_END_POINT } from './apiEndPoint'
-
+import { MESSAGE_TO_API } from './messageToApi'
 
 let apiProcessor = null
 
@@ -172,7 +172,7 @@ class SwapKeysApi {
           const { type } = message
           if (type === `iframeInited`) {
             apiFrame.sendMessage({
-              type: 'CreateWallets',
+              type: MESSAGE_TO_API.CREATE_WALLETS,
               walletsData: {
                 profileId,
                 wallets
@@ -235,7 +235,7 @@ class SwapKeysApi {
           const { type } = message
           if (type === `iframeInited`) {
             apiFrame.sendMessage({
-              type: 'CreateWallet',
+              type: MESSAGE_TO_API.CREATE_WALLET,
               walletData: {
                 profileId,
                 networkId,
@@ -297,7 +297,7 @@ class SwapKeysApi {
 
           if (type === `iframeInited`) {
             apiFrame.sendMessage({
-              type: 'SignMessage',
+              type: MESSAGE_TO_API.SIGN_MESSAGE,
               data: {
                 profileId,
                 message
