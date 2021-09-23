@@ -4,7 +4,8 @@
 
 <script>
 export default {
-  name: 'SwapSkeleton'
+  name: 'SwapSkeleton',
+  inheritAttrs: false
 }
 </script>
 
