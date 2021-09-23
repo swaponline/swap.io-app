@@ -264,15 +264,74 @@ class SwapKeysApi {
         },
         silent: true,
       })
-      window.createWalletFrame = apiFrame
     })
   }
 
-  signMessage(options) => {
+  signMessage(options) {
+    const {
+      callback,
+      profileId,
+      message
+    } = options
+    return new Promise(async (resolve, reject) => {
+      if (!profileId) {
+        reject(`profileId required`)
+        return
+      }
+      if (!message) {
+        reject(`message required`)
+        return
+      }
+      const apiFrame = new WindowHandler({
+        nameFrame: 'signMessage',
+        additionalUrl: '/sign-message',
+        key: WINDOW_KEYS.SIGN_MESSAGE,
+        callback: (callbackMessage) => {
+          const {
+            message: {
+              type
+            }
+          } = callbackMessage
+
+          if (type === `iframeInited`) {
+            apiFrame.sendMessage({
+              type: 'SignMessage',
+              data: {
+                profileId,
+                message
+              }
+            })
+            apiFrame.popupFrame()
+          }
+          if (type === `MessageSigned`) {
+            const {
+              message: {
+                signedMessage
+              }
+            } = callbackMessage
+            const answer = {
+              status: 'signed',
+              signedMessage,
+            }
+            resolve(answer)
+            if (callback) callback(answer)
+            apiFrame.close()
+          }
+          if (type === `CancelMessageSign`) {
+            const answer = {
+              status: `cancelled`
+            }
+            resolve(answer)
+            if (callback) callback(answer)
+            apiFrame.close()
+          }
+        },
+        silent: true,
+      })
+    })
   }
 
-  signTransaction(options) => {
-  }
+  signTransaction(options) {}
 }
 
 if (!apiProcessor) {
