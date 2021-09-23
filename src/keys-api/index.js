@@ -5,6 +5,7 @@ import WindowHandler from './WindowHandler'
 import { WINDOW_KEYS } from './windowKey'
 import { API_END_POINT } from './apiEndPoint'
 import { MESSAGE_TO_API } from './messageToApi'
+import { MESSAGE_FROM_API } from './messageFromApi'
 
 let apiProcessor = null
 
@@ -170,7 +171,7 @@ class SwapKeysApi {
         key: WINDOW_KEYS.CREATE_WALLETS,
         callback: ({ message }) => {
           const { type } = message
-          if (type === `iframeInited`) {
+          if (type === MESSAGE_FROM_API.IFRAME_INITED) {
             apiFrame.sendMessage({
               type: MESSAGE_TO_API.CREATE_WALLETS,
               walletsData: {
@@ -180,7 +181,7 @@ class SwapKeysApi {
             })
             apiFrame.popupFrame()
           }
-          if (type === `WalletsCreated`) {
+          if (type === MESSAGE_FROM_API.WALLETS_CREATED) {
             const answer = {
               status: 'generated',
               wallets: message.wallets
@@ -189,7 +190,7 @@ class SwapKeysApi {
             if (callback) callback(answer)
             apiFrame.close()
           }
-          if (type === `CancelCreateWallets`) {
+          if (type === MESSAGE_FROM_API.WALLETS_CREATE_CANCELED) {
             const answer = {
               status: `cancelled`
             }
@@ -233,7 +234,7 @@ class SwapKeysApi {
         key: WINDOW_KEYS.CREATE_WALLET,
         callback: ({ message }) => {
           const { type } = message
-          if (type === `iframeInited`) {
+          if (type === MESSAGE_FROM_API.IFRAME_INITED) {
             apiFrame.sendMessage({
               type: MESSAGE_TO_API.CREATE_WALLET,
               walletData: {
@@ -245,7 +246,7 @@ class SwapKeysApi {
             })
             apiFrame.popupFrame()
           }
-          if (type === `WalletCreated`) {
+          if (type === MESSAGE_FROM_API.WALLET_CREATED) {
             const answer = {
               status: 'generated',
               wallet: message.wallet
@@ -254,7 +255,7 @@ class SwapKeysApi {
             if (callback) callback(answer)
             apiFrame.close()
           }
-          if (type === `CancelCreateWallet`) {
+          if (type === MESSAGE_FROM_API.WALLET_CREATE_CANCELED) {
             const answer = {
               status: `cancelled`
             }
@@ -295,7 +296,7 @@ class SwapKeysApi {
             }
           } = callbackMessage
 
-          if (type === `iframeInited`) {
+          if (type === MESSAGE_FROM_API.IFRAME_INITED) {
             apiFrame.sendMessage({
               type: MESSAGE_TO_API.SIGN_MESSAGE,
               data: {
@@ -305,7 +306,7 @@ class SwapKeysApi {
             })
             apiFrame.popupFrame()
           }
-          if (type === `MessageSigned`) {
+          if (type === MESSAGE_FROM_API.MESSAGE_SIGNED) {
             const {
               message: {
                 signedMessage
@@ -319,7 +320,7 @@ class SwapKeysApi {
             if (callback) callback(answer)
             apiFrame.close()
           }
-          if (type === `CancelMessageSign`) {
+          if (type === MESSAGE_FROM_API.MESSAGE_SIGN_CANCELED) {
             const answer = {
               status: `cancelled`
             }
