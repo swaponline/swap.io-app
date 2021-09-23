@@ -38,6 +38,11 @@ export default [
         path: '/swap',
         name: 'Swap',
         component: () => import(/* webpackChunkName: 'Swap' */ '@/views/Swap')
+      },
+      {
+        path: '/settings',
+        name: 'Settings',
+        component: () => import(/* webpackChunkName: 'Settings' */ '@/views/Settings')
       }
     ]
   },
@@ -47,6 +52,11 @@ export default [
     component: () => import(/* webpackChunkName: 'ProfileLayout' */ '@/layouts/ProfileLayout'),
     redirect: { name: 'MainLayout' },
     children: [
+      {
+        path: '/security-info',
+        name: 'SecurityInfo',
+        component: () => import(/* webpackChunkName: 'SecurityInfo' */ '@/views/Profile/Create/SecurityInfo.vue')
+      },
       {
         path: '/create-profile',
         name: 'CreateProfile',
@@ -61,11 +71,6 @@ export default [
         path: '/create-or-recover',
         name: 'CreateOrRecover',
         component: () => import(/* webpackChunkName: 'CreateOrRecover' */ '@/views/Profile/CreateOrRecover.vue')
-      },
-      {
-        path: '/security-info',
-        name: 'SecurityInfo',
-        component: () => import(/* webpackChunkName: 'SecurityInfo' */ '@/views/Profile/Create/SecurityInfo.vue')
       }
     ]
   },

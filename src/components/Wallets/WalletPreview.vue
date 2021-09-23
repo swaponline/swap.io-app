@@ -1,5 +1,5 @@
 <template>
-  <div class="wallet-preview">
+  <div class="wallet-preview" v-on="$listeners">
     <cryptoicon :symbol="currencyName.toLowerCase()" size="46" class="wallet-preview__icon" />
 
     <div class="wallet-preview__text">
@@ -31,6 +31,7 @@ export default {
   display: flex;
   align-items: center;
   padding: 12px 14px;
+  background-color: var(--main-input-background);
 
   &__icon {
     margin-right: 14px;
@@ -42,11 +43,14 @@ export default {
     flex-grow: 1;
     justify-content: space-between;
   }
+  &__name {
+    color: var(--primary-text);
+  }
   &__name,
   &__value,
   &__address {
-    font-weight: 600;
-    font-size: 18px;
+    font-weight: $--font-weight-semi-bold;
+    font-size: $--font-size-extra-small-subtitle;
   }
   &__value,
   &__address {

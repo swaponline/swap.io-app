@@ -1,0 +1,33 @@
+.theme--light {
+  --primary-background: #{$--white};
+  --primary-text: #{$--black};
+  --main-border-color: #{$--light-grey-2};
+  --main-input-background: #{$--light-grey};
+  --main-button-background: #{$--light-grey-2};
+  --main-button-background-hover: #{$--light-grey-5};
+  --main-button-active: #{$--light-grey-4};
+  --wallets-item-background: #{$--light-grey-2};
+  --secondary-text: #{$--grey};
+  --main-icon-color: #{$--black};
+  --additional-background: #{$--light-grey-2};
+  --field-background: #{$--light-grey-4};
+  --additional-button-background: #{$--light-grey-4};
+  --selection-text-color: #{$--black};
+}
+
+.theme--dark {
+  --primary-background: #0f1422;
+  --primary-text: #f6f6f6;
+  --main-border-color: #{$--light-grey-2-percent10};
+  --main-input-background: #20222e;
+  --main-button-background: #212f46;
+  --main-button-background-hover: #182231;
+  --main-button-background-active: #131b27;
+  --wallets-item-background: #212f46;
+  --secondary-text: #{$--grey};
+  --main-icon-color: #{$--white};
+  --additional-background: #212f46;
+  --field-background: #131b27;
+  --additional-button-background: #212f46;
+  --selection-text-color: #{$--white};
+}

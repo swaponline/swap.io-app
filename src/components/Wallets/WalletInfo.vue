@@ -3,12 +3,12 @@
     <cryptoicon class="wallet-info__background-icon" :symbol="currencyName.toLowerCase()" size="500" />
 
     <div class="wallet-info__optional-buttons">
-      <v-btn icon class="wallet-info__optional-button" @click="openShareModal">
-        <svg-icon name="share" class="wallet-info__icon"></svg-icon>
-      </v-btn>
-      <v-btn icon class="wallet-info__optional-button" @click="openSettingsModal">
-        <svg-icon name="settings" class="wallet-info__icon"></svg-icon>
-      </v-btn>
+      <swap-button fab small class="wallet-info__optional-button" @click="openShareModal">
+        <v-icon class="wallet-info__icon">mdi-export-variant</v-icon>
+      </swap-button>
+      <swap-button fab small class="wallet-info__optional-button" @click="openSettingsModal">
+        <v-icon class="wallet-info__icon">mdi-tune</v-icon>
+      </swap-button>
     </div>
 
     <header class="wallet-info__header">
@@ -21,22 +21,20 @@
     </header>
 
     <div class="wallet-info__address-wrapper">
-      <v-tooltip v-model="copyTooltip.value" top :open-on-hover="false" class="wallet-info__tooltip">
-        <template #activator="{ on }">
-          <button class="wallet-info__button-copy" tabindex="-1" @click="copy">
-            <span class="wallet-info__address wallet-info__address--desktop">
-              {{ address }}
-            </span>
-
-            <span class="wallet-info__address wallet-info__address--tablet">
-              {{ minifiedAddress }}
-            </span>
-
-            <svg-icon class="wallet-info__icon-copy" name="copy" v-on="on"></svg-icon>
+      <swap-copy-wrapper>
+        <template #default="{ copy, tooltopOn }">
+          <button
+            v-ripple="{ center: true }"
+            class="wallet-info__button-copy"
+            tabindex="-1"
+            @click="mediaQueries.desktop ? copy(address) : openCopyMenu()"
+            v-on="tooltopOn"
+          >
+            <span class="wallet-info__address">{{ mediaQueries.desktop ? address : minifiedAddress }}</span>
+            <svg-icon class="wallet-info__icon-copy" name="copy" />
           </button>
         </template>
-        <span>Copied</span>
-      </v-tooltip>
+      </swap-copy-wrapper>
 
       <button class="wallet-info__button-qrcode" @click="openShareModal">
         <svg-icon class="wallet-info__icon-qrcode" name="qrcode"></svg-icon>
@@ -55,7 +53,6 @@
 import { mapMutations } from 'vuex'
 import { ADD_MODAL } from '@/store/modules/Modals'
 import { COPY_MENU, INVOICE_FORM, SEND_FORM, SHARE_MODAL, WALLET_SETTINGS } from '@/store/modules/Modals/names'
-import copy from '@/utils/copy'
 import { minifyAddress } from '@/utils/common'
 
 export default {
@@ -68,14 +65,6 @@ export default {
     value: { type: Number, default: 0 },
     currencyName: { type: String, default: '' }
   },
-  data() {
-    return {
-      copyTooltip: {
-        value: false,
-        timer: 0
-      }
-    }
-  },
   computed: {
     walletAddress() {
       return this.$route.params.walletAddress
@@ -84,34 +73,12 @@ export default {
       return minifyAddress(this.address)
     }
   },
-  beforeDestroy() {
-    clearTimeout(this.copyTooltip.timer)
-  },
   methods: {
     ...mapMutations({
       mutationAddModal: ADD_MODAL
     }),
     uncompressWallet() {
       this.$emit('uncompress-wallet')
-    },
-    copy() {
-      if (this.mediaQueries.desktop) {
-        copy(this.walletAddress)
-          .then(() => {
-            this.copyTooltip.value = true
-            if (this.copyTooltip.timer) {
-              clearTimeout(this.copyTooltip.timer)
-            }
-            this.copyTooltip.timer = setTimeout(() => {
-              this.copyTooltip.value = false
-            }, 1500)
-          })
-          .catch(err => {
-            console.log('Значение не скопировано', err)
-          })
-      } else {
-        this.openCopyMenu()
-      }
     },
     openCopyMenu() {
       this.mutationAddModal({
@@ -125,8 +92,8 @@ export default {
       this.mutationAddModal({
         name: SHARE_MODAL,
         info: {
-          type: 'wallet',
-          data: this.walletAddress
+          data: { value: this.walletAddress, label: 'Wallet id:' },
+          shareUrl: `${window.location.origin}/wallet/${this.walletAddress}`
         }
       })
     },
@@ -168,20 +135,20 @@ export default {
   --icon-opacity: 0;
   --margin-button-address: 0;
   --height-header: 70px;
-  --backgroun-icon-top: -30%;
+  --background-icon-top: -30%;
 
   outline: none;
   position: relative;
   padding: 20px 25px 25px;
   overflow: hidden;
-  background: $--white;
+  background: var(--primary-background);
   height: 250px;
   border-radius: 12px;
-  transition: 0.5s;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: stretch;
+  transition: $--theme-transition;
 
   @include tablet {
     height: 220px;
@@ -197,7 +164,7 @@ export default {
   &--compressed {
     --margin-button-address: 22px;
     --height-header: 0;
-    --backgroun-icon-top: -70%;
+    --background-icon-top: -70%;
 
     height: 140px;
     cursor: pointer;
@@ -222,7 +189,7 @@ export default {
     position: absolute;
     z-index: 0;
     right: -15%;
-    top: var(--backgroun-icon-top);
+    top: var(--background-icon-top);
     width: 500px;
     height: 500px;
     transform: rotate(-30deg);
@@ -262,15 +229,9 @@ export default {
     }
   }
   &__optional-button {
-    &:before {
-      opacity: 0.5;
-      background-color: $--light-grey-1;
-    }
-    &:hover {
-      &:before {
-        opacity: 0.3 !important;
-      }
-    }
+    position: relative;
+    background-color: var(--primary-background) !important;
+
     &:not(:last-child) {
       margin-right: 6px;
     }
@@ -299,6 +260,7 @@ export default {
   &__icon {
     width: 18px;
     height: 23px;
+    color: var(--main-icon-color) !important;
   }
   &__address-wrapper {
     position: relative;
@@ -313,24 +275,9 @@ export default {
       max-height: var(--height-header);
     }
   }
-  &__tooltip {
-    @include tablet {
-      display: none;
-    }
-  }
   &__address {
-    &--tablet {
-      display: none;
-    }
     @include tablet {
       font-size: $--font-size-medium;
-
-      &--desktop {
-        display: none;
-      }
-      &--tablet {
-        display: inline;
-      }
     }
   }
   &__button-qrcode {
@@ -398,12 +345,10 @@ export default {
     @include tablet {
       width: 114px;
       margin: 0 5px;
-      min-width: 0 !important;
     }
     @include phone {
       width: calc(33.3% - 6px);
       margin: 0 3px;
-      padding: 0 12px !important;
     }
   }
 }

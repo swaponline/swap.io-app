@@ -78,11 +78,11 @@ export default {
   &__wrapper {
     padding: 16px 12px;
     border-radius: $--main-border-radius;
-    background-color: $--light-grey-2 !important;
+    background-color: var(--main-input-background) !important;
     margin-bottom: 20px;
   }
   &__wallet {
-    background-color: $--light-grey-4;
+    background-color: var(--main-button-background-active);
     border-radius: $--main-border-radius;
     margin-bottom: 16px;
   }
@@ -91,7 +91,7 @@ export default {
     margin-bottom: 12px;
   }
   &__field {
-    background-color: $--light-grey-4;
+    background-color: var(--main-button-background-active);
     border-radius: $--main-border-radius;
     padding: 6px 14px 8px;
     display: flex;
@@ -116,11 +116,11 @@ export default {
     letter-spacing: 0.01em;
   }
   &__label {
-    color: $--dark-grey;
+    color: var(--secondary-text);
     font-size: $--font-size-small;
   }
   &__value {
-    color: $--black;
+    color: var(--primary-text);
     font-size: $--font-size-extra-small-subtitle;
   }
   &__divider {
@@ -137,7 +137,7 @@ export default {
     font-size: $--font-size-extra-small-subtitle;
   }
   &__result-label {
-    color: $--grey-3;
+    color: var(--secondary-text);
   }
   &__result-value {
     display: flex;
@@ -145,7 +145,7 @@ export default {
     align-items: flex-end;
   }
   &__currency-name {
-    color: $--dark-grey;
+    color: var(--secondary-text);
     margin-right: 4px;
   }
 
@@ -155,8 +155,8 @@ export default {
     display: flex;
     flex-direction: column;
     border-radius: $--main-border-radius;
-    background-color: $--light-grey-2;
-    border: 1px solid $--border-grey;
+    background-color: var(--main-input-background);
+    border: 1px solid var(--main-border-color);
     margin-bottom: 32px;
   }
 }

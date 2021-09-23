@@ -1,6 +1,6 @@
 <template>
   <div class="substrate">
-    <v-button-cancel class="substrate__button-cancel" @click="cancel" />
+    <v-button-cancel v-if="!hideCloseButton" class="substrate__button-cancel" @click="cancel" />
     <slot></slot>
   </div>
 </template>
@@ -9,15 +9,33 @@
 import { CREATING_OR_RECOVERING_PROFILE } from '@/store/modules/Profile'
 import VButtonCancel from '@/components/Profile/VButtonCancel.vue'
 
+const ESCAPE = 'Escape'
+
 export default {
   name: 'Substrate',
   components: {
     VButtonCancel
   },
+  props: {
+    hideCloseButton: {
+      type: Boolean,
+      default: false
+    }
+  },
+  created() {
+    document.addEventListener('keydown', this.closeByPressingESC)
+  },
+  beforeDestroy() {
+    document.removeEventListener('keydown', this.closeByPressingESC)
+  },
   methods: {
     cancel() {
       this.$store.dispatch(CREATING_OR_RECOVERING_PROFILE, false)
       return this.$router.push({ name: 'Wallets' })
+    },
+    closeByPressingESC({ key }) {
+      if (!(key === ESCAPE)) return
+      this.cancel()
     }
   }
 }
@@ -33,7 +51,7 @@ export default {
   height: 100%;
   max-height: 555px;
   margin: 20px auto 25px auto;
-  background: $--white;
+  background: var(--primary-background);
   flex-grow: 1;
   border-radius: 12px;
   overflow-y: auto;
@@ -57,7 +75,7 @@ export default {
   }
 
   @include phone {
-    margin: 10px;
+    margin: 20px;
   }
 }
 </style>

@@ -1,43 +1,81 @@
 <template>
-  <v-btn class="swap-button" depressed v-bind="$attrs" v-on="$listeners">
-    <slot></slot>
+  <v-btn class="swap-button" :class="classes" depressed v-bind="$attrs" v-on="$listeners">
+    <slot />
   </v-btn>
 </template>
 
 <script>
 export default {
   name: 'SwapButton',
-  inheritAttrs: false
+  props: {
+    primary: { type: Boolean, default: false }
+  },
+  computed: {
+    classes() {
+      return {
+        'swap-button--theme-primary': this.primary
+      }
+    }
+  }
 }
 </script>
 
 <style lang="scss">
 .swap-button {
-  min-height: 52px;
-  min-width: 142px !important;
-  border-radius: $--main-border-radius;
   text-transform: none;
+  letter-spacing: initial;
+  font-weight: $--font-weight-semi-bold;
 
-  --text-color: $--black;
-  &:disabled {
-    // обходим vuetify
-    &.v-btn.v-btn--depressed.v-btn--disabled.theme--light {
-      background-color: $--light-grey !important;
-    }
-    --text-color: $--dark-grey;
+  &.theme--dark.v-btn:hover:before,
+  &.theme--light.v-btn:hover:before {
+    opacity: 1;
   }
-  > span {
-    color: var(--text-color);
-    font-weight: $--font-weight-bold;
+
+  &.v-btn::before {
+    background-color: var(--main-button-background-hover);
+  }
+
+  &:not(.v-btn--round):not(.v-btn--tile) {
+    border-radius: $--main-border-radius;
+  }
+
+  &.v-btn.theme--dark.v-btn--has-bg,
+  &.v-btn.theme--light.v-btn--has-bg {
+    background-color: var(--main-button-background);
+  }
+
+  &--theme-primary {
+    color: $--white !important;
+    background-color: var(--main-color) !important;
+    &.v-btn::before {
+      background-color: rgba($--black, 0.15);
+    }
+  }
+
+  &:not(.v-btn--round).v-size--default {
+    height: $--button-size-default;
     font-size: $--font-size-button;
   }
-  @include phone {
-    width: 100%;
-    min-height: 45px;
-    > span {
-      font-weight: $--font-weight-bold;
-      font-size: $--font-size-medium;
+
+  &:not(.v-btn--round).v-size--small {
+    height: $--button-size-small;
+
+    padding: 0 10px;
+    font-size: $--font-size-base;
+
+    &:not(.v-btn--tile) {
+      border-radius: $--border-radius-small;
     }
+  }
+
+  &.v-btn--fab.v-size--small {
+    height: $--button-size-fab-small;
+    width: $--button-size-fab-small;
+  }
+
+  &:not(.v-btn--round).v-size--large {
+    height: $--button-size-large;
+    font-size: $--font-size-button;
   }
 }
 </style>

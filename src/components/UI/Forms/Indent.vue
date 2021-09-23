@@ -30,6 +30,10 @@ export default {
   font-size: $--font-size-extra-small-subtitle;
   line-height: 25px;
   word-break: break-all;
+  border: 2px solid transparent;
+  border-radius: $--main-border-radius;
+  background: var(--main-input-background);
+  padding: 6px 15px;
 
   @include phone {
     font-size: $--font-size-medium;
@@ -37,13 +41,12 @@ export default {
   }
 
   &__title {
-    margin-bottom: 4px;
     width: 100%;
     line-height: 22px;
-    font-size: $--font-size-medium;
+    font-size: $--font-size-small;
     font-weight: $--font-weight-semi-bold;
     display: block;
-    color: $--grey;
+    color: $--grey-3;
 
     @include phone {
       line-height: 19px;

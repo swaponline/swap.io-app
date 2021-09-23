@@ -5,6 +5,9 @@
         <slot name="append"></slot>
       </template>
     </v-text-field>
+    <div v-if="$slots['form-field-append']" class="form-text-field__append">
+      <slot name="form-field-append" />
+    </div>
   </div>
 </template>
 
@@ -23,7 +26,7 @@ export default {
 
 <style lang="scss">
 .form-text-field {
-  border: 2px solid $--border-grey;
+  border: 2px solid var(--main-border-color);
   border-radius: $--main-border-radius;
   display: flex;
   align-items: center;

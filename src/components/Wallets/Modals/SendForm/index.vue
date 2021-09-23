@@ -35,8 +35,8 @@
         :hint="listRecipientHint"
         hide-details
         class="send-form__textarea rounded-lg"
-        placeholder="Enter a list of outputs in the 'Pay to' field. 
-  One output per line. 
+        placeholder="Enter a list of outputs in the 'Pay to' field.
+  One output per line.
   Format: address, amount"
       ></v-textarea>
 
@@ -96,9 +96,9 @@
 
         <v-tooltip top>
           <template v-slot:activator="{ on }">
-            <v-btn v-if="!hasMemo" small depressed class="send-form__add-memo" @click="hasMemo = true" v-on="on">
+            <swap-button v-if="!hasMemo" small class="send-form__add-memo" @click="hasMemo = true" v-on="on">
               <v-icon color="grey lighten-1" small class="mr-1">mdi-bookmark</v-icon>Add a memo
-            </v-btn>
+            </swap-button>
           </template>
           <span>You will see it in the tx history (not the recipient)</span>
         </v-tooltip>
@@ -281,7 +281,7 @@ export default {
     display: flex;
     padding: 3px;
     border-radius: $--main-border-radius;
-    background-color: $--light-grey-2;
+    background-color: var(--main-input-background);
   }
   &__toggle {
     width: 50%;
@@ -294,7 +294,7 @@ export default {
     cursor: pointer;
 
     &--active {
-      background-color: $--white;
+      background-color: var(--primary-background);
       box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.12), 0px 3px 1px rgba(0, 0, 0, 0.04);
     }
   }
@@ -347,15 +347,15 @@ export default {
     line-height: 21px;
     font-weight: $--font-weight-semi-bold;
     font-size: $--font-size-extra-small-subtitle;
-    background-color: $--light-grey-2;
+    background-color: var(--main-input-background);
     padding: 8px 8px 8px 12px;
-    color: $--dark-grey;
+    color: var(--secondary-text);
     border-radius: $--main-border-radius;
     cursor: pointer;
     transition: all 0.3s;
 
     &:hover {
-      background-color: $--light-grey-5;
+      background-color: var(--main-button-background-hover);
     }
   }
   &__fee-row {
@@ -376,13 +376,13 @@ export default {
     line-height: 21px;
     font-weight: $--font-weight-semi-bold;
     font-size: $--font-size-extra-small-subtitle;
-    color: $--dark-grey;
+    color: var(--secondary-text);
   }
   &__amount {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    color: $--black;
+    color: var(--primary-text);
     font-size: $--font-size-extra-small-subtitle;
   }
   &__amount-fiat {
@@ -390,13 +390,12 @@ export default {
     line-height: 16px;
   }
   &__currency-name {
-    color: $--dark-grey;
+    color: var(--secondary-text);
   }
   &__add-memo {
     margin-bottom: 30px;
-    text-transform: none;
     padding: 0 8px !important;
-    letter-spacing: 0 !important;
+    font-size: $--font-size-small !important;
   }
 }
 </style>

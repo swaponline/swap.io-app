@@ -1,17 +1,23 @@
 <template>
-  <v-expansion-panels v-model="panels" v-click-outside="closePanels" class="profile-list">
+  <v-expansion-panels v-model="panels" v-click-outside="closePanels" :disabled="disabled" class="profile-list">
     <v-expansion-panel class="profile-list__inner">
       <v-expansion-panel-header class="profile-list__header" :hide-actions="isDesktop">
-        <v-avatar
-          height="40"
-          width="40"
-          min-width="40"
-          class="profile-list__avatar-wrapper"
-          :style="`background-image: ${getAvatar(currentProfile)}`"
-        >
-          <v-icon size="50" class="profile-list__avatar-icon">mdi-account-circle</v-icon>
-        </v-avatar>
-        <span class="profile-list__name">{{ currentProfile.username }}</span>
+        <div class="profile-list__header-wrapper">
+          <v-avatar
+            height="25"
+            width="21"
+            min-width="25"
+            class="profile-list__avatar-wrapper"
+            :style="backgroundAvatar"
+          >
+            <svg-icon v-if="!disabled" name="user" class="profile-list__avatar-icon"></svg-icon>
+          </v-avatar>
+          <span class="profile-list__name">{{ currentProfile.username }}</span>
+        </div>
+        <svg-icon
+          name="arrow"
+          :class="['profile-list__arrow-icon', isOpenPanel && 'profile-list__arrow-icon--active']"
+        ></svg-icon>
       </v-expansion-panel-header>
       <v-expansion-panel-content>
         <v-list class="profile-list__list-account py-0">
@@ -22,13 +28,13 @@
             @click="setProfile(profile.accountId)"
           >
             <v-avatar
-              height="40"
-              width="40"
-              min-width="40"
+              height="25"
+              width="25"
+              min-width="25"
               class="profile-list__avatar-wrapper"
               :style="`background-image: ${getAvatar(profile)}`"
             >
-              <v-icon size="50" class="profile-list__avatar-icon">mdi-account-circle</v-icon>
+              <svg-icon name="user" class="profile-list__avatar-icon"></svg-icon>
             </v-avatar>
             <span>{{ profile.username }}</span>
           </v-list-item>
@@ -44,9 +50,17 @@ import { mapActions } from 'vuex'
 import { MODULE_PROFILE, SET_PROFILE } from '@/store/modules/Profile'
 import { Base64 } from 'js-base64'
 
+const BACKGROUND_COLOR_AVATAR_FOR_DISABLED = '#919191'
+
 export default {
   name: 'ProfileList',
   inject: ['mediaQueries'],
+  props: {
+    disabled: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       panels: []
@@ -55,6 +69,9 @@ export default {
   computed: {
     isDesktop() {
       return this.mediaQueries.desktop
+    },
+    isOpenPanel() {
+      return this.panels === 0
     },
     balance() {
       return this.$store.getters.accountBalance
@@ -70,6 +87,11 @@ export default {
     },
     restProfiles() {
       return this.profiles.filter(p => p.accountId !== this.currentProfile.accountId)
+    },
+    backgroundAvatar() {
+      if (this.disabled) return `background-color: ${BACKGROUND_COLOR_AVATAR_FOR_DISABLED}`
+
+      return `background-image: ${this.getAvatar(this.currentProfile)}`
     }
   },
   methods: {
@@ -101,67 +123,153 @@ export default {
   display: flex;
   overflow: visible;
   height: $--header-height;
-  min-width: 200px;
+  width: 160px;
 
   @include tablet {
     width: auto;
     margin: 20px 40px;
     z-index: 10;
   }
+
   @include phone {
     margin: 8px;
   }
+
   &__inner {
     border-radius: 12px !important;
+
     &.v-item--active {
-      box-shadow: 0px 4px 20px rgba(17, 17, 17, 0.1);
+      box-shadow: 0 4px 20px rgba(17, 17, 17, 0.1);
     }
+
     &::before {
       display: none;
+
       @include tablet {
         display: block;
       }
     }
   }
+
   &__header {
     margin: 0;
-    padding: 0 25px;
+    padding: 0 12px 0 12px;
     min-height: $--header-height !important;
-    background: $--white;
+    background: var(--primary-background);
+    transition: $--theme-transition;
     border-radius: 12px;
+    display: flex;
+    align-items: center;
+
+    &:hover {
+      background-color: var(--main-input-background);
+    }
+
     @include phone {
       min-height: 70px !important;
     }
+
+    &-wrapper {
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      flex: 1 0 100%;
+      padding-right: 8px;
+
+      @include tablet {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: flex-end;
+        align-items: center;
+      }
+    }
   }
+
   &__avatar-wrapper {
-    margin-right: 12px;
     flex: 0 !important;
     border-radius: 50% !important;
     position: relative;
     background-size: 100% 100%;
+    margin-right: 10px;
+
+    @include tablet {
+      margin-right: 15px;
+    }
   }
+
   &__avatar-icon {
-    color: white !important;
-    opacity: 0.6;
+    position: absolute;
+    bottom: -4px;
+    fill: var(--main-icon-color);
   }
+
+  &__arrow-icon {
+    @include only-desktop {
+      display: block;
+    }
+
+    display: none;
+    flex-grow: 0 !important;
+    flex-shrink: 0 !important;
+    width: 9px;
+    height: 9px;
+    fill: var(--main-icon-color);
+    transition: $--transition-duration;
+
+    &--active {
+      transform: rotate(180deg);
+    }
+  }
+
   &__list-account {
     margin: 0 -24px -6px;
+    background-color: var(--primary-background) !important;
   }
+
   &__list-item {
-    padding: 0 25px;
+    padding: 0 14px;
     height: 60px;
+
+    &:hover {
+      background-color: var(--main-input-background);
+    }
+
+    @include tablet {
+      width: auto;
+      display: flex;
+      flex-direction: row-reverse;
+      justify-content: flex-end;
+    }
+
+    > span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      @include tablet {
+        width: auto;
+      }
+    }
   }
+
   &__add-new-profile {
     width: 100%;
-    border-top: 1px solid #f6f6f6;
-    padding: 16px 32px 15px 25px;
-    color: $--black;
+    border-top: 1px solid var(--main-border-color);
+    padding: 16px 10px 15px 10px;
+    color: var(--primary-text);
+    &:hover {
+      background-color: var(--main-input-background);
+    }
   }
+
   &__name {
-    font-weight: $--font-weight-medium;
-    font-size: $--font-size-extra-small-subtitle;
+    font-weight: $--font-weight-semi-bold;
+    font-size: $--font-size-medium;
     overflow: hidden;
     text-overflow: ellipsis;
+
+    @include tablet {
+      max-width: inherit;
+    }
   }
 }
 </style>

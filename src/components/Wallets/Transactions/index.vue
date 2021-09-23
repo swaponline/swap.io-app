@@ -88,9 +88,14 @@ export default {
 <style lang="scss">
 .transactions {
   width: 100%;
-  background: $--white;
+  background: var(--primary-background);
   overflow: hidden;
   border-radius: 12px 12px 0 0;
+
+  .v-tabs-items {
+    background: var(--primary-background) !important;
+    transition: $--theme-transition;
+  }
 
   @include tablet {
     border-radius: 0;
@@ -112,26 +117,32 @@ export default {
       }
     }
   }
+
   &__tab {
     padding: 0 0;
     min-width: 80px;
     font-weight: $--font-weight-semi-bold;
-    color: $--black !important;
+    color: var(--primary-text) !important;
+    transition: $--theme-transition;
+
     @include phone {
       width: 25%;
       font-size: $--font-size-small;
     }
   }
+
   &__horizontal-line {
     width: 100%;
     height: 2px;
-    background: $--light-grey;
+    background: var(--main-border-color);
     margin-top: -2px;
   }
+
   &__list {
     max-height: calc(var(--vh, 1vh) * 100 - 435px);
     overflow-x: hidden;
     overflow-y: auto;
+
     @include phone {
       max-height: calc(var(--vh, 1vh) * 100 - 355px);
     }

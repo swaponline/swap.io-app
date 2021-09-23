@@ -2,6 +2,8 @@
 @import 'media';
 @import '~normalize.css';
 @import 'stylesheet';
+@import '~vuetify/src/styles/styles.sass';
+@import 'theme-variable';
 
 * {
   box-sizing: border-box;
@@ -10,7 +12,7 @@
 // Переопределяем фон для выделенных элементов
 ::selection {
   background: var(--selection-color);
-  color: $--black;
+  color: var(--selection-text-color);
 }
 
 body {

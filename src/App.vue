@@ -13,9 +13,12 @@ import Canvg from 'canvg'
 import { getFaviconInColorFTheme } from '@/utils/favicon'
 import { NotificationInTabTitle } from '@/services/notificationInTabTitle'
 import { pluralizeNumeral } from '@/utils/pluralization'
-import messageHandler from './messageHandler'
 
-const FAVICON_REDRAWING_TIME = 290
+import { getUserSystemTheme } from '@/utils/theme'
+import { setCSSCustomProperty } from '@/utils/common'
+
+import { getStorage } from './utils/storage'
+import { DARK_THEME_KEY, LIGHT_THEME_KEY, SYSTEM_THEME_KEY, THEME_KEY } from './constants/theme'
 
 const queries = {
   desktop: '(min-width: 1281px)',
@@ -30,8 +33,7 @@ export default {
   },
   data() {
     return {
-      queries,
-      backgroundSvg: null
+      queries
     }
   },
   computed: {
@@ -39,7 +41,7 @@ export default {
       return this.$store.getters.userColorTheme
     },
     isDefaultTheme() {
-      return this.$store.getters.hasProfile // this.userColorTheme.background.includes('linear-gradient')
+      return this.userColorTheme.background.includes('linear-gradient')
     },
     accountNotifications() {
       return this.$store.getters.accountNotifications
@@ -52,29 +54,33 @@ export default {
       handler(theme) {
         if (!theme) return
 
-        const { color, selectionColor, background } = theme
+        const { color } = theme
         this.setFavicon(color)
         this.setColorThemeOfAddressBar(color)
-
-        setTimeout(() => {
-          document.documentElement.style.setProperty('--main-color', color)
-          document.documentElement.style.setProperty('--selection-color', selectionColor)
-        }, FAVICON_REDRAWING_TIME)
-
-        if (background.includes('linear-gradient')) {
-          document.documentElement.style.setProperty('--background-app', background)
-        } else {
-          document.documentElement.style.setProperty('--background-app', '')
-          this.backgroundSvg = background
-          this.$nextTick(() => this.setBackground())
-        }
+        this.setCustomColorCSSVariables(theme)
       }
     }
   },
   mounted() {
+    // SET CURRENT THEME
+    const theme = getStorage(THEME_KEY) || SYSTEM_THEME_KEY
+
+    let appTheme = theme
+    if (theme === SYSTEM_THEME_KEY) {
+      appTheme = getUserSystemTheme()
+    }
+
+    if (appTheme === LIGHT_THEME_KEY) {
+      this.$vuetify.theme.light = true
+      this.$vuetify.theme.dark = false
+    }
+    if (appTheme === DARK_THEME_KEY) {
+      this.$vuetify.theme.dark = true
+      this.$vuetify.theme.light = false
+    }
+
     window.addEventListener('resize', this.resize)
     this.resize()
-    messageHandler()
     // ! Mock
     const { accountNotifications } = this
     const title = `
@@ -104,15 +110,14 @@ export default {
       } else {
         vh = window.innerHeight * 0.01
       }
-      document.documentElement.style.setProperty('--vh', `${vh}px`)
+      setCSSCustomProperty('vh', `${vh}px`)
 
       const vw = window.innerWidth * 0.01
-      document.documentElement.style.setProperty('--vw', `${vw}`)
+      setCSSCustomProperty('vw', `${vw}`)
 
       this.setBackground()
     },
-    setBackground() {
-      const { backgroundSvg } = this
+    setBackground(backgroundSvg) {
       if (!backgroundSvg) return
 
       const canvas = this.$refs.backgroundCanvas
@@ -140,6 +145,24 @@ export default {
       const dynamicSvgFavicon = document.querySelector(attributeFaviconSvg)
 
       dynamicSvgFavicon.setAttribute('href', `${faviconBase64}`)
+    },
+    setCustomColorCSSVariables(theme) {
+      const { colorForDarkTheme, color, selectionColor, background } = theme
+
+      if (this.$vuetify.theme.dark) {
+        setCSSCustomProperty('main-color', colorForDarkTheme)
+      } else {
+        setCSSCustomProperty('main-color', color)
+      }
+
+      setCSSCustomProperty('selection-color', selectionColor)
+
+      if (background.includes('linear-gradient')) {
+        setCSSCustomProperty('background-app', background)
+      } else {
+        setCSSCustomProperty('background-app', '')
+        this.$nextTick(() => this.setBackground(background))
+      }
     },
     setColorThemeOfAddressBar(color) {
       const colorThemeOfAddressBar = document.querySelector('meta[name="theme-color"]')

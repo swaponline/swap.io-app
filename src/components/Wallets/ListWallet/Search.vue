@@ -38,7 +38,7 @@ export default {
 
 <style lang="scss">
 .wallet-search {
-  background-color: $--light-grey;
+  background-color: var(--main-input-background);
   padding: 0 25px;
 
   .v-list-item__content {

@@ -62,8 +62,9 @@ export default {
 .transaction-description {
   width: 100%;
   font-size: $--font-size-medium;
-  color: $--black;
+  color: var(--primary-text);
   &__input {
+    color: inherit;
     width: 100%;
     &:focus {
       outline: 1px solid rgba($color: $--black, $alpha: 0.12);

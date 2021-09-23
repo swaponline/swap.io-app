@@ -13,12 +13,12 @@
           or recover from mneminic phrase
         </div>
         <div class="create-or-recover__buttons">
-          <div class="create-or-recover__buttons-controls">
-            <v-btn v-if="desktop" depressed class="create-or-recover__button" block @click="cancel">Cancel</v-btn>
-            <v-btn depressed class="create-or-recover__button" block @click="create">Create</v-btn>
+          <div class="create-or-recover__buttons-row">
+            <swap-button v-if="desktop" class="create-or-recover__button" block @click="cancel">Cancel</swap-button>
+            <swap-button class="create-or-recover__button" block @click="create">Create</swap-button>
           </div>
-          <v-btn text class="create-or-recover__button create-or-recover__button--text" block @click="goToRecover"
-            >Recover profile</v-btn
+          <swap-button text class="create-or-recover__button create-or-recover__button--text" block @click="goToRecover"
+            >Recover profile</swap-button
           >
         </div>
       </div>
@@ -27,8 +27,8 @@
 </template>
 
 <script>
-import Substrate from '@/components/Profile/Substrate.vue'
 import { MatchMedia } from 'vue-component-media-queries'
+import Substrate from '@/components/Profile/Substrate.vue'
 
 export default {
   name: 'CreateOrRecover',
@@ -84,7 +84,7 @@ export default {
   &__text {
     font-size: $--font-size-extra-title;
     font-weight: $--font-weight-semi-bold;
-    color: $--black;
+    color: var(--primary-text);
   }
 
   &__subtext {
@@ -98,8 +98,12 @@ export default {
     flex-direction: column;
     align-items: center;
 
-    &-controls {
+    &-row {
       display: flex;
+
+      @include tablet {
+        width: 100%;
+      }
 
       @include phone {
         flex-direction: column;
@@ -108,7 +112,7 @@ export default {
 
     @include tablet {
       margin: auto auto 0;
-      max-width: 400px;
+      width: 228px;
     }
 
     @include phone {
@@ -117,20 +121,19 @@ export default {
   }
 
   &__button {
-    margin: 0 5px;
+    margin: 0 5px 15px;
     min-width: 174px !important;
     min-height: 48px;
-    margin-bottom: 15px;
     border-radius: $--main-border-radius;
 
-    .v-btn__content {
-      font-weight: $--font-weight-semi-bold;
-      font-size: $--font-size-button;
-      text-transform: none;
-      color: $--black;
+    @include tablet {
+      margin: 0 0 15px;
+      width: 100%;
     }
 
     &--text {
+      background-color: transparent !important;
+
       .v-btn__content {
         color: $--dark-grey;
       }

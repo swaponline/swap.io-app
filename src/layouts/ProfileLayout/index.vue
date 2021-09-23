@@ -1,6 +1,6 @@
 <template>
-  <div class="main-layout">
-    <main-header class="main-layout__main-header"></main-header>
+  <div class="profile-layout">
+    <main-header class="profile-layout__main-header"></main-header>
     <router-view></router-view>
   </div>
 </template>
@@ -15,7 +15,7 @@ export default {
 </script>
 
 <style lang="scss">
-.main-layout {
+.profile-layout {
   width: 100%;
   max-width: 1280px;
   height: 100%;
@@ -23,12 +23,5 @@ export default {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  &__tabs {
-    display: none;
-    @include tablet {
-      display: block;
-      flex-grow: 0;
-    }
-  }
 }
 </style>

@@ -1,19 +1,36 @@
 <template>
   <div class="total-wallet-sum">
-    <span class="total-wallet-sum__title">Total</span>
-    <v-select
-      append-icon="mdi-chevron-down"
-      class="total-wallet-sum__selector"
-      :value="'USD'"
+    <span class="total-wallet-sum__title">Total:</span>
+
+    <v-expansion-panels
+      v-model="isOpenPanel"
+      v-click-outside="closePanel"
       flat
-      solo
-      filled
-      dense
-      :items="['USD', 'EUR', 'GBP']"
-      item-color
-      :menu-props="{ 'content-class': 'total-wallet-sum__selector-menu' }"
+      class="total-wallet-sum__currency-select"
     >
-    </v-select>
+      <v-expansion-panel
+        v-model="isOpenPanel"
+        dense
+        class="total-wallet-sum__inner"
+        active-class="total-wallet-sum__inner--active"
+      >
+        <v-expansion-panel-header class="total-wallet-sum__current-currency">
+          {{ currency }}
+        </v-expansion-panel-header>
+        <v-expansion-panel-content>
+          <v-list elevation="0" class="total-wallet-sum__currency-list">
+            <v-list-item
+              v-for="item in filteredCurrencyList"
+              :key="item"
+              class="total-wallet-sum__currency-item"
+              @click="updateCurrency(item)"
+            >
+              <span>{{ item }}</span>
+            </v-list-item>
+          </v-list>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+    </v-expansion-panels>
 
     <div class="total-wallet-sum__value">{{ accountBalance }}</div>
   </div>
@@ -22,10 +39,29 @@
 <script>
 export default {
   name: 'TotalWalletSum',
+  data() {
+    return {
+      currency: 'USD',
+      currencyList: ['USD', 'EUR', 'GBP'],
+      isOpenPanel: false
+    }
+  },
   computed: {
     accountBalance() {
       const balance = this.$store.getters.accountBalance
       return Math.round(balance * 100) / 100
+    },
+    filteredCurrencyList() {
+      return this.currencyList.filter(currency => currency !== this.currency)
+    }
+  },
+  methods: {
+    updateCurrency(newValue) {
+      this.currency = newValue
+      this.closePanel()
+    },
+    closePanel() {
+      this.isOpenPanel = false
     }
   }
 }
@@ -40,68 +76,66 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 2px solid $--light-grey;
-  background: $--white;
+  border-bottom: 2px solid var(--main-border-color);
+  background: var(--primary-background);
+
+  &__currency-select {
+    height: $--button-size-small;
+    width: auto;
+
+    .v-expansion-panel-content__wrap {
+      padding: 0;
+    }
+  }
+
+  &__inner {
+    overflow: hidden;
+    background-color: transparent !important;
+    border: 1px solid transparent;
+
+    &--active {
+      border-color: var(--main-input-background);
+      box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.05);
+    }
+  }
+
+  &__current-currency {
+    font-size: $--font-size-base;
+    font-weight: $--font-weight-semi-bold;
+    color: $--grey-3;
+    min-height: $--button-size-small !important;
+    padding: 0 4px;
+
+    .v-icon {
+      color: inherit !important;
+    }
+  }
+
+  &__currency-list {
+    width: 100%;
+    padding: 0;
+  }
+
+  &__currency-item {
+    padding: 0 6px;
+    font-size: $--font-size-base;
+    font-weight: $--font-weight-semi-bold;
+    min-height: $--button-size-small;
+
+    &.v-list-item:not(.v-list-item--active):not(.v-list-item--disabled) {
+      color: $--grey-3 !important;
+    }
+
+    &:hover {
+      background-color: var(--main-button-background-hover);
+    }
+  }
 
   &__title {
     font-size: $--font-size-base;
     font-weight: $--font-weight-semi-bold;
     color: $--grey-3;
     flex-grow: 1;
-  }
-  &__selector {
-    max-width: 160px;
-    margin-right: 6px !important;
-    margin-left: auto !important;
-    flex: 0 !important;
-
-    .v-input__slot {
-      min-height: unset !important;
-      height: 32px !important;
-      padding: 0 4px 0 8px !important;
-      box-shadow: none;
-      margin-bottom: 0 !important;
-      font-size: $--font-size-medium;
-    }
-    .v-input__control {
-      min-height: unset !important;
-      width: unset !important;
-      flex-grow: 0;
-    }
-    .v-input__append-inner {
-      padding-left: 0 !important;
-    }
-    .v-input__icon {
-      min-width: 18px;
-      width: 18px;
-      .v-icon {
-        color: $--grey-3 !important;
-        font-size: 16px;
-      }
-    }
-    .v-text-field__details {
-      display: none;
-    }
-    .v-select__slot {
-      width: unset !important;
-    }
-    .v-select__selection {
-      color: $--grey-3;
-    }
-    .v-select__selections {
-      > div {
-        text-overflow: auto;
-      }
-      > input {
-        display: none;
-      }
-    }
-  }
-
-  &__selector-menu {
-    .v-list-item--active {
-      color: var(--main-color);
-    }
   }
 
   &__value {
