@@ -8,8 +8,8 @@ services:
       - '127.0.0.1:${PORT}:80'
     command: ['nginx', '-g', 'daemon off;']
     depends_on:
-    - es01
-    - es02
+      - es01
+      - es02
   es01:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.3.0
     container_name: es01
