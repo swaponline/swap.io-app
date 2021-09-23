@@ -1,16 +1,15 @@
 <template>
   <substrate>
     <v-loader :active="loading"></v-loader>
-    <iframe class="recover-profile" name="recoverProfile" frameborder="0" />
+    <iframe class="recover-profile" name="recoverProfile" />
   </substrate>
 </template>
 
 <script>
 import VLoader from '@/components/Loaders/VLoader.vue'
-import WindowHandler from '@/WindowHandler'
-import { IFRAME_INITED, PROFILE_RECOVERED, CANCELED, SET_APP_THEME } from '@/constants/createProfile'
+import SwapKeysApi from '@/keys-api'
+import { SET_APP_THEME } from '@/constants/createProfile'
 import { CREATING_OR_RECOVERING_PROFILE, CREATE_PROFILE } from '@/store/modules/Profile'
-import { RECOVER_PROFILE_WINDOW } from '@/constants/windowKey'
 import Substrate from '@/components/Profile/Substrate.vue'
 import { getStorage } from '@/utils/storage'
 import { THEME_KEY } from '@/constants/theme'
@@ -33,33 +32,36 @@ export default {
   methods: {
     openFrame() {
       this.loading = true
-      this.frame = new WindowHandler('recoverProfile', '/secret-phrase', RECOVER_PROFILE_WINDOW, ({ message }) => {
-        const { payload } = message
-        switch (message.type) {
-          case IFRAME_INITED:
-            this.frame.sendMessage({
-              message: {
-                type: SET_APP_THEME,
-                payload: {
-                  theme: getStorage(THEME_KEY)
-                }
-              }
-            })
 
-            this.loading = false
-            this.$store.dispatch(CREATING_OR_RECOVERING_PROFILE, true)
-            break
-          case CANCELED:
-            this.$store.dispatch(CREATING_OR_RECOVERING_PROFILE, false)
-            this.$router.push({ name: 'Wallets' })
-            break
-          case PROFILE_RECOVERED:
-            this.$store.dispatch(CREATE_PROFILE, payload.profile)
-            this.$router.push({ name: 'Wallets' })
-            break
-          default: {
-            // ! implementation will appear in the future
-            this.loading = false
+      this.frame = SwapKeysApi.restoreProfile({
+        callback: message => {
+          const { payload } = message
+          switch (message.type) {
+            case SwapKeysApi.restoreProfileAnswers.IFRAME_INITED:
+              this.frame.sendMessage({
+                message: {
+                  type: SET_APP_THEME,
+                  payload: {
+                    theme: getStorage(THEME_KEY)
+                  }
+                }
+              })
+
+              this.loading = false
+              this.$store.dispatch(CREATING_OR_RECOVERING_PROFILE, true)
+              break
+            case SwapKeysApi.restoreProfileAnswers.RECOVER_CANCELED:
+              this.$store.dispatch(CREATING_OR_RECOVERING_PROFILE, false)
+              this.$router.push({ name: 'Wallets' })
+              break
+            case SwapKeysApi.restoreProfileAnswers.PROFILE_RECOVERED:
+              this.$store.dispatch(CREATE_PROFILE, payload.profile)
+              this.$router.push({ name: 'Wallets' })
+              break
+            default: {
+              // ! implementation will appear in the future
+              this.loading = false
+            }
           }
         }
       })
@@ -73,6 +75,7 @@ export default {
   width: 100%;
   min-width: 1065px;
   height: 100%;
+  border: 0;
 
   @include tablet {
     min-width: auto;
