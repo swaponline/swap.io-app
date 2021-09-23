@@ -88,6 +88,7 @@ export default {
 
   @include tablet {
     max-width: none;
+    background: transparent;
   }
 
   &__wrapper {

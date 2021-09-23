@@ -162,7 +162,7 @@ export default {
 <style lang="scss">
 .wallet-create-modal {
   &--block {
-    width: 412px;
+    max-width: 412px;
     height: 608px;
     overflow: hidden;
     display: flex;

@@ -15,38 +15,22 @@
       @uncompress-wallet="compressed = false"
     ></transaction-block>
   </div>
-  <div v-else class="wallet__info-block" :class="{ 'wallet__info-block--centered': isCreatingWallet }">
-    <div v-if="!currentWallets.length" class="wallet__create-new">
-      <template v-if="!isCreatingWallet">
-        <smiles-icon class="wallet__create-new-image" />
-        <div class="wallet__create-new-text">
-          <h4 class="wallet__create-new-title">Congrats!</h4>
-          You have created a profile for yourself.<br />
-          Now you can very easily add crypto wallets.
-        </div>
-        <swap-button class="wallet__create-new-button" primary @click="createWallet">Create wallet</swap-button>
-      </template>
-
-      <wallet-create v-else as-block @close="isCreatingWallet = false" />
-    </div>
-  </div>
 </template>
 
 <script>
 import WalletInfo from '@/components/Wallets/WalletInfo.vue'
 import TransactionBlock from '@/components/Wallets/Transactions/index.vue'
-import SmilesIcon from '@/components/UI/Icons/Smiles.vue'
-import WalletCreate from '@/components/Wallets/Modals/WalletCreate.vue'
 
 export default {
   name: 'Wallet',
-  components: { TransactionBlock, WalletInfo, SmilesIcon, WalletCreate },
+  components: { TransactionBlock, WalletInfo },
   data() {
     return {
       compressed: false,
       isCreatingWallet: false
     }
   },
+  inject: ['mediaQueries'],
   computed: {
     currentWallets() {
       return this.$store.getters.currentWallets
@@ -65,7 +49,7 @@ export default {
         if (val.length === 0) {
           this.isCreatingWallet = false
         }
-        if (!this.currentWallet && val.length > 0) {
+        if (!this.currentWallet && val.length > 0 && this.mediaQueries.desktop) {
           this.$router.replace({
             name: 'Wallet',
             params: { walletAddress: val[0].subWallets[0].address }
@@ -121,54 +105,6 @@ export default {
         }
       }
     }
-  }
-
-  &__info-block {
-    min-height: 250px;
-    width: 100%;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border-radius: 12px;
-    background: var(--primary-background);
-
-    &--centered {
-      width: 450px;
-      flex-grow: 0;
-      margin: 0 auto;
-      padding: 20px;
-    }
-
-    @include tablet {
-      display: none;
-    }
-  }
-
-  &__create-new {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  &__create-new-image {
-    margin-top: 80px;
-  }
-  &__create-new-title {
-    font-size: $--font-size-subtitle;
-    font-weight: $--font-weight-semi-bold;
-    margin-bottom: 14px;
-  }
-  &__create-new-text {
-    margin-bottom: 46px;
-    text-align: center;
-    font-size: $--font-size-extra-small-subtitle;
-    line-height: 24px;
-    font-weight: $--font-weight-regular;
-  }
-  &__create-new-button {
-    padding: 0 36px !important;
-    margin-bottom: 100px;
   }
 }
 </style>
