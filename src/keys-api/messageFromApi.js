@@ -6,6 +6,7 @@ export const MESSAGE_FROM_API = {
   WALLET_CREATE_CANCELED: `CancelCreateWallet`,
   MESSAGE_SIGNED: `MessageSigned`,
   MESSAGE_SIGN_CANCELED: `CancelMessageSign`,
+  MESSAGE_VALIDATED: `MessageValidated`,
   THEME_SELECTED: `themeSelected`,
   PROFILE_CREATED: `profileCreated`,
   RECOVER_CANCELED: `recoverCancelled`,
