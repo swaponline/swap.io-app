@@ -6,5 +6,5 @@ export const WINDOW_KEYS = {
   CREATE_WALLET: 'CreateWalletWindow',
   CREATE_WALLETS: 'CreateWalletsWindow',
   SIGN_MESSAGE: 'SignMessageWindow',
-  VALIDATE_MESSAGE: 'ValidateMessage'
+  VALIDATE_MESSAGE: 'ValidateMessageWindow'
 }

@@ -280,10 +280,12 @@ class SwapKeysApi {
       if (!signedMessage) {
         reject(`signedMessage required`)
       }
+
       const apiFrame = new WindowHandler({
         nameFrame: 'validateMessage',
         additionalUrl: API_END_POINT.VALIDATE_MESSAGE,
         key: WINDOW_KEYS.VALIDATE_MESSAGE,
+        silent: true,
         callback: (callbackMessage) => {
           const {
             message: {
@@ -294,16 +296,19 @@ class SwapKeysApi {
           if (type === MESSAGE_FROM_API.IFRAME_INITED) {
             apiFrame.sendMessage({
               type: MESSAGE_TO_API.VALIDATE_MESSAGE,
-              data: {}
+              data: signedMessage
             })
           }
           if (type === MESSAGE_FROM_API.MESSAGE_VALIDATED) {
             const {
               message: {
-                signedMessage
+                isValid
               }
             } = callbackMessage
-            const answer = {}
+            const answer = {
+              signedMessage,
+              isValid
+            }
             resolve(answer)
             if (callback) callback(answer)
             apiFrame.close()
