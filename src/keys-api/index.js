@@ -284,12 +284,12 @@ class SwapKeysApi {
     })
   }
 
-// await keysApi.signMessage({ profileId: '023e01483c', network: 'ethereum', message: 'test message' })
+// await keysApi.signMessage({ profileId: '023e01483c', networkId: 'ethereum', message: 'test message' })
   signMessage(options) {
     const {
       callback,
       profileId,
-      network,
+      networkId,
       message
     } = options
     return new Promise((resolve, reject) => {
@@ -317,7 +317,7 @@ class SwapKeysApi {
               type: MESSAGE_TO_API.SIGN_MESSAGE,
               data: {
                 profileId,
-                network,
+                networkId,
                 message
               }
             })
