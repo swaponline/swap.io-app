@@ -9,7 +9,7 @@
             class="security-info__item"
           >
             <template #header>
-              <svg-icon class="security-info__item-icon" :name="securityInfoBlock.iconName" />
+              <svg-icon :name="securityInfoBlock.iconName" class="security-info__item-icon" />
             </template>
             <div class="security-info__item-text" v-html="securityInfoBlock.text"></div>
           </security-info-block>
@@ -17,9 +17,8 @@
         <swap-stepper v-else :active-step="activeStep" class="security-info__stepper">
           <template v-for="securityInfoBlock in $options.securityInfoBlocks" v-slot:[securityInfoBlock.id]>
             <security-info-block :key="securityInfoBlock.id" class="security-info__item">
-              <div class="security-info__item-wrapper"></div>
               <template #header>
-                <svg-icon class="security-info__item-icon" :name="securityInfoBlock.iconName"></svg-icon>
+                <svg-icon :name="securityInfoBlock.iconName" class="security-info__item-icon"></svg-icon>
               </template>
               <div class="security-info__item-text">
                 <div class="security-info__item-text-wrapper" v-html="securityInfoBlock.text"></div>
@@ -29,8 +28,8 @@
                   <span
                     v-for="n in $options.securityInfoBlocks.length"
                     :key="n"
-                    class="security-info__dot"
                     :class="{ 'security-info__dot--fill': n === activeStep }"
+                    class="security-info__dot"
                   ></span>
                 </div>
               </template>
@@ -164,7 +163,6 @@ export default {
 
     &-text {
       font-size: $--font-size-extra-small-subtitle;
-      color: var(--primary-text);
 
       @include only-tablet {
         display: flex;
@@ -190,13 +188,12 @@ export default {
     padding: 22px;
 
     &-wrapper {
-      width: 100%;
       display: flex;
       justify-content: center;
     }
 
     @include tablet {
-      width: auto;
+      width: inherit;
       flex: 0 0 10%;
       margin: 0 40px 40px;
       padding: 26px;
@@ -216,12 +213,9 @@ export default {
     }
 
     @include phone {
-      width: 157px;
+      width: 50%;
+      flex-grow: 1;
       min-width: unset !important;
-    }
-
-    @include small-phone {
-      width: 120px;
     }
   }
 
