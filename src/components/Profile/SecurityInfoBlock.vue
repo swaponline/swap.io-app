@@ -74,13 +74,10 @@ export default {
 
   @include tablet {
     display: flex;
-    height: 100%;
-    flex-direction: column;
-  }
-
-  @include tablet {
     max-width: 100%;
     width: 100%;
+    height: 100%;
+    flex-direction: column;
   }
 
   &__header {
