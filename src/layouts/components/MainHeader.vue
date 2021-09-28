@@ -286,7 +286,7 @@ export default {
 
   &__burger-icon {
     width: 31px;
-    height: 16px;
+    height: 31px;
   }
 }
 </style>
