@@ -12,9 +12,14 @@
       </div>
       <div class="list-wallet__wrapper" @scroll="scroll">
         <v-list class="list-wallet__body" :class="{ 'list-wallet__body--offset': isSearchVisible }">
-          <div v-for="wallet in filteredWallets" :key="wallet.name" class="list-wallet__item" @scroll="scroll">
-            <list-item v-if="wallet.subWallets.length === 1" v-bind="wallet" />
-            <list-group v-else v-bind="wallet" />
+          <div
+            v-for="networkGroup in walletsGrouppedByNetwork"
+            :key="networkGroup.network"
+            class="list-wallet__item"
+            @scroll="scroll"
+          >
+            <list-item v-if="networkGroup.wallets.length === 1" v-bind="networkGroup.wallets[0]" />
+            <list-group v-else v-bind="networkGroup" />
           </div>
         </v-list>
       </div>
@@ -30,6 +35,55 @@ import TotalWalletSum from './TotalWalletSum.vue'
 import ListGroup from './Group.vue'
 import ListItem from './Item.vue'
 
+const NEW_WALLETS = [
+  {
+    network: 'ETH',
+    coin: 'usdt',
+    walletNumber: 0,
+    address: '3WfGVzwANjbaLh6fokA41qtwMikpFWXSJtHS7uvrJQGV',
+    publicKey: '3WfGVzwANjbaLh6fokA41qtwMikpFWXSJtHS7uvrJQGV',
+
+    networkIcon: 'eth',
+    coinIcon: 'usdt',
+    value: 0.005
+  },
+  {
+    network: 'BTC',
+    coin: 'ETH',
+    walletNumber: 0,
+    address: '0x9ea68CDa5269E23c21e51EDc4eF2eDB7Ac87119e',
+    publicKey: '0x9ea68CDa5269E23c21e51EDc4eF2eDB7Ac87119e',
+    name: 'Default',
+
+    networkIcon: 'BTC',
+    coinIcon: 'eth',
+    value: 0.0456
+  },
+  {
+    network: 'BTC',
+    coin: 'USDT',
+    walletNumber: 0,
+    address: '0x9ea68CDa5269E23c21e51EDc4eF2eDB7Ac87119e',
+    publicKey: '0x9ea68CDa5269E23c21e51EDc4eF2eDB7Ac87119e',
+    name: 'Main',
+
+    networkIcon: 'BTC',
+    coinIcon: 'usdt',
+    value: 0.005
+  },
+  {
+    network: 'BTC',
+    coin: 'USDT',
+    walletNumber: 1,
+    address: '0xF2eDB7Ac87119e9ea68CDa5269E23c21e51EDc4e',
+    publicKey: '0xF2eDB7Ac87119e9ea68CDa5269E23c21e51EDc4e',
+
+    networkIcon: 'BTC',
+    coinIcon: 'usdt',
+    value: 0.0567
+  }
+]
+
 export default {
   name: 'ListWallet',
   components: { ProfileList, WalletSearch, TotalWalletSum, MatchMedia, ListGroup, ListItem },
@@ -41,30 +95,49 @@ export default {
   },
   computed: {
     wallets() {
-      return this.$store.getters.currentWallets
+      return NEW_WALLETS
+    },
+    walletsGrouppedByNetwork() {
+      return this.filteredWallets.reduce((grouppedWallets, wallet) => {
+        const networkIndex = grouppedWallets.findIndex(group => group.network === wallet.network)
+
+        if (networkIndex < 0) {
+          grouppedWallets.push({
+            network: wallet.network,
+            networkIcon: wallet.networkIcon,
+            value: wallet.value,
+            wallets: [wallet]
+          })
+        } else {
+          grouppedWallets[networkIndex].wallets.push(wallet)
+          // eslint-disable-next-line no-param-reassign
+          grouppedWallets[networkIndex].value += wallet.value
+        }
+
+        return grouppedWallets
+      }, [])
     },
     filteredWallets() {
       const { wallets } = this
-      const search = this.search.toLowerCase()
 
       if (!this.search) return wallets
 
-      const filteredByCurrency = wallets.filter(w => w.currencyName.toLowerCase().includes(search))
-      const filteredBySubname = wallets.filter(wallet => {
-        const { subWallets } = wallet
-        return !!subWallets.find(sw => sw.name.toLowerCase().includes(search))
+      return wallets.filter(({ network, coin, name, address }) => {
+        return (
+          this.checkIncludesInSearch(network) ||
+          this.checkIncludesInSearch(coin) ||
+          this.checkIncludesInSearch(address) ||
+          (name && this.checkIncludesInSearch(name))
+        )
       })
-      const filteredByAddress = wallets.filter(wallet => {
-        const { subWallets } = wallet
-        return !!subWallets.find(sw => sw.address.toLowerCase().includes(search))
-      })
-
-      return new Set([...filteredByCurrency, ...filteredBySubname, ...filteredByAddress])
     }
   },
   methods: {
     scroll(e) {
       if (this.wallets.length > 6) this.isSearchVisible = e.target.scrollTop > 0 || this.search
+    },
+    checkIncludesInSearch(targetString) {
+      return targetString.toLowerCase().includes(this.search.toLowerCase())
     }
   }
 }

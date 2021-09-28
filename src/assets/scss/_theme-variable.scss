@@ -7,6 +7,7 @@
   --main-button-background-hover: #{$--light-grey-5};
   --main-button-active: #{$--light-grey-4};
   --wallets-item-background: #{$--light-grey-2};
+  --wallets-item-background-hover: #{$--light-grey-5};
   --secondary-text: #{$--grey};
   --main-icon-color: #{$--black};
   --additional-background: #{$--light-grey-2};
@@ -16,18 +17,20 @@
 }
 
 .theme--dark {
-  --primary-background: #0f1422;
-  --primary-text: #f6f6f6;
+  --primary-background: #{$--dark-blue};
+  --primary-text: #{$--light-grey-2};
   --main-border-color: #{$--light-grey-2-percent10};
-  --main-input-background: #20222e;
-  --main-button-background: #212f46;
-  --main-button-background-hover: #182231;
-  --main-button-background-active: #131b27;
-  --wallets-item-background: #212f46;
+  --main-input-background: #{$--dark-blue-4};
+  --main-button-background: #{$--dark-blue-3};
+  --main-button-background-hover: #{$--dark-blue-2};
+  --main-button-background-active: #{ $--dark-blue-1};
   --secondary-text: #{$--grey};
   --main-icon-color: #{$--white};
-  --additional-background: #212f46;
-  --field-background: #131b27;
-  --additional-button-background: #212f46;
+  --additional-background: #{$--dark-blue-3};
+  --field-background: #{$--dark-blue-1};
+  --additional-button-background: #{$--dark-blue-3};
   --selection-text-color: #{$--white};
+  
+  --wallets-item-background: #{$--dark-blue-3};
+  --wallets-item-background-hover: #{$--dark-blue-2};
 }

@@ -4,15 +4,15 @@
     exact
     active-class="list-wallet-item--active"
     class="list-wallet-item"
-    :to="{ name: 'Wallet', params: { walletAddress: subWallets[0].address } }"
+    :to="{ name: 'Wallet', params: { walletAddress: address, coin: coin.toLowerCase() } }"
   >
-    <item-icon :currency-name="currencyName" :network="network" />
+    <item-icon :currency-name="coinIcon" :network="networkIcon" />
 
     <v-list-item-content>
       <v-list-item-title class="list-wallet-item__title">
         <div class="list-wallet-item__text">
-          <span class="list-wallet-item__currency-name">{{ currencyName }}</span>
-          <span class="list-wallet-item__name">{{ subWallets[0].name || minifyAddress(subWallets[0].address) }}</span>
+          <span class="list-wallet-item__currency-name">{{ coin.toUpperCase() }}</span>
+          <span class="list-wallet-item__name">{{ name || minifyAddress(address) }}</span>
         </div>
         <span class="list-wallet-item__value">{{ value }}</span>
       </v-list-item-title>
@@ -29,10 +29,12 @@ export default {
   components: { ItemIcon },
   props: {
     name: { type: String, default: '' },
-    currencyName: { type: String, default: '' },
+    address: { type: String, required: true },
     value: { type: Number, default: 0 },
-    subWallets: { type: Array, default: () => [] },
-    network: { type: String, default: '' }
+    coin: { type: String, default: '' },
+    coinIcon: { type: String, default: '' },
+    network: { type: String, default: '' },
+    networkIcon: { type: String, default: '' }
   },
   methods: { minifyAddress }
 }
