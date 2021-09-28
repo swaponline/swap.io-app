@@ -16,24 +16,20 @@ class SwapKeysApi {
   }
 
   getProfiles(options) {
-    const {
-      callback
-    } = options || {}
+    const { callback } = options || {}
 
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       const frame = new WindowHandler({
         nameFrame: 'getProfiles',
         additionalUrl: '/get-profiles',
         key: WINDOW_KEYS.GET_PROFILES,
         callback: ({ message }) => {
-          const {
-            profiles
-          } = message
+          const { profiles } = message
           frame.close()
           if (callback) callback(profiles)
           resolve(profiles)
         },
-        silent: true,
+        silent: true
       })
     })
   }
@@ -41,12 +37,11 @@ class SwapKeysApi {
   createProfileAnswers = {
     IFRAME_INITED: 'iframeInited',
     THEME_SELECTED: 'themeSelected',
-    PROFILE_CREATED: 'profileCreated'
+    PROFILE_CREATED: 'profileCreated',
+    CREATION_CANCELLED: 'creationCancelled'
   }
   createProfile(options) {
-    const {
-      callback
-    } = options || {}
+    const { callback } = options || {}
 
     const frame = new WindowHandler({
       nameFrame: 'createProfile',
@@ -64,25 +59,21 @@ class SwapKeysApi {
     PROFILE_RECOVERED: 'profileRecovered'
   }
   restoreProfile(options) {
-    const {
-      callback
-    } = options || {}
+    const { callback } = options || {}
 
     const frame = new WindowHandler({
       nameFrame: 'recoverProfile',
       additionalUrl: '/secret-phrase',
-      key: WINDOW_KEYS.RECOVER_PROFILE, 
+      key: WINDOW_KEYS.RECOVER_PROFILE,
       callback
     })
     return frame
   }
 
   async getNetworks(options) {
-    const {
-      callback,
-    } = options || {}
+    const { callback } = options || {}
 
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       if (this._cachedNetworks.length) {
         if (callback) callback(this._cachedNetworks)
         resolve(this._cachedNetworks)
@@ -92,31 +83,26 @@ class SwapKeysApi {
           additionalUrl: '/get-networks',
           key: WINDOW_KEYS.GET_NETWORKS,
           callback: ({ message }) => {
-            const {
-              networks
-            } = message
+            const { networks } = message
             frame.close()
             this._cachedNetworks = networks
             if (callback) callback(networks)
             resolve(networks)
           },
-          silent: true,
+          silent: true
         })
       }
     })
   }
 
   findNetwork(options) {
-    const {
-      callback,
-      name
-    } = options || {}
+    const { callback, name } = options || {}
 
-    return new Promise(async (resolve) => {
+    return new Promise(async resolve => {
       const networks = await this.getNetworks({})
 
-      const filteredNetworkds = networks.filter((network) => {
-        return (network.name.toLowerCase().substr(0,name.length) === name.toLowerCase())
+      const filteredNetworkds = networks.filter(network => {
+        return network.name.toLowerCase().substr(0, name.length) === name.toLowerCase()
       })
       if (callback) callback(filteredNetworkds)
       resolve(filteredNetworkds)
@@ -124,11 +110,7 @@ class SwapKeysApi {
   }
 
   async createWallets(options) {
-    const {
-      callback,
-      profileId,
-      wallets = []
-    } = options || {}
+    const { callback, profileId, wallets = [] } = options || {}
 
     return new Promise(async (resolve, reject) => {
       if (!profileId) {
@@ -142,11 +124,7 @@ class SwapKeysApi {
         // check wallets options
         let hasBadWalletOptions = false
         wallets.forEach((walletData, walletIndex) => {
-          const {
-            networkId,
-            coin,
-            walletNumber = 0
-          } = walletData || {}
+          const { networkId, coin, walletNumber = 0 } = walletData || {}
           if (!networkId) {
             hasBadWalletOptions = `networkId required for wallet #${walletIndex}`
             return
@@ -194,22 +172,15 @@ class SwapKeysApi {
             resolve(answer)
             if (callback) callback(answer)
             apiFrame.close()
-            
           }
         },
-        silent: true,
+        silent: true
       })
     })
   }
 
   async createWallet(options) {
-    const {
-      callback,
-      profileId,
-      networkId,
-      coin,
-      walletNumber = 0
-    } = options || {}
+    const { callback, profileId, networkId, coin, walletNumber = 0 } = options || {}
 
     return new Promise(async (resolve, reject) => {
       if (!profileId) {
@@ -238,7 +209,7 @@ class SwapKeysApi {
                 profileId,
                 networkId,
                 coin,
-                walletNumber,
+                walletNumber
               }
             })
             apiFrame.popupFrame()
@@ -259,15 +230,13 @@ class SwapKeysApi {
             resolve(answer)
             if (callback) callback(answer)
             apiFrame.close()
-            
           }
         },
-        silent: true,
+        silent: true
       })
       window.createWalletFrame = apiFrame
     })
   }
-
 }
 
 if (!apiProcessor) {

@@ -1,5 +1,5 @@
 <template>
-  <match-media v-slot="{ desktop, phone }" wrapper-tag="div" class="main-header">
+  <match-media v-slot="{ desktop, phone }" class="main-header" wrapper-tag="div">
     <div v-if="isCreatingOrRecoveringProfile" class="main-header__logo">
       <swap-logo />
     </div>
@@ -10,7 +10,7 @@
     <div v-if="desktop" class="main-header__content">
       <main-header-tabs class="main-header__tabs" />
       <div class="main-header__notifications">
-        <v-menu offset-y left :disabled="isCreatingOrRecoveringProfile" content-class="main-header__notifications-menu">
+        <v-menu :disabled="isCreatingOrRecoveringProfile" content-class="main-header__notifications-menu" left offset-y>
           <template v-slot:activator="{ on, attrs }">
             <div class="main-header__notifications-wrapper" v-bind="attrs" v-on="on">
               <v-badge :content="notifications.length" :value="notificationCount" color="red" overlap>
@@ -62,7 +62,7 @@
 <script>
 import { MatchMedia } from 'vue-component-media-queries'
 import ProfileList from '@/components/Wallets/ProfileList.vue'
-import { MODULE_PROFILE, IS_CREATING_OR_RECOVERING, CREATING_OR_RECOVERING_PROFILE } from '@/store/modules/Profile'
+import { CREATING_OR_RECOVERING_PROFILE, IS_CREATING_OR_RECOVERING, MODULE_PROFILE } from '@/store/modules/Profile'
 import VButtonCancel from '@/components/Profile/VButtonCancel.vue'
 import SwapLogo from '@/components/UI/SwapLogo.vue'
 import MainHeaderTabs from './Tabs.vue'
@@ -145,7 +145,7 @@ export default {
 
     @include phone {
       margin-right: 0;
-      min-width: 290px;
+      min-width: inherit;
       margin-left: 22px;
       min-width: auto;
     }

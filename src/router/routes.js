@@ -7,7 +7,7 @@ export default [
     path: '/',
     name: 'MainLayout',
     component: () => import(/* webpackChunkName: 'MainLayout' */ '@/layouts/MainLayout'),
-    redirect: { name: 'Wallet' },
+    redirect: { name: 'Wallets' },
     children: [
       {
         path: '/wallet',

@@ -1,24 +1,29 @@
 <template>
   <substrate>
     <v-loader :active="loading"></v-loader>
-    <iframe class="recover-profile" name="recoverProfile" />
+    <swap-iframe :name="$options.IFRAME_NAME" />
   </substrate>
 </template>
 
 <script>
-import VLoader from '@/components/Loaders/VLoader.vue'
-import SwapKeysApi from '@/keys-api'
-import { SET_APP_THEME } from '@/constants/createProfile'
-import { CREATING_OR_RECOVERING_PROFILE, CREATE_PROFILE } from '@/store/modules/Profile'
 import Substrate from '@/components/Profile/Substrate.vue'
-import { getStorage } from '@/utils/storage'
+import VLoader from '@/components/Loaders/VLoader.vue'
+import SwapIframe from '@/components/UI/SwapIframe'
+import { SET_APP_THEME } from '@/constants/createProfile'
+import { CREATE_PROFILE, CREATING_OR_RECOVERING_PROFILE } from '@/store/modules/Profile'
 import { THEME_KEY } from '@/constants/theme'
+import { getStorage } from '@/utils/storage'
+import SwapKeysApi from '@/keys-api'
+
+const IFRAME_NAME = 'recoverProfile'
 
 export default {
+  IFRAME_NAME,
   name: 'RecoverProfile',
   components: {
+    Substrate,
     VLoader,
-    Substrate
+    SwapIframe
   },
   data() {
     return {
@@ -34,10 +39,11 @@ export default {
       this.loading = true
 
       this.frame = SwapKeysApi.restoreProfile({
-        callback: message => {
+        callback: ({ message }) => {
+          const { IFRAME_INITED, RECOVER_CANCELED, PROFILE_RECOVERED } = SwapKeysApi.restoreProfileAnswers
           const { payload } = message
           switch (message.type) {
-            case SwapKeysApi.restoreProfileAnswers.IFRAME_INITED:
+            case IFRAME_INITED:
               this.frame.sendMessage({
                 message: {
                   type: SET_APP_THEME,
@@ -50,11 +56,11 @@ export default {
               this.loading = false
               this.$store.dispatch(CREATING_OR_RECOVERING_PROFILE, true)
               break
-            case SwapKeysApi.restoreProfileAnswers.RECOVER_CANCELED:
+            case RECOVER_CANCELED:
               this.$store.dispatch(CREATING_OR_RECOVERING_PROFILE, false)
               this.$router.push({ name: 'Wallets' })
               break
-            case SwapKeysApi.restoreProfileAnswers.PROFILE_RECOVERED:
+            case PROFILE_RECOVERED:
               this.$store.dispatch(CREATE_PROFILE, payload.profile)
               this.$router.push({ name: 'Wallets' })
               break
@@ -69,16 +75,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss">
-.recover-profile {
-  width: 100%;
-  min-width: 1065px;
-  height: 100%;
-  border: 0;
-
-  @include tablet {
-    min-width: auto;
-  }
-}
-</style>

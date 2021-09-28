@@ -10,7 +10,10 @@ module.exports = {
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    semi: ['error', 'never'],
+    'comma-dangle': ['error', 'never'],
     'arrow-parens': ['error', 'as-needed'],
+    'vue/max-len': ['error', { code: 120, template: 120, ignoreHTMLAttributeValues: false }],
     'vue/component-name-in-template-casing': ['error', 'kebab-case', { registeredComponentsOnly: false }],
     'vue/require-name-property': 'error',
     'vue/v-on-function-call': ['error', 'never'],

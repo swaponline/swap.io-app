@@ -4,31 +4,31 @@
     <v-tabs
       ref="tabs"
       v-model="activeTab"
-      class="transactions__tabs"
       background-color="transparent"
+      class="transactions__tabs"
       fixed-tabs
       slider-color="var(--main-color)"
       slider-size="2"
     >
-      <v-tab v-for="tab in tabs" :key="tab" :disabled="isEmpyTransactions" class="transactions__tab">{{ tab }}</v-tab>
+      <v-tab v-for="tab in tabs" :key="tab" :disabled="isEmptyTransactions" class="transactions__tab">{{ tab }}</v-tab>
     </v-tabs>
     <div class="transactions__horizontal-line"></div>
 
     <v-loader :active="loading"></v-loader>
     <v-tabs-items v-model="activeTab">
       <v-tab-item v-for="tab in tabs" :key="tab" class="transactions__tab-item">
-        <template v-if="isEmpyTransactions">
+        <template v-if="isEmptyTransactions && !loading">
           <swap-skeleton boilerplate max-width="30%" type="card-heading" />
           <transaction-skeleton v-for="n in 7" :key="`transaction-skeleton-${n}`" />
           <p class="transactions__skeleton-text">There are no transactions at this moment.</p>
         </template>
         <transaction-list
           v-else
-          class="transactions__list"
-          :class="{ 'transactions__list--stretch': isCompressedWallet }"
           :address="currentAddress"
-          :transactions="filteredTransactions"
+          :class="{ 'transactions__list--stretch': isCompressedWallet }"
           :is-compressed-wallet="isCompressedWallet"
+          :transactions="filteredTransactions"
+          class="transactions__list"
           @compress-wallet="$emit('compress-wallet')"
           @uncompress-wallet="$emit('uncompress-wallet')"
         ></transaction-list>
@@ -41,9 +41,9 @@
 import { mapActions } from 'vuex'
 
 import {
-  TRANSACTIONS_SORTED_BY_DATE,
   GET_TRANSACTIONS,
-  MODULE_NAME as TRANSACTIONS_MODULE
+  MODULE_NAME as TRANSACTIONS_MODULE,
+  TRANSACTIONS_SORTED_BY_DATE
 } from '@/store/modules/Transactions'
 import VLoader from '@/components/Loaders/VLoader.vue'
 import TransactionList from './List.vue'
@@ -87,7 +87,7 @@ export default {
 
       return filtered.filter(({ list }) => list.length > 0)
     },
-    isEmpyTransactions() {
+    isEmptyTransactions() {
       return this.filteredTransactions.length === 0
     },
     currentAddress() {
@@ -142,10 +142,12 @@ export default {
   @include tablet {
     border-radius: 0;
   }
+
   &__list {
     height: 100%;
     overflow: auto;
   }
+
   &__tabs {
     position: relative;
     z-index: 1;
@@ -188,6 +190,7 @@ export default {
     @include phone {
       max-height: calc(var(--vh, 1vh) * 100 - 355px);
     }
+
     &--stretch {
       max-height: calc(var(--vh, 1vh) * 100 - 325px);
       @include tablet {
@@ -200,6 +203,7 @@ export default {
         max-height: calc(var(--vh, 1vh) * 100 - 216px);
       }
     }
+
     @include small-height {
       max-height: none;
       height: 100%;
