@@ -10,7 +10,7 @@ export default [
     redirect: { name: 'Wallets' },
     children: [
       {
-        path: '/wallets',
+        path: '/wallet',
         name: 'Wallets',
         component: () => import(/* webpackChunkName: 'Wallets' */ '@/layouts/WalletLayout'),
         redirect: { name: 'Wallet' },
