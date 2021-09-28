@@ -8,10 +8,12 @@
           You have created a profile for yourself.<br />
           Now you can very easily add crypto wallets.
         </div>
-        <swap-button class="wallets-create__button" primary @click="isCreatingWallet = true">Create wallet</swap-button>
+        <swap-button class="wallets-create__button" primary @click="toggleCreatingForm(true)"
+          >Create wallet</swap-button
+        >
       </template>
 
-      <wallet-create v-else as-block @close="isCreatingWallet = false" />
+      <wallet-create v-else as-block @close="toggleCreatingForm(false)" />
     </div>
   </div>
 </template>
@@ -26,6 +28,11 @@ export default {
   data() {
     return {
       isCreatingWallet: false
+    }
+  },
+  methods: {
+    toggleCreatingForm(value) {
+      this.isCreatingWallet = value
     }
   }
 }
