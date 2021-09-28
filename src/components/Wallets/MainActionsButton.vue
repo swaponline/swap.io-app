@@ -141,6 +141,11 @@ export default {
   align-items: center;
   justify-content: center;
 
+  @include phone {
+    width: 50px;
+    height: 50px;
+  }
+
   &__open-button {
     background: var(--main-color) !important;
     min-width: 65px;
@@ -240,7 +245,7 @@ export default {
   }
 
   @include phone {
-    bottom: 12px !important;
+    bottom: 28px !important;
     left: 50%;
     transform: translate(-50%);
   }

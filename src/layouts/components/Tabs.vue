@@ -53,7 +53,7 @@ export default {
   }
 
   @include tablet {
-    padding: 0 40px;
+    padding: 0;
   }
 
   @include phone {

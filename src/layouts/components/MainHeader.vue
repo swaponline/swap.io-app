@@ -47,6 +47,15 @@
         <profile-list :disabled="isCreatingOrRecoveringProfile" />
       </div>
     </div>
+    <swap-button
+      v-if="!desktop && showBurgerButton"
+      class="main-header__burger-button"
+      icon
+      large
+      @click="openWalletList"
+    >
+      <svg-icon class="main-header__burger-icon" name="icon-burger"></svg-icon
+    ></swap-button>
   </match-media>
 </template>
 
@@ -86,6 +95,9 @@ export default {
     },
     notificationCount() {
       return !this.isCreatingOrRecoveringProfile ? this.notifications.length : null
+    },
+    showBurgerButton() {
+      return !!this.$route.params.walletAddress
     }
   },
   methods: {
@@ -93,8 +105,12 @@ export default {
       this.$store.dispatch(CREATING_OR_RECOVERING_PROFILE, false)
       return this.$router.push({ name: 'Wallets' })
     },
+
     sliderColor() {
       return this.isCreatingOrRecoveringProfile ? 'transparent' : 'var(--main-color)'
+    },
+    openWalletList() {
+      return this.$router.push({ name: 'Wallets' })
     }
   }
 }
@@ -131,6 +147,7 @@ export default {
       margin-right: 0;
       min-width: 290px;
       margin-left: 22px;
+      min-width: auto;
     }
   }
 
@@ -257,6 +274,19 @@ export default {
     &--green {
       color: $--green;
     }
+  }
+
+  &__burger-button {
+    margin-right: 40px;
+
+    @include phone {
+      margin-right: 10px;
+    }
+  }
+
+  &__burger-icon {
+    width: 31px;
+    height: 31px;
   }
 }
 </style>

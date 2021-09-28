@@ -1,21 +1,20 @@
 <template>
   <div class="wallet-layout">
-    <list-wallet
-      v-if="hasWallets"
-      class="wallet-layout__list-wallet"
-      :class="{ 'wallet-layout__list-wallet--show': showListWallet }"
-    ></list-wallet>
+    <template v-if="hasWallets">
+      <list-wallet
+        class="wallet-layout__list-wallet"
+        :class="{ 'wallet-layout__list-wallet--show': showListWallet }"
+      ></list-wallet>
 
-    <div
-      class="wallet-layout__router"
-      :class="{
-        'wallet-layout__router--hide': showListWallet,
-        'wallet-layout__router--created': !hasWallets
-      }"
-    >
-      <transition-translate :reverse="metaBack">
-        <router-view :key="currentRoute" class="wallet-layout__router-content"></router-view>
-      </transition-translate>
+      <div class="wallet-layout__router" :class="{ 'wallet-layout__router--hide': showListWallet }">
+        <transition-translate :reverse="metaBack">
+          <router-view :key="currentRoute" class="wallet-layout__router-content"></router-view>
+        </transition-translate>
+      </div>
+    </template>
+
+    <div v-else class="wallet-layout__router wallet-layout__router--created">
+      <wallets-create />
     </div>
 
     <main-actions v-if="hasWallets" />
@@ -28,6 +27,7 @@ import TransitionTranslate from '@/components/Transitions/Translate.vue'
 import ListWallet from '@/components/Wallets/ListWallet/index.vue'
 import MainActions from '@/components/Wallets/MainActions.vue'
 import AllModals from '@/components/Wallets/Modals/AllModals.vue'
+import WalletsCreate from '@/components/Wallets/WalletsCreate.vue'
 
 export default {
   name: 'WalletLayout',
@@ -36,7 +36,8 @@ export default {
     TransitionTranslate,
     ListWallet,
     MainActions,
-    AllModals
+    AllModals,
+    WalletsCreate
   },
   computed: {
     currentRoute() {
@@ -99,7 +100,7 @@ export default {
 
     @include only-desktop {
       &--created {
-        margin: 15px 100px 0;
+        padding: 15px 100px 0;
       }
     }
 
@@ -112,7 +113,13 @@ export default {
         transform: translateX(100vw);
       }
       &--created {
-        margin: 15px 0;
+        padding: 20px 40px;
+      }
+    }
+
+    @include phone {
+      &--created {
+        padding: 20px;
       }
     }
   }

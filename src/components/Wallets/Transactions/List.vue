@@ -115,6 +115,14 @@ export default {
     &.sticky {
       position: sticky;
     }
+
+    @include tablet {
+      padding: 0;
+    }
+
+    @include phone {
+      padding: 20px;
+    }
   }
 
   &__up-button {
