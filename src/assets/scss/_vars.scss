@@ -44,7 +44,6 @@ $--font-weight-regular: 400;
 $--font-weight-light: 300;
 $--font-weight-extra-light: 200;
 
-$--max-content-size: 1280px;
 $--bp-tablet: 1280px;
 $--bp-phone: 480px;
 $--bp-small: 320px;
@@ -69,10 +68,3 @@ $--button-size-default: 42px;
 $--button-size-large: 52px;
 
 $--button-size-fab-small: 36px;
-
-:root {
-  --navigation-drawer-mobile-height: 57px;
-  --navigation-drawer-desktop-width: 70px;
-  --max-content-size: 1920px;
-  --disabled-background: #f5f5f5;
-}

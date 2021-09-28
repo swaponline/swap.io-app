@@ -13,7 +13,6 @@ import Canvg from 'canvg'
 import { getFaviconInColorFTheme } from '@/utils/favicon'
 import { NotificationInTabTitle } from '@/services/notificationInTabTitle'
 import { pluralizeNumeral } from '@/utils/pluralization'
-
 import { getUserSystemTheme } from '@/utils/theme'
 import { setCSSCustomProperty } from '@/utils/common'
 
@@ -26,6 +25,7 @@ const queries = {
   phone: '(max-width: 480px)',
   small: '(max-width: 320px)'
 }
+
 export default {
   name: 'App',
   components: {

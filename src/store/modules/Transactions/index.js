@@ -4,8 +4,9 @@ import { getDate } from '@/utils/date'
 
 export const MODULE_NAME = 'Transactions'
 
-export const GET_TRANSACTIONS = 'GET_TRANSACTIONS'
-export const EDIT_FEE = 'EDIT_FEE'
+export const GET_TRANSACTIONS = 'getTransactions'
+export const EDIT_FEE = 'editFee'
+export const TRANSACTIONS_SORTED_BY_DATE = 'transactionsSortedByDate'
 
 export default {
   state: {
@@ -22,7 +23,7 @@ export default {
      *  list: []
      * }]
      */
-    listTransactionsSortByDate({ list }) {
+    [TRANSACTIONS_SORTED_BY_DATE]({ list }) {
       return wallet => {
         return list
           .filter(el => el.to === wallet || el.from === wallet)
