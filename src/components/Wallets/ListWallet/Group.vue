@@ -7,16 +7,16 @@
     append-icon=""
   >
     <template #activator>
-      <item-icon :currency-name="networkIcon" />
+      <item-icon :currency-name="network.toLowerCase()" />
 
       <v-list-item-title class="list-wallet-group__header">
         <div class="list-wallet-group__text">
           <span class="list-wallet-group__currency">{{ network }}</span>
           <span class="list-wallet-group__name">
             <cryptoicon
-              v-for="coinGroup in groupWalletsByCoin"
-              :key="`icon-${coinGroup.coin}`"
-              :symbol="coinGroup.icon.toLowerCase()"
+              v-for="{ coin } in groupWalletsByCoin"
+              :key="generateKey('icon', coin)"
+              :symbol="coin.toLowerCase()"
               size="14"
               class="list-wallet-group__header-icon"
             />
@@ -26,30 +26,30 @@
       </v-list-item-title>
     </template>
 
-    <template v-for="coinGroup in groupWalletsByCoin">
-      <v-list-item :key="`coin-group-${coinGroup.coin}`" class="list-wallet-group__item" disabled>
+    <template v-for="{ coin, wallets: groupWallets, value: groupValue } in groupWalletsByCoin">
+      <v-list-item :key="generateKey('coin-group', coin)" class="list-wallet-group__item" disabled>
         <v-list-item-content class="list-wallet-group__item-content">
           <div class="list-wallet-group__item-info list-wallet-group__item-info--disabled">
             <p class="list-wallet-group__coin-name">
-              <cryptoicon class="list-wallet-group__coin-icon" size="20" :symbol="coinGroup.icon.toLowerCase()" />
-              {{ coinGroup.coin }}
+              <cryptoicon class="list-wallet-group__coin-icon" size="20" :symbol="coin.toLowerCase()" />
+              {{ coin }}
             </p>
-            <span>{{ coinGroup.value }}</span>
+            <span>{{ groupValue }}</span>
           </div>
         </v-list-item-content>
       </v-list-item>
       <v-list-item
-        v-for="wallet in coinGroup.wallets"
-        :key="`${coinGroup.coin}-${wallet.address}`"
+        v-for="{ address, name, value: walletValue } in groupWallets"
+        :key="generateKey(coin, address)"
         link
         exact
         class="list-wallet-group__item"
-        :to="{ name: 'Wallet', params: { walletAddress: wallet.address, coin: coinGroup.coin.toLowerCase() } }"
+        :to="{ name: 'Wallet', params: { walletAddress: address, coin: coin.toLowerCase() } }"
       >
         <v-list-item-content class="list-wallet-group__item-content">
           <v-list-item-title class="list-wallet-group__item-info">
-            <span>{{ wallet.name || minifyAddress(wallet.address) }}</span>
-            <span>{{ wallet.value }}</span>
+            <span>{{ name || minifyAddress(address) }}</span>
+            <span>{{ walletValue }}</span>
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
@@ -60,13 +60,13 @@
 <script>
 import ItemIcon from '@/components/Wallets/ListWallet/ItemIcon.vue'
 import { minifyAddress } from '@/utils/common'
+import { groupWalletsBy } from '@/utils/wallets'
 
 export default {
   name: 'ListWalletGroup',
   components: { ItemIcon },
   props: {
     network: { type: String, default: '' },
-    networkIcon: { type: String, default: '' },
     wallets: { type: Array, required: true },
     value: { type: Number, default: 0 }
   },
@@ -77,27 +77,16 @@ export default {
   },
   computed: {
     groupWalletsByCoin() {
-      return this.wallets.reduce((grouppedWallets, wallet) => {
-        const coinIndex = grouppedWallets.findIndex(group => group.coin === wallet.coin)
-
-        if (coinIndex < 0) {
-          grouppedWallets.push({
-            coin: wallet.coin,
-            icon: wallet.coinIcon,
-            value: wallet.value,
-            wallets: [wallet]
-          })
-        } else {
-          grouppedWallets[coinIndex].wallets.push(wallet)
-          // eslint-disable-next-line no-param-reassign
-          grouppedWallets[coinIndex].value += wallet.value
-        }
-
-        return grouppedWallets
-      }, [])
+      return groupWalletsBy(this.wallets, 'coin')
     }
   },
-  methods: { minifyAddress }
+  methods: {
+    minifyAddress,
+
+    generateKey(key, value) {
+      return `${key}-${value}`
+    }
+  }
 }
 </script>
 

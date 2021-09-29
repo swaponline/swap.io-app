@@ -13,7 +13,7 @@
       <div class="list-wallet__wrapper" @scroll="scroll">
         <v-list class="list-wallet__body" :class="{ 'list-wallet__body--offset': isSearchVisible }">
           <div
-            v-for="networkGroup in walletsGrouppedByNetwork"
+            v-for="networkGroup in walletsGroupedByNetwork"
             :key="networkGroup.network"
             class="list-wallet__item"
             @scroll="scroll"
@@ -29,6 +29,7 @@
 
 <script>
 import { MatchMedia } from 'vue-component-media-queries'
+import { groupWalletsBy } from '@/utils/wallets'
 import WalletSearch from './Search.vue'
 import ProfileList from '../ProfileList.vue'
 import TotalWalletSum from './TotalWalletSum.vue'
@@ -43,8 +44,6 @@ const NEW_WALLETS = [
     address: '3WfGVzwANjbaLh6fokA41qtwMikpFWXSJtHS7uvrJQGV',
     publicKey: '3WfGVzwANjbaLh6fokA41qtwMikpFWXSJtHS7uvrJQGV',
 
-    networkIcon: 'eth',
-    coinIcon: 'usdt',
     value: 0.005
   },
   {
@@ -55,8 +54,6 @@ const NEW_WALLETS = [
     publicKey: '0x9ea68CDa5269E23c21e51EDc4eF2eDB7Ac87119e',
     name: 'Default',
 
-    networkIcon: 'BTC',
-    coinIcon: 'eth',
     value: 0.0456
   },
   {
@@ -67,8 +64,6 @@ const NEW_WALLETS = [
     publicKey: '0x9ea68CDa5269E23c21e51EDc4eF2eDB7Ac87119e',
     name: 'Main',
 
-    networkIcon: 'BTC',
-    coinIcon: 'usdt',
     value: 0.005
   },
   {
@@ -78,8 +73,6 @@ const NEW_WALLETS = [
     address: '0xF2eDB7Ac87119e9ea68CDa5269E23c21e51EDc4e',
     publicKey: '0xF2eDB7Ac87119e9ea68CDa5269E23c21e51EDc4e',
 
-    networkIcon: 'BTC',
-    coinIcon: 'usdt',
     value: 0.0567
   }
 ]
@@ -97,25 +90,8 @@ export default {
     wallets() {
       return NEW_WALLETS
     },
-    walletsGrouppedByNetwork() {
-      return this.filteredWallets.reduce((grouppedWallets, wallet) => {
-        const networkIndex = grouppedWallets.findIndex(group => group.network === wallet.network)
-
-        if (networkIndex < 0) {
-          grouppedWallets.push({
-            network: wallet.network,
-            networkIcon: wallet.networkIcon,
-            value: wallet.value,
-            wallets: [wallet]
-          })
-        } else {
-          grouppedWallets[networkIndex].wallets.push(wallet)
-          // eslint-disable-next-line no-param-reassign
-          grouppedWallets[networkIndex].value += wallet.value
-        }
-
-        return grouppedWallets
-      }, [])
+    walletsGroupedByNetwork() {
+      return groupWalletsBy(this.wallets, 'network')
     },
     filteredWallets() {
       const { wallets } = this
