@@ -12,9 +12,14 @@
       </div>
       <div class="list-wallet__wrapper" @scroll="scroll">
         <v-list class="list-wallet__body" :class="{ 'list-wallet__body--offset': isSearchVisible }">
-          <div v-for="wallet in filteredWallets" :key="wallet.name" class="list-wallet__item" @scroll="scroll">
-            <list-item v-if="wallet.subWallets.length === 1" v-bind="wallet" />
-            <list-group v-else v-bind="wallet" />
+          <div
+            v-for="networkGroup in walletsGroupedByNetwork"
+            :key="networkGroup.network"
+            class="list-wallet__item"
+            @scroll="scroll"
+          >
+            <list-item v-if="networkGroup.wallets.length === 1" v-bind="networkGroup.wallets[0]" />
+            <list-group v-else v-bind="networkGroup" />
           </div>
         </v-list>
       </div>
@@ -24,11 +29,53 @@
 
 <script>
 import { MatchMedia } from 'vue-component-media-queries'
+import { groupWalletsBy } from '@/utils/wallets'
 import WalletSearch from './Search.vue'
 import ProfileList from '../ProfileList.vue'
 import TotalWalletSum from './TotalWalletSum.vue'
 import ListGroup from './Group.vue'
 import ListItem from './Item.vue'
+
+const NEW_WALLETS = [
+  {
+    network: 'ETH',
+    coin: 'usdt',
+    walletNumber: 0,
+    address: '3WfGVzwANjbaLh6fokA41qtwMikpFWXSJtHS7uvrJQGV',
+    publicKey: '3WfGVzwANjbaLh6fokA41qtwMikpFWXSJtHS7uvrJQGV',
+
+    value: 0.005
+  },
+  {
+    network: 'BTC',
+    coin: 'ETH',
+    walletNumber: 0,
+    address: '0x9ea68CDa5269E23c21e51EDc4eF2eDB7Ac87119e',
+    publicKey: '0x9ea68CDa5269E23c21e51EDc4eF2eDB7Ac87119e',
+    name: 'Default',
+
+    value: 0.0456
+  },
+  {
+    network: 'BTC',
+    coin: 'USDT',
+    walletNumber: 0,
+    address: '0x9ea68CDa5269E23c21e51EDc4eF2eDB7Ac87119e',
+    publicKey: '0x9ea68CDa5269E23c21e51EDc4eF2eDB7Ac87119e',
+    name: 'Main',
+
+    value: 0.005
+  },
+  {
+    network: 'BTC',
+    coin: 'USDT',
+    walletNumber: 1,
+    address: '0xF2eDB7Ac87119e9ea68CDa5269E23c21e51EDc4e',
+    publicKey: '0xF2eDB7Ac87119e9ea68CDa5269E23c21e51EDc4e',
+
+    value: 0.0567
+  }
+]
 
 export default {
   name: 'ListWallet',
@@ -41,30 +88,32 @@ export default {
   },
   computed: {
     wallets() {
-      return this.$store.getters.currentWallets
+      return NEW_WALLETS
+    },
+    walletsGroupedByNetwork() {
+      return groupWalletsBy(this.wallets, 'network')
     },
     filteredWallets() {
       const { wallets } = this
-      const search = this.search.toLowerCase()
 
       if (!this.search) return wallets
 
-      const filteredByCurrency = wallets.filter(w => w.currencyName.toLowerCase().includes(search))
-      const filteredBySubname = wallets.filter(wallet => {
-        const { subWallets } = wallet
-        return !!subWallets.find(sw => sw.name.toLowerCase().includes(search))
+      return wallets.filter(({ network, coin, name, address }) => {
+        return (
+          this.checkIncludesInSearch(network) ||
+          this.checkIncludesInSearch(coin) ||
+          this.checkIncludesInSearch(address) ||
+          (name && this.checkIncludesInSearch(name))
+        )
       })
-      const filteredByAddress = wallets.filter(wallet => {
-        const { subWallets } = wallet
-        return !!subWallets.find(sw => sw.address.toLowerCase().includes(search))
-      })
-
-      return new Set([...filteredByCurrency, ...filteredBySubname, ...filteredByAddress])
     }
   },
   methods: {
     scroll(e) {
       if (this.wallets.length > 6) this.isSearchVisible = e.target.scrollTop > 0 || this.search
+    },
+    checkIncludesInSearch(targetString) {
+      return targetString.toLowerCase().includes(this.search.toLowerCase())
     }
   }
 }
