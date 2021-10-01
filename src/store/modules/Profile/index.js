@@ -1,4 +1,4 @@
-import { getStorage, setStorage, removeStorage } from '@/utils/storage'
+import { getStorage, removeStorage, setStorage } from '@/utils/storage'
 import { SET_MODEL, UPDATE_OBJECT_PROPERTY } from '../../common/mutations.types'
 
 export const MODULE_PROFILE = 'Profile'
@@ -21,6 +21,7 @@ const HAS_PROFILE_KEY = 'hasProfile'
 export const DEFAULT_COLOR_THEME = {
   background: 'linear-gradient(0deg, rgba(237,237,237,1) 0%, rgba(247,247,247,1) 100%)',
   color: '#6144E5',
+  colorForDarkTheme: '#7854fa',
   selectionColor: ''
 }
 
