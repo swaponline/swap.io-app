@@ -5,7 +5,7 @@
     </match-media>
     <div class="list-wallet__container">
       <div class="list-wallet__header">
-        <total-wallet-sum />
+        <total-wallet-sum :total-value="totalValue" />
         <component :is="isSearchVisible ? 'v-slide-y-transition' : 'v-slide-y-reverse-transition'">
           <wallet-search v-if="isSearchVisible" v-model="search" />
         </component>
@@ -19,7 +19,7 @@
             @scroll="scroll"
           >
             <list-item v-if="networkGroup.wallets.length === 1" v-bind="networkGroup.wallets[0]" />
-            <list-group v-else v-bind="networkGroup" />
+            <list-group v-else v-bind="networkGroup" :active-wallet="activeWallet" />
           </div>
         </v-list>
       </div>
@@ -36,50 +36,13 @@ import TotalWalletSum from './TotalWalletSum.vue'
 import ListGroup from './Group.vue'
 import ListItem from './Item.vue'
 
-const NEW_WALLETS = [
-  {
-    network: 'ETH',
-    coin: 'usdt',
-    walletNumber: 0,
-    address: '3WfGVzwANjbaLh6fokA41qtwMikpFWXSJtHS7uvrJQGV',
-    publicKey: '3WfGVzwANjbaLh6fokA41qtwMikpFWXSJtHS7uvrJQGV',
-
-    value: 0.005
-  },
-  {
-    network: 'BTC',
-    coin: 'ETH',
-    walletNumber: 0,
-    address: '0x9ea68CDa5269E23c21e51EDc4eF2eDB7Ac87119e',
-    publicKey: '0x9ea68CDa5269E23c21e51EDc4eF2eDB7Ac87119e',
-    name: 'Default',
-
-    value: 0.0456
-  },
-  {
-    network: 'BTC',
-    coin: 'USDT',
-    walletNumber: 0,
-    address: '0x9ea68CDa5269E23c21e51EDc4eF2eDB7Ac87119e',
-    publicKey: '0x9ea68CDa5269E23c21e51EDc4eF2eDB7Ac87119e',
-    name: 'Main',
-
-    value: 0.005
-  },
-  {
-    network: 'BTC',
-    coin: 'USDT',
-    walletNumber: 1,
-    address: '0xF2eDB7Ac87119e9ea68CDa5269E23c21e51EDc4e',
-    publicKey: '0xF2eDB7Ac87119e9ea68CDa5269E23c21e51EDc4e',
-
-    value: 0.0567
-  }
-]
-
 export default {
   name: 'ListWallet',
   components: { ProfileList, WalletSearch, TotalWalletSum, MatchMedia, ListGroup, ListItem },
+  props: {
+    wallets: { type: Array, default: () => [] },
+    activeWallet: { type: Object, default: () => ({}) }
+  },
   data() {
     return {
       search: '',
@@ -87,9 +50,6 @@ export default {
     }
   },
   computed: {
-    wallets() {
-      return NEW_WALLETS
-    },
     walletsGroupedByNetwork() {
       return groupWalletsBy(this.wallets, 'network')
     },
@@ -106,6 +66,9 @@ export default {
           (name && this.checkIncludesInSearch(name))
         )
       })
+    },
+    totalValue() {
+      return this.wallets.reduce((value, wallet) => value + wallet.value, 0)
     }
   },
   methods: {
