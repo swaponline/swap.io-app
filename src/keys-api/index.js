@@ -3,6 +3,10 @@
 import messageHandler from './messageHandler'
 import WindowHandler from './WindowHandler'
 import { WINDOW_KEYS } from './windowKey'
+import { API_END_POINT } from './apiEndPoint'
+import { MESSAGE_TO_API } from './messageToApi'
+import { MESSAGE_FROM_API } from './messageFromApi'
+import { API_ANSWER_STATUS } from './apiAnswerStatus'
 
 let apiProcessor = null
 
@@ -21,7 +25,7 @@ class SwapKeysApi {
     return new Promise(resolve => {
       const frame = new WindowHandler({
         nameFrame: 'getProfiles',
-        additionalUrl: '/get-profiles',
+        additionalUrl: API_END_POINT.GET_PROFILES,
         key: WINDOW_KEYS.GET_PROFILES,
         callback: ({ message }) => {
           const { profiles } = message
@@ -45,7 +49,7 @@ class SwapKeysApi {
 
     const frame = new WindowHandler({
       nameFrame: 'createProfile',
-      additionalUrl: '/choose-style',
+      additionalUrl: API_END_POINT.CHOSE_STYLE,
       key: WINDOW_KEYS.CREATE_PROFILE,
       callback
     })
@@ -63,15 +67,17 @@ class SwapKeysApi {
 
     const frame = new WindowHandler({
       nameFrame: 'recoverProfile',
-      additionalUrl: '/secret-phrase',
+      additionalUrl: API_END_POINT.SECRET_PHRASE,
       key: WINDOW_KEYS.RECOVER_PROFILE,
       callback
     })
     return frame
   }
 
-  async getNetworks(options) {
-    const { callback } = options || {}
+  getNetworks(options) {
+    const {
+      callback,
+    } = options || {}
 
     return new Promise(resolve => {
       if (this._cachedNetworks.length) {
@@ -80,7 +86,7 @@ class SwapKeysApi {
       } else {
         const frame = new WindowHandler({
           nameFrame: 'getNetworks',
-          additionalUrl: '/get-networks',
+          additionalUrl: API_END_POINT.GET_NETWORKS,
           key: WINDOW_KEYS.GET_NETWORKS,
           callback: ({ message }) => {
             const { networks } = message
@@ -109,10 +115,14 @@ class SwapKeysApi {
     })
   }
 
-  async createWallets(options) {
-    const { callback, profileId, wallets = [] } = options || {}
+  createWallets(options) {
+    const {
+      callback,
+      profileId,
+      wallets = []
+    } = options || {}
 
-    return new Promise(async (resolve, reject) => {
+    return new Promise((resolve, reject) => {
       if (!profileId) {
         reject(`profileId required`)
         return
@@ -142,13 +152,13 @@ class SwapKeysApi {
 
       const apiFrame = new WindowHandler({
         nameFrame: 'createWallets',
-        additionalUrl: '/create-wallets',
+        additionalUrl: API_END_POINT.CREATE_WALLETS,
         key: WINDOW_KEYS.CREATE_WALLETS,
         callback: ({ message }) => {
           const { type } = message
-          if (type === `iframeInited`) {
+          if (type === MESSAGE_FROM_API.IFRAME_INITED) {
             apiFrame.sendMessage({
-              type: 'CreateWallets',
+              type: MESSAGE_TO_API.CREATE_WALLETS,
               walletsData: {
                 profileId,
                 wallets
@@ -156,18 +166,18 @@ class SwapKeysApi {
             })
             apiFrame.popupFrame()
           }
-          if (type === `WalletsCreated`) {
+          if (type === MESSAGE_FROM_API.WALLETS_CREATED) {
             const answer = {
-              status: 'generated',
+              status: API_ANSWER_STATUS.WALLETS_GENERATED,
               wallets: message.wallets
             }
             resolve(answer)
             if (callback) callback(answer)
             apiFrame.close()
           }
-          if (type === `CancelCreateWallets`) {
+          if (type === MESSAGE_FROM_API.WALLETS_CREATE_CANCELED) {
             const answer = {
-              status: `cancelled`
+              status: API_ANSWER_STATUS.CANCELED
             }
             resolve(answer)
             if (callback) callback(answer)
@@ -179,10 +189,16 @@ class SwapKeysApi {
     })
   }
 
-  async createWallet(options) {
-    const { callback, profileId, networkId, coin, walletNumber = 0 } = options || {}
+  createWallet(options) {
+    const {
+      callback,
+      profileId,
+      networkId,
+      coin,
+      walletNumber = 0
+    } = options || {}
 
-    return new Promise(async (resolve, reject) => {
+    return new Promise((resolve, reject) => {
       if (!profileId) {
         reject(`profileId required`)
         return
@@ -198,13 +214,13 @@ class SwapKeysApi {
 
       const apiFrame = new WindowHandler({
         nameFrame: 'createWallet',
-        additionalUrl: '/create-wallet',
+        additionalUrl: API_END_POINT.CREATE_WALLET,
         key: WINDOW_KEYS.CREATE_WALLET,
         callback: ({ message }) => {
           const { type } = message
-          if (type === `iframeInited`) {
+          if (type === MESSAGE_FROM_API.IFRAME_INITED) {
             apiFrame.sendMessage({
-              type: 'CreateWallet',
+              type: MESSAGE_TO_API.CREATE_WALLET,
               walletData: {
                 profileId,
                 networkId,
@@ -214,18 +230,18 @@ class SwapKeysApi {
             })
             apiFrame.popupFrame()
           }
-          if (type === `WalletCreated`) {
+          if (type === MESSAGE_FROM_API.WALLET_CREATED) {
             const answer = {
-              status: 'generated',
+              status: API_ANSWER_STATUS.WALLET_GENERATED,
               wallet: message.wallet
             }
             resolve(answer)
             if (callback) callback(answer)
             apiFrame.close()
           }
-          if (type === `CancelCreateWallet`) {
+          if (type === MESSAGE_FROM_API.WALLET_CREATE_CANCELED) {
             const answer = {
-              status: `cancelled`
+              status: API_ANSWER_STATUS.CANCELED
             }
             resolve(answer)
             if (callback) callback(answer)
@@ -234,9 +250,125 @@ class SwapKeysApi {
         },
         silent: true
       })
-      window.createWalletFrame = apiFrame
     })
   }
+
+  validateMessage(options) {
+    const {
+      signedMessage,
+      callback
+    } = options
+    return new Promise((resolve, reject) => {
+      if (!signedMessage) {
+        reject(`signedMessage required`)
+      }
+
+      const apiFrame = new WindowHandler({
+        nameFrame: 'validateMessage',
+        additionalUrl: API_END_POINT.VALIDATE_MESSAGE,
+        key: WINDOW_KEYS.VALIDATE_MESSAGE,
+        silent: true,
+        callback: (callbackMessage) => {
+          const {
+            message: {
+              type
+            }
+          } = callbackMessage
+
+          if (type === MESSAGE_FROM_API.IFRAME_INITED) {
+            apiFrame.sendMessage({
+              type: MESSAGE_TO_API.VALIDATE_MESSAGE,
+              data: signedMessage
+            })
+          }
+          if (type === MESSAGE_FROM_API.MESSAGE_VALIDATED) {
+            const {
+              message: {
+                isValid
+              }
+            } = callbackMessage
+            const answer = {
+              signedMessage,
+              isValid
+            }
+            resolve(answer)
+            if (callback) callback(answer)
+            apiFrame.close()
+          }
+        }
+      })
+    })
+  }
+
+// await keysApi.signMessage({ profileId: '023e01483c', networkId: 'ethereum', message: 'test message' })
+  signMessage(options) {
+    const {
+      callback,
+      profileId,
+      networkId,
+      message
+    } = options
+    return new Promise((resolve, reject) => {
+      if (!profileId) {
+        reject(`profileId required`)
+        return
+      }
+      if (!message) {
+        reject(`message required`)
+        return
+      }
+      const apiFrame = new WindowHandler({
+        nameFrame: 'signMessage',
+        additionalUrl: API_END_POINT.SIGN_MESSAGE,
+        key: WINDOW_KEYS.SIGN_MESSAGE,
+        callback: (callbackMessage) => {
+          const {
+            message: {
+              type
+            }
+          } = callbackMessage
+
+          if (type === MESSAGE_FROM_API.IFRAME_INITED) {
+            apiFrame.sendMessage({
+              type: MESSAGE_TO_API.SIGN_MESSAGE,
+              data: {
+                profileId,
+                networkId,
+                message
+              }
+            })
+            apiFrame.popupFrame()
+          }
+          if (type === MESSAGE_FROM_API.MESSAGE_SIGNED) {
+            const {
+              message: {
+                signedMessage
+              }
+            } = callbackMessage
+            const answer = {
+              status: API_ANSWER_STATUS.MESSAGE_SIGNED,
+              signedMessage,
+            }
+            resolve(answer)
+            if (callback) callback(answer)
+            apiFrame.close()
+          }
+          if (type === MESSAGE_FROM_API.MESSAGE_SIGN_CANCELED) {
+            const answer = {
+              status: API_ANSWER_STATUS.CANCELED
+            }
+            resolve(answer)
+            if (callback) callback(answer)
+            apiFrame.close()
+          }
+        },
+        silent: true,
+      })
+    })
+  }
+
+  signTransaction(options) {}
+
 }
 
 if (!apiProcessor) {
