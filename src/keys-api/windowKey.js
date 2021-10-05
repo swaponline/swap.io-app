@@ -4,5 +4,7 @@ export const WINDOW_KEYS = {
   GET_PROFILES: 'GetProfilesWindow',
   GET_NETWORKS: 'GetNetworksWindow',
   CREATE_WALLET: 'CreateWalletWindow',
-  CREATE_WALLETS: 'CreateWalletsWindow'
+  CREATE_WALLETS: 'CreateWalletsWindow',
+  SIGN_MESSAGE: 'SignMessageWindow',
+  VALIDATE_MESSAGE: 'ValidateMessageWindow'
 }
