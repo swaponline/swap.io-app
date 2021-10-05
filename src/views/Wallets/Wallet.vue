@@ -1,9 +1,8 @@
 <template>
-  <div v-if="walletAddress" class="wallet">
+  <div class="wallet">
     <wallet-info
-      v-if="currentWallet"
       class="wallet__main-info"
-      v-bind="currentWallet"
+      v-bind="wallet"
       :compressed="compressed"
       @uncompress-wallet="compressed = false"
     ></wallet-info>
@@ -24,6 +23,9 @@ import TransactionBlock from '@/components/Wallets/Transactions/index.vue'
 export default {
   name: 'Wallet',
   components: { TransactionBlock, WalletInfo },
+  props: {
+    wallet: { type: Object, default: () => ({}) }
+  },
   data() {
     return {
       compressed: false,
@@ -34,33 +36,6 @@ export default {
   computed: {
     currentWallets() {
       return this.$store.getters.currentWallets
-    },
-    walletAddress() {
-      return this.$route.params.walletAddress
-    },
-    currentWallet() {
-      return this.$store.getters.currentSubWallets?.find(el => el.address === this.walletAddress)
-    }
-  },
-  watch: {
-    currentWallets: {
-      immediate: true,
-      handler(val) {
-        if (val.length === 0) {
-          this.isCreatingWallet = false
-        }
-        if (!this.currentWallet && val.length > 0 && this.mediaQueries.desktop) {
-          this.$router.replace({
-            name: 'Wallet',
-            params: { walletAddress: val[0].subWallets[0].address }
-          })
-        }
-      }
-    }
-  },
-  methods: {
-    createWallet() {
-      this.isCreatingWallet = true
     }
   }
 }

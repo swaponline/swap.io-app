@@ -29,7 +29,7 @@ export default {
   inject: ['mediaQueries'],
   components: { TransactionItem },
   props: {
-    address: { type: String, required: true },
+    address: { type: String, default: '' },
     isCompressedWallet: { type: Boolean, default: false },
     transactions: { type: Array, default: () => [] }
   },

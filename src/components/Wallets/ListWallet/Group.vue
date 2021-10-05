@@ -34,7 +34,7 @@
               <cryptoicon class="list-wallet-group__coin-icon" size="20" :symbol="coin.toLowerCase()" />
               {{ coin }}
             </p>
-            <span>{{ groupValue }}</span>
+            <span class="list-wallet-group__group-value">{{ groupValue }}</span>
           </div>
         </v-list-item-content>
       </v-list-item>
@@ -68,7 +68,8 @@ export default {
   props: {
     network: { type: String, default: '' },
     wallets: { type: Array, required: true },
-    value: { type: Number, default: 0 }
+    value: { type: Number, default: 0 },
+    activeWallet: { type: Object, default: () => ({}) }
   },
   data() {
     return {
@@ -78,7 +79,17 @@ export default {
   computed: {
     groupWalletsByCoin() {
       return groupWalletsBy(this.wallets, 'coin')
+    },
+
+    hasActiveWallet() {
+      return this.wallets.find(
+        ({ address, coin }) => address === this.activeWallet.address && coin === this.activeWallet.coin
+      )
     }
+  },
+
+  beforeMount() {
+    if (this.hasActiveWallet) this.isOpen = true
   },
   methods: {
     minifyAddress,
@@ -125,8 +136,12 @@ export default {
 
   &__value {
     margin-left: auto;
-    font-size: 18px;
+    font-size: $--font-size-extra-small-subtitle;
     color: var(--primary-text);
+  }
+
+  &__group-value {
+    font-size: $--font-size-base;
   }
 
   &__item {
