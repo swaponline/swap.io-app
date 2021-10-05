@@ -48,14 +48,11 @@ export default {
 .list-wallet-item {
   min-height: 40px;
   border-radius: $--border-radius-large;
-  margin: 0 10px;
   padding: 0 5px 0 15px;
   overflow: hidden;
+  transition: all 0.3s;
 
-  &:hover {
-    background-color: var(--wallets-item-background);
-  }
-
+  &:hover,
   &--active {
     background-color: var(--wallets-item-background-hover);
     box-shadow: var(--wallets-box-shadow);
