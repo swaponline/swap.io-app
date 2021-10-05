@@ -47,7 +47,7 @@ export default {
 
 .list-wallet-item {
   min-height: 40px;
-  border-radius: 12px;
+  border-radius: $--border-radius-large;
   margin: 0 10px;
   padding: 0 5px 0 15px;
   overflow: hidden;
@@ -57,7 +57,8 @@ export default {
   }
 
   &--active {
-    background-color: var(--wallets-item-background);
+    background-color: var(--wallets-item-background-hover);
+    box-shadow: var(--wallets-box-shadow);
   }
 
   &__title {

@@ -5,6 +5,7 @@
     :class="{ 'list-wallet-group--active': isOpen }"
     color="black"
     append-icon=""
+    active-class="list-wallet-group__group"
   >
     <template #activator>
       <item-icon :currency-name="network.toLowerCase()" />
@@ -103,7 +104,7 @@ export default {
 
 <style lang="scss">
 .list-wallet-group {
-  border-radius: 12px;
+  border-radius: $--border-radius-large;
   overflow: hidden;
   margin: 0 10px;
 
@@ -114,6 +115,10 @@ export default {
   &--active {
     background-color: var(--wallets-item-background);
     padding-bottom: 15px;
+  }
+
+  &__group {
+    border-bottom: 1px solid var(--wallets-item-border);
   }
 
   &__header {
@@ -145,25 +150,26 @@ export default {
   }
 
   &__item {
-    border-bottom: 1px solid rgba($--border-grey, 0.2);
-    padding: 15px;
+    margin: 0 5px;
     min-height: auto;
+    overflow: initial !important;
+    border-radius: $--border-radius-large;
+    transition: all 0.3s;
 
-    &:first-child {
-      border-top: 1px solid rgba($--border-grey, 0.2);
-    }
-
-    &:hover {
-      background: var(--wallets-item-background-hover);
-    }
-
+    &:hover,
     &.v-list-item--active {
-      font-weight: $--font-weight-semi-bold;
+      background-color: var(--wallets-item-background-hover);
+      box-shadow: 4px 4px 16px rgba(55, 55, 55, 0.24);
+
+      &.theme--dark {
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      }
     }
   }
 
   &__item-content {
-    padding: 0 0;
+    padding: 15px 10px;
+    border-bottom: 1px solid var(--wallets-item-border);
   }
 
   &__item-info {
