@@ -15,7 +15,16 @@ import MainLayoutTabs from '../components/Tabs.vue'
 
 export default {
   name: 'MainLayout',
-  components: { MainHeader, MainLayoutTabs, MatchMedia }
+  components: { MainHeader, MainLayoutTabs, MatchMedia },
+  mounted() {
+    window.addEventListener('offline', event => {
+      console.log('offline', event, navigator.onLine)
+    })
+
+    window.addEventListener('online', event => {
+      console.log('online', event, navigator.onLine)
+    })
+  }
 }
 </script>
 

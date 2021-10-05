@@ -10,30 +10,16 @@ export default [
     redirect: { name: 'Wallets' },
     children: [
       {
-        path: '/wallet',
+        path: '/wallets/:coin?/:walletAddress?',
         name: 'Wallets',
         props: true,
-        component: () => import(/* webpackChunkName: 'Wallets' */ '@/layouts/WalletLayout'),
-        redirect: { name: 'Wallet' },
-        children: [
-          {
-            path: '/wallet/:coin?/:walletAddress?',
-            name: 'Wallet',
-            component: () => import(/* webpackChunkName: 'Wallet' */ '@/views/Wallets/Wallet.vue')
-          }
-        ]
+        component: () => import(/* webpackChunkName: 'Wallets' */ '@/views/Wallet.vue')
       },
       {
         path: '/invoice',
-        component: () => import(/* webpackChunkName: 'Wallets' */ '@/layouts/WalletLayout'),
-        meta: { middleware: [openInvoice] },
-        children: [
-          {
-            path: '',
-            name: 'Invoice',
-            component: () => import(/* webpackChunkName: 'Wallet' */ '@/views/Wallets/Wallet.vue')
-          }
-        ]
+        name: 'Invoice',
+        component: () => import(/* webpackChunkName: 'Wallets' */ '@/views/Wallet.vue'),
+        meta: { middleware: [openInvoice] }
       },
       {
         path: '/swap',

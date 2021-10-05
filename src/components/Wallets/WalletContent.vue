@@ -18,11 +18,11 @@
 
 <script>
 import WalletInfo from '@/components/Wallets/WalletInfo.vue'
-import TransactionBlock from '@/components/Wallets/Transactions/index.vue'
+import TransactionBlock from '@/components/Wallets/Transactions'
 
 export default {
-  name: 'Wallet',
-  components: { TransactionBlock, WalletInfo },
+  name: 'WalletContent',
+  components: { WalletInfo, TransactionBlock },
   props: {
     wallet: { type: Object, default: () => ({}) }
   },
@@ -30,12 +30,6 @@ export default {
     return {
       compressed: false,
       isCreatingWallet: false
-    }
-  },
-  inject: ['mediaQueries'],
-  computed: {
-    currentWallets() {
-      return this.$store.getters.currentWallets
     }
   }
 }

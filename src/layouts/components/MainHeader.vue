@@ -3,7 +3,7 @@
     <div v-if="isCreatingOrRecoveringProfile" class="main-header__logo">
       <swap-logo />
     </div>
-    <router-link v-else :to="{ name: 'Wallet' }" class="main-header__logo">
+    <router-link v-else :to="{ name: 'Wallets' }" class="main-header__logo">
       <swap-logo />
     </router-link>
     <v-button-cancel v-if="isCreatingOrRecoveringProfile && phone" class="main-header__button-cancel" @click="cancel" />

@@ -4,7 +4,7 @@
     exact
     active-class="list-wallet-item--active"
     class="list-wallet-item"
-    :to="{ name: 'Wallet', params: { walletAddress: address, coin: coin.toLowerCase() } }"
+    :to="{ name: 'Wallets', params: { walletAddress: address, coin: coin.toLowerCase() } }"
   >
     <item-icon :currency-name="coin.toLowerCase()" :network="network.toLowerCase()" />
 
