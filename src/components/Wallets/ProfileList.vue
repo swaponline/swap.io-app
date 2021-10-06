@@ -103,7 +103,6 @@ export default {
     },
     setProfile(id) {
       this.actionSetProfile(id)
-      this.$router.push({ name: 'Wallets', query: null })
       this.closePanels()
     },
     getAvatar({ accountId }) {
@@ -175,13 +174,6 @@ export default {
       overflow: hidden;
       flex: 1 0 100%;
       padding-right: 8px;
-
-      @include tablet {
-        display: flex;
-        flex-direction: row-reverse;
-        justify-content: flex-end;
-        align-items: center;
-      }
     }
   }
 
@@ -236,9 +228,6 @@ export default {
 
     @include tablet {
       width: auto;
-      display: flex;
-      flex-direction: row-reverse;
-      justify-content: flex-end;
     }
 
     > span {

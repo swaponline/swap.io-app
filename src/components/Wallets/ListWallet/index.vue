@@ -5,16 +5,21 @@
     </match-media>
     <div class="list-wallet__container">
       <div class="list-wallet__header">
-        <total-wallet-sum />
+        <total-wallet-sum :total-value="totalValue" />
         <component :is="isSearchVisible ? 'v-slide-y-transition' : 'v-slide-y-reverse-transition'">
           <wallet-search v-if="isSearchVisible" v-model="search" />
         </component>
       </div>
       <div class="list-wallet__wrapper" @scroll="scroll">
         <v-list class="list-wallet__body" :class="{ 'list-wallet__body--offset': isSearchVisible }">
-          <div v-for="wallet in filteredWallets" :key="wallet.name" class="list-wallet__item" @scroll="scroll">
-            <list-item v-if="wallet.subWallets.length === 1" v-bind="wallet" />
-            <list-group v-else v-bind="wallet" />
+          <div
+            v-for="networkGroup in walletsGroupedByNetwork"
+            :key="networkGroup.network"
+            class="list-wallet__item"
+            @scroll="scroll"
+          >
+            <list-item v-if="networkGroup.wallets.length === 1" v-bind="networkGroup.wallets[0]" />
+            <list-group v-else v-bind="networkGroup" :active-wallet="activeWallet" />
           </div>
         </v-list>
       </div>
@@ -24,6 +29,7 @@
 
 <script>
 import { MatchMedia } from 'vue-component-media-queries'
+import { groupWalletsBy } from '@/utils/wallets'
 import WalletSearch from './Search.vue'
 import ProfileList from '../ProfileList.vue'
 import TotalWalletSum from './TotalWalletSum.vue'
@@ -33,6 +39,10 @@ import ListItem from './Item.vue'
 export default {
   name: 'ListWallet',
   components: { ProfileList, WalletSearch, TotalWalletSum, MatchMedia, ListGroup, ListItem },
+  props: {
+    wallets: { type: Array, default: () => [] },
+    activeWallet: { type: Object, default: () => ({}) }
+  },
   data() {
     return {
       search: '',
@@ -40,31 +50,33 @@ export default {
     }
   },
   computed: {
-    wallets() {
-      return this.$store.getters.currentWallets
+    walletsGroupedByNetwork() {
+      return groupWalletsBy(this.wallets, 'network')
     },
     filteredWallets() {
       const { wallets } = this
-      const search = this.search.toLowerCase()
 
       if (!this.search) return wallets
 
-      const filteredByCurrency = wallets.filter(w => w.currencyName.toLowerCase().includes(search))
-      const filteredBySubname = wallets.filter(wallet => {
-        const { subWallets } = wallet
-        return !!subWallets.find(sw => sw.name.toLowerCase().includes(search))
+      return wallets.filter(({ network, coin, name, address }) => {
+        return (
+          this.checkIncludesInSearch(network) ||
+          this.checkIncludesInSearch(coin) ||
+          this.checkIncludesInSearch(address) ||
+          (name && this.checkIncludesInSearch(name))
+        )
       })
-      const filteredByAddress = wallets.filter(wallet => {
-        const { subWallets } = wallet
-        return !!subWallets.find(sw => sw.address.toLowerCase().includes(search))
-      })
-
-      return new Set([...filteredByCurrency, ...filteredBySubname, ...filteredByAddress])
+    },
+    totalValue() {
+      return this.wallets.reduce((value, wallet) => value + wallet.value, 0)
     }
   },
   methods: {
     scroll(e) {
       if (this.wallets.length > 6) this.isSearchVisible = e.target.scrollTop > 0 || this.search
+    },
+    checkIncludesInSearch(targetString) {
+      return targetString.toLowerCase().includes(this.search.toLowerCase())
     }
   }
 }
@@ -88,6 +100,7 @@ export default {
 
   @include tablet {
     max-width: none;
+    background: transparent;
   }
 
   &__wrapper {

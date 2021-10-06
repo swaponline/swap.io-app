@@ -2,61 +2,102 @@
   <v-list-group
     v-model="isOpen"
     class="list-wallet-group"
+    :class="{ 'list-wallet-group--active': isOpen }"
     color="black"
-    active-class="list-wallet-group--active"
     append-icon=""
   >
     <template #activator>
-      <item-icon :currency-name="currencyName" :network="network" />
+      <item-icon :currency-name="network.toLowerCase()" />
 
       <v-list-item-title class="list-wallet-group__header">
         <div class="list-wallet-group__text">
-          <span class="list-wallet-group__currency">{{ currencyName }}</span>
-          <span class="list-wallet-group__name">{{ subWallets.length }} wallet</span>
+          <span class="list-wallet-group__currency">{{ network }}</span>
+          <span class="list-wallet-group__name">
+            <cryptoicon
+              v-for="{ coin } in groupWalletsByCoin"
+              :key="generateKey('icon', coin)"
+              :symbol="coin.toLowerCase()"
+              size="14"
+              class="list-wallet-group__header-icon"
+            />
+          </span>
         </div>
         <span class="list-wallet-group__value">{{ value }}</span>
       </v-list-item-title>
     </template>
-    <v-list-item
-      v-for="(subWallet, i) in subWallets"
-      :key="i"
-      link
-      exact
-      class="list-wallet-group__item"
-      :to="{ name: 'Wallet', params: { walletAddress: subWallet.address } }"
-    >
-      <v-list-item-content class="list-wallet-group__item-content">
-        <v-list-item-title class="list-wallet-group__item-info">
-          <span>
-            {{ subWallet.name || minifyAddress(subWallet.address) }}
-          </span>
-          <span>{{ subWallet.value }}</span>
-        </v-list-item-title>
-      </v-list-item-content>
-    </v-list-item>
+
+    <template v-for="{ coin, wallets: groupWallets, value: groupValue } in groupWalletsByCoin">
+      <v-list-item :key="generateKey('coin-group', coin)" class="list-wallet-group__item" disabled>
+        <v-list-item-content class="list-wallet-group__item-content">
+          <div class="list-wallet-group__item-info list-wallet-group__item-info--disabled">
+            <p class="list-wallet-group__coin-name">
+              <cryptoicon class="list-wallet-group__coin-icon" size="20" :symbol="coin.toLowerCase()" />
+              {{ coin }}
+            </p>
+            <span class="list-wallet-group__group-value">{{ groupValue }}</span>
+          </div>
+        </v-list-item-content>
+      </v-list-item>
+      <v-list-item
+        v-for="{ address, name, value: walletValue } in groupWallets"
+        :key="generateKey(coin, address)"
+        link
+        exact
+        class="list-wallet-group__item"
+        :to="{ name: 'Wallet', params: { walletAddress: address, coin: coin.toLowerCase() } }"
+      >
+        <v-list-item-content class="list-wallet-group__item-content">
+          <v-list-item-title class="list-wallet-group__item-info">
+            <span>{{ name || minifyAddress(address) }}</span>
+            <span>{{ walletValue }}</span>
+          </v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+    </template>
   </v-list-group>
 </template>
 
 <script>
 import ItemIcon from '@/components/Wallets/ListWallet/ItemIcon.vue'
 import { minifyAddress } from '@/utils/common'
+import { groupWalletsBy } from '@/utils/wallets'
 
 export default {
   name: 'ListWalletGroup',
   components: { ItemIcon },
   props: {
-    name: { type: String, default: 'my wallet' },
-    currencyName: { type: String, default: '' },
+    network: { type: String, default: '' },
+    wallets: { type: Array, required: true },
     value: { type: Number, default: 0 },
-    subWallets: { type: Array, required: true },
-    network: { type: String, default: '' }
+    activeWallet: { type: Object, default: () => ({}) }
   },
   data() {
     return {
       isOpen: false
     }
   },
-  methods: { minifyAddress }
+  computed: {
+    groupWalletsByCoin() {
+      return groupWalletsBy(this.wallets, 'coin')
+    },
+
+    hasActiveWallet() {
+      return this.wallets.find(
+        ({ address, coin }) => address === this.activeWallet.address && coin === this.activeWallet.coin
+      )
+    }
+  },
+
+  beforeMount() {
+    if (this.hasActiveWallet) this.isOpen = true
+  },
+  methods: {
+    minifyAddress,
+
+    generateKey(key, value) {
+      return `${key}-${value}`
+    }
+  }
 }
 </script>
 
@@ -66,21 +107,13 @@ export default {
   overflow: hidden;
   margin: 0 10px;
 
-  .v-list-item {
-    padding: 0 5px 0 15px;
-
-    &:hover {
-      background: var(--wallets-item-background);
-    }
-  }
-  .v-list-group__header {
-    padding: 0 5px 0 15px !important;
-  }
-  .v-list-item__icon.v-list-group__header__append-icon {
-    min-width: 24px !important;
-  }
-  .v-list-item--active {
+  &:hover {
     background-color: var(--wallets-item-background);
+  }
+
+  &--active {
+    background-color: var(--wallets-item-background);
+    padding-bottom: 15px;
   }
 
   &__header {
@@ -88,6 +121,10 @@ export default {
     justify-content: space-between;
     flex-wrap: wrap;
     line-height: 25px !important;
+  }
+
+  &__header-icon {
+    margin-right: 8px;
   }
 
   &__text {
@@ -99,25 +136,29 @@ export default {
 
   &__value {
     margin-left: auto;
-    padding-right: 10px;
-    font-size: 18px;
+    font-size: $--font-size-extra-small-subtitle;
     color: var(--primary-text);
   }
 
+  &__group-value {
+    font-size: $--font-size-base;
+  }
+
   &__item {
-    min-height: 40px;
-    border-radius: 12px;
-    margin: 5px 0;
-    padding: 0 15px !important;
-    overflow: hidden;
+    border-bottom: 1px solid rgba($--border-grey, 0.2);
+    padding: 15px;
+    min-height: auto;
 
     &:first-child {
-      margin-top: 5px;
+      border-top: 1px solid rgba($--border-grey, 0.2);
     }
 
-    &:before {
-      z-index: 0;
-      background-color: var(--wallets-item-background);
+    &:hover {
+      background: var(--wallets-item-background-hover);
+    }
+
+    &.v-list-item--active {
+      font-weight: $--font-weight-semi-bold;
     }
   }
 
@@ -132,6 +173,23 @@ export default {
     line-height: 25px;
     color: var(--primary-text);
     font-size: $--font-size-extra-small-subtitle;
+
+    &--disabled {
+      color: $--grey-3 !important;
+    }
+  }
+
+  &__coin-name {
+    display: flex;
+    align-items: center;
+    font-weight: $--font-weight-semi-bold;
+    margin-bottom: 0 !important;
+    font-size: $--font-size-base;
+    line-height: 19px;
+  }
+
+  &__coin-icon {
+    margin-right: 6px;
   }
 
   &__currency {

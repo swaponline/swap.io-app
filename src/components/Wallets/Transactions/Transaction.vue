@@ -196,6 +196,14 @@ export default {
   background-color: var(--primary-background) !important;
   transition: $--theme-transition;
 
+  @include tablet {
+    margin: 0;
+  }
+
+  @include phone {
+    padding: 20px;
+  }
+
   &:after {
     display: none;
   }

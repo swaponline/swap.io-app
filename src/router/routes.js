@@ -7,16 +7,17 @@ export default [
     path: '/',
     name: 'MainLayout',
     component: () => import(/* webpackChunkName: 'MainLayout' */ '@/layouts/MainLayout'),
-    redirect: { name: 'Wallet' },
+    redirect: { name: 'Wallets' },
     children: [
       {
         path: '/wallet',
         name: 'Wallets',
+        props: true,
         component: () => import(/* webpackChunkName: 'Wallets' */ '@/layouts/WalletLayout'),
         redirect: { name: 'Wallet' },
         children: [
           {
-            path: '/wallet/:walletAddress?',
+            path: '/wallet/:coin?/:walletAddress?',
             name: 'Wallet',
             component: () => import(/* webpackChunkName: 'Wallet' */ '@/views/Wallets/Wallet.vue')
           }

@@ -32,13 +32,16 @@
       </v-expansion-panel>
     </v-expansion-panels>
 
-    <div class="total-wallet-sum__value">{{ accountBalance }}</div>
+    <div class="total-wallet-sum__value">{{ totalValue }}</div>
   </div>
 </template>
 
 <script>
 export default {
   name: 'TotalWalletSum',
+  props: {
+    totalValue: { type: Number, default: 0 }
+  },
   data() {
     return {
       currency: 'USD',
@@ -47,10 +50,6 @@ export default {
     }
   },
   computed: {
-    accountBalance() {
-      const balance = this.$store.getters.accountBalance
-      return Math.round(balance * 100) / 100
-    },
     filteredCurrencyList() {
       return this.currencyList.filter(currency => currency !== this.currency)
     }

@@ -1,21 +1,22 @@
 <template>
   <div class="wallet-layout">
-    <list-wallet
-      v-if="hasWallets"
-      class="wallet-layout__list-wallet"
-      :class="{ 'wallet-layout__list-wallet--show': showListWallet }"
-    ></list-wallet>
+    <template v-if="hasWallets">
+      <list-wallet
+        class="wallet-layout__list-wallet"
+        :class="{ 'wallet-layout__list-wallet--show': !activeWallet }"
+        :wallets="wallets"
+        :active-wallet="activeWallet"
+      ></list-wallet>
 
-    <div
-      class="wallet-layout__router"
-      :class="{
-        'wallet-layout__router--hide': showListWallet,
-        'wallet-layout__router--created': !hasWallets
-      }"
-    >
-      <transition-translate :reverse="metaBack">
-        <router-view :key="currentRoute" class="wallet-layout__router-content"></router-view>
-      </transition-translate>
+      <div class="wallet-layout__router" :class="{ 'wallet-layout__router--hide': !activeWallet }">
+        <transition-translate :reverse="metaBack">
+          <router-view :wallet="activeWallet" class="wallet-layout__router-content"></router-view>
+        </transition-translate>
+      </div>
+    </template>
+
+    <div v-else class="wallet-layout__router wallet-layout__router--created">
+      <wallets-create />
     </div>
 
     <main-actions v-if="hasWallets" />
@@ -28,6 +29,58 @@ import TransitionTranslate from '@/components/Transitions/Translate.vue'
 import ListWallet from '@/components/Wallets/ListWallet/index.vue'
 import MainActions from '@/components/Wallets/MainActions.vue'
 import AllModals from '@/components/Wallets/Modals/AllModals.vue'
+import WalletsCreate from '@/components/Wallets/WalletsCreate.vue'
+
+const WALLETS = [
+  {
+    network: 'ETH',
+    coin: 'ETH',
+    walletNumber: 0,
+    address: '3WfGVzwANjbaLh6fokA41qtwMikpFWXSJtHS7uvrJQGV',
+    publicKey: '3WfGVzwANjbaLh6fokA41qtwMikpFWXSJtHS7uvrJQGV',
+
+    value: 0.005
+  },
+  {
+    network: 'BTC',
+    coin: 'BTC',
+    walletNumber: 0,
+    address: '0x912fD21d7a69678227fE6d08C64222Db41477bA0',
+    publicKey: '0x912fD21d7a69678227fE6d08C64222Db41477bA0',
+    name: 'Default',
+
+    value: 0.0456
+  },
+  {
+    network: 'BTC',
+    coin: 'USDT',
+    walletNumber: 0,
+    address: '0xd19615f2Eab2ABfBF7ca16618b5eD43386374DD0',
+    publicKey: '0xd19615f2Eab2ABfBF7ca16618b5eD43386374DD0',
+    name: 'Main',
+
+    value: 0.005
+  },
+  {
+    network: 'BTC',
+    coin: 'USDT',
+    walletNumber: 1,
+    address: '0xF2eDB7Ac87119e9ea68CDa5269E23c21e51EDc4e',
+    publicKey: '0xF2eDB7Ac87119e9ea68CDa5269E23c21e51EDc4e',
+
+    value: 0.0567
+  },
+  {
+    network: 'BNB',
+    coin: 'EOS',
+    walletNumber: 0,
+    address: '0x8CDa5269E23c2F2eDB7Ac871',
+    publicKey: '0x8CDa5269E23c2F2eDB7Ac871',
+    name: 'Swaps',
+
+    value: 0
+  }
+]
 
 export default {
   name: 'WalletLayout',
@@ -36,26 +89,55 @@ export default {
     TransitionTranslate,
     ListWallet,
     MainActions,
-    AllModals
+    AllModals,
+    WalletsCreate
+  },
+  props: {
+    coin: { type: String, default: '' },
+    walletAddress: { type: String, default: '' }
   },
   computed: {
-    currentRoute() {
-      if (this.mediaQueries.desktop) {
-        return this.$route.name
-      }
-      return this.$route.name + JSON.stringify(this.$route.params)
+    isDesktop() {
+      return this.mediaQueries.desktop
+    },
+    wallets() {
+      return WALLETS
+    },
+    activeWallet() {
+      return this.wallets.find(
+        wallet => wallet.address === this.walletAddress && wallet.coin.toLowerCase() === this.coin.toLowerCase()
+      )
     },
     hasWallets() {
-      return !!this.$store.getters.currentWallets.length
-    },
-    walletParam() {
-      return this.$route.params.walletAddress
+      return !!this.wallets.length
     },
     metaBack() {
       return this.$route.meta.back
+    }
+  },
+
+  watch: {
+    isDesktop() {
+      this.setActiveWallet()
     },
-    showListWallet() {
-      return this.$route.name === 'Wallet' && this.$route.params.walletAddress === undefined
+    wallets: {
+      immediate: true,
+      handler() {
+        this.setActiveWallet()
+      }
+    }
+  },
+
+  methods: {
+    setActiveWallet() {
+      if (!this.activeWallet && this.wallets.length > 0 && this.isDesktop) {
+        const { address, coin } = this.wallets[0]
+
+        this.$router.replace({
+          name: 'Wallet',
+          params: { walletAddress: address, coin: coin.toLowerCase() }
+        })
+      }
     }
   }
 }
@@ -99,7 +181,7 @@ export default {
 
     @include only-desktop {
       &--created {
-        margin: 15px 100px 0;
+        padding: 15px 100px 0;
       }
     }
 
@@ -112,7 +194,13 @@ export default {
         transform: translateX(100vw);
       }
       &--created {
-        margin: 15px 0;
+        padding: 20px 40px;
+      }
+    }
+
+    @include phone {
+      &--created {
+        padding: 20px;
       }
     }
   }

@@ -1,6 +1,6 @@
 <template>
   <match-media v-slot="{ desktop }" wrapper-tag="div">
-    <substrate class="security-info-block" :hide-close-button="desktop">
+    <substrate :hide-close-button="desktop" class="security-info-block">
       <div class="security-info-block__wrapper">
         <header class="security-info-block__header">
           <slot name="header"></slot>
@@ -40,42 +40,6 @@ export default {
   height: auto;
   margin: 0;
 
-  .substrate__button-cancel {
-    display: block;
-  }
-
-  @include tablet {
-    display: flex;
-    height: 100%;
-    flex-direction: column;
-  }
-
-  @include tablet {
-    max-width: 100%;
-    width: 100%;
-  }
-
-  &__wrapper {
-    @include tablet {
-      display: flex;
-      flex-grow: 1;
-      flex-direction: column;
-    }
-  }
-
-  &__header {
-    margin-bottom: 108px;
-    text-align: center;
-
-    @include only-tablet {
-      margin-bottom: 148px;
-    }
-
-    @include small-phone {
-      margin-bottom: 40px;
-    }
-  }
-
   &::after {
     content: '';
     width: 100%;
@@ -101,6 +65,44 @@ export default {
 
     @include phone {
       height: 236px;
+    }
+  }
+
+  .substrate__button-cancel {
+    display: block;
+  }
+
+  @include tablet {
+    display: flex;
+    max-width: 100%;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+  }
+
+  &__header {
+    margin-bottom: 108px;
+    text-align: center;
+
+    @include tablet {
+      margin-bottom: 0;
+    }
+  }
+
+  &__wrapper {
+    @include tablet {
+      display: flex;
+      flex-grow: 1;
+      flex-direction: column;
+    }
+  }
+
+  &__content {
+    @include tablet {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
     }
   }
 }

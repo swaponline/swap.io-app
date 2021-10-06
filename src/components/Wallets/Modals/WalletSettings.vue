@@ -1,7 +1,7 @@
 <template>
   <modal-wrapper value title="Wallet settings" @input="close" @submit="save" @cancel="close">
     <div class="wallet-settings-modal">
-      <form-field v-model="name" placeholder="label"></form-field>
+      <form-field v-model="localName" placeholder="Name"></form-field>
     </div>
   </modal-wrapper>
 </template>
@@ -16,27 +16,18 @@ export default {
   name: 'ShareModal',
   components: { ModalWrapper, FormField },
   props: {
-    walletId: { type: String, default: '' }
+    name: { type: String, default: '' },
+    address: { type: String, required: true },
+    coin: { type: String, required: true }
   },
   data() {
     return {
-      name: ''
+      localName: this.name
     }
   },
   computed: {
     wallet() {
-      return this.$store.getters.currentSubWallets.find(wallet => wallet.address === this.walletId)
-    },
-    walletName() {
-      return this.wallet.name
-    }
-  },
-  watch: {
-    walletName: {
-      immediate: true,
-      handler(val) {
-        this.name = val
-      }
+      return this.$store.getters.currentSubWallets.find(wallet => wallet.address === this.address)
     }
   },
   methods: {
@@ -47,7 +38,7 @@ export default {
       this.$emit('close')
     },
     save() {
-      if (this.name.trim()) this.actionUpdateWallet({ ...this.wallet, name: this.name })
+      if (this.name.trim()) this.actionUpdateWallet({ ...this.wallet, name: this.localName })
       this.close()
     }
   }

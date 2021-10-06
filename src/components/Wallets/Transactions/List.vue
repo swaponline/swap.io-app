@@ -1,6 +1,6 @@
 <template>
   <div ref="transaction" class="list-transaction" :class="{ 'list-transaction--stretch': isCompressedWallet }">
-    <div v-for="transaction in filteredTransactions" :key="transaction.date" class="list-transaction__block">
+    <div v-for="transaction in transactions" :key="transaction.date" class="list-transaction__block">
       <v-subheader ref="headers" class="list-transaction__title">
         <span>{{ transaction.date }}</span>
       </v-subheader>
@@ -13,53 +13,25 @@
         @open-transaction="openTransactionModal(item)"
       />
     </div>
-    <v-btn class="list-transaction__up-button" depressed @click="unCompressWallet">UP</v-btn>
+
+    <swap-button small class="list-transaction__up-button" @click="unCompressWallet">UP</swap-button>
   </div>
 </template>
 
 <script>
 import { ADD_MODAL } from '@/store/modules/Modals'
 import { TRANSACTION_DETAILS } from '@/store/modules/Modals/names'
-import { mapGetters, mapMutations } from 'vuex'
+import { mapMutations } from 'vuex'
 import TransactionItem from './Transaction.vue'
 
 export default {
   name: 'ListTransactions',
   inject: ['mediaQueries'],
-  components: {
-    TransactionItem
-  },
+  components: { TransactionItem },
   props: {
-    filterType: { type: String, default: 'all' },
-    address: { type: String, required: true },
+    address: { type: String, default: '' },
     isCompressedWallet: { type: Boolean, default: false },
-    search: { type: String, default: '' }
-  },
-  computed: {
-    ...mapGetters(['listTransactionsSortByDate']),
-    transactions() {
-      return this.listTransactionsSortByDate(this.address)
-    },
-    filteredTransactions() {
-      const { transactions } = this
-      const search = this.search.toLowerCase()
-
-      if (!this.search) return transactions
-
-      const filtered = transactions.map(({ date, list }) => {
-        const filteredList = list.filter(
-          ({ from, hash, to, value }) =>
-            from.toLowerCase().includes(search) ||
-            hash.toLowerCase().includes(search) ||
-            to.toLowerCase().includes(search) ||
-            value.toString().includes(search)
-        )
-
-        return { date, list: filteredList }
-      })
-
-      return filtered.filter(({ list }) => list.length > 0)
-    }
+    transactions: { type: Array, default: () => [] }
   },
   mounted() {
     this.$refs.transaction.addEventListener('scroll', this.eventScroll)
@@ -142,6 +114,14 @@ export default {
 
     &.sticky {
       position: sticky;
+    }
+
+    @include tablet {
+      padding: 0;
+    }
+
+    @include phone {
+      padding: 20px;
     }
   }
 

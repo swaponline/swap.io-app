@@ -23,6 +23,13 @@ $--purple: #6144e5;
 $--salad: #49c800;
 $--text-color-error: #f00;
 $--green: #008000;
+
+$--dark-blue: #0f1422;
+$--dark-blue-1: #131b27;
+$--dark-blue-2: #182231;
+$--dark-blue-3: #212f46;
+$--dark-blue-4: #20222e;
+
 // fonts
 $--font-base: 'Nunito', serif;
 $--font-size-extra-small: 10px;
@@ -44,7 +51,6 @@ $--font-weight-regular: 400;
 $--font-weight-light: 300;
 $--font-weight-extra-light: 200;
 
-$--max-content-size: 1280px;
 $--bp-tablet: 1280px;
 $--bp-phone: 480px;
 $--bp-small: 320px;
@@ -69,10 +75,3 @@ $--button-size-default: 42px;
 $--button-size-large: 52px;
 
 $--button-size-fab-small: 36px;
-
-:root {
-  --navigation-drawer-mobile-height: 57px;
-  --navigation-drawer-desktop-width: 70px;
-  --max-content-size: 1920px;
-  --disabled-background: #f5f5f5;
-}

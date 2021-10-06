@@ -1,6 +1,6 @@
 <template>
   <div class="wallet-info" :class="{ 'wallet-info--compressed': compressed }" @click="uncompressWallet">
-    <cryptoicon class="wallet-info__background-icon" :symbol="currencyName.toLowerCase()" size="500" />
+    <cryptoicon class="wallet-info__background-icon" :symbol="coin.toLowerCase()" size="500" />
 
     <div class="wallet-info__optional-buttons">
       <swap-button fab small class="wallet-info__optional-button" @click="openShareModal">
@@ -14,7 +14,7 @@
     <header class="wallet-info__header">
       <div>
         <span class="wallet-info__crypto-value">
-          {{ value }} <span class="grey--text">{{ currencyName }}</span>
+          {{ value }} <span class="grey--text">{{ coin }}</span>
         </span>
         <span class="wallet-info__fiat-value">3000.04 USD</span>
       </div>
@@ -60,15 +60,12 @@ export default {
   inject: ['mediaQueries'],
   props: {
     compressed: { type: Boolean, default: false },
-    address: { type: String, required: true },
+    address: { type: String, default: '' },
     name: { type: String, default: '' },
     value: { type: Number, default: 0 },
-    currencyName: { type: String, default: '' }
+    coin: { type: String, default: '' }
   },
   computed: {
-    walletAddress() {
-      return this.$route.params.walletAddress
-    },
     minifiedAddress() {
       return minifyAddress(this.address)
     }
@@ -84,7 +81,7 @@ export default {
       this.mutationAddModal({
         name: COPY_MENU,
         info: {
-          address: this.walletAddress
+          address: this.address
         }
       })
     },
@@ -92,38 +89,36 @@ export default {
       this.mutationAddModal({
         name: SHARE_MODAL,
         info: {
-          data: { value: this.walletAddress, label: 'Wallet id:' },
-          shareUrl: `${window.location.origin}/wallet/${this.walletAddress}`
+          data: { value: this.address, label: 'Wallet id:' },
+          shareUrl: `${window.location.origin}/wallet/${this.coin}/${this.address}`
         }
       })
     },
     openInvoiceBlock() {
       this.mutationAddModal({
         name: INVOICE_FORM,
-        id: `${INVOICE_FORM + this.walletAddress}`,
+        id: `${INVOICE_FORM + this.address}`,
         show: true,
         info: {
-          address: this.walletAddress
+          address: this.address
         }
       })
     },
     openSendForm() {
       this.mutationAddModal({
         name: SEND_FORM,
-        id: `${SEND_FORM + this.walletAddress}`,
+        id: `${SEND_FORM + this.address}`,
         show: true,
         info: {
-          address: this.walletAddress
+          address: this.address
         }
       })
     },
     openSettingsModal() {
       this.mutationAddModal({
         name: WALLET_SETTINGS,
-        id: `${WALLET_SETTINGS + this.walletAddress}`,
-        info: {
-          walletId: this.walletAddress
-        }
+        id: `${WALLET_SETTINGS + this.address}`,
+        info: { address: this.address, coin: this.coin, name: this.name }
       })
     }
   }
