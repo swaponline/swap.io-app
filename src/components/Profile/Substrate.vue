@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import { CREATING_OR_RECOVERING_PROFILE } from '@/store/modules/Profile'
 import VButtonCancel from '@/components/Profile/VButtonCancel.vue'
+import { profileService } from '@/services/profile'
 
 const ESCAPE = 'Escape'
 
@@ -30,7 +30,7 @@ export default {
   },
   methods: {
     cancel() {
-      this.$store.dispatch(CREATING_OR_RECOVERING_PROFILE, false)
+      profileService.creatingOrRecovering(false)
       return this.$router.push({ name: 'Wallets' })
     },
     closeByPressingESC({ key }) {

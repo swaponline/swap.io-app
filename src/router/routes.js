@@ -1,13 +1,13 @@
 import { GUEST_INVOICE_ROUTE_NAME } from '@/constants/routes'
-import { openInvoice } from './middleware'
+import { openInvoice, profileRequired, firstCreatingOrRecovering } from './middleware'
 
-/* eslint-disable import/extensions */
 export default [
   {
     path: '/',
     name: 'MainLayout',
     component: () => import(/* webpackChunkName: 'MainLayout' */ '@/layouts/MainLayout'),
     redirect: { name: 'Wallets' },
+    meta: { middleware: [profileRequired] },
     children: [
       {
         path: '/wallet',
@@ -49,8 +49,10 @@ export default [
   {
     path: '/',
     name: 'ProfileLayout',
+    meta: {
+      middleware: [firstCreatingOrRecovering]
+    },
     component: () => import(/* webpackChunkName: 'ProfileLayout' */ '@/layouts/ProfileLayout'),
-    redirect: { name: 'MainLayout' },
     children: [
       {
         path: '/security-info',

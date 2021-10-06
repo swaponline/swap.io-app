@@ -25,7 +25,7 @@
             v-for="profile in restProfiles"
             :key="profile.accountId"
             class="profile-list__list-item"
-            @click="setProfile(profile.accountId)"
+            @click="setProfile(profile.id)"
           >
             <v-avatar
               height="25"
@@ -46,9 +46,8 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-import { MODULE_PROFILE, SET_PROFILE } from '@/store/modules/Profile'
 import { Base64 } from 'js-base64'
+import { profileService, UPDATE_CURRENT_PROFILE, UPDATE_PROFILES } from '@/services/profile'
 
 const BACKGROUND_COLOR_AVATAR_FOR_DISABLED = '#919191'
 
@@ -63,7 +62,10 @@ export default {
   },
   data() {
     return {
-      panels: []
+      panels: [],
+      currentProfile: profileService.currentProfile(),
+      profiles: profileService.profiles(),
+      subscriptions: []
     }
   },
   computed: {
@@ -76,17 +78,8 @@ export default {
     balance() {
       return this.$store.getters.accountBalance
     },
-    module() {
-      return this.$store.state[MODULE_PROFILE]
-    },
-    profiles() {
-      return this.module.profiles
-    },
-    currentProfile() {
-      return this.module.model.profile
-    },
     restProfiles() {
-      return this.profiles.filter(p => p.accountId !== this.currentProfile.accountId)
+      return this.profiles.filter(profile => profile.id !== this.currentProfile.id)
     },
     backgroundAvatar() {
       if (this.disabled) return `background-color: ${BACKGROUND_COLOR_AVATAR_FOR_DISABLED}`
@@ -94,22 +87,38 @@ export default {
       return `background-image: ${this.getAvatar(this.currentProfile)}`
     }
   },
+  mounted() {
+    this.subscribeToUpdates()
+  },
+  beforeDestroy() {
+    this.subscriptions.forEach(callback => callback.unsubscribe())
+  },
   methods: {
-    ...mapActions({
-      actionSetProfile: SET_PROFILE
-    }),
     closePanels() {
       this.panels = []
     },
     setProfile(id) {
-      this.actionSetProfile(id)
+      profileService.setCurrentProfile(id)
       this.$router.push({ name: 'Wallets', query: null })
       this.closePanels()
     },
-    getAvatar({ accountId }) {
-      const { background } = this.profiles.find(p => p.accountId === accountId)
-      const svgBase64 = `url("data:image/svg+xml;base64,${Base64.encode(background)}")`
+    getAvatar({ id }) {
+      const { colorScheme } = this.profiles.find(profile => profile.id === id)
+      const svgBase64 = `url("data:image/svg+xml;base64,${Base64.encode(colorScheme.background)}")`
       return svgBase64
+    },
+    subscribeToUpdates() {
+      this.subscriptions.push(
+        profileService.subscribe(UPDATE_PROFILES, profilesList => {
+          this.profiles = profilesList
+        })
+      )
+
+      this.subscriptions.push(
+        profileService.subscribe(UPDATE_CURRENT_PROFILE, profile => {
+          this.currentProfile = profile
+        })
+      )
     },
     toSecurityInfo() {
       return this.$router.push({ name: 'SecurityInfo' })

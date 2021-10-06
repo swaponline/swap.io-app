@@ -16,6 +16,7 @@ import { pluralizeNumeral } from '@/utils/pluralization'
 import { getUserSystemTheme } from '@/utils/theme'
 import { setCSSCustomProperty } from '@/utils/common'
 
+import { profileService, UPDATE_TEMPORARY_PROFILE, UPDATE_CURRENT_PROFILE } from '@/services/profile'
 import { getStorage } from './utils/storage'
 import { DARK_THEME_KEY, LIGHT_THEME_KEY, SYSTEM_THEME_KEY, THEME_KEY } from './constants/theme'
 
@@ -33,35 +34,34 @@ export default {
   },
   data() {
     return {
-      queries
+      queries,
+      userColorScheme: profileService.currentProfile().colorScheme,
+      subscriptions: []
     }
   },
   computed: {
-    userColorTheme() {
-      return this.$store.getters.userColorTheme
-    },
     isDefaultTheme() {
-      return this.userColorTheme.background.includes('linear-gradient')
+      return this.userColorScheme.background.includes('linear-gradient')
     },
     accountNotifications() {
       return this.$store.getters.accountNotifications
     }
   },
   watch: {
-    userColorTheme: {
+    userColorScheme: {
       immediate: true,
       deep: true,
-      handler(theme) {
-        if (!theme) return
-
-        const { color } = theme
+      handler(scheme) {
+        if (!scheme) return
+        const { color } = scheme
         this.setFavicon(color)
         this.setColorThemeOfAddressBar(color)
-        this.setCustomColorCSSVariables(theme)
+        this.setCustomColorCSSVariables(scheme)
       }
     }
   },
   mounted() {
+    this.subscribeToUpdates()
     // SET CURRENT THEME
     const theme = getStorage(THEME_KEY) || SYSTEM_THEME_KEY
 
@@ -99,6 +99,7 @@ export default {
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.resize)
+    this.subscriptions.forEach(callback => callback.unsubscribe())
   },
   methods: {
     resize() {
@@ -116,6 +117,13 @@ export default {
       setCSSCustomProperty('vw', `${vw}`)
 
       this.setBackground()
+    },
+    subscribeToUpdates() {
+      this.subscriptions.push(profileService.subscribe(UPDATE_TEMPORARY_PROFILE, this.updateUserColorScheme))
+      this.subscriptions.push(profileService.subscribe(UPDATE_CURRENT_PROFILE, this.updateUserColorScheme))
+    },
+    updateUserColorScheme({ colorScheme }) {
+      this.userColorScheme = colorScheme
     },
     setBackground(backgroundSvg) {
       if (!backgroundSvg) return

@@ -86,7 +86,7 @@ export default {
   methods: {
     back() {
       if (this.mediaQueries.desktop || this.activeStep === 1) {
-        this.$router.push({ name: 'Wallets' })
+        this.$router.push({ name: 'CreateOrRecover' })
       }
 
       this.activeStep -= 1

@@ -1,6 +1,6 @@
 <template>
   <match-media v-slot="{ desktop }" wrapper-tag="div">
-    <substrate class="create-or-recover">
+    <substrate class="create-or-recover" :hide-close-button="!$options.hasProfile">
       <swap-button-go-back v-if="!desktop" class="create-or-recover__button-i-back" @click="cancel" />
       <div class="create-or-recover__wrapper">
         <div class="create-or-recover__header">
@@ -14,7 +14,14 @@
         </div>
         <div class="create-or-recover__buttons">
           <div class="create-or-recover__buttons-row">
-            <swap-button v-if="desktop" class="create-or-recover__button" block @click="cancel">Cancel</swap-button>
+            <swap-button
+              v-if="desktop"
+              class="create-or-recover__button"
+              :disabled="!$options.hasProfile"
+              block
+              @click="cancel"
+              >Cancel</swap-button
+            >
             <swap-button class="create-or-recover__button" block @click="create">Create</swap-button>
           </div>
           <swap-button text class="create-or-recover__button create-or-recover__button--text" block @click="goToRecover"
@@ -29,8 +36,12 @@
 <script>
 import { MatchMedia } from 'vue-component-media-queries'
 import Substrate from '@/components/Profile/Substrate.vue'
+import { profileService } from '@/services/profile'
+
+const hasProfile = profileService.hasProfile()
 
 export default {
+  hasProfile,
   name: 'CreateOrRecover',
   components: {
     MatchMedia,

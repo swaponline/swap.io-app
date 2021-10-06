@@ -13,13 +13,7 @@ export default class WindowHandler {
    * @param {} callback
    */
   constructor(options) {
-    const {
-      nameFrame,
-      additionalUrl,
-      key,
-      callback,
-      silent
-    } = options
+    const { nameFrame, additionalUrl, key, callback, silent } = options
 
     this.w = window
     this.url = WindowHandler.host + additionalUrl
@@ -77,10 +71,7 @@ export default class WindowHandler {
 
   // Отобразить фоновый фрейм поверх
   popupFrame(options) {
-    const {
-      fullScreen = false,
-      transparent = false,
-    } = options || {}
+    const { fullScreen = false, transparent = false } = options || {}
     if (this.iframeDom) {
       this.iframeDom.style.visibility = 'visible'
       this.iframeDom.style.left = '0px'

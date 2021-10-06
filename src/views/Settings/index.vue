@@ -18,6 +18,7 @@ import { getStorage, setStorage } from '@/utils/storage'
 import { THEMES, THEME_KEY, SYSTEM_THEME_KEY, LIGHT_THEME_KEY, DARK_THEME_KEY } from '@/constants/theme'
 import { getUserSystemTheme } from '@/utils/theme'
 import { setCSSCustomProperty } from '@/utils/common'
+import { profileService } from '@/services/profile'
 
 export default {
   THEMES,
@@ -33,7 +34,7 @@ export default {
       handler(theme) {
         setStorage(THEME_KEY, theme)
 
-        const { color, colorForDarkTheme } = this.getCurrentUserTheme()
+        const { color, colorForDarkTheme } = profileService.getCurrentColorScheme()
 
         let appTheme = theme
         if (theme === SYSTEM_THEME_KEY) {
@@ -56,15 +57,6 @@ export default {
   },
   created() {
     this.selectedTheme = getStorage(THEME_KEY) || SYSTEM_THEME_KEY
-  },
-
-  methods: {
-    getCurrentUserTheme() {
-      const usersThemes = getStorage('usersThemes')
-      const currentAccountId = getStorage('currentAccount')
-
-      return usersThemes.filter(userTheme => userTheme.accountId === currentAccountId)[0]
-    }
   }
 }
 </script>
