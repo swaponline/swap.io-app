@@ -99,7 +99,6 @@ export default {
     },
     setProfile(id) {
       profileService.setCurrentProfile(id)
-      this.$router.push({ name: 'Wallets', query: null })
       this.closePanels()
     },
     getAvatar({ id }) {

@@ -3,12 +3,14 @@
     <template v-if="hasWallets">
       <list-wallet
         class="wallet-layout__list-wallet"
-        :class="{ 'wallet-layout__list-wallet--show': showListWallet }"
+        :class="{ 'wallet-layout__list-wallet--show': !activeWallet }"
+        :wallets="wallets"
+        :active-wallet="activeWallet"
       ></list-wallet>
 
-      <div class="wallet-layout__router" :class="{ 'wallet-layout__router--hide': showListWallet }">
+      <div class="wallet-layout__router" :class="{ 'wallet-layout__router--hide': !activeWallet }">
         <transition-translate :reverse="metaBack">
-          <router-view :key="currentRoute" class="wallet-layout__router-content"></router-view>
+          <router-view :wallet="activeWallet" class="wallet-layout__router-content"></router-view>
         </transition-translate>
       </div>
     </template>
@@ -29,6 +31,57 @@ import MainActions from '@/components/Wallets/MainActions.vue'
 import AllModals from '@/components/Wallets/Modals/AllModals.vue'
 import WalletsCreate from '@/components/Wallets/WalletsCreate.vue'
 
+const WALLETS = [
+  {
+    network: 'ETH',
+    coin: 'ETH',
+    walletNumber: 0,
+    address: '3WfGVzwANjbaLh6fokA41qtwMikpFWXSJtHS7uvrJQGV',
+    publicKey: '3WfGVzwANjbaLh6fokA41qtwMikpFWXSJtHS7uvrJQGV',
+
+    value: 0.005
+  },
+  {
+    network: 'BTC',
+    coin: 'BTC',
+    walletNumber: 0,
+    address: '0x912fD21d7a69678227fE6d08C64222Db41477bA0',
+    publicKey: '0x912fD21d7a69678227fE6d08C64222Db41477bA0',
+    name: 'Default',
+
+    value: 0.0456
+  },
+  {
+    network: 'BTC',
+    coin: 'USDT',
+    walletNumber: 0,
+    address: '0xd19615f2Eab2ABfBF7ca16618b5eD43386374DD0',
+    publicKey: '0xd19615f2Eab2ABfBF7ca16618b5eD43386374DD0',
+    name: 'Main',
+
+    value: 0.005
+  },
+  {
+    network: 'BTC',
+    coin: 'USDT',
+    walletNumber: 1,
+    address: '0xF2eDB7Ac87119e9ea68CDa5269E23c21e51EDc4e',
+    publicKey: '0xF2eDB7Ac87119e9ea68CDa5269E23c21e51EDc4e',
+
+    value: 0.0567
+  },
+  {
+    network: 'BNB',
+    coin: 'EOS',
+    walletNumber: 0,
+    address: '0x8CDa5269E23c2F2eDB7Ac871',
+    publicKey: '0x8CDa5269E23c2F2eDB7Ac871',
+    name: 'Swaps',
+
+    value: 0
+  }
+]
+
 export default {
   name: 'WalletLayout',
   inject: ['mediaQueries'],
@@ -39,24 +92,52 @@ export default {
     AllModals,
     WalletsCreate
   },
+  props: {
+    coin: { type: String, default: '' },
+    walletAddress: { type: String, default: '' }
+  },
   computed: {
-    currentRoute() {
-      if (this.mediaQueries.desktop) {
-        return this.$route.name
-      }
-      return this.$route.name + JSON.stringify(this.$route.params)
+    isDesktop() {
+      return this.mediaQueries.desktop
+    },
+    wallets() {
+      return WALLETS
+    },
+    activeWallet() {
+      return this.wallets.find(
+        wallet => wallet.address === this.walletAddress && wallet.coin.toLowerCase() === this.coin.toLowerCase()
+      )
     },
     hasWallets() {
-      return !!this.$store.getters.currentWallets.length
-    },
-    walletParam() {
-      return this.$route.params.walletAddress
+      return !!this.wallets.length
     },
     metaBack() {
       return this.$route.meta.back
+    }
+  },
+
+  watch: {
+    isDesktop() {
+      this.setActiveWallet()
     },
-    showListWallet() {
-      return this.$route.name === 'Wallet' && this.$route.params.walletAddress === undefined
+    wallets: {
+      immediate: true,
+      handler() {
+        this.setActiveWallet()
+      }
+    }
+  },
+
+  methods: {
+    setActiveWallet() {
+      if (!this.activeWallet && this.wallets.length > 0 && this.isDesktop) {
+        const { address, coin } = this.wallets[0]
+
+        this.$router.replace({
+          name: 'Wallet',
+          params: { walletAddress: address, coin: coin.toLowerCase() }
+        })
+      }
     }
   }
 }

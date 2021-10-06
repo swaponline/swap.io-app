@@ -47,6 +47,15 @@ export default {
 <style lang="scss">
 .tabs {
   margin-top: auto;
+  z-index: 1;
+
+  @include tablet {
+    box-shadow: 0px -1px 9px rgba($--black, 0.06);
+
+    &.theme--dark {
+      box-shadow: 0px -1px 9px rgba($--white, 0.06);
+    }
+  }
 
   .v-tabs-bar {
     background-color: var(--primary-background) !important;

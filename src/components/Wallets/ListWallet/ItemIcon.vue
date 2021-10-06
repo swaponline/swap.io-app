@@ -1,7 +1,7 @@
 <template>
   <v-list-item-icon class="list-wallet-icon">
     <cryptoicon :symbol="currencyName.toLowerCase()" size="45" />
-    <cryptoicon v-if="network" class="list-wallet-icon__network" :symbol="network.toLowerCase()" size="25" />
+    <cryptoicon v-if="showNetwork" class="list-wallet-icon__network" :symbol="network.toLowerCase()" size="25" />
   </v-list-item-icon>
 </template>
 
@@ -9,13 +9,12 @@
 export default {
   name: 'ListWalletItemIcon',
   props: {
-    currencyName: {
-      type: String,
-      default: ''
-    },
-    network: {
-      type: String,
-      default: ''
+    currencyName: { type: String, default: '' },
+    network: { type: String, default: '' }
+  },
+  computed: {
+    showNetwork() {
+      return this.network && this.network.toLowerCase() !== this.currencyName.toLowerCase()
     }
   }
 }
