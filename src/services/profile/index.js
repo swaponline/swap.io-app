@@ -35,13 +35,16 @@ function setupLocalStorage() {
 
 setupLocalStorage()
 
+function getProfile(list, id) {
+  return cloneDeep(list.find(item => item.id === id) ?? DEFAULT_TEMPORARY_PROFILE)
+}
+
 function createProfileService() {
   let profilesList = getStorage(PROFILES_KEY) || []
   let currentId = getStorage(CURRENT_PROFILE_ID_KEY) || TEMPORARY_PROFILE_ID
   let temporaryProfile = DEFAULT_TEMPORARY_PROFILE
   let isCreatingOrRecovering = false
-  let currentProfile =
-    profilesList.find(profile => profile.id === getStorage(CURRENT_PROFILE_ID_KEY)) ?? temporaryProfile
+  let currentProfile = getProfile(profilesList, currentId)
 
   return {
     setProfile(profile) {
@@ -66,6 +69,8 @@ function createProfileService() {
       return cloneDeep(profilesList)
     },
 
+    getProfile,
+
     getColorSchemes() {
       return profilesList.map(profile => profile.colorScheme)
     },
@@ -88,7 +93,7 @@ function createProfileService() {
 
     setCurrentProfile(id) {
       if (id === TEMPORARY_PROFILE_ID) return
-      currentProfile = profilesList.find(profile => profile.id === id)
+      currentProfile = this.getCurrentProfile(profilesList, id)
       currentId = id
       setStorage(CURRENT_PROFILE_ID_KEY, id)
       emitter.emit(UPDATE_CURRENT_PROFILE, currentProfile)
