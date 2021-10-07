@@ -148,19 +148,11 @@ export default {
   &__item {
     position: relative;
     padding: 5px 0;
+    margin: 0 10px;
+    border-bottom: 1px solid var(--main-border-color);
 
     &:first-child {
       margin-top: 5px;
-    }
-
-    &::after {
-      content: '';
-      position: absolute;
-      top: 100%;
-      left: 18px;
-      width: calc(100% - 36px);
-      min-height: 1px;
-      background: var(--main-border-color);
     }
   }
 }

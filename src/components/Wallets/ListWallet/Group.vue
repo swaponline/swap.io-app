@@ -106,7 +106,6 @@ export default {
 .list-wallet-group {
   border-radius: $--border-radius-large;
   overflow: hidden;
-  margin: 0 10px;
 
   &:hover {
     background-color: var(--wallets-item-background);
@@ -159,11 +158,7 @@ export default {
     &:hover,
     &.v-list-item--active {
       background-color: var(--wallets-item-background-hover);
-      box-shadow: 4px 4px 16px rgba(55, 55, 55, 0.24);
-
-      &.theme--dark {
-        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-      }
+      box-shadow: var(--wallets-box-shadow);
     }
   }
 
