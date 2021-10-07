@@ -18,11 +18,11 @@
 
 <script>
 import WalletInfo from '@/components/Wallets/WalletInfo.vue'
-import TransactionBlock from '@/components/Wallets/Transactions'
+import TransactionBlock from '@/components/Wallets/Transactions/index.vue'
 
 export default {
   name: 'WalletContent',
-  components: { WalletInfo, TransactionBlock },
+  components: { TransactionBlock, WalletInfo },
   props: {
     wallet: { type: Object, default: () => ({}) }
   },
