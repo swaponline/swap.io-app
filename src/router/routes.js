@@ -1,13 +1,13 @@
 import { GUEST_INVOICE_ROUTE_NAME } from '@/constants/routes'
-import { openInvoice } from './middleware'
+import { openInvoice, profileRequired } from './middleware'
 
-/* eslint-disable import/extensions */
 export default [
   {
     path: '/',
     name: 'MainLayout',
     component: () => import(/* webpackChunkName: 'MainLayout' */ '@/layouts/MainLayout'),
     redirect: { name: 'Wallets' },
+    meta: { middleware: [profileRequired] },
     children: [
       {
         path: '/wallet',
@@ -51,7 +51,6 @@ export default [
     path: '/',
     name: 'ProfileLayout',
     component: () => import(/* webpackChunkName: 'ProfileLayout' */ '@/layouts/ProfileLayout'),
-    redirect: { name: 'MainLayout' },
     children: [
       {
         path: '/security-info',
@@ -59,12 +58,12 @@ export default [
         component: () => import(/* webpackChunkName: 'SecurityInfo' */ '@/views/Profile/Create/SecurityInfo.vue')
       },
       {
-        path: '/create-profile',
+        path: '/create-profiles',
         name: 'CreateProfile',
         component: () => import(/* webpackChunkName: 'Create' */ '@/views/Profile/Create')
       },
       {
-        path: '/recover-profile',
+        path: '/recover-profiles',
         name: 'RecoverProfile',
         component: () => import(/* webpackChunkName: 'Recover' */ '@/views/Profile/Recover')
       },

@@ -10,10 +10,10 @@ import Substrate from '@/components/Profile/Substrate.vue'
 import VLoader from '@/components/Loaders/VLoader.vue'
 import SwapIframe from '@/components/UI/SwapIframe'
 import { SET_APP_THEME } from '@/constants/createProfile'
-import { CREATE_PROFILE, CREATING_OR_RECOVERING_PROFILE } from '@/store/modules/Profile'
 import { THEME_KEY } from '@/constants/theme'
 import { getStorage } from '@/utils/storage'
 import SwapKeysApi from '@/keys-api'
+import { profilesService } from '@/services/profiles'
 
 const IFRAME_NAME = 'recoverProfile'
 
@@ -37,6 +37,7 @@ export default {
   methods: {
     openFrame() {
       this.loading = true
+      profilesService.setCreatingOrRecovering(true)
 
       this.frame = SwapKeysApi.restoreProfile({
         callback: ({ message }) => {
@@ -54,16 +55,18 @@ export default {
               })
 
               this.loading = false
-              this.$store.dispatch(CREATING_OR_RECOVERING_PROFILE, true)
               break
             case RECOVER_CANCELED:
-              this.$store.dispatch(CREATING_OR_RECOVERING_PROFILE, false)
+              profilesService.setCreatingOrRecovering(false)
               this.$router.push({ name: 'Wallets' })
               break
-            case PROFILE_RECOVERED:
-              this.$store.dispatch(CREATE_PROFILE, payload.profile)
+            case PROFILE_RECOVERED: {
+              const { id } = profilesService.addProfile(payload.profile)
+              profilesService.setCurrentProfile(id)
+              profilesService.setCreatingOrRecovering(false)
               this.$router.push({ name: 'Wallets' })
               break
+            }
             default: {
               // ! implementation will appear in the future
               this.loading = false

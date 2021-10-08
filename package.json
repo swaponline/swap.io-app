@@ -15,6 +15,8 @@
     "canvg": "^3.0.7",
     "core-js": "^3.6.5",
     "js-base64": "^3.6.1",
+    "lodash.clonedeep": "^4.5.0",
+    "nanoevents": "^6.0.1",
     "normalize.css": "^8.0.1",
     "qrcode-generator": "^1.4.4",
     "vue": "^2.6.11",

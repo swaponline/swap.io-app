@@ -1,24 +1,21 @@
 <template>
-  <match-media v-slot="{ desktop, phone }" class="main-header" wrapper-tag="div">
-    <div v-if="isCreatingOrRecoveringProfile" class="main-header__logo">
+  <match-media v-slot="{ desktop, phone }" class="main-header" wrapper-tag="header">
+    <div v-if="disabled" class="main-header__logo">
       <swap-logo />
     </div>
     <router-link v-else :to="{ name: 'Wallet' }" class="main-header__logo">
       <swap-logo />
     </router-link>
-    <v-button-cancel v-if="isCreatingOrRecoveringProfile && phone" class="main-header__button-cancel" @click="cancel" />
+    <v-button-cancel v-if="disabled && phone" class="main-header__button-cancel" @click="cancel" />
     <div v-if="desktop" class="main-header__content">
-      <main-header-tabs class="main-header__tabs" />
-      <div class="main-header__notifications">
-        <v-menu :disabled="isCreatingOrRecoveringProfile" content-class="main-header__notifications-menu" left offset-y>
+      <main-header-tabs :disabled="disabled" class="main-header__tabs" />
+      <div v-if="hasProfile" class="main-header__notifications">
+        <v-menu :disabled="disabled" content-class="main-header__notifications-menu" left offset-y>
           <template v-slot:activator="{ on, attrs }">
             <div class="main-header__notifications-wrapper" v-bind="attrs" v-on="on">
               <v-badge :content="notifications.length" :value="notificationCount" color="red" overlap>
                 <svg-icon
-                  :class="[
-                    'main-header__notifications-icon',
-                    isCreatingOrRecoveringProfile && 'main-header__notifications-icon--disabled'
-                  ]"
+                  :class="['main-header__notifications-icon', disabled && 'main-header__notifications-icon--disabled']"
                   name="bell"
                 />
               </v-badge>
@@ -44,7 +41,7 @@
         </v-menu>
       </div>
       <div v-if="hasProfile" class="main-header__profile">
-        <profile-list :disabled="isCreatingOrRecoveringProfile" />
+        <profile-list v-bind="{ disabled }" />
       </div>
     </div>
     <swap-button
@@ -54,17 +51,17 @@
       large
       @click="openWalletList"
     >
-      <svg-icon class="main-header__burger-icon" name="icon-burger"></svg-icon
-    ></swap-button>
+      <svg-icon class="main-header__burger-icon" name="icon-burger"></svg-icon>
+    </swap-button>
   </match-media>
 </template>
 
 <script>
 import { MatchMedia } from 'vue-component-media-queries'
 import ProfileList from '@/components/Wallets/ProfileList.vue'
-import { CREATING_OR_RECOVERING_PROFILE, IS_CREATING_OR_RECOVERING, MODULE_PROFILE } from '@/store/modules/Profile'
 import VButtonCancel from '@/components/Profile/VButtonCancel.vue'
 import SwapLogo from '@/components/UI/SwapLogo.vue'
+import { events, profilesService } from '@/services/profiles'
 import MainHeaderTabs from './Tabs.vue'
 
 const INCOMING_TRANSACTION = 'incoming-transaction'
@@ -75,13 +72,14 @@ export default {
   INCOMING_TRANSACTION,
   INCOMING_INVOICE,
   components: { ProfileList, MainHeaderTabs, MatchMedia, VButtonCancel, SwapLogo },
+  data() {
+    return {
+      hasProfile: profilesService.hasProfile(),
+      disabled: profilesService.getIsCreatingOrRecovering(),
+      subscriptions: []
+    }
+  },
   computed: {
-    isCreatingOrRecoveringProfile() {
-      return this.$store.state[MODULE_PROFILE][IS_CREATING_OR_RECOVERING]
-    },
-    hasProfile() {
-      return this.$store.getters.hasProfile
-    },
     notifications() {
       const list = [
         { type: INCOMING_TRANSACTION, currency: 'BTC', value: '0.123' },
@@ -94,21 +92,28 @@ export default {
       return list
     },
     notificationCount() {
-      return !this.isCreatingOrRecoveringProfile ? this.notifications.length : null
+      return !this.disabled ? this.notifications.length : null
     },
     showBurgerButton() {
       return !!this.$route.params.walletAddress
     }
   },
+  created() {
+    this.subscriptions.push(
+      profilesService.subscribe(events.UPDATE_IS_CREATING_OR_RECOVERING, value => {
+        this.disabled = value
+      })
+    )
+  },
+  beforeDestroy() {
+    this.subscriptions.forEach(callback => callback.unsubscribe())
+  },
   methods: {
     cancel() {
-      this.$store.dispatch(CREATING_OR_RECOVERING_PROFILE, false)
+      profilesService.setCreatingOrRecovering(false)
       return this.$router.push({ name: 'Wallets' })
     },
 
-    sliderColor() {
-      return this.isCreatingOrRecoveringProfile ? 'transparent' : 'var(--main-color)'
-    },
     openWalletList() {
       return this.$router.push({ name: 'Wallets' })
     }

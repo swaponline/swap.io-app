@@ -5,9 +5,9 @@
       <v-radio
         v-for="theme in $options.THEMES"
         :key="theme.key"
-        color="var(--main-color)"
         :label="theme.text"
         :value="theme.key"
+        color="var(--main-color)"
       />
     </v-radio-group>
   </div>
@@ -15,9 +15,10 @@
 
 <script>
 import { getStorage, setStorage } from '@/utils/storage'
-import { THEMES, THEME_KEY, SYSTEM_THEME_KEY, LIGHT_THEME_KEY, DARK_THEME_KEY } from '@/constants/theme'
+import { DARK_THEME_KEY, LIGHT_THEME_KEY, SYSTEM_THEME_KEY, THEME_KEY, THEMES } from '@/constants/theme'
 import { getUserSystemTheme } from '@/utils/theme'
 import { setCSSCustomProperty } from '@/utils/common'
+import { profilesService } from '@/services/profiles'
 
 export default {
   THEMES,
@@ -33,7 +34,7 @@ export default {
       handler(theme) {
         setStorage(THEME_KEY, theme)
 
-        const { color, colorForDarkTheme } = this.getCurrentUserTheme()
+        const { color, colorForDarkTheme } = profilesService.getCurrentProfileColorScheme()
 
         let appTheme = theme
         if (theme === SYSTEM_THEME_KEY) {
@@ -56,15 +57,6 @@ export default {
   },
   created() {
     this.selectedTheme = getStorage(THEME_KEY) || SYSTEM_THEME_KEY
-  },
-
-  methods: {
-    getCurrentUserTheme() {
-      const usersThemes = getStorage('usersThemes')
-      const currentAccountId = getStorage('currentAccount')
-
-      return usersThemes.filter(userTheme => userTheme.accountId === currentAccountId)[0]
-    }
   }
 }
 </script>
