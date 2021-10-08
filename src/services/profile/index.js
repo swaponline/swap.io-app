@@ -1,15 +1,8 @@
 import { getStorage, setStorage } from '@/utils/storage'
 import { cloneDeep } from '@/utils/common'
 import { createNanoEvents } from 'nanoevents'
-import {
-  PROFILES_KEY,
-  CURRENT_PROFILE_ID_KEY,
-  UPDATE_TEMPORARY_PROFILE,
-  UPDATE_CURRENT_PROFILE,
-  UPDATE_PROFILES,
-  UPDATE_CURRENT_PROFILE_ID,
-  UPDATE_IS_CREATING_OR_RECOVERING
-} from './types'
+
+import { PROFILES_KEY, CURRENT_PROFILE_ID_KEY, events } from './types'
 
 const emitter = createNanoEvents()
 const TEMPORARY_PROFILE_ID = 'temporaryProfile'
@@ -40,11 +33,18 @@ function getProfile(list, id) {
 }
 
 function createProfileService() {
-  let profilesList = getStorage(PROFILES_KEY) || []
-  let currentId = getStorage(CURRENT_PROFILE_ID_KEY) || TEMPORARY_PROFILE_ID
-  let temporaryProfile = DEFAULT_TEMPORARY_PROFILE
+  const profilesList = getStorage(PROFILES_KEY) || []
+  let currentId = getStorage(CURRENT_PROFILE_ID_KEY)
+  let temporaryProfile = null
   let isCreatingOrRecovering = false
   let currentProfile = getProfile(profilesList, currentId)
+
+  function setTemporaryProfile(profile) {
+    temporaryProfile = cloneDeep(profile)
+    emitter.emit(events.UPDATE_TEMPORARY_PROFILE, cloneDeep(temporaryProfile))
+  }
+
+  setTemporaryProfile(DEFAULT_TEMPORARY_PROFILE)
 
   return {
     setProfile(profile) {
@@ -55,31 +55,33 @@ function createProfileService() {
         colorScheme,
         username: publicKey
       }
+      profilesList.push(newProfile)
 
-      const newProfiles = cloneDeep(profilesList)
-      newProfiles.push(newProfile)
-      profilesList = newProfiles
       this.setCurrentProfile(newProfile.id)
-      setStorage(PROFILES_KEY, newProfiles)
+      setStorage(PROFILES_KEY, profilesList)
       setStorage(CURRENT_PROFILE_ID_KEY, newProfile.id)
-      emitter.emit(UPDATE_PROFILES, newProfiles)
+      emitter.emit(events.UPDATE_PROFILES, cloneDeep(profilesList))
     },
 
-    profiles() {
+    getProfiles() {
       return cloneDeep(profilesList)
     },
 
-    getProfile,
+    getProfile(id) {
+      return getProfile(profilesList, id)
+    },
 
     getColorSchemes() {
       return profilesList.map(profile => profile.colorScheme)
     },
 
     getCurrentColorScheme() {
+      console.log(currentProfile.colorScheme)
       return cloneDeep(currentProfile.colorScheme)
     },
 
-    currentProfile() {
+    getCurrentProfile() {
+      console.log({ currentProfile })
       return cloneDeep(currentProfile)
     },
 
@@ -87,31 +89,30 @@ function createProfileService() {
       return !!profilesList.length
     },
 
-    isCreatingOrRecovering() {
+    getIsCreatingOrRecovering() {
       return isCreatingOrRecovering
     },
 
     setCurrentProfile(id) {
       if (id === TEMPORARY_PROFILE_ID) return
-      currentProfile = this.getCurrentProfile(profilesList, id)
+      currentProfile = this.getProfile(id)
       currentId = id
       setStorage(CURRENT_PROFILE_ID_KEY, id)
-      emitter.emit(UPDATE_CURRENT_PROFILE, currentProfile)
-      emitter.emit(UPDATE_CURRENT_PROFILE_ID, id)
+      emitter.emit(events.UPDATE_CURRENT_PROFILE, currentProfile)
+      emitter.emit(events.UPDATE_CURRENT_PROFILE_ID, id)
     },
 
-    setTemporaryProfile(colorScheme) {
+    setTemporaryProfileColorScheme(colorScheme) {
       temporaryProfile = { ...temporaryProfile, colorScheme }
-      emitter.emit(UPDATE_TEMPORARY_PROFILE, temporaryProfile)
+      emitter.emit(events.UPDATE_TEMPORARY_PROFILE, cloneDeep(temporaryProfile))
     },
 
-    creatingOrRecovering(value) {
+    setCreatingOrRecovering(value) {
       isCreatingOrRecovering = value
-      emitter.emit(UPDATE_IS_CREATING_OR_RECOVERING, value)
-      this.setTemporaryProfile(DEFAULT_TEMPORARY_PROFILE.colorScheme)
+      emitter.emit(events.UPDATE_IS_CREATING_OR_RECOVERING, value)
 
-      if (!value) {
-        this.setCurrentProfile(currentId)
+      if (value) {
+        setTemporaryProfile(DEFAULT_TEMPORARY_PROFILE)
       }
     },
 
@@ -126,13 +127,4 @@ function createProfileService() {
 
 const profileService = createProfileService()
 
-export {
-  profileService,
-  PROFILES_KEY,
-  CURRENT_PROFILE_ID_KEY,
-  UPDATE_TEMPORARY_PROFILE,
-  UPDATE_CURRENT_PROFILE,
-  UPDATE_PROFILES,
-  UPDATE_CURRENT_PROFILE_ID,
-  UPDATE_IS_CREATING_OR_RECOVERING
-}
+export { profileService, events }

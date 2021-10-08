@@ -30,7 +30,7 @@ export default {
   },
   methods: {
     cancel() {
-      profileService.creatingOrRecovering(false)
+      profileService.setCreatingOrRecovering(false)
       return this.$router.push({ name: 'Wallets' })
     },
     closeByPressingESC({ key }) {

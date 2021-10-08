@@ -4,7 +4,7 @@ export default function firstCreatingOrRecovering({ next }) {
   const hasProfile = profileService.hasProfile()
 
   if (!hasProfile) {
-    profileService.creatingOrRecovering(true)
+    profileService.setCreatingOrRecovering(true)
     return next()
   }
 

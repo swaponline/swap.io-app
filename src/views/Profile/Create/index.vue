@@ -37,7 +37,7 @@ export default {
   methods: {
     openFrame() {
       this.loading = true
-      profileService.creatingOrRecovering(true)
+      profileService.setCreatingOrRecovering(true)
 
       this.frame = SwapKeysApi.createProfile({
         callback: ({ message }) => {
@@ -62,15 +62,15 @@ export default {
               this.loading = false
               break
             case THEME_SELECTED:
-              profileService.setTemporaryProfile(payload.colorScheme)
+              profileService.setTemporaryProfileColorScheme(payload.colorScheme)
               break
             case PROFILE_CREATED:
               profileService.setProfile(payload.profile)
-              profileService.creatingOrRecovering(false)
+              profileService.setCreatingOrRecovering(false)
               this.$router.push({ name: 'Wallets' })
               break
             case CREATION_CANCELLED:
-              profileService.creatingOrRecovering(false)
+              profileService.setCreatingOrRecovering(false)
               this.$router.push({ name: 'Wallets' })
               break
             default: {

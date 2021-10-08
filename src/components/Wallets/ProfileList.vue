@@ -47,7 +47,7 @@
 
 <script>
 import { Base64 } from 'js-base64'
-import { profileService, UPDATE_CURRENT_PROFILE, UPDATE_PROFILES } from '@/services/profile'
+import { profileService, events } from '@/services/profile'
 
 const BACKGROUND_COLOR_AVATAR_FOR_DISABLED = '#919191'
 
@@ -63,8 +63,8 @@ export default {
   data() {
     return {
       panels: [],
-      currentProfile: profileService.currentProfile(),
-      profiles: profileService.profiles(),
+      currentProfile: profileService.getCurrentProfile(),
+      profiles: profileService.getProfiles(),
       subscriptions: []
     }
   },
@@ -108,13 +108,13 @@ export default {
     },
     subscribeToUpdates() {
       this.subscriptions.push(
-        profileService.subscribe(UPDATE_PROFILES, profilesList => {
+        profileService.subscribe(events.UPDATE_PROFILES, profilesList => {
           this.profiles = profilesList
         })
       )
 
       this.subscriptions.push(
-        profileService.subscribe(UPDATE_CURRENT_PROFILE, profile => {
+        profileService.subscribe(events.UPDATE_CURRENT_PROFILE, profile => {
           this.currentProfile = profile
         })
       )

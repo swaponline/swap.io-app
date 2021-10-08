@@ -61,7 +61,7 @@ import { MatchMedia } from 'vue-component-media-queries'
 import ProfileList from '@/components/Wallets/ProfileList.vue'
 import VButtonCancel from '@/components/Profile/VButtonCancel.vue'
 import SwapLogo from '@/components/UI/SwapLogo.vue'
-import { profileService, UPDATE_IS_CREATING_OR_RECOVERING } from '@/services/profile'
+import { profileService, events } from '@/services/profile'
 import MainHeaderTabs from './Tabs.vue'
 
 const INCOMING_TRANSACTION = 'incoming-transaction'
@@ -75,7 +75,7 @@ export default {
   data() {
     return {
       hasProfile: profileService.hasProfile(),
-      disabled: profileService.isCreatingOrRecovering(),
+      disabled: profileService.getIsCreatingOrRecovering(),
       subscriptions: []
     }
   },
@@ -100,7 +100,7 @@ export default {
   },
   mounted() {
     this.subscriptions.push(
-      profileService.subscribe(UPDATE_IS_CREATING_OR_RECOVERING, value => {
+      profileService.subscribe(events.UPDATE_IS_CREATING_OR_RECOVERING, value => {
         this.disabled = value
       })
     )
@@ -110,7 +110,7 @@ export default {
   },
   methods: {
     cancel() {
-      profileService.creatingOrRecovering(false)
+      profileService.setCreatingOrRecovering(false)
       return this.$router.push({ name: 'Wallets' })
     },
 

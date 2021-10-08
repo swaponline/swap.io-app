@@ -5,7 +5,7 @@ export const CREATING_OR_RECOVERING_PROFILE = 'creatingOrRecoveringProfile'
 export const IS_CREATING_OR_RECOVERING = 'isCreatingOrRecovering'
 
 export const SET_PROFILE = 'setProfile'
-export const SET_TEMPORARY_PROFILE = 'setTemporaryProfile'
+export const SET_TEMPORARY_PROFILE = 'setTemporaryProfileColorScheme'
 export const CREATE_PROFILE = 'createProfile'
 export const GET_ACCOUNT_ID = 'getAccountId'
 export const CREATE_NEW_USER = 'createNewUser'

@@ -37,7 +37,7 @@ export default {
   methods: {
     openFrame() {
       this.loading = true
-      profileService.creatingOrRecovering(true)
+      profileService.setCreatingOrRecovering(true)
 
       this.frame = SwapKeysApi.restoreProfile({
         callback: ({ message }) => {
@@ -57,7 +57,7 @@ export default {
               this.loading = false
               break
             case RECOVER_CANCELED:
-              profileService.creatingOrRecovering(false)
+              profileService.setCreatingOrRecovering(false)
               this.$router.push({ name: 'Wallets' })
               break
             case PROFILE_RECOVERED:
