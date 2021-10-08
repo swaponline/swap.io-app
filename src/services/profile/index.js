@@ -4,50 +4,64 @@ import { createNanoEvents } from 'nanoevents'
 
 import { CURRENT_PROFILE_ID_KEY, events, PROFILES_KEY } from './types'
 
-const emitter = createNanoEvents()
 const TEMPORARY_PROFILE_ID = 'temporaryProfile'
 
-const DEFAULT_TEMPORARY_PROFILE = {
-  username: 'Temporary Profile',
-  id: TEMPORARY_PROFILE_ID,
-  colorScheme: {
-    background: 'linear-gradient(0deg, rgba(237,237,237,1) 0%, rgba(247,247,247,1) 100%)',
-    color: '#6144E5',
-    colorForDarkTheme: '#7854fa',
-    selectionColor: 'rgba(120,84,250,0.24)'
+function getEmptyProfile() {
+  return {
+    username: 'Temporary Profile',
+    id: TEMPORARY_PROFILE_ID,
+    colorScheme: {
+      background: 'linear-gradient(0deg, rgba(237,237,237,1) 0%, rgba(247,247,247,1) 100%)',
+      color: '#6144E5',
+      colorForDarkTheme: '#7854fa',
+      selectionColor: 'rgba(120,84,250,0.24)'
+    }
   }
-}
-
-function setupLocalStorage() {
-  const currentProfileId = getStorage(CURRENT_PROFILE_ID_KEY)
-
-  if (!currentProfileId) {
-    setStorage(CURRENT_PROFILE_ID_KEY, TEMPORARY_PROFILE_ID)
-  }
-}
-
-setupLocalStorage()
-
-function getProfile(list, id) {
-  return cloneDeep(list.find(item => item.id === id) ?? DEFAULT_TEMPORARY_PROFILE)
 }
 
 function createProfilesService() {
+  const emitter = createNanoEvents()
+
   const profilesList = getStorage(PROFILES_KEY) || []
   let currentId = getStorage(CURRENT_PROFILE_ID_KEY)
   let temporaryProfile = null
   let isCreatingOrRecovering = false
-  let currentProfile = getProfile(profilesList, currentId)
+  let currentProfile = getEmptyProfile()
 
   function setTemporaryProfile(profile) {
-    temporaryProfile = cloneDeep(profile)
+    temporaryProfile = profile
     emitter.emit(events.UPDATE_TEMPORARY_PROFILE, cloneDeep(temporaryProfile))
   }
 
-  setTemporaryProfile(DEFAULT_TEMPORARY_PROFILE)
+  function getProfile(id) {
+    return profilesList.find(item => item.id === id)
+  }
+
+  function setCurrentProfile(id) {
+    const profile = getProfile(id)
+    currentProfile = profile ?? getEmptyProfile()
+    currentId = currentProfile.id
+    setStorage(CURRENT_PROFILE_ID_KEY, currentId)
+    emitter.emit(events.UPDATE_CURRENT_PROFILE_ID, currentId)
+    emitter.emit(events.UPDATE_CURRENT_PROFILE, cloneDeep(currentProfile))
+  }
+
+  setCurrentProfile(currentId)
 
   return {
-    setProfile(profile) {
+    hasProfile() {
+      return !!profilesList.length
+    },
+
+    getProfiles() {
+      return cloneDeep(profilesList)
+    },
+
+    getColorSchemes() {
+      return profilesList.map(profile => cloneDeep(profile.colorScheme))
+    },
+
+    addProfile(profile) {
       const { colorScheme, publicKey } = profile
 
       const newProfile = {
@@ -57,49 +71,29 @@ function createProfilesService() {
       }
       profilesList.push(newProfile)
 
-      this.setCurrentProfile(newProfile.id)
       setStorage(PROFILES_KEY, profilesList)
-      setStorage(CURRENT_PROFILE_ID_KEY, newProfile.id)
       emitter.emit(events.UPDATE_PROFILES, cloneDeep(profilesList))
-    },
 
-    getProfiles() {
-      return cloneDeep(profilesList)
+      return cloneDeep(newProfile)
     },
 
     getProfile(id) {
-      return getProfile(profilesList, id)
+      const profile = getProfile(id)
+      return cloneDeep(profile)
     },
 
-    getColorSchemes() {
-      return profilesList.map(profile => profile.colorScheme)
-    },
-
-    getCurrentColorScheme() {
-      console.log(currentProfile.colorScheme)
+    getCurrentProfileColorScheme() {
       return cloneDeep(currentProfile.colorScheme)
     },
 
     getCurrentProfile() {
-      console.log({ currentProfile })
       return cloneDeep(currentProfile)
     },
 
-    hasProfile() {
-      return !!profilesList.length
-    },
+    setCurrentProfile,
 
     getIsCreatingOrRecovering() {
       return isCreatingOrRecovering
-    },
-
-    setCurrentProfile(id) {
-      if (id === TEMPORARY_PROFILE_ID) return
-      currentProfile = this.getProfile(id)
-      currentId = id
-      setStorage(CURRENT_PROFILE_ID_KEY, id)
-      emitter.emit(events.UPDATE_CURRENT_PROFILE, currentProfile)
-      emitter.emit(events.UPDATE_CURRENT_PROFILE_ID, id)
     },
 
     setTemporaryProfileColorScheme(colorScheme) {
@@ -112,7 +106,10 @@ function createProfilesService() {
       emitter.emit(events.UPDATE_IS_CREATING_OR_RECOVERING, value)
 
       if (value) {
-        setTemporaryProfile(DEFAULT_TEMPORARY_PROFILE)
+        const emptyProfile = getEmptyProfile()
+        setTemporaryProfile(emptyProfile)
+      } else {
+        setTemporaryProfile(null)
       }
     },
 

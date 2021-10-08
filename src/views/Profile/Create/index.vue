@@ -64,11 +64,13 @@ export default {
             case THEME_SELECTED:
               profilesService.setTemporaryProfileColorScheme(payload.colorScheme)
               break
-            case PROFILE_CREATED:
-              profilesService.setProfile(payload.profile)
+            case PROFILE_CREATED: {
+              const { id } = profilesService.addProfile(payload.profile)
+              profilesService.setCurrentProfile(id)
               profilesService.setCreatingOrRecovering(false)
               this.$router.push({ name: 'Wallets' })
               break
+            }
             case CREATION_CANCELLED:
               profilesService.setCreatingOrRecovering(false)
               this.$router.push({ name: 'Wallets' })

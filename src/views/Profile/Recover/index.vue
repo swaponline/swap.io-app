@@ -60,10 +60,13 @@ export default {
               profilesService.setCreatingOrRecovering(false)
               this.$router.push({ name: 'Wallets' })
               break
-            case PROFILE_RECOVERED:
-              profilesService.setProfile(payload.profile)
+            case PROFILE_RECOVERED: {
+              const { id } = profilesService.addProfile(payload.profile)
+              profilesService.setCurrentProfile(id)
+              profilesService.setCreatingOrRecovering(false)
               this.$router.push({ name: 'Wallets' })
               break
+            }
             default: {
               // ! implementation will appear in the future
               this.loading = false
