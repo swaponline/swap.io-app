@@ -2,7 +2,7 @@ import { getStorage, setStorage } from '@/utils/storage'
 import { cloneDeep } from '@/utils/common'
 import { createNanoEvents } from 'nanoevents'
 
-import { PROFILES_KEY, CURRENT_PROFILE_ID_KEY, events } from './types'
+import { CURRENT_PROFILE_ID_KEY, events, PROFILES_KEY } from './types'
 
 const emitter = createNanoEvents()
 const TEMPORARY_PROFILE_ID = 'temporaryProfile'
@@ -32,7 +32,7 @@ function getProfile(list, id) {
   return cloneDeep(list.find(item => item.id === id) ?? DEFAULT_TEMPORARY_PROFILE)
 }
 
-function createProfileService() {
+function createProfilesService() {
   const profilesList = getStorage(PROFILES_KEY) || []
   let currentId = getStorage(CURRENT_PROFILE_ID_KEY)
   let temporaryProfile = null
@@ -125,6 +125,6 @@ function createProfileService() {
   }
 }
 
-const profileService = createProfileService()
+const profilesService = createProfilesService()
 
-export { profileService, events }
+export { profilesService, events }

@@ -1,10 +1,10 @@
-import { profileService } from '@/services/profile'
+import { profilesService } from '@/services/profile'
 
 export default function firstCreatingOrRecovering({ next }) {
-  const hasProfile = profileService.hasProfile()
+  const hasProfile = profilesService.hasProfile()
 
   if (!hasProfile) {
-    profileService.setCreatingOrRecovering(true)
+    profilesService.setCreatingOrRecovering(true)
     return next()
   }
 

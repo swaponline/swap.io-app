@@ -18,7 +18,7 @@ import { getStorage, setStorage } from '@/utils/storage'
 import { THEMES, THEME_KEY, SYSTEM_THEME_KEY, LIGHT_THEME_KEY, DARK_THEME_KEY } from '@/constants/theme'
 import { getUserSystemTheme } from '@/utils/theme'
 import { setCSSCustomProperty } from '@/utils/common'
-import { profileService } from '@/services/profile'
+import { profilesService } from '@/services/profile'
 
 export default {
   THEMES,
@@ -34,7 +34,7 @@ export default {
       handler(theme) {
         setStorage(THEME_KEY, theme)
 
-        const { color, colorForDarkTheme } = profileService.getCurrentColorScheme()
+        const { color, colorForDarkTheme } = profilesService.getCurrentColorScheme()
 
         let appTheme = theme
         if (theme === SYSTEM_THEME_KEY) {

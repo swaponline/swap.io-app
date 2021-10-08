@@ -16,7 +16,7 @@ import { pluralizeNumeral } from '@/utils/pluralization'
 import { getUserSystemTheme } from '@/utils/theme'
 import { setCSSCustomProperty } from '@/utils/common'
 
-import { profileService, events } from '@/services/profile'
+import { profilesService, events } from '@/services/profile'
 import { getStorage } from './utils/storage'
 import { DARK_THEME_KEY, LIGHT_THEME_KEY, SYSTEM_THEME_KEY, THEME_KEY } from './constants/theme'
 
@@ -35,7 +35,7 @@ export default {
   data() {
     return {
       queries,
-      userColorScheme: profileService.getCurrentColorScheme(),
+      userColorScheme: profilesService.getCurrentColorScheme(),
       subscriptions: []
     }
   },
@@ -119,13 +119,13 @@ export default {
       this.setBackground()
     },
     subscribeToUpdates() {
-      this.subscriptions.push(profileService.subscribe(events.UPDATE_TEMPORARY_PROFILE, this.updateUserColorScheme))
-      this.subscriptions.push(profileService.subscribe(events.UPDATE_IS_CREATING_OR_RECOVERING, this.restoreProfile))
+      this.subscriptions.push(profilesService.subscribe(events.UPDATE_TEMPORARY_PROFILE, this.updateUserColorScheme))
+      this.subscriptions.push(profilesService.subscribe(events.UPDATE_IS_CREATING_OR_RECOVERING, this.restoreProfile))
     },
 
     restoreProfile(value) {
       if (!value) {
-        this.userColorScheme = profileService.getCurrentColorScheme()
+        this.userColorScheme = profilesService.getCurrentColorScheme()
       }
     },
     updateUserColorScheme({ colorScheme }) {

@@ -7,7 +7,7 @@
 
 <script>
 import VButtonCancel from '@/components/Profile/VButtonCancel.vue'
-import { profileService } from '@/services/profile'
+import { profilesService } from '@/services/profile'
 
 const ESCAPE = 'Escape'
 
@@ -30,7 +30,7 @@ export default {
   },
   methods: {
     cancel() {
-      profileService.setCreatingOrRecovering(false)
+      profilesService.setCreatingOrRecovering(false)
       return this.$router.push({ name: 'Wallets' })
     },
     closeByPressingESC({ key }) {

@@ -13,7 +13,7 @@ import { SET_APP_THEME } from '@/constants/createProfile'
 import { getStorage } from '@/utils/storage'
 import { THEME_KEY } from '@/constants/theme'
 import SwapKeysApi from '@/keys-api'
-import { profileService } from '@/services/profile'
+import { profilesService } from '@/services/profile'
 
 const IFRAME_NAME = 'createProfile'
 
@@ -37,7 +37,7 @@ export default {
   methods: {
     openFrame() {
       this.loading = true
-      profileService.setCreatingOrRecovering(true)
+      profilesService.setCreatingOrRecovering(true)
 
       this.frame = SwapKeysApi.createProfile({
         callback: ({ message }) => {
@@ -62,15 +62,15 @@ export default {
               this.loading = false
               break
             case THEME_SELECTED:
-              profileService.setTemporaryProfileColorScheme(payload.colorScheme)
+              profilesService.setTemporaryProfileColorScheme(payload.colorScheme)
               break
             case PROFILE_CREATED:
-              profileService.setProfile(payload.profile)
-              profileService.setCreatingOrRecovering(false)
+              profilesService.setProfile(payload.profile)
+              profilesService.setCreatingOrRecovering(false)
               this.$router.push({ name: 'Wallets' })
               break
             case CREATION_CANCELLED:
-              profileService.setCreatingOrRecovering(false)
+              profilesService.setCreatingOrRecovering(false)
               this.$router.push({ name: 'Wallets' })
               break
             default: {

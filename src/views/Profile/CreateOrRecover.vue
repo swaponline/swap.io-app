@@ -36,9 +36,9 @@
 <script>
 import { MatchMedia } from 'vue-component-media-queries'
 import Substrate from '@/components/Profile/Substrate.vue'
-import { profileService } from '@/services/profile'
+import { profilesService } from '@/services/profile'
 
-const hasProfile = profileService.hasProfile()
+const hasProfile = profilesService.hasProfile()
 
 export default {
   hasProfile,
