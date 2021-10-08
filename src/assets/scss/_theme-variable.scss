@@ -6,14 +6,17 @@
   --main-button-background: #{$--light-grey-2};
   --main-button-background-hover: #{$--light-grey-5};
   --main-button-active: #{$--light-grey-4};
-  --wallets-item-background: #{$--light-grey-2};
-  --wallets-item-background-hover: #{$--light-grey-5};
   --secondary-text: #{$--grey};
   --main-icon-color: #{$--black};
   --additional-background: #{$--light-grey-2};
   --field-background: #{$--light-grey-4};
   --additional-button-background: #{$--light-grey-4};
   --selection-text-color: #{$--black};
+
+  --wallets-item-background: #{$--light-grey-2};
+  --wallets-item-background-hover: #{$--white};
+  --wallets-item-border: #{$--light-grey-5};
+  --wallets-box-shadow: 4px 4px 16px rgba(55, 55, 55, 0.24);
 }
 
 .theme--dark {
@@ -31,6 +34,8 @@
   --additional-button-background: #{$--dark-blue-3};
   --selection-text-color: #{$--white};
   
-  --wallets-item-background: #{$--dark-blue-3};
-  --wallets-item-background-hover: #{$--dark-blue-2};
+  --wallets-item-background: #{$--dark-blue-4};
+  --wallets-item-background-hover:  #{$--dark-blue-3};
+  --wallets-item-border: #{$--dark-blue-5};
+  --wallets-box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }

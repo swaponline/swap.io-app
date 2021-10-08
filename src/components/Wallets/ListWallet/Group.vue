@@ -5,6 +5,7 @@
     :class="{ 'list-wallet-group--active': isOpen }"
     color="black"
     append-icon=""
+    active-class="list-wallet-group__group"
   >
     <template #activator>
       <item-icon :currency-name="network.toLowerCase()" />
@@ -44,7 +45,7 @@
         link
         exact
         class="list-wallet-group__item"
-        :to="{ name: 'Wallet', params: { walletAddress: address, coin: coin.toLowerCase() } }"
+        :to="{ name: 'Wallets', params: { walletAddress: address, coin: coin.toLowerCase() } }"
       >
         <v-list-item-content class="list-wallet-group__item-content">
           <v-list-item-title class="list-wallet-group__item-info">
@@ -103,9 +104,8 @@ export default {
 
 <style lang="scss">
 .list-wallet-group {
-  border-radius: 12px;
+  border-radius: $--border-radius-large;
   overflow: hidden;
-  margin: 0 10px;
 
   &:hover {
     background-color: var(--wallets-item-background);
@@ -114,6 +114,10 @@ export default {
   &--active {
     background-color: var(--wallets-item-background);
     padding-bottom: 15px;
+  }
+
+  &__group {
+    border-bottom: 1px solid var(--wallets-item-border);
   }
 
   &__header {
@@ -145,25 +149,22 @@ export default {
   }
 
   &__item {
-    border-bottom: 1px solid rgba($--border-grey, 0.2);
-    padding: 15px;
+    margin: 0 5px;
     min-height: auto;
+    overflow: initial !important;
+    border-radius: $--border-radius-large;
+    transition: all 0.3s;
 
-    &:first-child {
-      border-top: 1px solid rgba($--border-grey, 0.2);
-    }
-
-    &:hover {
-      background: var(--wallets-item-background-hover);
-    }
-
+    &:hover,
     &.v-list-item--active {
-      font-weight: $--font-weight-semi-bold;
+      background-color: var(--wallets-item-background-hover);
+      box-shadow: var(--wallets-box-shadow);
     }
   }
 
   &__item-content {
-    padding: 0 0;
+    padding: 15px 10px;
+    border-bottom: 1px solid var(--wallets-item-border);
   }
 
   &__item-info {

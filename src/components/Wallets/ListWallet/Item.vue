@@ -4,7 +4,7 @@
     exact
     active-class="list-wallet-item--active"
     class="list-wallet-item"
-    :to="{ name: 'Wallet', params: { walletAddress: address, coin: coin.toLowerCase() } }"
+    :to="{ name: 'Wallets', params: { walletAddress: address, coin: coin.toLowerCase() } }"
   >
     <item-icon :currency-name="coin.toLowerCase()" :network="network.toLowerCase()" />
 
@@ -47,17 +47,15 @@ export default {
 
 .list-wallet-item {
   min-height: 40px;
-  border-radius: 12px;
-  margin: 0 10px;
+  border-radius: $--border-radius-large;
   padding: 0 5px 0 15px;
   overflow: hidden;
+  transition: all 0.3s;
 
-  &:hover {
-    background-color: var(--wallets-item-background);
-  }
-
+  &:hover,
   &--active {
-    background-color: var(--wallets-item-background);
+    background-color: var(--wallets-item-background-hover);
+    box-shadow: var(--wallets-box-shadow);
   }
 
   &__title {

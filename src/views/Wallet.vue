@@ -1,21 +1,21 @@
 <template>
-  <div class="wallet-layout">
+  <div class="wallets">
     <template v-if="hasWallets">
       <list-wallet
-        class="wallet-layout__list-wallet"
-        :class="{ 'wallet-layout__list-wallet--show': !activeWallet }"
+        class="wallets__list"
+        :class="{ 'wallets__list--show': !activeWallet }"
         :wallets="wallets"
         :active-wallet="activeWallet"
-      ></list-wallet>
+      />
 
-      <div class="wallet-layout__router" :class="{ 'wallet-layout__router--hide': !activeWallet }">
+      <div class="wallets__content" :class="{ 'wallets__content--hide': !activeWallet }">
         <transition-translate :reverse="metaBack">
-          <router-view :wallet="activeWallet" class="wallet-layout__router-content"></router-view>
+          <wallet-content class="wallets__wallet" :wallet="activeWallet" />
         </transition-translate>
       </div>
     </template>
 
-    <div v-else class="wallet-layout__router wallet-layout__router--created">
+    <div v-else class="wallets__content wallets__content--created">
       <wallets-create />
     </div>
 
@@ -30,6 +30,7 @@ import ListWallet from '@/components/Wallets/ListWallet/index.vue'
 import MainActions from '@/components/Wallets/MainActions.vue'
 import AllModals from '@/components/Wallets/Modals/AllModals.vue'
 import WalletsCreate from '@/components/Wallets/WalletsCreate.vue'
+import WalletContent from '@/components/Wallets/WalletContent.vue'
 
 const WALLETS = [
   {
@@ -83,15 +84,9 @@ const WALLETS = [
 ]
 
 export default {
-  name: 'WalletLayout',
+  name: 'Wallet',
   inject: ['mediaQueries'],
-  components: {
-    TransitionTranslate,
-    ListWallet,
-    MainActions,
-    AllModals,
-    WalletsCreate
-  },
+  components: { TransitionTranslate, MainActions, AllModals, ListWallet, WalletsCreate, WalletContent },
   props: {
     coin: { type: String, default: '' },
     walletAddress: { type: String, default: '' }
@@ -134,7 +129,7 @@ export default {
         const { address, coin } = this.wallets[0]
 
         this.$router.replace({
-          name: 'Wallet',
+          name: 'Wallets',
           params: { walletAddress: address, coin: coin.toLowerCase() }
         })
       }
@@ -144,7 +139,7 @@ export default {
 </script>
 
 <style lang="scss">
-.wallet-layout {
+.wallets {
   height: 100%;
   display: flex;
   position: relative;
@@ -160,7 +155,7 @@ export default {
   @include small-height {
     max-height: none;
   }
-  &__list-wallet {
+  &__list {
     margin-right: 20px;
     @include tablet {
       margin-right: 0;
@@ -173,7 +168,8 @@ export default {
       }
     }
   }
-  &__router {
+
+  &__content {
     position: relative;
     height: 100%;
     width: 100%;
@@ -204,7 +200,7 @@ export default {
       }
     }
   }
-  &__router-content {
+  &__wallet {
     position: relative;
     @include tablet {
       // убираем анимацию оставляем только transition
