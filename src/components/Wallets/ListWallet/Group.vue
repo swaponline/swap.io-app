@@ -45,7 +45,7 @@
         link
         exact
         class="list-wallet-group__item"
-        :to="{ name: 'Wallet', params: { walletAddress: address, coin: coin.toLowerCase() } }"
+        :to="{ name: 'Wallets', params: { walletAddress: address, coin: coin.toLowerCase() } }"
       >
         <v-list-item-content class="list-wallet-group__item-content">
           <v-list-item-title class="list-wallet-group__item-info">
