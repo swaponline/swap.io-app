@@ -18,7 +18,7 @@ import { getStorage, setStorage } from '@/utils/storage'
 import { DARK_THEME_KEY, LIGHT_THEME_KEY, SYSTEM_THEME_KEY, THEME_KEY, THEMES } from '@/constants/theme'
 import { getUserSystemTheme } from '@/utils/theme'
 import { setCSSCustomProperty } from '@/utils/common'
-import { profilesService } from '@/services/profile'
+import { profilesService } from '@/services/profiles'
 
 export default {
   THEMES,

@@ -13,7 +13,7 @@ import { SET_APP_THEME } from '@/constants/createProfile'
 import { getStorage } from '@/utils/storage'
 import { THEME_KEY } from '@/constants/theme'
 import SwapKeysApi from '@/keys-api'
-import { profilesService } from '@/services/profile'
+import { profilesService } from '@/services/profiles'
 
 const IFRAME_NAME = 'createProfile'
 

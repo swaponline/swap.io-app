@@ -55,7 +55,7 @@ const securityInfoBlocks = [
   {
     id: 1,
     iconName: 'wallet',
-    text: 'To get started, <b>create a profile</b> that can have any number of crypto wallets.'
+    text: 'To get started, <b>create a profiles</b> that can have any number of crypto wallets.'
   },
   {
     id: 2,
@@ -66,7 +66,7 @@ const securityInfoBlocks = [
   {
     id: 3,
     iconName: 'palette',
-    text: 'Each profile has its own <b>unique color scheme.</b> This will protect you from phishing.'
+    text: 'Each profiles has its own <b>unique color scheme.</b> This will protect you from phishing.'
   }
 ]
 

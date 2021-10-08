@@ -1,22 +1,22 @@
 <template>
   <v-expansion-panels v-model="panels" v-click-outside="closePanels" :disabled="disabled" class="profile-list">
     <v-expansion-panel class="profile-list__inner">
-      <v-expansion-panel-header class="profile-list__header" :hide-actions="isDesktop">
+      <v-expansion-panel-header :hide-actions="isDesktop" class="profile-list__header">
         <div class="profile-list__header-wrapper">
           <v-avatar
-            height="25"
-            width="21"
-            min-width="25"
-            class="profile-list__avatar-wrapper"
             :style="backgroundAvatar"
+            class="profile-list__avatar-wrapper"
+            height="25"
+            min-width="25"
+            width="21"
           >
-            <svg-icon v-if="!disabled" name="user" class="profile-list__avatar-icon"></svg-icon>
+            <svg-icon v-if="!disabled" class="profile-list__avatar-icon" name="user"></svg-icon>
           </v-avatar>
           <span class="profile-list__name">{{ currentProfile.username }}</span>
         </div>
         <svg-icon
+          :class="['profile-list__arrow-icon', isOpenPanel && 'profiles-list__arrow-icon--active']"
           name="arrow"
-          :class="['profile-list__arrow-icon', isOpenPanel && 'profile-list__arrow-icon--active']"
         ></svg-icon>
       </v-expansion-panel-header>
       <v-expansion-panel-content>
@@ -28,13 +28,13 @@
             @click="setProfile(profile.id)"
           >
             <v-avatar
-              height="25"
-              width="25"
-              min-width="25"
-              class="profile-list__avatar-wrapper"
               :style="`background-image: ${getAvatar(profile)}`"
+              class="profile-list__avatar-wrapper"
+              height="25"
+              min-width="25"
+              width="25"
             >
-              <svg-icon name="user" class="profile-list__avatar-icon"></svg-icon>
+              <svg-icon class="profile-list__avatar-icon" name="user"></svg-icon>
             </v-avatar>
             <span>{{ profile.username }}</span>
           </v-list-item>
@@ -47,7 +47,7 @@
 
 <script>
 import { Base64 } from 'js-base64'
-import { profilesService, events } from '@/services/profile'
+import { events, profilesService } from '@/services/profiles'
 
 const BACKGROUND_COLOR_AVATAR_FOR_DISABLED = '#919191'
 
@@ -254,6 +254,7 @@ export default {
     border-top: 1px solid var(--main-border-color);
     padding: 16px 10px 15px 10px;
     color: var(--primary-text);
+
     &:hover {
       background-color: var(--main-input-background);
     }

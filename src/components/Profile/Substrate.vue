@@ -7,7 +7,7 @@
 
 <script>
 import VButtonCancel from '@/components/Profile/VButtonCancel.vue'
-import { profilesService } from '@/services/profile'
+import { profilesService } from '@/services/profiles'
 
 const ESCAPE = 'Escape'
 

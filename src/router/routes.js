@@ -1,5 +1,5 @@
 import { GUEST_INVOICE_ROUTE_NAME } from '@/constants/routes'
-import { openInvoice, profileRequired, firstCreatingOrRecovering } from './middleware'
+import { openInvoice, profileRequired } from './middleware'
 
 export default [
   {
@@ -50,9 +50,6 @@ export default [
   {
     path: '/',
     name: 'ProfileLayout',
-    meta: {
-      middleware: [firstCreatingOrRecovering]
-    },
     component: () => import(/* webpackChunkName: 'ProfileLayout' */ '@/layouts/ProfileLayout'),
     children: [
       {
@@ -61,12 +58,12 @@ export default [
         component: () => import(/* webpackChunkName: 'SecurityInfo' */ '@/views/Profile/Create/SecurityInfo.vue')
       },
       {
-        path: '/create-profile',
+        path: '/create-profiles',
         name: 'CreateProfile',
         component: () => import(/* webpackChunkName: 'Create' */ '@/views/Profile/Create')
       },
       {
-        path: '/recover-profile',
+        path: '/recover-profiles',
         name: 'RecoverProfile',
         component: () => import(/* webpackChunkName: 'Recover' */ '@/views/Profile/Recover')
       },

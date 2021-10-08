@@ -16,7 +16,7 @@ import { pluralizeNumeral } from '@/utils/pluralization'
 import { getUserSystemTheme } from '@/utils/theme'
 import { setCSSCustomProperty } from '@/utils/common'
 
-import { events, profilesService } from '@/services/profile'
+import { events, profilesService } from '@/services/profiles'
 import { getStorage } from './utils/storage'
 import { DARK_THEME_KEY, LIGHT_THEME_KEY, SYSTEM_THEME_KEY, THEME_KEY } from './constants/theme'
 

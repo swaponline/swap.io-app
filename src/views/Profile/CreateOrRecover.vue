@@ -1,6 +1,6 @@
 <template>
   <match-media v-slot="{ desktop }" wrapper-tag="div">
-    <substrate class="create-or-recover" :hide-close-button="!$options.hasProfile">
+    <substrate :hide-close-button="!$options.hasProfile" class="create-or-recover">
       <swap-button-go-back v-if="!desktop" class="create-or-recover__button-i-back" @click="cancel" />
       <div class="create-or-recover__wrapper">
         <div class="create-or-recover__header">
@@ -16,17 +16,17 @@
           <div class="create-or-recover__buttons-row">
             <swap-button
               v-if="desktop"
-              class="create-or-recover__button"
               :disabled="!$options.hasProfile"
               block
+              class="create-or-recover__button"
               @click="cancel"
-              >Cancel</swap-button
-            >
-            <swap-button class="create-or-recover__button" block @click="create">Create</swap-button>
+              >Cancel
+            </swap-button>
+            <swap-button block class="create-or-recover__button" @click="create">Create</swap-button>
           </div>
-          <swap-button text class="create-or-recover__button create-or-recover__button--text" block @click="goToRecover"
-            >Recover profile</swap-button
-          >
+          <swap-button block class="create-or-recover__button create-or-recover__button--text" text @click="goToRecover"
+            >Recover profile
+          </swap-button>
         </div>
       </div>
     </substrate>
@@ -36,7 +36,7 @@
 <script>
 import { MatchMedia } from 'vue-component-media-queries'
 import Substrate from '@/components/Profile/Substrate.vue'
-import { profilesService } from '@/services/profile'
+import { profilesService } from '@/services/profiles'
 
 const hasProfile = profilesService.hasProfile()
 
@@ -46,6 +46,11 @@ export default {
   components: {
     MatchMedia,
     Substrate
+  },
+  created() {
+    if (!hasProfile) {
+      profilesService.setCreatingOrRecovering(true)
+    }
   },
   methods: {
     cancel() {

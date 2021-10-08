@@ -1,4 +1,4 @@
-import { profilesService } from '@/services/profile'
+import { profilesService } from '@/services/profiles'
 
 export default function profileRequired({ next }) {
   const hasProfile = profilesService.hasProfile()

@@ -51,8 +51,8 @@
       large
       @click="openWalletList"
     >
-      <svg-icon class="main-header__burger-icon" name="icon-burger"></svg-icon
-    ></swap-button>
+      <svg-icon class="main-header__burger-icon" name="icon-burger"></svg-icon>
+    </swap-button>
   </match-media>
 </template>
 
@@ -61,7 +61,7 @@ import { MatchMedia } from 'vue-component-media-queries'
 import ProfileList from '@/components/Wallets/ProfileList.vue'
 import VButtonCancel from '@/components/Profile/VButtonCancel.vue'
 import SwapLogo from '@/components/UI/SwapLogo.vue'
-import { profilesService, events } from '@/services/profile'
+import { events, profilesService } from '@/services/profiles'
 import MainHeaderTabs from './Tabs.vue'
 
 const INCOMING_TRANSACTION = 'incoming-transaction'
@@ -98,7 +98,7 @@ export default {
       return !!this.$route.params.walletAddress
     }
   },
-  mounted() {
+  created() {
     this.subscriptions.push(
       profilesService.subscribe(events.UPDATE_IS_CREATING_OR_RECOVERING, value => {
         this.disabled = value
