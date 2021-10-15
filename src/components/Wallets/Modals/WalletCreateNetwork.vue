@@ -70,7 +70,7 @@ export default {
       }
     },
     networks() {
-      return this.assetGroup?.networks
+      return this.assetGroup?.networks || []
     },
     networkAssets() {
       return this.networkModel?.assets || []

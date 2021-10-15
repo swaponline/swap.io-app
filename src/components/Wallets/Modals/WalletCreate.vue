@@ -1,14 +1,14 @@
 <template>
   <component
     :is="wrapperComponent"
-    value
     class="wallet-create-modal"
     :class="{ 'wallet-create-modal--block': asBlock }"
+    value
     :title="modalTitle"
-    :disable-confirm-button="!selectedCurrency || disabledCreateButton"
+    :disable-confirm-button="!selectedAssetGroup || disabledCreateButton"
     :confirm-button-label="confirmButtonLabel"
     modificator="full-height"
-    @input="checkClose"
+    @input="inputClose"
     @submit="create"
     @cancel="close"
   >
@@ -20,7 +20,7 @@
     </div>
 
     <v-loader :active="loading" />
-    <template v-if="!selectedCurrency">
+    <template v-if="!selectedAssetGroup">
       <form-text-field
         v-model="currencySearchString"
         placeholder="Enter name of currency"
@@ -30,8 +30,13 @@
 
       <div class="wallet-create-modal__chips">
         <div class="wallet-create-modal__subtitle">Most popular</div>
-        <v-chip-group v-model="selectedCurrency" column>
-          <v-chip v-for="(item, index) in mostPopular" :key="index" class="wallet-create-modal__chip" :value="item">
+        <v-chip-group v-model="selectedAssetGroup" column>
+          <v-chip
+            v-for="(item, index) in mostPopularAssets"
+            :key="index"
+            class="wallet-create-modal__chip"
+            :value="item"
+          >
             <coin-logo class="wallet-create-modal__chip-icon" :path="item.logo" :name="item.symbol" />
             {{ item.name }}
           </v-chip>
@@ -45,7 +50,7 @@
           v-for="(item, index) in filteredCurrencies"
           :key="index"
           class="wallet-create-modal__currency"
-          @click="selectedCurrency = item"
+          @click="selectedAssetGroup = item"
         >
           <coin-logo class="wallet-create-modal__currency-icon" :path="item.logo" :name="item.symbol" />
           <span class="wallet-create-modal__currency-name">{{ item.name }}</span>
@@ -59,7 +64,7 @@
       <wallet-create-network
         :asset.sync="selectedAsset"
         :network.sync="selectedNetwork"
-        :asset-group="selectedCurrency"
+        :asset-group="selectedAssetGroup"
         @back="reset"
       />
 
@@ -97,19 +102,20 @@ export default {
   },
   data() {
     return {
-      modalValue: true,
       loading: false,
       currencySearchString: '',
-      mostPopular: [],
       assets: [],
       searchedAssets: [],
 
-      selectedAsset: null,
+      selectedAssetGroup: null,
       selectedNetwork: null,
-      selectedCurrency: null
+      selectedAsset: null
     }
   },
   computed: {
+    mostPopularAssets() {
+      return this.assets.slice(0, 6)
+    },
     wrapperComponent() {
       return this.asBlock ? 'div' : ModalWrapper
     },
@@ -120,11 +126,11 @@ export default {
       return this.assets
     },
     modalTitle() {
-      if (this.selectedCurrency) return 'Choose network'
+      if (this.selectedAssetGroup) return 'Choose network'
       return 'New wallet'
     },
     confirmButtonLabel() {
-      return this.selectedCurrency === 'custom' ? 'Next' : 'Confirm'
+      return this.selectedAssetGroup === 'custom' ? 'Next' : 'Confirm'
     },
     disabledCreateButton() {
       return !this.selectedAsset
@@ -132,16 +138,16 @@ export default {
   },
 
   created() {
-    this.fetchMostPopular()
+    this.fetchAssets()
   },
 
   methods: {
-    fetchMostPopular() {
+    fetchAssets() {
       this.loading = true
       networksService
-        .fetchAssets({ from: 0, size: 7 })
+        .fetchAssets({ from: 0, size: 20 })
         .then(assets => {
-          this.mostPopular = assets
+          this.assets = assets
         })
         .finally(() => {
           this.loading = false
@@ -159,7 +165,7 @@ export default {
     }, 300),
 
     reset() {
-      this.selectedCurrency = null
+      this.selectedAssetGroup = null
       this.selectedNetwork = null
       this.selectedAsset = null
     },
@@ -198,7 +204,7 @@ export default {
     },
 
     // TODO: refactoring modalWrapper
-    checkClose() {
+    inputClose() {
       if (!this.asBlock) {
         this.close()
       }
@@ -253,6 +259,7 @@ export default {
   &__chip-icon {
     margin-right: 6px;
     width: 20px;
+    height: 20px;
   }
 
   &__divider {
