@@ -13,12 +13,11 @@ import Canvg from 'canvg'
 import { getFaviconInColorFTheme } from '@/utils/favicon'
 import { NotificationInTabTitle } from '@/services/notificationInTabTitle'
 import { pluralizeNumeral } from '@/utils/pluralization'
-import { getUserSystemTheme } from '@/utils/theme'
 import { setCSSCustomProperty } from '@/utils/common'
-
-import { events, profilesService } from '@/services/profiles'
-import { getStorage } from './utils/storage'
-import { DARK_THEME_KEY, LIGHT_THEME_KEY, SYSTEM_THEME_KEY, THEME_KEY } from './constants/theme'
+import { setAppColorSchemeBasedOnTheme } from '@/utils/appColorScheme'
+import { profilesService, events as profilesServiceEvents } from '@/services/profiles'
+import { themeService, LIGHT_THEME_KEY, THEME_KEY, events as themeServiceEvents } from '@/services/theme'
+import { getStorage } from '@/utils/storage'
 
 const queries = {
   desktop: '(min-width: 1281px)',
@@ -54,30 +53,19 @@ export default {
       handler(scheme) {
         if (!scheme) return
         const { color } = scheme
+
+        this.setAppTheme()
         this.setFavicon(color)
         this.setColorThemeOfAddressBar(color)
         this.setCustomColorCSSVariables(scheme)
       }
     }
   },
+  created() {
+    themeService.startTrackingUserSystemTheme()
+  },
   mounted() {
     this.subscribeToUpdates()
-    // SET CURRENT THEME
-    const theme = getStorage(THEME_KEY) || SYSTEM_THEME_KEY
-
-    let appTheme = theme
-    if (theme === SYSTEM_THEME_KEY) {
-      appTheme = getUserSystemTheme()
-    }
-
-    if (appTheme === LIGHT_THEME_KEY) {
-      this.$vuetify.theme.light = true
-      this.$vuetify.theme.dark = false
-    }
-    if (appTheme === DARK_THEME_KEY) {
-      this.$vuetify.theme.dark = true
-      this.$vuetify.theme.light = false
-    }
 
     window.addEventListener('resize', this.resize)
     this.resize()
@@ -100,6 +88,7 @@ export default {
   beforeDestroy() {
     window.removeEventListener('resize', this.resize)
     this.subscriptions.forEach(callback => callback.unsubscribe())
+    themeService.stopTrackingUserSystemTheme()
   },
   methods: {
     resize() {
@@ -119,8 +108,24 @@ export default {
       this.setBackground()
     },
     subscribeToUpdates() {
-      this.subscriptions.push(profilesService.subscribe(events.UPDATE_TEMPORARY_PROFILE, this.updateUserColorScheme))
-      this.subscriptions.push(profilesService.subscribe(events.UPDATE_CURRENT_PROFILE, this.updateUserColorScheme))
+      this.subscriptions.push(
+        profilesService.subscribe(profilesServiceEvents.UPDATE_TEMPORARY_PROFILE, this.updateUserColorScheme)
+      )
+      this.subscriptions.push(
+        profilesService.subscribe(profilesServiceEvents.UPDATE_CURRENT_PROFILE, this.updateUserColorScheme)
+      )
+
+      this.subscriptions.push(
+        themeService.subscribe(themeServiceEvents.UPDATE_APP_THEME, appTheme => {
+          const isDark = themeService.getIsDark()
+          if (isDark) {
+            this.$vuetify.theme.dark = true
+          } else {
+            this.$vuetify.theme.dark = false
+          }
+          setAppColorSchemeBasedOnTheme(this.userColorScheme, appTheme)
+        })
+      )
     },
 
     updateUserColorScheme(profile) {
@@ -129,6 +134,18 @@ export default {
         this.userColorScheme = colorScheme
       } else {
         this.userColorScheme = profilesService.getCurrentProfileColorScheme()
+      }
+    },
+    setAppTheme() {
+      // SET CURRENT THEME
+      const appTheme = getStorage(THEME_KEY) || LIGHT_THEME_KEY
+      themeService.setAppTheme(appTheme)
+      const isDark = themeService.getIsDark()
+
+      if (isDark) {
+        this.$vuetify.theme.dark = true
+      } else {
+        this.$vuetify.theme.dark = false
       }
     },
     setBackground(backgroundSvg) {
@@ -160,14 +177,11 @@ export default {
 
       dynamicSvgFavicon.setAttribute('href', `${faviconBase64}`)
     },
-    setCustomColorCSSVariables(theme) {
-      const { colorForDarkTheme, color, selectionColor, background } = theme
+    setCustomColorCSSVariables(scheme) {
+      const { background, selectionColor, color, colorForDarkTheme } = scheme
 
-      if (this.$vuetify.theme.dark) {
-        setCSSCustomProperty('main-color', colorForDarkTheme)
-      } else {
-        setCSSCustomProperty('main-color', color)
-      }
+      const appTheme = themeService.getAppTheme()
+      setAppColorSchemeBasedOnTheme({ color, colorForDarkTheme }, appTheme)
 
       setCSSCustomProperty('selection-color', selectionColor)
 

@@ -10,8 +10,7 @@ import VLoader from '@/components/Loaders/VLoader.vue'
 import Substrate from '@/components/Profile/Substrate.vue'
 import SwapIframe from '@/components/UI/SwapIframe'
 import { SET_APP_THEME } from '@/constants/createProfile'
-import { getStorage } from '@/utils/storage'
-import { THEME_KEY } from '@/constants/theme'
+import { themeService } from '@/services/theme'
 import SwapKeysApi from '@/keys-api'
 import { profilesService } from '@/services/profiles'
 
@@ -55,7 +54,7 @@ export default {
                 message: {
                   type: SET_APP_THEME,
                   payload: {
-                    theme: getStorage(THEME_KEY)
+                    theme: themeService.getAppTheme()
                   }
                 }
               })
