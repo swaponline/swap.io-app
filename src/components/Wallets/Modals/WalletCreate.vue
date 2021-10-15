@@ -131,7 +131,7 @@ export default {
     }
   },
 
-  mounted() {
+  created() {
     this.fetchMostPopular()
   },
 
@@ -197,6 +197,7 @@ export default {
       this.$emit('close')
     },
 
+    // TODO: refactoring modalWrapper
     checkClose() {
       if (!this.asBlock) {
         this.close()
