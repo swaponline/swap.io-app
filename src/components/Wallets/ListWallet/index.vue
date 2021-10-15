@@ -19,12 +19,7 @@
             @scroll="scroll"
           >
             <list-item v-if="networkGroup.wallets.length === 1" v-bind="networkGroup.wallets[0]" />
-            <list-group
-              v-else
-              v-bind="networkGroup"
-              :active="chechActiveWalletInGroup(networkGroup.wallets)"
-              :active-wallet="activeWallet"
-            />
+            <list-group v-else v-bind="networkGroup" :active="chechActiveWalletInGroup(networkGroup.wallets)" />
           </div>
         </v-list>
       </div>

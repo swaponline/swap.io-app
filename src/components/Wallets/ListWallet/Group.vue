@@ -72,7 +72,6 @@ export default {
     networkId: { type: String, default: '' },
     wallets: { type: Array, required: true },
     value: { type: Number, default: 0 },
-    activeWallet: { type: Object, default: () => ({}) },
     active: { type: Boolean, default: false }
   },
   data() {
@@ -87,17 +86,11 @@ export default {
 
     network() {
       return this.wallets[0]
-    },
-
-    hasActiveWallet() {
-      return this.wallets.find(
-        ({ address, coin }) => address === this.activeWallet.address && coin === this.activeWallet.coin
-      )
     }
   },
 
   beforeMount() {
-    if (this.hasActiveWallet) this.isOpen = true
+    if (this.active) this.isOpen = true
   },
   methods: {
     minifyAddress,
