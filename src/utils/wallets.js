@@ -5,13 +5,13 @@ export function groupWalletsBy(wallets, field) {
     if (index < 0) {
       groupedWallets.push({
         [field]: wallet[field],
-        value: wallet.value,
+        value: wallet.value || 0,
         wallets: [wallet]
       })
     } else {
       groupedWallets[index].wallets.push(wallet)
       // eslint-disable-next-line no-param-reassign
-      groupedWallets[index].value += wallet.value
+      groupedWallets[index].value += wallet.value || 0
     }
 
     return groupedWallets

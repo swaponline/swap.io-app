@@ -31,57 +31,7 @@ import MainActions from '@/components/Wallets/MainActions.vue'
 import AllModals from '@/components/Wallets/Modals/AllModals.vue'
 import WalletsCreate from '@/components/Wallets/WalletsCreate.vue'
 import WalletContent from '@/components/Wallets/WalletContent.vue'
-
-const WALLETS = [
-  {
-    network: 'ETH',
-    coin: 'ETH',
-    walletNumber: 0,
-    address: '3WfGVzwANjbaLh6fokA41qtwMikpFWXSJtHS7uvrJQGV',
-    publicKey: '3WfGVzwANjbaLh6fokA41qtwMikpFWXSJtHS7uvrJQGV',
-
-    value: 0.005
-  },
-  {
-    network: 'BTC',
-    coin: 'BTC',
-    walletNumber: 0,
-    address: '0x912fD21d7a69678227fE6d08C64222Db41477bA0',
-    publicKey: '0x912fD21d7a69678227fE6d08C64222Db41477bA0',
-    name: 'Default',
-
-    value: 0.0456
-  },
-  {
-    network: 'BTC',
-    coin: 'USDT',
-    walletNumber: 0,
-    address: '0xd19615f2Eab2ABfBF7ca16618b5eD43386374DD0',
-    publicKey: '0xd19615f2Eab2ABfBF7ca16618b5eD43386374DD0',
-    name: 'Main',
-
-    value: 0.005
-  },
-  {
-    network: 'BTC',
-    coin: 'USDT',
-    walletNumber: 1,
-    address: '0xF2eDB7Ac87119e9ea68CDa5269E23c21e51EDc4e',
-    publicKey: '0xF2eDB7Ac87119e9ea68CDa5269E23c21e51EDc4e',
-
-    value: 0.0567
-  },
-  {
-    network: 'BNB',
-    coin: 'EOS',
-    walletNumber: 0,
-    address: '0x8CDa5269E23c2F2eDB7Ac871',
-    publicKey: '0x8CDa5269E23c2F2eDB7Ac871',
-    name: 'Swaps',
-
-    value: 0
-  }
-]
+import { walletsService, events as walletsEvents } from '@/services/wallets'
 
 export default {
   name: 'Wallet',
@@ -91,12 +41,15 @@ export default {
     coin: { type: String, default: '' },
     walletAddress: { type: String, default: '' }
   },
+  data() {
+    return {
+      wallets: walletsService.getCurrentWallets(),
+      subscriptions: []
+    }
+  },
   computed: {
     isDesktop() {
       return this.mediaQueries.desktop
-    },
-    wallets() {
-      return WALLETS
     },
     activeWallet() {
       return this.wallets.find(
@@ -120,7 +73,22 @@ export default {
       handler() {
         this.setActiveWallet()
       }
+    },
+    activeWallet() {
+      this.setActiveWallet()
     }
+  },
+
+  created() {
+    this.subscriptions.push(
+      walletsService.subscribe(walletsEvents.UPDATE_CURRENT_WALLETS, wallets => {
+        this.wallets = wallets
+      })
+    )
+  },
+
+  beforeDestroy() {
+    this.subscriptions.forEach(callback => callback.unsubscribe())
   },
 
   methods: {

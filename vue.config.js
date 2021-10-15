@@ -8,8 +8,8 @@ module.exports = {
     watchOptions: {
       ignored: /node_modules/,
       poll: 1000
-    }
-    // proxy: ''
+    },
+    proxy: 'https://networks.swap.io'
   },
 
   css: {

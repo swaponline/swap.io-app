@@ -1,6 +1,6 @@
 <template>
   <div class="wallet-info" :class="{ 'wallet-info--compressed': compressed }" @click="uncompressWallet">
-    <cryptoicon class="wallet-info__background-icon" :symbol="coin.toLowerCase()" size="500" />
+    <coin-logo class="wallet-info__background-icon" :path="logo" :name="coin" />
 
     <div class="wallet-info__optional-buttons">
       <swap-button fab small class="wallet-info__optional-button" @click="openShareModal">
@@ -54,16 +54,19 @@ import { mapMutations } from 'vuex'
 import { ADD_MODAL } from '@/store/modules/Modals'
 import { COPY_MENU, INVOICE_FORM, SEND_FORM, SHARE_MODAL, WALLET_SETTINGS } from '@/store/modules/Modals/names'
 import { minifyAddress } from '@/utils/common'
+import CoinLogo from '@/components/Wallets/CoinLogo.vue'
 
 export default {
   name: 'WalletInfo',
+  components: { CoinLogo },
   inject: ['mediaQueries'],
   props: {
     compressed: { type: Boolean, default: false },
     address: { type: String, default: '' },
     name: { type: String, default: '' },
     value: { type: Number, default: 0 },
-    coin: { type: String, default: '' }
+    coin: { type: String, default: '' },
+    logo: { type: String, default: '' }
   },
   computed: {
     minifiedAddress() {
@@ -90,7 +93,7 @@ export default {
         name: SHARE_MODAL,
         info: {
           data: { value: this.address, label: 'Wallet id:' },
-          shareUrl: `${window.location.origin}/wallet/${this.coin}/${this.address}`
+          shareUrl: `${window.location.origin}/wallets/${this.coin}/${this.address}`
         }
       })
     },
@@ -100,7 +103,8 @@ export default {
         id: `${INVOICE_FORM + this.address}`,
         show: true,
         info: {
-          address: this.address
+          address: this.address,
+          coin: this.coin
         }
       })
     },

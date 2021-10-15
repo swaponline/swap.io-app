@@ -14,12 +14,17 @@
         <v-list class="list-wallet__body" :class="{ 'list-wallet__body--offset': isSearchVisible }">
           <div
             v-for="networkGroup in walletsGroupedByNetwork"
-            :key="networkGroup.network"
+            :key="networkGroup.networkId"
             class="list-wallet__item"
             @scroll="scroll"
           >
             <list-item v-if="networkGroup.wallets.length === 1" v-bind="networkGroup.wallets[0]" />
-            <list-group v-else v-bind="networkGroup" :active-wallet="activeWallet" />
+            <list-group
+              v-else
+              v-bind="networkGroup"
+              :active="chechActiveWalletInGroup(networkGroup.wallets)"
+              :active-wallet="activeWallet"
+            />
           </div>
         </v-list>
       </div>
@@ -51,16 +56,16 @@ export default {
   },
   computed: {
     walletsGroupedByNetwork() {
-      return groupWalletsBy(this.wallets, 'network')
+      return groupWalletsBy(this.wallets, 'networkId')
     },
     filteredWallets() {
       const { wallets } = this
 
       if (!this.search) return wallets
 
-      return wallets.filter(({ network, coin, name, address }) => {
+      return wallets.filter(({ networkId, coin, name, address }) => {
         return (
-          this.checkIncludesInSearch(network) ||
+          this.checkIncludesInSearch(networkId) ||
           this.checkIncludesInSearch(coin) ||
           this.checkIncludesInSearch(address) ||
           (name && this.checkIncludesInSearch(name))
@@ -68,7 +73,7 @@ export default {
       })
     },
     totalValue() {
-      return this.wallets.reduce((value, wallet) => value + wallet.value, 0)
+      return this.wallets.reduce((value, wallet) => value + wallet.value || 0, 0)
     }
   },
   methods: {
@@ -77,6 +82,11 @@ export default {
     },
     checkIncludesInSearch(targetString) {
       return targetString.toLowerCase().includes(this.search.toLowerCase())
+    },
+    chechActiveWalletInGroup(wallets) {
+      return !!wallets.find(
+        ({ address, coin }) => address === this.activeWallet.address && coin === this.activeWallet.coin
+      )
     }
   }
 }
