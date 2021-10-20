@@ -79,8 +79,9 @@ export default {
       return targetString.toLowerCase().includes(this.search.toLowerCase())
     },
     chechActiveWalletInGroup(wallets) {
+      const { address, coin, networkId } = this.activeWallet
       return !!wallets.find(
-        ({ address, coin }) => address === this.activeWallet.address && coin === this.activeWallet.coin
+        wallet => address === wallet.address && coin === wallet.coin && networkId === wallet.networkId
       )
     }
   }

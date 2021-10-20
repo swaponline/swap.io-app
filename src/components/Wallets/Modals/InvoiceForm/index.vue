@@ -103,6 +103,7 @@ import { ADD_MODAL } from '@/store/modules/Modals'
 import { SHARE_MODAL } from '@/store/modules/Modals/names'
 import { fiatCurrencies, convertAmountToOtherCurrency } from '@/services/converter'
 import { encodeObjectToQueryParameters } from '@/utils/http'
+import { walletsService, events } from '@/services/wallets'
 import InvoicePreview from './Preview.vue'
 
 const INVOICE_TYPES = [
@@ -121,24 +122,25 @@ export default {
   INVOICE_TYPES,
   props: {
     value: { type: Boolean, default: false },
-    address: { type: String, default: '' }
+    address: { type: String, default: '' },
+    coin: { type: String, default: '' },
+    networkId: { type: String, default: '' }
   },
   data() {
     return {
+      wallets: walletsService.getCurrentWallets(),
       selectedWallet: null,
       contact: '',
       amountFields: [generateFieldModel()],
       currency: fiatCurrencies[0],
       invoiceType: INVOICE_TYPES[0],
-      step: 1
+      step: 1,
+      subscriptions: []
     }
   },
   computed: {
-    wallets() {
-      return this.$store.getters.currentSubWallets
-    },
     currencyItems() {
-      return this.selectedWallet ? [...fiatCurrencies, this.selectedWallet.currencyName] : [...fiatCurrencies]
+      return this.selectedWallet ? [...fiatCurrencies, this.selectedWallet.coin] : [...fiatCurrencies]
     },
     sumAmount() {
       return this.amountFields.reduce((sum, el) => {
@@ -148,7 +150,7 @@ export default {
     },
     totalConvertedAmount() {
       return this.selectedWallet
-        ? convertAmountToOtherCurrency(this.sumAmount, this.selectedWallet.currencyName, this.currency)
+        ? convertAmountToOtherCurrency(this.sumAmount, this.selectedWallet.coin, this.currency)
         : 0
     },
     shareUrl() {
@@ -156,7 +158,8 @@ export default {
       const params = {
         address: this.selectedWallet.address,
         contact: this.contact,
-        currency: this.selectedWallet.currencyName,
+        currency: this.selectedWallet.coin,
+        network: this.selectedWallet.networkId,
         description: this.amountFields.map(f => f.description || ''),
         amount: this.amountFields.map(f => f.amount)
       }
@@ -167,8 +170,18 @@ export default {
   },
   created() {
     if (this.address && this.wallets) {
-      this.selectedWallet = this.wallets.find(el => el.address === this.address)
+      this.selectedWallet = walletsService.getWallet({
+        address: this.address,
+        networkId: this.networkId,
+        coin: this.coin
+      })
     }
+
+    this.subscriptions.push(
+      walletsService.subscribe(events.UPDATE_CURRENT_WALLETS, wallets => {
+        this.wallets = wallets
+      })
+    )
   },
   methods: {
     convertAmountToOtherCurrency,

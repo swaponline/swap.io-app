@@ -95,7 +95,7 @@ export default {
       return !this.disabled ? this.notifications.length : null
     },
     showBurgerButton() {
-      return !!this.$route.params.walletAddress
+      return !!this.$route.params.address
     }
   },
   created() {

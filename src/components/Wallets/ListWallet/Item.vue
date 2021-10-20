@@ -4,7 +4,7 @@
     exact
     active-class="list-wallet-item--active"
     class="list-wallet-item"
-    :to="{ name: 'Wallets', params: { walletAddress: address, coin: coin.toLowerCase() } }"
+    :to="{ name: 'Wallets', params: { address, coin: coin.toLowerCase(), networkId } }"
   >
     <item-icon :currency-name="logo" :network="networkLogo" />
 
@@ -35,7 +35,8 @@ export default {
     coinName: { type: String, default: '' },
     logo: { type: String, default: '' },
     networkLogo: { type: String, default: '' },
-    networkName: { type: String, default: '' }
+    networkName: { type: String, default: '' },
+    networkId: { type: String, default: '' }
   },
   methods: { minifyAddress }
 }

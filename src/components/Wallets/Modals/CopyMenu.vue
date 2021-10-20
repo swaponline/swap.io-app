@@ -18,18 +18,11 @@ import { ADD_MODAL } from '@/store/modules/Modals'
 export default {
   name: 'CopyMenu',
   props: {
-    address: {
-      type: String,
-      default: ''
-    },
-    showAddress: {
-      type: Boolean,
-      default: false
-    },
-    value: {
-      type: Boolean,
-      default: false
-    }
+    address: { type: String, default: '' },
+    coin: { type: String, default: '' },
+    networkId: { type: String, default: '' },
+    showAddress: { type: Boolean, default: false },
+    value: { type: Boolean, default: false }
   },
   methods: {
     ...mapMutations({
@@ -45,7 +38,7 @@ export default {
         name: SHARE_MODAL,
         info: {
           data: { value: this.address, label: 'Wallet id:' },
-          shareUrl: `${window.location.origin}/wallet/${this.address}`
+          shareUrl: `${window.location.origin}/wallets/${this.networkId}/${this.coin}/${this.address}`
         }
       })
     },

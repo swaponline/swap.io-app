@@ -10,7 +10,7 @@ export default [
     meta: { middleware: [profileRequired] },
     children: [
       {
-        path: '/wallets/:coin?/:walletAddress?',
+        path: '/wallets/:coin?/:networkId?/:address?/',
         name: 'Wallets',
         props: true,
         component: () => import(/* webpackChunkName: 'Wallets' */ '@/views/Wallet.vue')

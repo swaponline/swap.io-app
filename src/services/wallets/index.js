@@ -20,19 +20,30 @@ function createWalletsService() {
   updateCurrentWallets()
 
   return {
-    getWalletIndex({ profileId, address, coin }) {
+    getWalletIndex({ profileId, address, coin, networkId }) {
       return wallets.findIndex(
-        wallet => wallet.profileId === profileId && wallet.address === address && wallet.coin === coin
+        wallet =>
+          wallet.profileId === profileId &&
+          wallet.address === address &&
+          wallet.coin.toLowerCase() === coin.toLowerCase() &&
+          wallet.networkId.toLowerCase() === networkId.toLowerCase()
       )
+    },
+
+    getWallet({ address, coin, networkId }) {
+      const profileId = profilesService.getCurrentProfileId()
+      const walletIndex = this.getWalletIndex({ profileId, address, coin, networkId })
+
+      return wallets[walletIndex]
     },
 
     createWallet(newWallet) {
       this.setWallets([...wallets, newWallet])
     },
 
-    updateWalletName({ address, coin, name }) {
+    updateWalletName({ address, coin, name, networkId }) {
       const currentProfileId = profilesService.getCurrentProfileId()
-      const walletIndex = this.getWalletIndex({ profileId: currentProfileId, address, coin })
+      const walletIndex = this.getWalletIndex({ profileId: currentProfileId, address, coin, networkId })
       const updatedWallet = { ...wallets[walletIndex], name }
       const updatedWallets = [...wallets.slice(0, walletIndex), updatedWallet, ...wallets.slice(walletIndex + 1)]
 

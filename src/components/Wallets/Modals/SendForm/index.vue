@@ -83,7 +83,7 @@
           <span>Total balance change:</span>
           <span class="send-form__amount">
             <span>
-              <span class="send-form__currency-name">{{ selectedWallet.currencyName }}</span>
+              <span class="send-form__currency-name">{{ selectedWallet.coin }}</span>
               {{ totalBalanceChange }}
             </span>
             <span class="send-form__amount-fiat">
@@ -125,12 +125,13 @@ import { mapMutations } from 'vuex'
 import { ADD_MODAL } from '@/store/modules/Modals'
 import { EDIT_FEE } from '@/store/modules/Modals/names'
 import { MODULE_NAME as TRANSACTIONS_MODULE } from '@/store/modules/Transactions'
+import { convertAmountToOtherCurrency } from '@/services/converter'
+import { walletsService, events } from '@/services/wallets'
 
 import ModalWrapper from '@/components/UI/ModalWrapper.vue'
 import FormTextField from '@/components/UI/Forms/TextField.vue'
 import SliderFee from '@/components/Wallets/SliderFee.vue'
 import WalletSelector from '@/components/Wallets/WalletSelector.vue'
-import { convertAmountToOtherCurrency } from '@/services/converter'
 import SendPreview from './Preview.vue'
 
 export default {
@@ -139,7 +140,9 @@ export default {
   components: { ModalWrapper, FormTextField, SliderFee, WalletSelector, SendPreview },
   props: {
     value: { type: Boolean, required: true },
-    address: { type: String, default: '' }
+    address: { type: String, default: '' },
+    coin: { type: String, default: '' },
+    networkId: { type: String, default: '' }
   },
   data() {
     return {
@@ -157,15 +160,14 @@ export default {
       selectedWallet: null,
       hasMemo: false,
       memo: '',
-      step: 1
+      step: 1,
+      wallets: walletsService.getCurrentWallets(),
+      subscriptions: []
     }
   },
   computed: {
     storeFee() {
       return this.$store.state[TRANSACTIONS_MODULE].model.fee
-    },
-    wallets() {
-      return this.$store.getters.currentSubWallets
     },
     maxAmount() {
       return this.selectedWallet && (this.selectedWallet.value * 10 ** 18 - this.fee * 10 ** 18) / 10 ** 18
@@ -186,7 +188,7 @@ export default {
       return (this.isMultipleRecepients ? this.multipleSum : this.recipients[0].amount) || '0'
     },
     totalConvertedBalanceChange() {
-      return convertAmountToOtherCurrency(this.totalBalanceChange, this.selectedWallet.currencyName, 'USD')
+      return convertAmountToOtherCurrency(this.totalBalanceChange, this.selectedWallet.coin, 'USD')
     }
   },
   watch: {
@@ -198,8 +200,22 @@ export default {
   },
   created() {
     if (this.address && this.wallets) {
-      this.selectedWallet = this.wallets.find(el => el.address === this.address)
+      this.selectedWallet = walletsService.getWallet({
+        address: this.address,
+        networkId: this.networkId,
+        coin: this.coin
+      })
     }
+
+    this.subscriptions.push(
+      walletsService.subscribe(events.UPDATE_CURRENT_WALLETS, wallets => {
+        this.wallets = wallets
+      })
+    )
+  },
+
+  beforeDestroy() {
+    this.subscriptions.forEach(callback => callback.unsubscribe())
   },
   methods: {
     ...mapMutations({

@@ -75,9 +75,6 @@ export default {
     isOpenPanel() {
       return this.panels === 0
     },
-    balance() {
-      return this.$store.getters.accountBalance
-    },
     restProfiles() {
       return this.profiles.filter(profile => profile.id !== this.currentProfile.id)
     },

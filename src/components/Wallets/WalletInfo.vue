@@ -14,7 +14,7 @@
     <header class="wallet-info__header">
       <div>
         <span class="wallet-info__crypto-value">
-          {{ value }} <span class="grey--text">{{ coin }}</span>
+          {{ value || 0 }} <span class="grey--text">{{ coin }}</span>
         </span>
         <span class="wallet-info__fiat-value">3000.04 USD</span>
       </div>
@@ -66,11 +66,15 @@ export default {
     name: { type: String, default: '' },
     value: { type: Number, default: 0 },
     coin: { type: String, default: '' },
-    logo: { type: String, default: '' }
+    logo: { type: String, default: '' },
+    networkId: { type: String, default: '' }
   },
   computed: {
     minifiedAddress() {
       return minifyAddress(this.address)
+    },
+    walletId() {
+      return `${this.coin}-${this.networkId}-${this.address}`
     }
   },
   methods: {
@@ -93,36 +97,39 @@ export default {
         name: SHARE_MODAL,
         info: {
           data: { value: this.address, label: 'Wallet id:' },
-          shareUrl: `${window.location.origin}/wallets/${this.coin}/${this.address}`
+          shareUrl: `${window.location.origin}/wallets/${this.coin.toLowerCase()}/${this.networkId}/${this.address}`
         }
       })
     },
     openInvoiceBlock() {
       this.mutationAddModal({
         name: INVOICE_FORM,
-        id: `${INVOICE_FORM + this.address}`,
+        id: `${INVOICE_FORM + this.walletId}`,
         show: true,
         info: {
           address: this.address,
-          coin: this.coin
+          coin: this.coin,
+          networkId: this.networkId
         }
       })
     },
     openSendForm() {
       this.mutationAddModal({
         name: SEND_FORM,
-        id: `${SEND_FORM + this.address}`,
+        id: `${SEND_FORM + this.walletId}`,
         show: true,
         info: {
-          address: this.address
+          address: this.address,
+          networkId: this.networkId,
+          coin: this.coin
         }
       })
     },
     openSettingsModal() {
       this.mutationAddModal({
         name: WALLET_SETTINGS,
-        id: `${WALLET_SETTINGS + this.address}`,
-        info: { address: this.address, coin: this.coin, name: this.name }
+        id: `${WALLET_SETTINGS + this.walletId}`,
+        info: { networkId: this.networkId, coin: this.coin, address: this.address, name: this.name }
       })
     }
   }

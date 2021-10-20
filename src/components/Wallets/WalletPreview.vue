@@ -1,10 +1,10 @@
 <template>
   <div class="wallet-preview" v-on="$listeners">
-    <cryptoicon :symbol="currencyName.toLowerCase()" size="46" class="wallet-preview__icon" />
+    <coin-logo class="wallet-preview__icon" :path="logo" :name="coin" />
 
     <div class="wallet-preview__text">
       <span class="wallet-preview__name">{{ name }}</span>
-      <span class="wallet-preview__value">{{ currencyName }} {{ value }}</span>
+      <span class="wallet-preview__value">{{ coin }} {{ value }}</span>
     </div>
     <div class="wallet-preview__address">{{ minifyAddress(address) }}</div>
   </div>
@@ -12,13 +12,16 @@
 
 <script>
 import { minifyAddress } from '@/utils/common'
+import CoinLogo from '@/components/Wallets/CoinLogo.vue'
 
 export default {
   name: 'WalletPreview',
+  components: { CoinLogo },
   props: {
-    currencyName: { type: String, required: true },
-    name: { type: String, required: true },
-    value: { type: [String, Number], required: true },
+    coin: { type: String, required: true },
+    logo: { type: String, default: '' },
+    name: { type: String, default: '' },
+    value: { type: [String, Number], default: 0 },
     address: { type: String, required: true }
   },
   methods: { minifyAddress }
@@ -35,6 +38,8 @@ export default {
 
   &__icon {
     margin-right: 14px;
+    width: 46px;
+    height: 46px;
   }
   &__text {
     display: flex;

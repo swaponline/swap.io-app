@@ -91,22 +91,13 @@ export default {
       return this.filteredTransactions.length === 0
     },
     currentAddress() {
-      return this.$route.params.walletAddress
+      return this.$route.params.address
     },
     filterType() {
       return this.tabs.find(tab => tab.id === +this.activeTab)
     },
-    currentSubWallets() {
-      return this.$store.getters.currentSubWallets
-    },
     loading() {
       return this.$store.state[TRANSACTIONS_MODULE].loading
-    },
-    currentWallet() {
-      if (this.wallet && this.currentSubWallets) {
-        return this.currentSubWallets.find(el => el.address === this.$route.params.walletAddress) || {}
-      }
-      return {}
     }
   },
   mounted() {

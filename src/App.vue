@@ -44,7 +44,7 @@ export default {
       return this.userColorScheme.background.includes('linear-gradient')
     },
     accountNotifications() {
-      return this.$store.getters.accountNotifications
+      return 6
     }
   },
   watch: {

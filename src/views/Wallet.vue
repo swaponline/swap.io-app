@@ -38,8 +38,9 @@ export default {
   inject: ['mediaQueries'],
   components: { TransitionTranslate, MainActions, AllModals, ListWallet, WalletsCreate, WalletContent },
   props: {
+    address: { type: String, default: '' },
     coin: { type: String, default: '' },
-    walletAddress: { type: String, default: '' }
+    networkId: { type: String, default: '' }
   },
   data() {
     return {
@@ -52,9 +53,7 @@ export default {
       return this.mediaQueries.desktop
     },
     activeWallet() {
-      return this.wallets.find(
-        wallet => wallet.address === this.walletAddress && wallet.coin.toLowerCase() === this.coin.toLowerCase()
-      )
+      return walletsService.getWallet({ address: this.address, networkId: this.networkId, coin: this.coin })
     },
     hasWallets() {
       return !!this.wallets.length
@@ -94,11 +93,11 @@ export default {
   methods: {
     setActiveWallet() {
       if (!this.activeWallet && this.wallets.length > 0 && this.isDesktop) {
-        const { address, coin } = this.wallets[0]
+        const { address, coin, networkId } = this.wallets[0]
 
         this.$router.replace({
           name: 'Wallets',
-          params: { walletAddress: address, coin: coin.toLowerCase() }
+          params: { address, networkId, coin: coin.toLowerCase() }
         })
       }
     }
