@@ -200,11 +200,12 @@ export default {
   },
   created() {
     if (this.address && this.wallets) {
-      this.selectedWallet = walletsService.getWallet({
-        address: this.address,
-        networkId: this.networkId,
-        coin: this.coin
-      })
+      this.selectedWallet = this.wallets.find(
+        wallet =>
+          wallet.address === this.address &&
+          wallet.coin.toLowerCase() === this.coin.toLowerCase() &&
+          wallet.networkId.toLowerCase() === this.networkId.toLowerCase()
+      )
     }
 
     this.subscriptions.push(

@@ -30,13 +30,6 @@ function createWalletsService() {
       )
     },
 
-    getWallet({ address, coin, networkId }) {
-      const profileId = profilesService.getCurrentProfileId()
-      const walletIndex = this.getWalletIndex({ profileId, address, coin, networkId })
-
-      return wallets[walletIndex]
-    },
-
     createWallet(newWallet) {
       this.setWallets([...wallets, newWallet])
     },

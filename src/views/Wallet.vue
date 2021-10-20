@@ -53,7 +53,12 @@ export default {
       return this.mediaQueries.desktop
     },
     activeWallet() {
-      return walletsService.getWallet({ address: this.address, networkId: this.networkId, coin: this.coin })
+      return this.wallets.find(
+        wallet =>
+          wallet.address === this.address &&
+          wallet.coin.toLowerCase() === this.coin.toLowerCase() &&
+          wallet.networkId.toLowerCase() === this.networkId.toLowerCase()
+      )
     },
     hasWallets() {
       return !!this.wallets.length
