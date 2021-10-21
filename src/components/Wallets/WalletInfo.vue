@@ -84,16 +84,21 @@ export default {
       this.mutationAddModal({
         name: COPY_MENU,
         info: {
-          address: this.address
+          address: this.address,
+          coin: this.coin
         }
       })
     },
     openShareModal() {
+      const { href } = this.$router.resolve({
+        name: 'Wallets',
+        params: { walletAddress: this.address, coin: this.coin.toLowerCase() }
+      })
       this.mutationAddModal({
         name: SHARE_MODAL,
         info: {
           data: { value: this.address, label: 'Wallet id:' },
-          shareUrl: `${window.location.origin}/wallets/${this.coin}/${this.address}`
+          shareUrl: `${window.location.origin}${href}`
         }
       })
     },

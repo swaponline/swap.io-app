@@ -18,18 +18,10 @@ import { ADD_MODAL } from '@/store/modules/Modals'
 export default {
   name: 'CopyMenu',
   props: {
-    address: {
-      type: String,
-      default: ''
-    },
-    showAddress: {
-      type: Boolean,
-      default: false
-    },
-    value: {
-      type: Boolean,
-      default: false
-    }
+    address: { type: String, default: '' },
+    showAddress: { type: Boolean, default: false },
+    value: { type: Boolean, default: false },
+    coin: { type: String, default: '' }
   },
   methods: {
     ...mapMutations({
@@ -41,11 +33,15 @@ export default {
     },
     openQrModal() {
       this.close()
+      const { href } = this.$router.resolve({
+        name: 'Wallets',
+        params: { walletAddress: this.address, coin: this.coin.toLowerCase() }
+      })
       this.mutationAddModal({
         name: SHARE_MODAL,
         info: {
           data: { value: this.address, label: 'Wallet id:' },
-          shareUrl: `${window.location.origin}/wallet/${this.address}`
+          shareUrl: `${window.location.origin}${href}`
         }
       })
     },
