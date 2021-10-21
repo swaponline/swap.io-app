@@ -32,7 +32,7 @@ export default {
       const newName = this.localName.trim()
 
       if (newName !== this.name) {
-        walletsService.updateWalletName({ address: this.address, coin: this.coin, name: this.localName })
+        walletsService.updateWalletName({ address: this.address, coin: this.coin, name: newName })
       }
 
       this.close()
