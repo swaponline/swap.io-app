@@ -171,7 +171,7 @@ export default {
     },
 
     create() {
-      const { id: profileId } = profilesService.getCurrentProfile()
+      const profileId = profilesService.getCurrentProfileId()
       const newWallet = {
         profileId,
         networkId: this.selectedNetwork.network.slug,
@@ -185,7 +185,7 @@ export default {
       SwapKeysApi.createWallet({ ...newWallet, walletNumber: countWallets.length })
         .then(({ wallet }) => {
           if (wallet) {
-            walletsService.createWallet({
+            walletsService.addWallet({
               ...wallet,
               coinName: this.selectedAsset.name,
               logo: this.selectedAsset.logo,

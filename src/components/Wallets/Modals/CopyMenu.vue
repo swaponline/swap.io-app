@@ -34,11 +34,15 @@ export default {
     },
     openQrModal() {
       this.close()
+      const { href } = this.$router.resolve({
+        name: 'Wallets',
+        params: { address: this.address, coin: this.coin.toLowerCase(), networkId: this.networkId }
+      })
       this.mutationAddModal({
         name: SHARE_MODAL,
         info: {
           data: { value: this.address, label: 'Wallet id:' },
-          shareUrl: `${window.location.origin}/wallets/${this.networkId}/${this.coin}/${this.address}`
+          shareUrl: `${window.location.origin}${href}`
         }
       })
     },

@@ -19,7 +19,7 @@
             @scroll="scroll"
           >
             <list-item v-if="networkGroup.wallets.length === 1" v-bind="networkGroup.wallets[0]" />
-            <list-group v-else v-bind="networkGroup" :active="chechActiveWalletInGroup(networkGroup.wallets)" />
+            <list-group v-else v-bind="networkGroup" :active="checkActiveWalletInGroup(networkGroup.wallets)" />
           </div>
         </v-list>
       </div>
@@ -78,7 +78,7 @@ export default {
     checkIncludesInSearch(targetString) {
       return targetString.toLowerCase().includes(this.search.toLowerCase())
     },
-    chechActiveWalletInGroup(wallets) {
+    checkActiveWalletInGroup(wallets) {
       const { address, coin, networkId } = this.activeWallet
       return !!wallets.find(
         wallet => address === wallet.address && coin === wallet.coin && networkId === wallet.networkId

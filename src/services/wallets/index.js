@@ -11,13 +11,13 @@ function createWalletsService() {
   let wallets = getStorage(WALLETS_KEY) || []
   let currentWallets = []
 
-  function updateCurrentWallets() {
+  function refreshCurrentWallets() {
     const currentProfileId = profilesService.getCurrentProfileId()
     currentWallets = wallets.filter(wallet => wallet.profileId === currentProfileId)
-    emitter.emit(events.UPDATE_CURRENT_WALLETS, cloneDeep(currentWallets))
+    emitter.emit(events.REFRESH_CURRENT_WALLETS, cloneDeep(currentWallets))
   }
 
-  updateCurrentWallets()
+  refreshCurrentWallets()
 
   return {
     getWalletIndex({ profileId, address, coin, networkId }) {
@@ -30,7 +30,7 @@ function createWalletsService() {
       )
     },
 
-    createWallet(newWallet) {
+    addWallet(newWallet) {
       this.setWallets([...wallets, newWallet])
     },
 
@@ -50,14 +50,14 @@ function createWalletsService() {
     setWallets(newWallets) {
       wallets = newWallets
       setStorage(WALLETS_KEY, newWallets)
-      this.updateCurrentWallets()
+      this.refreshCurrentWallets()
     },
 
     getCurrentWallets() {
       return cloneDeep(currentWallets)
     },
 
-    updateCurrentWallets,
+    refreshCurrentWallets,
 
     getLogo(path) {
       return `${BASE_MEDIA_URL}${path}`
@@ -75,7 +75,7 @@ function createWalletsService() {
 const walletsService = createWalletsService()
 
 profilesService.subscribe(profilesEvents.UPDATE_CURRENT_PROFILE_ID, () => {
-  walletsService.updateCurrentWallets()
+  walletsService.refreshCurrentWallets()
 })
 
 export { walletsService, events }

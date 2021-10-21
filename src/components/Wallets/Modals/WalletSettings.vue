@@ -37,7 +37,7 @@ export default {
           address: this.address,
           coin: this.coin,
           networkId: this.networkId,
-          name: this.localName
+          name: newName
         })
       }
 
