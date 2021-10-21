@@ -14,7 +14,7 @@
     <header class="wallet-info__header">
       <div>
         <span class="wallet-info__crypto-value">
-          {{ value || 0 }} <span class="grey--text">{{ coin }}</span>
+          {{ value }} <span class="grey--text">{{ coin }}</span>
         </span>
         <span class="wallet-info__fiat-value">3000.04 USD</span>
       </div>

@@ -68,7 +68,7 @@ export default {
       })
     },
     totalValue() {
-      return this.wallets.reduce((value, wallet) => value + wallet.value || 0, 0)
+      return this.wallets.reduce((value, wallet) => value + wallet.value, 0)
     }
   },
   methods: {

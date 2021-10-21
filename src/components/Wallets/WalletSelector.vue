@@ -15,7 +15,7 @@
   >
     <template #item="{item}">
       <coin-logo class="wallet-selector__icon" :path="item.logo" :name="item.coin" />
-      <span class="wallet-selector__short-name">{{ item.name }} ({{ item.value || 0 }})</span>
+      <span class="wallet-selector__short-name">{{ item.name }} ({{ item.value }})</span>
       <span class="wallet-selector__short-address">{{ minifyAddress(item.address) }}</span>
     </template>
 

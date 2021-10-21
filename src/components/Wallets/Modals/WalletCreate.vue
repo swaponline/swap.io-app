@@ -190,7 +190,9 @@ export default {
               coinName: this.selectedAsset.name,
               logo: this.selectedAsset.logo,
               networkLogo: this.selectedNetwork.network.logo,
-              networkName: this.selectedNetwork.network.name
+              networkName: this.selectedNetwork.network.name,
+              name: '',
+              value: 0
             })
             this.close()
           }
