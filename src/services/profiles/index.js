@@ -90,6 +90,10 @@ function createProfilesService() {
       return cloneDeep(currentProfile)
     },
 
+    getCurrentProfileId() {
+      return currentProfile.id
+    },
+
     setCurrentProfile,
 
     getIsCreatingOrRecovering() {

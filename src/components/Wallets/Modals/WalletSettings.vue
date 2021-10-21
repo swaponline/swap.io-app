@@ -7,13 +7,12 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-import { UPDATE_WALLET } from '@/store/modules/Profile'
 import ModalWrapper from '@/components/UI/ModalWrapper.vue'
 import FormField from '@/components/UI/Forms/TextField.vue'
+import { walletsService } from '@/services/wallets'
 
 export default {
-  name: 'ShareModal',
+  name: 'WalletSettings',
   components: { ModalWrapper, FormField },
   props: {
     name: { type: String, default: '' },
@@ -25,20 +24,17 @@ export default {
       localName: this.name
     }
   },
-  computed: {
-    wallet() {
-      return this.$store.getters.currentSubWallets.find(wallet => wallet.address === this.address)
-    }
-  },
   methods: {
-    ...mapActions({
-      actionUpdateWallet: UPDATE_WALLET
-    }),
     close() {
       this.$emit('close')
     },
     save() {
-      if (this.name.trim()) this.actionUpdateWallet({ ...this.wallet, name: this.localName })
+      const newName = this.localName.trim()
+
+      if (newName !== this.name) {
+        walletsService.updateWalletName({ address: this.address, coin: this.coin, name: newName })
+      }
+
       this.close()
     }
   }

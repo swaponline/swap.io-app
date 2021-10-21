@@ -1,4 +1,5 @@
 import cloneDeepLodash from 'lodash.clonedeep'
+import debounceLodash from 'lodash.debounce'
 
 export function minifyAddress(address) {
   return `${address.slice(0, 5)} ... ${address.slice(-5)}`
@@ -45,4 +46,8 @@ export function convertToScientificNotation(value, decimals) {
 
 export function cloneDeep(objects) {
   return cloneDeepLodash(objects)
+}
+
+export function debounce(func, wait = 0, options = {}) {
+  return debounceLodash(func, wait, options)
 }

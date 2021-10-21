@@ -8,18 +8,18 @@
     active-class="list-wallet-group__group"
   >
     <template #activator>
-      <item-icon :currency-name="network.toLowerCase()" />
+      <item-icon :currency-name="network.networkLogo" />
 
       <v-list-item-title class="list-wallet-group__header">
         <div class="list-wallet-group__text">
-          <span class="list-wallet-group__currency">{{ network }}</span>
+          <span class="list-wallet-group__currency">{{ network.networkName }}</span>
           <span class="list-wallet-group__name">
-            <cryptoicon
-              v-for="{ coin } in groupWalletsByCoin"
+            <coin-logo
+              v-for="{ wallets: groupWallets, coin } in groupWalletsByCoin"
               :key="generateKey('icon', coin)"
-              :symbol="coin.toLowerCase()"
-              size="14"
               class="list-wallet-group__header-icon"
+              :path="groupWallets[0].logo"
+              :name="coin"
             />
           </span>
         </div>
@@ -32,8 +32,8 @@
         <v-list-item-content class="list-wallet-group__item-content">
           <div class="list-wallet-group__item-info list-wallet-group__item-info--disabled">
             <p class="list-wallet-group__coin-name">
-              <cryptoicon class="list-wallet-group__coin-icon" size="20" :symbol="coin.toLowerCase()" />
-              {{ coin }}
+              <coin-logo class="list-wallet-group__coin-icon" :path="groupWallets[0].logo" :name="coin" />
+              {{ groupWallets[0].coinName }}
             </p>
             <span class="list-wallet-group__group-value">{{ groupValue }}</span>
           </div>
@@ -50,7 +50,7 @@
         <v-list-item-content class="list-wallet-group__item-content">
           <v-list-item-title class="list-wallet-group__item-info">
             <span>{{ name || minifyAddress(address) }}</span>
-            <span>{{ walletValue }}</span>
+            <span>{{ walletValue || 0 }}</span>
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
@@ -60,17 +60,19 @@
 
 <script>
 import ItemIcon from '@/components/Wallets/ListWallet/ItemIcon.vue'
+
 import { minifyAddress } from '@/utils/common'
 import { groupWalletsBy } from '@/utils/wallets'
+import CoinLogo from '@/components/Wallets/CoinLogo.vue'
 
 export default {
   name: 'ListWalletGroup',
-  components: { ItemIcon },
+  components: { ItemIcon, CoinLogo },
   props: {
-    network: { type: String, default: '' },
+    networkId: { type: String, default: '' },
     wallets: { type: Array, required: true },
     value: { type: Number, default: 0 },
-    activeWallet: { type: Object, default: () => ({}) }
+    active: { type: Boolean, default: false }
   },
   data() {
     return {
@@ -82,15 +84,13 @@ export default {
       return groupWalletsBy(this.wallets, 'coin')
     },
 
-    hasActiveWallet() {
-      return this.wallets.find(
-        ({ address, coin }) => address === this.activeWallet.address && coin === this.activeWallet.coin
-      )
+    network() {
+      return this.wallets[0]
     }
   },
 
   beforeMount() {
-    if (this.hasActiveWallet) this.isOpen = true
+    if (this.active) this.isOpen = true
   },
   methods: {
     minifyAddress,
@@ -129,6 +129,7 @@ export default {
 
   &__header-icon {
     margin-right: 8px;
+    width: 14px;
   }
 
   &__text {
@@ -191,6 +192,7 @@ export default {
 
   &__coin-icon {
     margin-right: 6px;
+    width: 20px;
   }
 
   &__currency {

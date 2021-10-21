@@ -6,12 +6,12 @@
     class="list-wallet-item"
     :to="{ name: 'Wallets', params: { walletAddress: address, coin: coin.toLowerCase() } }"
   >
-    <item-icon :currency-name="coin.toLowerCase()" :network="network.toLowerCase()" />
+    <item-icon :currency-name="logo" :network="networkLogo" />
 
     <v-list-item-content>
       <v-list-item-title class="list-wallet-item__title">
         <div class="list-wallet-item__text">
-          <span class="list-wallet-item__currency-name">{{ coin.toUpperCase() }}</span>
+          <span class="list-wallet-item__currency-name">{{ coinName }}</span>
           <span class="list-wallet-item__name">{{ name || minifyAddress(address) }}</span>
         </div>
         <span class="list-wallet-item__value">{{ value }}</span>
@@ -32,7 +32,10 @@ export default {
     address: { type: String, required: true },
     value: { type: Number, default: 0 },
     coin: { type: String, default: '' },
-    network: { type: String, default: '' }
+    coinName: { type: String, default: '' },
+    logo: { type: String, default: '' },
+    networkLogo: { type: String, default: '' },
+    networkName: { type: String, default: '' }
   },
   methods: { minifyAddress }
 }
@@ -69,17 +72,22 @@ export default {
   &__currency-name {
     font-weight: $--font-weight-semi-bold;
     letter-spacing: 0.03em;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   &__name {
     width: 100%;
     color: var(--secondary-text);
     font-size: $--font-size-medium;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   &__text {
     align-self: stretch;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    max-width: 70%;
   }
   &__value {
     margin-left: auto;
