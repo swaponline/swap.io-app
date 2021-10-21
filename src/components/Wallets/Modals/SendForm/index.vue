@@ -209,7 +209,7 @@ export default {
     }
 
     this.subscriptions.push(
-      walletsService.subscribe(events.UPDATE_CURRENT_WALLETS, wallets => {
+      walletsService.subscribe(events.REFRESH_CURRENT_WALLETS, wallets => {
         this.wallets = wallets
       })
     )
