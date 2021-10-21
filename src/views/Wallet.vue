@@ -149,7 +149,7 @@ export default {
 
     @include only-desktop {
       &--created {
-        padding: 15px 100px 0;
+        padding: 0 100px 0;
       }
     }
 
