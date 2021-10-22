@@ -27,6 +27,8 @@ const queries = {
   small: '(max-width: 320px)'
 }
 
+const MOCK_NOTIFICATION_COUNT = 6
+
 export default {
   name: 'App',
   components: {
@@ -44,7 +46,7 @@ export default {
       return this.userColorScheme.background.includes('linear-gradient')
     },
     accountNotifications() {
-      return 6
+      return MOCK_NOTIFICATION_COUNT
     }
   },
   watch: {
