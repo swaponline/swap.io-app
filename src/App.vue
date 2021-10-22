@@ -27,6 +27,8 @@ const queries = {
   small: '(max-width: 320px)'
 }
 
+let canvg = null
+
 export default {
   name: 'App',
   components: {
@@ -36,8 +38,7 @@ export default {
     return {
       queries,
       userColorScheme: profilesService.getCurrentProfileColorScheme(),
-      subscriptions: [],
-      canvg: null
+      subscriptions: []
     }
   },
   computed: {
@@ -100,7 +101,7 @@ export default {
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.resize)
-    this.canvg.stop()
+    this.resetCanvg()
     this.subscriptions.forEach(callback => callback.unsubscribe())
   },
   methods: {
@@ -149,11 +150,16 @@ export default {
 
       const index = background.indexOf('viewBox')
       const resSvg = background.substring(0, index) + widthStr + heightStr + background.substring(index)
+      if (canvg) this.resetCanvg()
 
-      this.canvg = Canvg.fromString(ctx, resSvg, options)
+      canvg = Canvg.fromString(ctx, resSvg, options)
 
       canvas.style.display = 'block'
-      this.canvg.start()
+      canvg.start()
+    },
+    resetCanvg() {
+      canvg.stop()
+      canvg = null
     },
     setFavicon(color) {
       const attributeFaviconSvg =
