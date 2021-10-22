@@ -16,8 +16,7 @@ import { pluralizeNumeral } from '@/utils/pluralization'
 import { setCSSCustomProperty } from '@/utils/common'
 import { setAppColorSchemeBasedOnTheme } from '@/utils/appColorScheme'
 import { profilesService, events as profilesServiceEvents } from '@/services/profiles'
-import { themeService, LIGHT_THEME_KEY, THEME_KEY, events as themeServiceEvents } from '@/services/theme'
-import { getStorage } from '@/utils/storage'
+import { themeService, events as themeServiceEvents } from '@/services/theme'
 
 const queries = {
   desktop: '(min-width: 1281px)',
@@ -54,7 +53,7 @@ export default {
         if (!scheme) return
         const { color } = scheme
 
-        this.setAppTheme()
+        this.initCurrentTheme()
         this.setFavicon(color)
         this.setColorThemeOfAddressBar(color)
         this.setCustomColorCSSVariables(scheme)
@@ -115,17 +114,13 @@ export default {
         profilesService.subscribe(profilesServiceEvents.UPDATE_CURRENT_PROFILE, this.updateUserColorScheme)
       )
 
-      this.subscriptions.push(
-        themeService.subscribe(themeServiceEvents.UPDATE_APP_THEME, appTheme => {
-          const isDark = themeService.getIsDark()
-          if (isDark) {
-            this.$vuetify.theme.dark = true
-          } else {
-            this.$vuetify.theme.dark = false
-          }
-          setAppColorSchemeBasedOnTheme(this.userColorScheme, appTheme)
-        })
-      )
+      this.subscriptions.push(themeService.subscribe(themeServiceEvents.UPDATE_SYSTEM_THEME, this.updateAppTheme))
+    },
+
+    updateAppTheme(appTheme) {
+      this.$vuetify.theme.dark = themeService.getIsDark()
+
+      setAppColorSchemeBasedOnTheme(this.userColorScheme, appTheme)
     },
 
     updateUserColorScheme(profile) {
@@ -136,17 +131,10 @@ export default {
         this.userColorScheme = profilesService.getCurrentProfileColorScheme()
       }
     },
-    setAppTheme() {
-      // SET CURRENT THEME
-      const appTheme = getStorage(THEME_KEY) || LIGHT_THEME_KEY
-      themeService.setAppTheme(appTheme)
-      const isDark = themeService.getIsDark()
-
-      if (isDark) {
-        this.$vuetify.theme.dark = true
-      } else {
-        this.$vuetify.theme.dark = false
-      }
+    initCurrentTheme() {
+      // INIT CURRENT THEME
+      themeService.initCurrentTheme()
+      this.$vuetify.theme.dark = themeService.getIsDark()
     },
     setBackground(backgroundSvg) {
       if (!backgroundSvg) return

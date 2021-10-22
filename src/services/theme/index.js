@@ -1,6 +1,6 @@
 import { createNanoEvents } from 'nanoevents'
 
-import { setStorage } from '@/utils/storage'
+import { getStorage, setStorage } from '@/utils/storage'
 import {
   events,
   PREFERS_COLOR_SCHEME_LIGHT,
@@ -15,16 +15,12 @@ import {
 export function createThemeService() {
   const emitter = createNanoEvents()
   let isDark = false
-  let appTheme = LIGHT_THEME_KEY
+  let appTheme = getStorage(THEME_KEY) || LIGHT_THEME_KEY
   let isSystemTheme = false
 
   function getUserSystemTheme() {
-    const isLightSystemTheme = window.matchMedia(PREFERS_COLOR_SCHEME_LIGHT).matches
     const isDarkSystemTheme = window.matchMedia(PREFERS_COLOR_SCHEME_DARK).matches
-
     if (isDarkSystemTheme) return DARK_THEME_KEY
-    if (isLightSystemTheme) return LIGHT_THEME_KEY
-
     return LIGHT_THEME_KEY
   }
 
@@ -40,12 +36,12 @@ export function createThemeService() {
     if (matches && isSystemTheme) {
       if (media === PREFERS_COLOR_SCHEME_LIGHT) {
         setLightTheme()
-        emitter.emit(events.UPDATE_APP_THEME, LIGHT_THEME_KEY)
+        emitter.emit(events.UPDATE_SYSTEM_THEME, LIGHT_THEME_KEY)
         return
       }
 
       setDarkTheme()
-      emitter.emit(events.UPDATE_APP_THEME, DARK_THEME_KEY)
+      emitter.emit(events.UPDATE_SYSTEM_THEME, DARK_THEME_KEY)
     }
   }
 
@@ -74,7 +70,12 @@ export function createThemeService() {
     }
   }
 
+  function initCurrentTheme() {
+    setAppTheme(appTheme)
+  }
+
   return {
+    initCurrentTheme,
     setAppTheme,
 
     getIsSystemTheme() {
