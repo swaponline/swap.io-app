@@ -1,16 +1,22 @@
-export const encodeArrayToQueryParameters = (key, arr) => {
-  const encodedKey = encodeURIComponent(key)
-  const encodedArr = arr.map(encodeURIComponent)
-  return `${encodedKey}[]=${encodedArr.join(`&${encodedKey}[]=`)}`
-}
-
-export const encodeObjectToQueryParameters = params => {
-  return Object.entries(params)
+export const encodeQueryParameters = params => {
+  const queryString = Object.entries(params)
     .map(([key, value]) => {
-      if (Array.isArray(value)) {
-        return encodeArrayToQueryParameters(key, value)
-      }
-      return `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`
+      return `${encodeURIComponent(key)}=${encodeURIComponent(JSON.stringify(value))}`
     })
     .join('&')
+
+  return queryString ? `?${queryString}` : ''
+}
+
+export const decodeQueryParameters = queryString => {
+  if (!queryString) {
+    return {}
+  }
+
+  const params = queryString
+    .split('&')
+    .map(p => p.split('='))
+    .map(([key, value]) => [key, JSON.parse(decodeURIComponent(value))])
+
+  return Object.fromEntries(params)
 }

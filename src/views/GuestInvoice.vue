@@ -81,8 +81,8 @@ export default {
       return this.$route.query.currency
     },
     fields() {
-      const descriptions = this.$route.query['description[]'] || null
-      const fields = this.$route.query['amount[]'].map((val, index) => ({
+      const descriptions = this.$route.query.description || null
+      const fields = this.$route.query.amount.map((val, index) => ({
         amount: parseFloat(val),
         description: descriptions[index] || ''
       }))

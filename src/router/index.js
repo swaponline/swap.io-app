@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from '@/store'
 import middlewarePipeline from '@/router/middlewarePipeline'
+import { encodeQueryParameters, decodeQueryParameters } from '@/utils/http'
 import routes from './routes'
 
 Vue.use(VueRouter)
@@ -9,7 +10,9 @@ Vue.use(VueRouter)
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes
+  routes,
+  parseQuery: decodeQueryParameters,
+  stringifyQuery: encodeQueryParameters
 })
 
 // Решение взято с https://github.com/vuejs/vue-router/issues/2881
