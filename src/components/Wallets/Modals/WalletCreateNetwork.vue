@@ -7,7 +7,7 @@
     </div>
 
     <div class="wallet-create-network__chips">
-      <div class="wallet-create-network__subtitle">Networks</div>
+      <h4 class="wallet-create-network__subtitle">Networks</h4>
       <v-chip-group v-model="networkModel" column>
         <v-chip
           v-for="networkItem in networks"
@@ -19,23 +19,26 @@
         </v-chip>
       </v-chip-group>
 
-      <v-radio-group v-if="networkAssets.length > 1" v-model="assetModel">
-        <v-radio
-          v-for="(item, index) in networkAssets"
-          :key="`${item.symbol}-${index}`"
-          :value="item"
-          :ripple="false"
-          class="wallet-create-network__asset"
-          active-class="wallet-create-network__asset--active"
-        >
-          <template #label>
-            <div class="wallet-create-network__asset-label">
-              <coin-logo class="wallet-create-network__asset-icon" :path="item.logo" :name="item.symbol" />
-              <span class="wallet-create-network__asset-name">{{ item.name }}</span>
-            </div>
-          </template>
-        </v-radio>
-      </v-radio-group>
+      <template v-if="networkModel">
+        <h4 class="wallet-create-network__asset-title">Assets</h4>
+        <v-radio-group v-model="assetModel">
+          <v-radio
+            v-for="(item, index) in networkAssets"
+            :key="`${item.symbol}-${index}`"
+            :value="item"
+            :ripple="false"
+            class="wallet-create-network__asset"
+            active-class="wallet-create-network__asset--active"
+          >
+            <template #label>
+              <div class="wallet-create-network__asset-label">
+                <coin-logo class="wallet-create-network__asset-icon" :path="item.logo" :name="item.symbol" />
+                <span class="wallet-create-network__asset-name">{{ item.name }}</span>
+              </div>
+            </template>
+          </v-radio>
+        </v-radio-group>
+      </template>
     </div>
   </div>
 </template>
@@ -79,7 +82,7 @@ export default {
 
   watch: {
     network() {
-      if (this.networkAssets.length === 1) {
+      if (this.networkAssets.length) {
         // eslint-disable-next-line prefer-destructuring
         this.assetModel = this.networkAssets[0]
       } else {
@@ -99,14 +102,15 @@ export default {
 <style lang="scss">
 .wallet-create-network {
   &__asset-group {
-    background-color: var(--main-input-background);
-    border-radius: $--main-border-radius;
-    padding: 14px;
-    margin-bottom: 15px;
     display: flex;
     align-items: center;
+    height: 52px;
+    padding: 14px;
+    margin-bottom: 15px;
     font-size: $--font-size-extra-small-subtitle;
     font-weight: $--font-weight-semi-bold;
+    background-color: var(--main-input-background);
+    border-radius: $--main-border-radius;
   }
 
   &__asset-group-icon {
@@ -140,13 +144,19 @@ export default {
     background-color: var(--main-button-background) !important;
   }
 
+  &__asset-title {
+    color: $--grey-3;
+    font-weight: $--font-weight-semi-bold;
+    margin: 10px 0;
+  }
+
   &__asset {
     border-radius: $--main-border-radius;
     transition: 0.2s;
 
     &--active,
     &:hover {
-      background-color: var(--wallets-item-background);
+      background-color: var(--main-button-background);
     }
 
     .v-input--selection-controls__input {

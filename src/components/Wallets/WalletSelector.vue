@@ -14,7 +14,7 @@
     :menu-props="{ 'content-class': 'wallet-selector__menu' }"
   >
     <template #item="{item}">
-      <cryptoicon :symbol="item.currencyName.toLowerCase()" size="32" class="wallet-selector__icon" />
+      <coin-logo class="wallet-selector__icon" :path="item.logo" :name="item.coin" />
       <span class="wallet-selector__short-name">{{ item.name }} ({{ item.value }})</span>
       <span class="wallet-selector__short-address">{{ minifyAddress(item.address) }}</span>
     </template>
@@ -27,11 +27,12 @@
 
 <script>
 import WalletPreview from '@/components/Wallets/WalletPreview.vue'
+import CoinLogo from '@/components/Wallets/CoinLogo.vue'
 import { minifyAddress } from '@/utils/common'
 
 export default {
   name: 'WalletSelector',
-  components: { WalletPreview },
+  components: { WalletPreview, CoinLogo },
   model: {
     prop: 'address',
     event: 'update:address'
@@ -84,6 +85,8 @@ export default {
   }
   &__icon {
     margin-right: 12px;
+    width: 32px;
+    height: 32px;
   }
 
   &__menu {

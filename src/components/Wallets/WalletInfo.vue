@@ -66,11 +66,15 @@ export default {
     name: { type: String, default: '' },
     value: { type: Number, default: 0 },
     coin: { type: String, default: '' },
-    logo: { type: String, default: '' }
+    logo: { type: String, default: '' },
+    networkId: { type: String, default: '' }
   },
   computed: {
     minifiedAddress() {
       return minifyAddress(this.address)
+    },
+    walletId() {
+      return `${this.coin}-${this.networkId}-${this.address}`
     }
   },
   methods: {
@@ -85,14 +89,15 @@ export default {
         name: COPY_MENU,
         info: {
           address: this.address,
-          coin: this.coin
+          coin: this.coin,
+          networkId: this.networkId
         }
       })
     },
     openShareModal() {
       const { href } = this.$router.resolve({
         name: 'Wallets',
-        params: { walletAddress: this.address, coin: this.coin.toLowerCase() }
+        params: { address: this.address, coin: this.coin.toLowerCase(), networkId: this.networkId }
       })
       this.mutationAddModal({
         name: SHARE_MODAL,
@@ -105,29 +110,32 @@ export default {
     openInvoiceBlock() {
       this.mutationAddModal({
         name: INVOICE_FORM,
-        id: `${INVOICE_FORM + this.address}`,
+        id: `${INVOICE_FORM + this.walletId}`,
         show: true,
         info: {
           address: this.address,
-          coin: this.coin
+          coin: this.coin,
+          networkId: this.networkId
         }
       })
     },
     openSendForm() {
       this.mutationAddModal({
         name: SEND_FORM,
-        id: `${SEND_FORM + this.address}`,
+        id: `${SEND_FORM + this.walletId}`,
         show: true,
         info: {
-          address: this.address
+          address: this.address,
+          networkId: this.networkId,
+          coin: this.coin
         }
       })
     },
     openSettingsModal() {
       this.mutationAddModal({
         name: WALLET_SETTINGS,
-        id: `${WALLET_SETTINGS + this.address}`,
-        info: { address: this.address, coin: this.coin, name: this.name }
+        id: `${WALLET_SETTINGS + this.walletId}`,
+        info: { networkId: this.networkId, coin: this.coin, address: this.address, name: this.name }
       })
     }
   }

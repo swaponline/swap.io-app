@@ -4,7 +4,7 @@
       <header class="swap-form__header">
         <span>Swap</span>
         <span class="swap-form__balance"
-          >Balance: {{ from && from.value ? `${from.currencyName.toUpperCase()} ${from.value}` : '0.0' }}</span
+          >Balance: {{ from && from.value ? `${from.coin.toUpperCase()} ${from.value}` : '0.0' }}</span
         >
       </header>
       <div class="swap-form__row">
@@ -13,8 +13,9 @@
             <swap-button small @click="selectWallet('from')">
               <template v-if="!from">Select wallet</template>
               <template v-else>
-                <cryptoicon :symbol="from.currencyName.toLowerCase()" size="17" class="swap-form__button-icon" />
-                <span class="swap-form__button-currency">{{ from.currencyName.toUpperCase() }}</span>
+                <coin-logo class="swap-form__button-icon" :path="from.logo" :name="from.coin" />
+
+                <span class="swap-form__button-currency">{{ from.coin.toUpperCase() }}</span>
                 <span class="swap-form__button-name">{{ from.name || minifyAddress(from.address) }}</span>
               </template>
             </swap-button>
@@ -32,8 +33,8 @@
             <swap-button small @click="selectWallet('to')">
               <template v-if="!to">Select wallet</template>
               <template v-else>
-                <cryptoicon :symbol="to.currencyName.toLowerCase()" size="17" class="swap-form__button-icon" />
-                <span class="swap-form__button-currency">{{ to.currencyName.toUpperCase() }}</span>
+                <coin-logo class="swap-form__button-icon" :path="to.logo" :name="to.coin" />
+                <span class="swap-form__button-currency">{{ to.coin.toUpperCase() }}</span>
                 <span class="swap-form__button-name">{{ to.name || minifyAddress(to.address) }}</span>
               </template>
             </swap-button>
@@ -47,21 +48,21 @@
         <span class="swap-form__info-row">
           <span>Rate:</span>
           <span>
-            {{ from ? `1 ${from.currencyName.toUpperCase()}` : '0.00' }} =
-            {{ to ? `${conversionRate} ${to.currencyName.toUpperCase()}` : '0.00' }}
+            {{ from ? `1 ${from.coin.toUpperCase()}` : '0.00' }} =
+            {{ to ? `${conversionRate} ${to.coin.toUpperCase()}` : '0.00' }}
           </span>
         </span>
         <span class="swap-form__info-row">
           <span>Inverse rate:</span>
           <span>
-            {{ to ? `1 ${to.currencyName.toUpperCase()}` : '0.00' }} =
-            {{ from && to ? `${inverseConversionRate} ${from.currencyName.toUpperCase()}` : '0.00' }}
+            {{ to ? `1 ${to.coin.toUpperCase()}` : '0.00' }} =
+            {{ from && to ? `${inverseConversionRate} ${from.coin.toUpperCase()}` : '0.00' }}
           </span>
         </span>
         <span class="swap-form__info-row">
           <span>USD Price:</span>
           <span>
-            {{ from ? `1 ${from.currencyName.toUpperCase()}` : '0.00' }} =
+            {{ from ? `1 ${from.coin.toUpperCase()}` : '0.00' }} =
             {{ from ? `$${usdConversion}` : '0.00' }}
           </span>
         </span>
@@ -85,12 +86,13 @@
 <script>
 import FormTextField from '@/components/UI/Forms/TextField.vue'
 import SwapSelectWalletDialog from '@/components/Swap/SelectWalletDialog.vue'
+import CoinLogo from '@/components/Wallets/CoinLogo.vue'
 import { convertAmountToOtherCurrency } from '@/services/converter'
 import { minifyAddress } from '@/utils/common'
 
 export default {
   name: 'Swap',
-  components: { FormTextField, SwapSelectWalletDialog },
+  components: { FormTextField, SwapSelectWalletDialog, CoinLogo },
   inject: ['mediaQueries'],
   data() {
     return {
@@ -110,7 +112,7 @@ export default {
       return '0.812076'
     },
     usdConversion() {
-      return convertAmountToOtherCurrency(1, this.from.currencyName, 'USD')
+      return convertAmountToOtherCurrency(1, this.from.coin, 'USD')
     },
     estimatedFee() {
       return '213'
@@ -149,7 +151,7 @@ export default {
   max-width: 370px;
   height: 100%;
   max-height: 520px;
-  margin: 25px auto;
+  margin: 20px auto;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -216,6 +218,8 @@ export default {
   }
   &__button-icon {
     margin-right: 4px;
+    width: 17px;
+    height: 17px;
   }
   &__button-currency {
     color: $--grey-3;

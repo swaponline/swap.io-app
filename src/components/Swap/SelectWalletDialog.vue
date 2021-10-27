@@ -80,6 +80,7 @@
 import FormTextField from '@/components/UI/Forms/TextField.vue'
 import WalletPreview from '@/components/Wallets/WalletPreview.vue'
 import { cryptoCurrencies } from '@/services/converter'
+import { walletsService, events } from '@/services/wallets'
 
 export default {
   name: 'SwapSelectWalletDialog',
@@ -94,7 +95,9 @@ export default {
       isExternalWallet: false,
       externalWalletAddress: '',
       selectedNetwork: null,
-      selectedCurrency: null
+      selectedCurrency: null,
+      wallets: walletsService.getCurrentWallets(),
+      subscriptions: []
     }
   },
   computed: {
@@ -109,9 +112,6 @@ export default {
     dialogTitle() {
       return this.isExternalWallet ? 'External wallet' : 'Select source wallet'
     },
-    wallets() {
-      return this.$store.getters.currentSubWallets
-    },
     filteredWallets() {
       const { wallets } = this
       const search = this.search.toLowerCase()
@@ -119,9 +119,9 @@ export default {
       if (!this.search) return wallets
 
       const filteredWallets = wallets.filter(
-        ({ currencyName, name, address }) =>
-          currencyName.toLowerCase().includes(search) ||
-          name.toLowerCase().includes(search) ||
+        ({ coin, name, address }) =>
+          coin.toLowerCase().includes(search) ||
+          name?.toLowerCase().includes(search) ||
           address.toLowerCase().includes(search)
       )
 
@@ -137,6 +137,19 @@ export default {
       return !this.externalWalletAddress || !this.selectedNetwork || !this.selectedCurrency
     }
   },
+
+  created() {
+    this.subscriptions.push(
+      walletsService.subscribe(events.REFRESH_CURRENT_WALLETS, wallets => {
+        this.wallets = wallets
+      })
+    )
+  },
+
+  beforeDestroy() {
+    this.subscriptions.forEach(callback => callback.unsubscribe())
+  },
+
   methods: {
     reset() {
       this.isExternalWallet = false

@@ -45,12 +45,12 @@
         link
         exact
         class="list-wallet-group__item"
-        :to="{ name: 'Wallets', params: { walletAddress: address, coin: coin.toLowerCase() } }"
+        :to="{ name: 'Wallets', params: { address, coin: coin.toLowerCase(), networkId } }"
       >
         <v-list-item-content class="list-wallet-group__item-content">
           <v-list-item-title class="list-wallet-group__item-info">
             <span>{{ name || minifyAddress(address) }}</span>
-            <span>{{ walletValue || 0 }}</span>
+            <span>{{ walletValue }}</span>
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>

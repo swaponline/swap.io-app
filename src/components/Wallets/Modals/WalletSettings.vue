@@ -16,8 +16,9 @@ export default {
   components: { ModalWrapper, FormField },
   props: {
     name: { type: String, default: '' },
-    address: { type: String, required: true },
-    coin: { type: String, required: true }
+    address: { type: String, default: '' },
+    coin: { type: String, default: '' },
+    networkId: { type: String, default: '' }
   },
   data() {
     return {
@@ -32,7 +33,12 @@ export default {
       const newName = this.localName.trim()
 
       if (newName !== this.name) {
-        walletsService.updateWalletName({ address: this.address, coin: this.coin, name: newName })
+        walletsService.updateWalletName({
+          address: this.address,
+          coin: this.coin,
+          networkId: this.networkId,
+          name: newName
+        })
       }
 
       this.close()

@@ -68,7 +68,7 @@ export default {
       })
     },
     totalValue() {
-      return this.wallets.reduce((value, wallet) => value + wallet.value || 0, 0)
+      return this.wallets.reduce((value, wallet) => value + wallet.value, 0)
     }
   },
   methods: {
@@ -79,8 +79,9 @@ export default {
       return targetString.toLowerCase().includes(this.search.toLowerCase())
     },
     checkActiveWalletInGroup(wallets) {
+      const { address, coin, networkId } = this.activeWallet
       return !!wallets.find(
-        ({ address, coin }) => address === this.activeWallet.address && coin === this.activeWallet.coin
+        wallet => address === wallet.address && coin === wallet.coin && networkId === wallet.networkId
       )
     }
   }

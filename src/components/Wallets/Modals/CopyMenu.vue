@@ -19,9 +19,10 @@ export default {
   name: 'CopyMenu',
   props: {
     address: { type: String, default: '' },
+    coin: { type: String, default: '' },
+    networkId: { type: String, default: '' },
     showAddress: { type: Boolean, default: false },
-    value: { type: Boolean, default: false },
-    coin: { type: String, default: '' }
+    value: { type: Boolean, default: false }
   },
   methods: {
     ...mapMutations({
@@ -35,7 +36,7 @@ export default {
       this.close()
       const { href } = this.$router.resolve({
         name: 'Wallets',
-        params: { walletAddress: this.address, coin: this.coin.toLowerCase() }
+        params: { address: this.address, coin: this.coin.toLowerCase(), networkId: this.networkId }
       })
       this.mutationAddModal({
         name: SHARE_MODAL,

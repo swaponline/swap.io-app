@@ -102,7 +102,7 @@ import { mapMutations } from 'vuex'
 import { ADD_MODAL } from '@/store/modules/Modals'
 import { SHARE_MODAL } from '@/store/modules/Modals/names'
 import { fiatCurrencies, convertAmountToOtherCurrency } from '@/services/converter'
-import { encodeObjectToQueryParameters } from '@/utils/http'
+import { walletsService, events } from '@/services/wallets'
 import InvoicePreview from './Preview.vue'
 
 const INVOICE_TYPES = [
@@ -121,24 +121,25 @@ export default {
   INVOICE_TYPES,
   props: {
     value: { type: Boolean, default: false },
-    address: { type: String, default: '' }
+    address: { type: String, default: '' },
+    coin: { type: String, default: '' },
+    networkId: { type: String, default: '' }
   },
   data() {
     return {
+      wallets: walletsService.getCurrentWallets(),
       selectedWallet: null,
       contact: '',
       amountFields: [generateFieldModel()],
       currency: fiatCurrencies[0],
       invoiceType: INVOICE_TYPES[0],
-      step: 1
+      step: 1,
+      subscriptions: []
     }
   },
   computed: {
-    wallets() {
-      return this.$store.getters.currentSubWallets
-    },
     currencyItems() {
-      return this.selectedWallet ? [...fiatCurrencies, this.selectedWallet.currencyName] : [...fiatCurrencies]
+      return this.selectedWallet ? [...fiatCurrencies, this.selectedWallet.coin] : [...fiatCurrencies]
     },
     sumAmount() {
       return this.amountFields.reduce((sum, el) => {
@@ -148,27 +149,41 @@ export default {
     },
     totalConvertedAmount() {
       return this.selectedWallet
-        ? convertAmountToOtherCurrency(this.sumAmount, this.selectedWallet.currencyName, this.currency)
+        ? convertAmountToOtherCurrency(this.sumAmount, this.selectedWallet.coin, this.currency)
         : 0
     },
     shareUrl() {
       // Example: bitcoincash:qp0qca2j3jey9af7x69r6ata6wlnxz90sqhyzxdsvu?amount=1&message=test%20me%20please
-      const params = {
-        address: this.selectedWallet.address,
-        contact: this.contact,
-        currency: this.selectedWallet.currencyName,
-        description: this.amountFields.map(f => f.description || ''),
-        amount: this.amountFields.map(f => f.amount)
-      }
-      const queryParams = encodeObjectToQueryParameters(params)
+      const { href } = this.$router.resolve({
+        name: 'Invoice',
+        query: {
+          address: this.selectedWallet.address,
+          contact: this.contact,
+          currency: this.selectedWallet.coin,
+          network: this.selectedWallet.networkId,
+          description: this.amountFields.map(f => f.description || ''),
+          amount: this.amountFields.map(f => f.amount)
+        }
+      })
 
-      return `${window.location.origin}/invoice?${queryParams}`
+      return `${window.location.origin}${href}`
     }
   },
   created() {
     if (this.address && this.wallets) {
-      this.selectedWallet = this.wallets.find(el => el.address === this.address)
+      this.selectedWallet = this.wallets.find(
+        wallet =>
+          wallet.address === this.address &&
+          wallet.coin.toLowerCase() === this.coin.toLowerCase() &&
+          wallet.networkId.toLowerCase() === this.networkId.toLowerCase()
+      )
     }
+
+    this.subscriptions.push(
+      walletsService.subscribe(events.REFRESH_CURRENT_WALLETS, wallets => {
+        this.wallets = wallets
+      })
+    )
   },
   methods: {
     convertAmountToOtherCurrency,
