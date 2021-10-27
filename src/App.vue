@@ -25,6 +25,8 @@ const queries = {
   small: '(max-width: 320px)'
 }
 
+let canvg = null
+
 export default {
   name: 'App',
   components: {
@@ -82,6 +84,7 @@ export default {
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.resize)
+    this.resetCanvg()
     this.subscriptions.forEach(callback => callback.unsubscribe())
   },
   methods: {
@@ -125,8 +128,9 @@ export default {
         this.userColorScheme = profilesService.getCurrentProfileColorScheme()
       }
     },
-    setBackground(backgroundSvg) {
-      if (!backgroundSvg) return
+    setBackground() {
+      const { background } = this.userColorScheme
+      if (!background) return
 
       const canvas = this.$refs.backgroundCanvas
       const ctx = canvas.getContext('2d')
@@ -137,13 +141,19 @@ export default {
       // hack for scaling svg to window size
       const widthStr = `width="${window.innerWidth}"\n`
       const heightStr = `height="${window.innerHeight}"\n`
-      const index = backgroundSvg.indexOf('viewBox')
-      const resSvg = backgroundSvg.substring(0, index) + widthStr + heightStr + backgroundSvg.substring(index)
 
-      const canvg = Canvg.fromString(ctx, resSvg, options)
+      const index = background.indexOf('viewBox')
+      const resSvg = background.substring(0, index) + widthStr + heightStr + background.substring(index)
+      if (canvg) this.resetCanvg()
+
+      canvg = Canvg.fromString(ctx, resSvg, options)
 
       canvas.style.display = 'block'
       canvg.start()
+    },
+    resetCanvg() {
+      canvg.stop()
+      canvg = null
     },
     setFavicon(color) {
       const attributeFaviconSvg =
@@ -164,7 +174,7 @@ export default {
         setCSSCustomProperty('background-app', background)
       } else {
         setCSSCustomProperty('background-app', '')
-        this.$nextTick(() => this.setBackground(background))
+        this.$nextTick(() => this.setBackground())
       }
     },
     setThemeColorOfAddressBar(color) {

@@ -149,7 +149,7 @@ export default {
   max-width: 370px;
   height: 100%;
   max-height: 520px;
-  margin: 25px auto;
+  margin: 20px auto;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
