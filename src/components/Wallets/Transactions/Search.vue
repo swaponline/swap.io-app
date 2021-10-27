@@ -37,7 +37,7 @@ export default {
 
 <style lang="scss">
 .transactions-search {
-  background-color: var(--main-input-background);
+  background-color: get-theme-for($background, 'secondary');
   padding: 5px 22px;
 
   &__input {

@@ -108,16 +108,16 @@ export default {
   overflow: hidden;
 
   &:hover {
-    background-color: var(--wallets-item-background);
+    background-color: get-theme-for($wallets-item, 'background', 'enabled');
   }
 
   &--active {
-    background-color: var(--wallets-item-background);
+    background-color: get-theme-for($wallets-item, 'background', 'enabled');
     padding-bottom: 15px;
   }
 
   &__group {
-    border-bottom: 1px solid var(--wallets-item-border);
+    border-bottom: 1px solid get-theme-for($wallets-item, 'border');
   }
 
   &__header {
@@ -141,7 +141,7 @@ export default {
   &__value {
     margin-left: auto;
     font-size: $--font-size-extra-small-subtitle;
-    color: var(--primary-text);
+    color: get-theme-for($text, 'primary');
   }
 
   &__group-value {
@@ -157,14 +157,14 @@ export default {
 
     &:hover,
     &.v-list-item--active {
-      background-color: var(--wallets-item-background-hover);
+      background-color: get-theme-for($wallets-item, 'background', hover);
       box-shadow: var(--wallets-box-shadow);
     }
   }
 
   &__item-content {
     padding: 15px 10px;
-    border-bottom: 1px solid var(--wallets-item-border);
+    border-bottom: 1px solid get-theme-for($wallets-item, 'border');
   }
 
   &__item-info {
@@ -172,7 +172,7 @@ export default {
     justify-content: space-between;
     letter-spacing: 0.03em;
     line-height: 25px;
-    color: var(--primary-text);
+    color: get-theme-for($text, 'primary');
     font-size: $--font-size-extra-small-subtitle;
 
     &--disabled {
@@ -195,13 +195,13 @@ export default {
 
   &__currency {
     font-weight: $--font-weight-semi-bold;
-    color: var(--primary-text);
+    color: get-theme-for($text, 'primary');
   }
 
   &__name {
     width: 100%;
     font-size: $--font-size-medium;
-    color: var(--secondary-text);
+    color: get-theme-for($text, 'secondary');
   }
 }
 </style>

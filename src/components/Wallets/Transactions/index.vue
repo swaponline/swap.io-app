@@ -123,14 +123,14 @@ export default {
 <style lang="scss">
 .transactions {
   width: 100%;
-  background: var(--primary-background);
+  background: get-theme-for($background, 'primary');
   overflow: hidden;
   border-radius: 12px 12px 0 0;
   display: flex;
   flex-direction: column;
 
   .v-tabs-items {
-    background: var(--primary-background) !important;
+    background: get-theme-for($background, 'primary') !important;
     transition: $--theme-transition;
     height: 100%;
   }
@@ -166,7 +166,7 @@ export default {
     padding: 0 0;
     min-width: 80px;
     font-weight: $--font-weight-semi-bold;
-    color: var(--primary-text) !important;
+    color: get-theme-for($text, 'primary') !important;
     transition: $--theme-transition;
 
     @include phone {
@@ -178,7 +178,7 @@ export default {
   &__horizontal-line {
     width: 100%;
     height: 2px;
-    background: var(--main-border-color);
+    background: get-theme-for($border-color, 'primary');
     margin-top: -2px;
   }
 

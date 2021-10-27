@@ -35,7 +35,7 @@ export default {
     position: absolute;
     right: -8px;
     bottom: -6px;
-    border: 2px solid var(--primary-background);
+    border: 2px solid get-theme-for($background, 'primary');
     border-radius: 50%;
   }
 }

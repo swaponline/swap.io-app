@@ -126,7 +126,7 @@ export default {
   width: 100%;
   min-height: $--header-height;
   display: flex;
-  background-color: var(--primary-background);
+  background-color: get-theme-for($background, 'primary');
   box-shadow: 0 0 20px rgba(17, 17, 17, 0.02);
   border-radius: 0 0 12px 12px;
   justify-content: space-between;
@@ -200,18 +200,18 @@ export default {
 
   &__notifications {
     flex: 0 0 60px;
-    border: 1px solid var(--main-border-color);
+    border: 1px solid get-theme-for($border-color, 'primary');
     border-top: none;
     border-bottom: none;
     cursor: pointer;
     transition: all $--transition-duration;
 
     &:hover {
-      background-color: var(--main-input-background);
+      background-color: get-theme-for($background, 'secondary');
     }
 
     &-icon {
-      color: var(--primary-text);
+      color: get-theme-for($text, 'primary');
       width: 19px;
       height: 19px;
 
@@ -233,7 +233,7 @@ export default {
     border-radius: $--main-border-radius;
 
     .v-list {
-      background-color: var(--primary-background);
+      background-color: get-theme-for($background, 'primary');
     }
 
     .v-list-item {
@@ -241,7 +241,7 @@ export default {
       transition: all $--transition-duration;
 
       &:hover {
-        background-color: var(--main-input-background);
+        background-color: get-theme-for($background, 'secondary');
       }
     }
   }
@@ -255,7 +255,7 @@ export default {
     flex: 0 0 30px;
     height: 30px;
     border-radius: 50%;
-    background-color: var(--field-background);
+    background-color: get-theme-for($button, 'primary', 'enabled');
     display: flex;
     align-items: center;
     justify-content: center;

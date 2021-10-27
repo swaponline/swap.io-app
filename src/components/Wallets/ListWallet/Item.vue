@@ -54,8 +54,8 @@ export default {
 
   &:hover,
   &--active {
-    background-color: var(--wallets-item-background-hover);
-    box-shadow: var(--wallets-box-shadow);
+    background-color: get-theme-for($wallets-item, 'background', hover);
+    box-shadow: get-theme-for($wallets-item, 'box-shadow');
   }
 
   &__title {
@@ -72,7 +72,7 @@ export default {
   }
   &__name {
     width: 100%;
-    color: var(--secondary-text);
+    color: get-theme-for($text, 'secondary');
     font-size: $--font-size-medium;
   }
   &__text {

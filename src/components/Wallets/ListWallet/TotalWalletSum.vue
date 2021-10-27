@@ -75,8 +75,8 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 2px solid var(--main-border-color);
-  background: var(--primary-background);
+  border-bottom: 2px solid get-theme-for($border-color, 'primary');
+  background: get-theme-for($background, 'primary');
 
   &__currency-select {
     height: $--button-size-small;
@@ -93,7 +93,7 @@ export default {
     border: 1px solid transparent;
 
     &--active {
-      border-color: var(--main-input-background);
+      border-color: get-theme-for($background, 'secondary');
       box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.05);
     }
   }
@@ -126,7 +126,7 @@ export default {
     }
 
     &:hover {
-      background-color: var(--main-button-background-hover);
+      background-color: get-theme-for($button, 'primary', 'hover');
     }
   }
 

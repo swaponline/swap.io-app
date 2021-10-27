@@ -234,26 +234,30 @@ export default {
   &__wallet-selector {
     margin-bottom: 40px !important;
   }
+
   &__subtitle {
     font-size: $--font-size-extra-small-subtitle;
     font-weight: $--font-weight-semi-bold;
     margin-bottom: 16px;
   }
+
   &__item-select {
     border-radius: $--main-border-radius;
-    color: var(--primary-text) !important;
+    color: get-theme-for($text, 'primary') !important;
 
     &:focus-within {
       .v-input__icon .v-icon {
-        color: var(--primary-text) !important;
+        color: get-theme-for($text, 'primary') !important;
       }
     }
+
     .v-input__slot {
-      background-color: var(--main-button-background) !important;
+      background-color: get-theme-for($button, 'primary', 'enabled') !important;
 
       &:hover {
-        background-color: var(--main-button-background-hover) !important;
+        background-color: get-theme-for($button, 'primary', 'hover') !important;
       }
+
       &:before,
       &:after {
         display: none;
@@ -307,10 +311,12 @@ export default {
     margin-left: 8px !important;
     margin-bottom: 20px !important;
   }
+
   &__remove-button {
     color: $--grey !important;
     margin-left: 8px;
   }
+
   &__amount {
     display: flex;
     justify-content: space-between;
@@ -318,11 +324,17 @@ export default {
     font-weight: $--font-weight-semi-bold;
     font-size: $--font-size-extra-small-subtitle;
     color: $--dark-grey;
+
+    span {
+      color: get-theme-for($text, 'primary');
+    }
+
     @include phone {
       margin: 20px 0;
       font-size: $--font-size-medium;
     }
   }
+
   &__total-value {
     color: $--black;
   }

@@ -193,13 +193,13 @@ export default {
   &__chip {
     padding: 0 8px !important;
     border-radius: 4px !important;
-    background-color: var(--main-button-background) !important;
+    background-color: get-theme-for($button, 'primary', 'enabled') !important;
   }
   &__chip-icon {
     margin-right: 6px;
   }
   &__divider {
-    border-color: var(--main-border-color) !important;
+    border-color: get-theme-for($border-color, 'primary') !important;
     margin-bottom: 16px;
   }
   &__list {
@@ -212,7 +212,7 @@ export default {
     padding: 8px 4px;
     border-radius: $--main-border-radius;
     &:hover {
-      background-color: var(--main-button-background-hover);
+      background-color: get-theme-for($button, 'primary', 'hover');
       cursor: pointer;
     }
   }
@@ -224,7 +224,7 @@ export default {
   }
 
   &__selected-currency {
-    background-color: var(--main-input-background);
+    background-color: get-theme-for($background, 'secondary');
     border-radius: $--main-border-radius;
     padding: 14px;
     margin-bottom: 20px;

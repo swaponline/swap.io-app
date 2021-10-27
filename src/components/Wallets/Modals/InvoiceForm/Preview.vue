@@ -55,7 +55,7 @@ export default {
     justify-content: space-between;
     font-weight: $--font-weight-semi-bold;
     font-size: $--font-size-extra-small-subtitle;
-    color: var(--secondary-text);
+    color: get-theme-for($text, 'secondary');
     @include phone {
       margin: 20px 0;
       font-size: $--font-size-medium;

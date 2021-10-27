@@ -62,7 +62,7 @@ export default {
 .transaction-description {
   width: 100%;
   font-size: $--font-size-medium;
-  color: var(--primary-text);
+  color: get-theme-for($text, 'primary');
   &__input {
     color: inherit;
     width: 100%;
