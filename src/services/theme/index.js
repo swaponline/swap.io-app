@@ -25,12 +25,7 @@ export function createThemeService() {
 
   function updateCurrentTheme(theme) {
     currentTheme = theme
-
-    if (currentTheme === DARK_THEME_KEY) {
-      emitter.emit(events.UPDATE_CURRENT_THEME, DARK_THEME_KEY)
-    } else {
-      emitter.emit(events.UPDATE_CURRENT_THEME, LIGHT_THEME_KEY)
-    }
+    emitter.emit(events.UPDATE_CURRENT_THEME, currentTheme)
   }
 
   function trackingUserSystemTheme({ matches }) {
@@ -57,14 +52,14 @@ export function createThemeService() {
     appTheme = theme
     setStorage(THEME_KEY, appTheme)
 
-    let localTheme = appTheme
+    let newCurrentTheme = appTheme
 
     if (appTheme === SYSTEM_THEME_KEY) {
-      localTheme = getUserSystemTheme()
+      newCurrentTheme = getUserSystemTheme()
       startTrackingUserSystemTheme()
     }
 
-    updateCurrentTheme(localTheme)
+    updateCurrentTheme(newCurrentTheme)
   }
 
   setAppTheme(appTheme)

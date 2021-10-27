@@ -21,7 +21,7 @@ export default {
   name: 'Settings',
   data() {
     return {
-      selectedTheme: null
+      selectedTheme: themeService.getAppTheme()
     }
   },
 
@@ -31,9 +31,6 @@ export default {
         themeService.setAppTheme(theme)
       }
     }
-  },
-  created() {
-    this.selectedTheme = themeService.getAppTheme()
   }
 }
 </script>

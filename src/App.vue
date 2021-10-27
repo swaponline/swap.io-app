@@ -59,9 +59,6 @@ export default {
       }
     }
   },
-  created() {
-    themeService.startTrackingUserSystemTheme()
-  },
   mounted() {
     this.subscribeToUpdates()
 
@@ -86,7 +83,6 @@ export default {
   beforeDestroy() {
     window.removeEventListener('resize', this.resize)
     this.subscriptions.forEach(callback => callback.unsubscribe())
-    themeService.stopTrackingUserSystemTheme()
   },
   methods: {
     resize() {
@@ -128,11 +124,6 @@ export default {
       } else {
         this.userColorScheme = profilesService.getCurrentProfileColorScheme()
       }
-    },
-    initCurrentTheme() {
-      // INIT CURRENT THEME
-      themeService.initCurrentTheme()
-      this.$vuetify.theme.dark = themeService.getIsDark()
     },
     setBackground(backgroundSvg) {
       if (!backgroundSvg) return
