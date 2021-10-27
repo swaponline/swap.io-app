@@ -55,7 +55,7 @@
           <coin-logo class="wallet-create-modal__currency-icon" :path="item.logo" :name="item.symbol" />
           <span class="wallet-create-modal__currency-name">{{ item.name }}</span>
         </div>
-        <infinite-loading v-if="!currencySearchString" @infinite="infiniteHandler">
+        <infinite-loading v-if="!currencySearchString && assets.length" @infinite="infiniteHandler">
           <template #spinner>
             <v-loader :active="true" width="25" />
           </template>
@@ -155,14 +155,19 @@ export default {
     }
   },
 
+  created() {
+    this.fetchAssets()
+  },
+
   methods: {
     fetchAssets() {
       this.loading = true
-      debugger
+
       networksService
         .fetchAssets({ from: 0, size: ASSETS_PAGE_COUNT })
         .then(assets => {
           this.assets = assets
+          this.assetsOffset += assets.length
         })
         .finally(() => {
           this.loading = false
@@ -180,16 +185,11 @@ export default {
     }, 300),
 
     infiniteHandler($state) {
-      if (this.assetsOffset === 0) {
-        this.loading = true
-      }
-
       networksService.fetchAssets({ from: this.assetsOffset, size: ASSETS_PAGE_COUNT }).then(assets => {
         if (assets.length) {
           this.assetsOffset += assets.length
           this.assets.push(...assets)
           $state.loaded()
-          this.loading = false
         } else {
           $state.complete()
         }
