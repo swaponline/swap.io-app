@@ -14,9 +14,7 @@
 </template>
 
 <script>
-import { profilesService } from '@/services/profiles'
-import { themeService, THEMES, SYSTEM_THEME_KEY } from '@/services/theme'
-import { setAppColorSchemeBasedOnTheme } from '@/utils/appColorScheme'
+import { themeService, THEMES } from '@/services/theme'
 
 export default {
   THEMES,
@@ -31,28 +29,11 @@ export default {
     selectedTheme: {
       handler(theme) {
         themeService.setAppTheme(theme)
-        const isDark = themeService.getIsDark()
-
-        if (isDark) {
-          this.$vuetify.theme.dark = true
-        } else {
-          this.$vuetify.theme.dark = false
-        }
-        const currentTheme = themeService.getAppTheme()
-        const colorScheme = profilesService.getCurrentProfileColorScheme()
-
-        setAppColorSchemeBasedOnTheme(colorScheme, currentTheme)
       }
     }
   },
   created() {
-    const isSystemTheme = themeService.getIsSystemTheme()
-
-    if (isSystemTheme) {
-      this.selectedTheme = SYSTEM_THEME_KEY
-    } else {
-      this.selectedTheme = themeService.getAppTheme()
-    }
+    this.selectedTheme = themeService.getAppTheme()
   }
 }
 </script>

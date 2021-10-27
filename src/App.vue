@@ -53,7 +53,6 @@ export default {
         if (!scheme) return
         const { color } = scheme
 
-        this.initCurrentTheme()
         this.setFavicon(color)
         this.setColorThemeOfAddressBar(color)
         this.setCustomColorCSSVariables(scheme)
@@ -114,12 +113,11 @@ export default {
         profilesService.subscribe(profilesServiceEvents.UPDATE_CURRENT_PROFILE, this.updateUserColorScheme)
       )
 
-      this.subscriptions.push(themeService.subscribe(themeServiceEvents.UPDATE_SYSTEM_THEME, this.updateAppTheme))
+      this.subscriptions.push(themeService.subscribe(themeServiceEvents.UPDATE_CURRENT_THEME, this.updateAppTheme))
     },
 
     updateAppTheme(appTheme) {
       this.$vuetify.theme.dark = themeService.getIsDark()
-
       setAppColorSchemeBasedOnTheme(this.userColorScheme, appTheme)
     },
 
@@ -168,7 +166,7 @@ export default {
     setCustomColorCSSVariables(scheme) {
       const { background, selectionColor, color, colorForDarkTheme } = scheme
 
-      const appTheme = themeService.getAppTheme()
+      const appTheme = themeService.getCurrentTheme()
       setAppColorSchemeBasedOnTheme({ color, colorForDarkTheme }, appTheme)
 
       setCSSCustomProperty('selection-color', selectionColor)

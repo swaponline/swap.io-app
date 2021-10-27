@@ -3,7 +3,6 @@ import { createNanoEvents } from 'nanoevents'
 import { getStorage, setStorage } from '@/utils/storage'
 import {
   events,
-  PREFERS_COLOR_SCHEME_LIGHT,
   PREFERS_COLOR_SCHEME_DARK,
   LIGHT_THEME_KEY,
   DARK_THEME_KEY,
@@ -14,88 +13,76 @@ import {
 
 export function createThemeService() {
   const emitter = createNanoEvents()
-  let isDark = false
   let appTheme = getStorage(THEME_KEY) || LIGHT_THEME_KEY
-  let isSystemTheme = false
+  let currentTheme = null
+  const mediaQueryListColorScheme = window.matchMedia(PREFERS_COLOR_SCHEME_DARK)
 
   function getUserSystemTheme() {
-    const isDarkSystemTheme = window.matchMedia(PREFERS_COLOR_SCHEME_DARK).matches
+    const isDarkSystemTheme = mediaQueryListColorScheme.matches
     if (isDarkSystemTheme) return DARK_THEME_KEY
     return LIGHT_THEME_KEY
   }
 
-  function setDarkTheme() {
-    isDark = true
+  function updateCurrentTheme(theme) {
+    currentTheme = theme
+
+    if (currentTheme === DARK_THEME_KEY) {
+      emitter.emit(events.UPDATE_CURRENT_THEME, DARK_THEME_KEY)
+    } else {
+      emitter.emit(events.UPDATE_CURRENT_THEME, LIGHT_THEME_KEY)
+    }
   }
 
-  function setLightTheme() {
-    isDark = false
-  }
-
-  function trackingUserSystemTheme({ matches, media }) {
-    if (matches && isSystemTheme) {
-      if (media === PREFERS_COLOR_SCHEME_LIGHT) {
-        setLightTheme()
-        emitter.emit(events.UPDATE_SYSTEM_THEME, LIGHT_THEME_KEY)
-        return
-      }
-
-      setDarkTheme()
-      emitter.emit(events.UPDATE_SYSTEM_THEME, DARK_THEME_KEY)
+  function trackingUserSystemTheme({ matches }) {
+    if (matches) {
+      updateCurrentTheme(DARK_THEME_KEY)
+    } else {
+      updateCurrentTheme(LIGHT_THEME_KEY)
     }
   }
 
   function startTrackingUserSystemTheme() {
-    window.matchMedia(PREFERS_COLOR_SCHEME_LIGHT).addEventListener('change', trackingUserSystemTheme)
-    window.matchMedia(PREFERS_COLOR_SCHEME_DARK).addEventListener('change', trackingUserSystemTheme)
+    mediaQueryListColorScheme.addEventListener('change', trackingUserSystemTheme)
+  }
+
+  function stopTrackingUserSystemTheme() {
+    mediaQueryListColorScheme.removeEventListener('change', trackingUserSystemTheme)
   }
 
   function setAppTheme(theme) {
+    if (appTheme === SYSTEM_THEME_KEY) {
+      stopTrackingUserSystemTheme()
+    }
+
     appTheme = theme
-    isSystemTheme = appTheme === SYSTEM_THEME_KEY
     setStorage(THEME_KEY, appTheme)
 
     let localTheme = appTheme
-    if (isSystemTheme) {
+
+    if (appTheme === SYSTEM_THEME_KEY) {
       localTheme = getUserSystemTheme()
+      startTrackingUserSystemTheme()
     }
 
-    if (localTheme === LIGHT_THEME_KEY) {
-      setLightTheme()
-      return
-    }
-
-    if (localTheme === DARK_THEME_KEY) {
-      setDarkTheme()
-    }
+    updateCurrentTheme(localTheme)
   }
 
-  function initCurrentTheme() {
-    setAppTheme(appTheme)
-  }
+  setAppTheme(appTheme)
 
   return {
-    initCurrentTheme,
     setAppTheme,
-
-    getIsSystemTheme() {
-      return isSystemTheme
-    },
     getIsDark() {
-      return isDark
+      return currentTheme === DARK_THEME_KEY
     },
     getUserSystemTheme,
     getAppTheme() {
-      if (isSystemTheme) {
-        return getUserSystemTheme()
-      }
       return appTheme
     },
-    startTrackingUserSystemTheme,
-    stopTrackingUserSystemTheme() {
-      window.matchMedia(PREFERS_COLOR_SCHEME_LIGHT).removeEventListener('change', trackingUserSystemTheme)
-      window.matchMedia(PREFERS_COLOR_SCHEME_DARK).removeEventListener('change', trackingUserSystemTheme)
+    getCurrentTheme() {
+      return currentTheme
     },
+    startTrackingUserSystemTheme,
+    stopTrackingUserSystemTheme,
     subscribe(event, callback) {
       const unsubscribe = emitter.on(event, callback)
       return {

@@ -1,5 +1,5 @@
 export const events = {
-  UPDATE_SYSTEM_THEME: 'updateSystemTheme'
+  UPDATE_CURRENT_THEME: 'updateAppTheme'
 }
 
 export const THEME_KEY = 'theme'

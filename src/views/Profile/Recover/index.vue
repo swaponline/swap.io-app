@@ -48,7 +48,7 @@ export default {
                 message: {
                   type: SET_APP_THEME,
                   payload: {
-                    theme: themeService.getAppTheme()
+                    theme: themeService.getCurrentTheme()
                   }
                 }
               })
