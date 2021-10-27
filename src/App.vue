@@ -170,8 +170,8 @@ export default {
       }
     },
     setColorThemeOfAddressBar(color) {
-      const colorThemeOfAddressBar = document.querySelector('meta[name="theme-color"]')
-      colorThemeOfAddressBar.setAttribute('color', `${color}`)
+      const themeColorOfAddressBar = document.querySelector('meta[name="theme-color"]')
+      themeColorOfAddressBar.setAttribute('color', `${color}`)
     }
   }
 }
