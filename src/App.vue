@@ -54,7 +54,7 @@ export default {
         const { color } = scheme
 
         this.setFavicon(color)
-        this.setColorThemeOfAddressBar(color)
+        this.setThemeColorOfAddressBar(color)
         this.setCustomColorCSSVariables(scheme)
       }
     }
@@ -154,9 +154,7 @@ export default {
 
       dynamicSvgFavicon.setAttribute('href', `${faviconBase64}`)
     },
-    setCustomColorCSSVariables(scheme) {
-      const { background, selectionColor, color, colorForDarkTheme } = scheme
-
+    setCustomColorCSSVariables({ background, selectionColor, color, colorForDarkTheme }) {
       const appTheme = themeService.getCurrentTheme()
       setAppColorSchemeBasedOnTheme({ color, colorForDarkTheme }, appTheme)
 
@@ -169,7 +167,7 @@ export default {
         this.$nextTick(() => this.setBackground(background))
       }
     },
-    setColorThemeOfAddressBar(color) {
+    setThemeColorOfAddressBar(color) {
       const themeColorOfAddressBar = document.querySelector('meta[name="theme-color"]')
       themeColorOfAddressBar.setAttribute('color', `${color}`)
     }
