@@ -102,7 +102,6 @@ import { mapMutations } from 'vuex'
 import { ADD_MODAL } from '@/store/modules/Modals'
 import { SHARE_MODAL } from '@/store/modules/Modals/names'
 import { fiatCurrencies, convertAmountToOtherCurrency } from '@/services/converter'
-import { encodeObjectToQueryParameters } from '@/utils/http'
 import { walletsService, events } from '@/services/wallets'
 import InvoicePreview from './Preview.vue'
 
@@ -155,17 +154,19 @@ export default {
     },
     shareUrl() {
       // Example: bitcoincash:qp0qca2j3jey9af7x69r6ata6wlnxz90sqhyzxdsvu?amount=1&message=test%20me%20please
-      const params = {
-        address: this.selectedWallet.address,
-        contact: this.contact,
-        currency: this.selectedWallet.coin,
-        network: this.selectedWallet.networkId,
-        description: this.amountFields.map(f => f.description || ''),
-        amount: this.amountFields.map(f => f.amount)
-      }
-      const queryParams = encodeObjectToQueryParameters(params)
+      const { href } = this.$router.resolve({
+        name: 'Invoice',
+        query: {
+          address: this.selectedWallet.address,
+          contact: this.contact,
+          currency: this.selectedWallet.coin,
+          network: this.selectedWallet.networkId,
+          description: this.amountFields.map(f => f.description || ''),
+          amount: this.amountFields.map(f => f.amount)
+        }
+      })
 
-      return `${window.location.origin}/invoice?${queryParams}`
+      return `${window.location.origin}${href}`
     }
   },
   created() {
