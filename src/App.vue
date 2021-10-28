@@ -54,7 +54,8 @@ export default {
       handler(scheme) {
         if (!scheme) return
         const { color } = scheme
-
+        // SET THE CURRENT APP THEME
+        this.$vuetify.theme.dark = themeService.getIsDark()
         this.setFavicon(color)
         this.setThemeColorOfAddressBar(color)
         this.setCustomColorCSSVariables(scheme)
