@@ -2,13 +2,12 @@
   <component
     :is="wrapperComponent"
     class="wallet-create-modal"
-    :class="{ 'wallet-create-modal--block': asBlock }"
     value
     :title="modalTitle"
     :disable-confirm-button="!selectedAssetGroup || disabledCreateButton"
     :confirm-button-label="confirmButtonLabel"
     modificator="full-height"
-    @input="inputClose"
+    @input="close"
     @submit="create"
     @cancel="close"
   >
@@ -61,8 +60,6 @@
           </template>
         </infinite-loading>
       </div>
-
-      <div v-if="asBlock" class="wallet-create-modal__tip">Select currency</div>
     </template>
 
     <template v-else>
@@ -82,11 +79,16 @@
         >Create</swap-button
       >
     </template>
+
+    <template v-if="!selectedAssetGroup" #footer>
+      <span></span>
+    </template>
   </component>
 </template>
 
 <script>
 import ModalWrapper from '@/components/UI/ModalWrapper.vue'
+import SwapDialog from '@/components/UI/SwapDialog.vue'
 import TypeCurrencyCard from '@/components/Wallets/TypeCurrencyCard.vue'
 import FormTextField from '@/components/UI/Forms/TextField.vue'
 import CoinLogo from '@/components/Wallets/CoinLogo.vue'
@@ -111,8 +113,10 @@ export default {
     CoinLogo,
     WalletCreateNetwork,
     VLoader,
-    InfiniteLoading
+    InfiniteLoading,
+    SwapDialog
   },
+  inject: ['mediaQueries'],
   props: {
     asBlock: { type: Boolean, default: false }
   },
@@ -132,10 +136,11 @@ export default {
   },
   computed: {
     mostPopularAssets() {
-      return this.assets.slice(0, 6)
+      const popularCount = this.mediaQueries.desktop ? 6 : 4
+      return this.assets.slice(0, popularCount)
     },
     wrapperComponent() {
-      return this.asBlock ? 'div' : ModalWrapper
+      return this.asBlock ? SwapDialog : ModalWrapper
     },
     filteredCurrencies() {
       if (this.currencySearchString) {
@@ -235,13 +240,6 @@ export default {
     },
     close() {
       this.$emit('close')
-    },
-
-    // TODO: refactoring modalWrapper
-    inputClose() {
-      if (!this.asBlock) {
-        this.close()
-      }
     }
   }
 }
@@ -249,20 +247,11 @@ export default {
 
 <style lang="scss">
 .wallet-create-modal {
-  &--block {
-    max-width: 412px;
-    width: 100%;
-    height: 608px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-  }
-
   &__header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
   }
 
   &__title {
@@ -276,6 +265,10 @@ export default {
 
   &__chips {
     margin-bottom: 16px;
+
+    .v-slide-group__content {
+      padding: 0;
+    }
   }
 
   &__subtitle {
@@ -303,7 +296,6 @@ export default {
 
   &__list {
     overflow: auto;
-    margin-bottom: 16px;
   }
 
   &__currency {

@@ -34,7 +34,6 @@ export default {
 
     @include small-phone {
       margin-right: 15px;
-      margin-left: 15px;
       width: 30px;
       height: 30px;
     }

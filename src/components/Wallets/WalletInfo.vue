@@ -165,12 +165,12 @@ export default {
   @include tablet {
     height: 220px;
     padding: 20px 15px;
-    margin: 20px 40px;
+    margin: 0 40px 20px;
   }
 
   @include phone {
-    margin: 12px;
-    padding: 12px 11px;
+    margin: 0 12px 12px;
+    padding: 12px;
   }
 
   &--compressed {

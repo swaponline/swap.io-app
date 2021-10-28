@@ -168,7 +168,7 @@ export default {
   @include phone {
     max-width: none;
     width: auto;
-    margin: 14px 14px;
+    margin: 12px 12px;
   }
   @include small-phone {
     max-height: 415px;
