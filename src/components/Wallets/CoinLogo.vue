@@ -1,5 +1,5 @@
 <template>
-  <img class="coin-logo" :src="logoSrc" :alt="name" />
+  <img class="coin-logo" :src="logoSrc" :alt="name" :title="name" />
 </template>
 
 <script>

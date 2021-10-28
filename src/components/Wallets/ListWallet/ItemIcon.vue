@@ -1,7 +1,7 @@
 <template>
   <v-list-item-icon class="list-wallet-icon">
-    <coin-logo class="list-wallet-icon__coin" :path="currencyName" :name="currencyName" />
-    <coin-logo v-if="showNetwork" class="list-wallet-icon__network" :path="network" :name="network" />
+    <coin-logo class="list-wallet-icon__coin" :path="coinPath" :name="coin" />
+    <coin-logo v-if="showNetwork" class="list-wallet-icon__network" :path="networkPath" :name="network" />
   </v-list-item-icon>
 </template>
 
@@ -12,12 +12,14 @@ export default {
   name: 'ListWalletItemIcon',
   components: { CoinLogo },
   props: {
-    currencyName: { type: String, default: '' },
-    network: { type: String, default: '' }
+    coinPath: { type: String, default: '' },
+    networkPath: { type: String, default: '' },
+    network: { type: String, default: '' },
+    coin: { type: String, default: '' }
   },
   computed: {
     showNetwork() {
-      return this.network && this.network !== this.currencyName
+      return this.networkPath && this.networkPath !== this.coinPath
     }
   }
 }
