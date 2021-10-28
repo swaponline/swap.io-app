@@ -55,6 +55,11 @@
           <coin-logo class="wallet-create-modal__currency-icon" :path="item.logo" :name="item.symbol" />
           <span class="wallet-create-modal__currency-name">{{ item.name }}</span>
         </div>
+        <infinite-loading v-if="!currencySearchString && assets.length" @infinite="infiniteHandler">
+          <template #spinner>
+            <v-loader :active="true" width="25" />
+          </template>
+        </infinite-loading>
       </div>
 
       <div v-if="asBlock" class="wallet-create-modal__tip">Select currency</div>
@@ -88,15 +93,26 @@ import CoinLogo from '@/components/Wallets/CoinLogo.vue'
 import WalletCreateNetwork from '@/components/Wallets/Modals/WalletCreateNetwork.vue'
 import VLoader from '@/components/Loaders/VLoader.vue'
 
+import InfiniteLoading from 'vue-infinite-loading'
 import networksService from '@/services/networks'
 import SwapKeysApi from '@/keys-api'
 import { profilesService } from '@/services/profiles'
 import { walletsService } from '@/services/wallets'
 import { debounce } from '@/utils/common'
 
+const ASSETS_PAGE_COUNT = 20
+
 export default {
   name: 'WalletCreate',
-  components: { ModalWrapper, TypeCurrencyCard, FormTextField, CoinLogo, WalletCreateNetwork, VLoader },
+  components: {
+    ModalWrapper,
+    TypeCurrencyCard,
+    FormTextField,
+    CoinLogo,
+    WalletCreateNetwork,
+    VLoader,
+    InfiniteLoading
+  },
   props: {
     asBlock: { type: Boolean, default: false }
   },
@@ -106,6 +122,8 @@ export default {
       currencySearchString: '',
       assets: [],
       searchedAssets: [],
+
+      assetsOffset: 0,
 
       selectedAssetGroup: null,
       selectedNetwork: null,
@@ -144,10 +162,12 @@ export default {
   methods: {
     fetchAssets() {
       this.loading = true
+
       networksService
-        .fetchAssets({ from: 0, size: 20 })
+        .fetchAssets({ from: 0, size: ASSETS_PAGE_COUNT })
         .then(assets => {
           this.assets = assets
+          this.assetsOffset += assets.length
         })
         .finally(() => {
           this.loading = false
@@ -163,6 +183,18 @@ export default {
         this.searchedAssets = []
       }
     }, 300),
+
+    infiniteHandler($state) {
+      networksService.fetchAssets({ from: this.assetsOffset, size: ASSETS_PAGE_COUNT }).then(assets => {
+        if (assets.length) {
+          this.assetsOffset += assets.length
+          this.assets.push(...assets)
+          $state.loaded()
+        } else {
+          $state.complete()
+        }
+      })
+    },
 
     reset() {
       this.selectedAssetGroup = null
