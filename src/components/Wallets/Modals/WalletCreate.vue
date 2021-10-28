@@ -28,23 +28,6 @@
         @input="searchAssets"
       />
 
-      <div class="wallet-create-modal__chips">
-        <div class="wallet-create-modal__subtitle">Most popular</div>
-        <v-chip-group v-model="selectedAssetGroup" column>
-          <v-chip
-            v-for="(item, index) in mostPopularAssets"
-            :key="index"
-            class="wallet-create-modal__chip"
-            :value="item"
-          >
-            <coin-logo class="wallet-create-modal__chip-icon" :path="item.logo" :name="item.symbol" />
-            {{ item.name }}
-          </v-chip>
-        </v-chip-group>
-      </div>
-
-      <v-divider class="wallet-create-modal__divider" />
-
       <div class="wallet-create-modal__list">
         <div
           v-for="(item, index) in filteredCurrencies"
@@ -53,7 +36,12 @@
           @click="selectedAssetGroup = item"
         >
           <coin-logo class="wallet-create-modal__currency-icon" :path="item.logo" :name="item.symbol" />
-          <span class="wallet-create-modal__currency-name">{{ item.name }}</span>
+          <div class="wallet-create-modal__asset-info">
+            <span class="wallet-create-modal__asset-symbol"
+              >{{ item.symbol }} <small>{{ getUniqueAssets(item) }}</small></span
+            >
+            <span class="wallet-create-modal__asset-name">{{ item.name }}</span>
+          </div>
         </div>
         <infinite-loading v-if="!currencySearchString && assets.length" @infinite="infiniteHandler">
           <template #spinner>
@@ -131,9 +119,6 @@ export default {
     }
   },
   computed: {
-    mostPopularAssets() {
-      return this.assets.slice(0, 6)
-    },
     wrapperComponent() {
       return this.asBlock ? 'div' : ModalWrapper
     },
@@ -160,6 +145,16 @@ export default {
   },
 
   methods: {
+    getUniqueAssets(group) {
+      const allAssets = group.networks.reduce((assets, network) => {
+        const otherAssets = network.assets.filter(asset => asset.symbol !== group.symbol)
+        return [...assets, ...otherAssets.map(asset => asset.symbol)]
+      }, [])
+
+      const uniqueAssets = [...new Set(allAssets)]
+
+      return uniqueAssets.length ? `(${uniqueAssets.join(', ')})` : ''
+    },
     fetchAssets() {
       this.loading = true
 
@@ -221,8 +216,16 @@ export default {
               ...wallet,
               coinName: this.selectedAsset.name,
               logo: this.selectedAsset.logo,
-              networkLogo: this.selectedNetwork.network.logo,
-              networkName: this.selectedNetwork.network.name,
+              network: {
+                name: this.selectedNetwork.network.name,
+                logo: this.selectedNetwork.network.logo,
+                slug: this.selectedNetwork.network.slug
+              },
+              asset: {
+                name: this.selectedAssetGroup.name,
+                logo: this.selectedAssetGroup.logo,
+                symbol: this.selectedAssetGroup.symbol
+              },
               name: '',
               value: 0
             })
@@ -284,26 +287,23 @@ export default {
     margin-bottom: 10px;
   }
 
-  &__chip {
-    padding: 0 8px !important;
-    border-radius: $--border-radius-small !important;
-    background-color: var(--main-button-background) !important;
-  }
-
-  &__chip-icon {
-    margin-right: 6px;
-    width: 20px;
-    height: 20px;
-  }
-
-  &__divider {
-    border-color: var(--main-border-color) !important;
-    margin-bottom: 16px;
-  }
-
   &__list {
     overflow: auto;
     margin-bottom: 16px;
+  }
+
+  &__asset-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__asset-symbol {
+    font-size: $--font-size-medium;
+  }
+
+  &__asset-name {
+    color: $--grey;
+    font-size: $--font-size-small;
   }
 
   &__currency {
@@ -321,10 +321,6 @@ export default {
     margin-right: 10px;
     width: 40px;
     height: 40px;
-  }
-
-  &__currency-name {
-    font-size: $--font-size-medium;
   }
 
   &__submit {
