@@ -41,7 +41,7 @@
       </v-list-item>
       <v-list-item
         v-for="{ address, name, networkId, coin, value: walletValue } in groupWallets"
-        :key="generateKey(coin, address)"
+        :key="generateKey(coin, networkId, address)"
         link
         exact
         class="list-wallet-group__item"
@@ -91,8 +91,8 @@ export default {
   methods: {
     minifyAddress,
 
-    generateKey(key, value) {
-      return `${key}-${value}`
+    generateKey(...keys) {
+      return keys.join('-')
     }
   }
 }
