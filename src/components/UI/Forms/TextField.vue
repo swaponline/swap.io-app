@@ -26,7 +26,7 @@ export default {
 
 <style lang="scss">
 .form-text-field {
-  border: 2px solid var(--main-border-color);
+  border: 2px solid get-theme-for($text-field, 'border-color', 'enabled');
   border-radius: $--main-border-radius;
   display: flex;
   align-items: center;
@@ -34,23 +34,30 @@ export default {
   padding: 0 15px;
   transition: 0.3s;
   width: 100%;
-  flex-grow: 1;
   margin-bottom: 25px;
   flex-grow: 0;
 
-  --mt-value: 0px;
+  --mt-value: 0;
+
   &--with-label {
     --mt-value: 15px;
   }
+
   @include tablet {
     margin-bottom: 15px;
   }
+
   @include phone {
     margin-bottom: 10px;
     padding: 0 8px;
   }
+
+  &:hover {
+    border-color: get-theme-for($text-field, 'border-color', 'hover');
+  }
+
   &:focus-within {
-    border-color: var(--main-color);
+    border-color: get-theme-for($text-field, 'border-color', 'pressed');
   }
   // переопределим стили vuetify
   .v-input {
@@ -60,11 +67,14 @@ export default {
     &:focus-within {
       margin-top: var(--mt-value) !important;
     }
+
     &--is-label-active {
       margin-top: var(--mt-value) !important;
     }
+
     &__slot {
       margin-bottom: 0 !important;
+
       &::before {
         display: none;
       }

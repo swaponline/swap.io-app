@@ -70,11 +70,11 @@ export default {
   .v-input__slot {
     height: 74px;
     padding: 0 !important;
-    background-color: var(--main-input-background) !important;
+    background-color: get-theme-for($background, 'secondary') !important;
 
     &:hover {
       .wallet-preview {
-        background-color: var(--main-button-background-hover) !important;
+        background-color: get-theme-for($button, 'primary', 'hover') !important;
       }
     }
     &:before,
@@ -88,7 +88,7 @@ export default {
 
   &__menu {
     .v-list-item:hover {
-      background-color: var(--main-button-background-hover);
+      background-color: get-theme-for($button, 'primary', 'hover');
     }
   }
 

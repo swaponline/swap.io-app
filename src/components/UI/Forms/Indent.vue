@@ -32,7 +32,7 @@ export default {
   word-break: break-all;
   border: 2px solid transparent;
   border-radius: $--main-border-radius;
-  background: var(--main-input-background);
+  background: get-theme-for($background, 'secondary');
   padding: 6px 15px;
 
   @include phone {

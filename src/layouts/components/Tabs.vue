@@ -58,7 +58,7 @@ export default {
   }
 
   .v-tabs-bar {
-    background-color: var(--primary-background) !important;
+    background-color: get-theme-for($background, 'primary') !important;
     transition: $--theme-transition;
   }
 
@@ -77,7 +77,7 @@ export default {
     margin: 0 0 !important;
     font-weight: $--font-weight-regular;
     font-size: $--font-size-extra-small-subtitle;
-    color: var(--primary-text) !important;
+    color: get-theme-for($text, 'primary') !important;
     line-height: 27px;
     letter-spacing: 0.01em;
     text-transform: none;
@@ -97,7 +97,6 @@ export default {
     }
 
     @include phone {
-      min-height: 50px;
     }
   }
 }

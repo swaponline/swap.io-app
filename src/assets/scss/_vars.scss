@@ -9,6 +9,7 @@ $--light-grey-3: #eaeaea;
 $--light-grey-4: #e8e8e8;
 $--light-grey-5: #eeeeee;
 $--light-grey-6: #f7f7f7;
+$--light-grey-7: #e2e2e2;
 $--grey: #b9b9b9;
 $--grey-1: #a4a4a4;
 $--grey-2: #b4b4b4;
@@ -21,7 +22,8 @@ $--blue: #1935cf;
 $--light-blue: #2196f3;
 $--purple: #6144e5;
 $--salad: #49c800;
-$--text-color-error: #f00;
+$--red: #ff0000;
+$--text-color-error: $--red;
 $--green: #008000;
 
 $--dark-blue: #0f1422;

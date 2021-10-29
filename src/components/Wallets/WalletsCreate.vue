@@ -45,7 +45,7 @@ export default {
   width: 100%;
   border-radius: 12px;
   overflow-y: auto;
-  background: var(--primary-background);
+  background: get-theme-for($background, 'primary');
 
   &--centered {
     display: block;

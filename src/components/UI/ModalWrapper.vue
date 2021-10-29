@@ -78,7 +78,7 @@ export default {
   margin-left: auto;
   border-radius: 0;
   overflow: auto;
-  background: var(--primary-background);
+  background: get-theme-for($background, 'primary');
   margin-right: 0;
   box-shadow: none;
 

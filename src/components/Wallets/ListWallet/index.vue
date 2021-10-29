@@ -85,7 +85,7 @@ export default {
 <style lang="scss">
 .list-wallet {
   position: relative;
-  background: var(--primary-background);
+  background: get-theme-for($background, 'primary');
   max-width: 305px;
   width: 100%;
   height: 100%;
@@ -95,7 +95,7 @@ export default {
   overflow-y: hidden;
 
   .v-list {
-    background: var(--primary-background);
+    background: get-theme-for($background, 'primary');
   }
 
   @include tablet {
@@ -106,7 +106,7 @@ export default {
   &__wrapper {
     height: 100%;
     overflow: auto;
-    background: var(--primary-background);
+    background: get-theme-for($background, 'primary');
     border-radius: 12px 12px 0 0 !important;
     padding-bottom: 100px;
     transition: all 0.5s;
@@ -149,7 +149,7 @@ export default {
     position: relative;
     padding: 5px 0;
     margin: 0 10px;
-    border-bottom: 1px solid var(--main-border-color);
+    border-bottom: 1px solid get-theme-for($border-color, 'primary');
 
     &:first-child {
       margin-top: 5px;
