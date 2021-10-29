@@ -151,6 +151,7 @@ export default {
     overflow: initial !important;
     border-radius: $--border-radius-large;
     transition: all 0.3s;
+    padding: 0 10px;
 
     &:hover,
     &.v-list-item--active {
@@ -160,7 +161,7 @@ export default {
   }
 
   &__item-content {
-    padding: 15px 10px;
+    padding: 15px 0px;
     border-bottom: 1px solid var(--wallets-item-border);
   }
 
