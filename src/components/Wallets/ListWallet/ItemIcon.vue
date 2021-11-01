@@ -1,7 +1,7 @@
 <template>
   <v-list-item-icon class="list-wallet-icon">
     <coin-logo class="list-wallet-icon__coin" :path="coinPath" :name="coin" />
-    <coin-logo v-if="showNetwork" class="list-wallet-icon__network" :path="networkPath" :name="network" />
+    <coin-logo v-if="showNetwork" class="list-wallet-icon__network" :path="networkPath" :name="network" show-tooltip />
   </v-list-item-icon>
 </template>
 

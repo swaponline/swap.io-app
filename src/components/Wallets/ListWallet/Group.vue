@@ -20,6 +20,7 @@
               class="list-wallet-group__header-icon"
               :path="groupNetwork.logo"
               :name="groupNetwork.name"
+              show-tooltip
             />
           </span>
         </div>
@@ -198,6 +199,7 @@ export default {
   }
 
   &__name {
+    display: flex;
     width: 100%;
     font-size: $--font-size-medium;
     color: var(--secondary-text);

@@ -1,5 +1,13 @@
 <template>
-  <img class="coin-logo" :src="logoSrc" :alt="name" :title="name" />
+  <div class="coin-logo">
+    <v-tooltip v-if="showTooltip" bottom>
+      <template v-slot:activator="{ on, attrs }">
+        <img class="coin-logo__image" v-bind="attrs" :src="logoSrc" :alt="name" v-on="on" />
+      </template>
+      <span>{{ name }}</span>
+    </v-tooltip>
+    <img v-else class="coin-logo__image" :src="logoSrc" :alt="name" />
+  </div>
 </template>
 
 <script>
@@ -9,7 +17,8 @@ export default {
   name: 'CoinLogo',
   props: {
     path: { type: String, default: '' },
-    name: { type: String, default: '' }
+    name: { type: String, default: '' },
+    showTooltip: { type: Boolean, default: false }
   },
   computed: {
     logoSrc() {
@@ -21,6 +30,10 @@ export default {
 
 <style lang="scss">
 .coin-logo {
-  object-fit: contain;
+  display: flex;
+  &__image {
+    object-fit: contain;
+    max-width: 100%;
+  }
 }
 </style>
