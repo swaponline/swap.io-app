@@ -2,7 +2,7 @@
   <div class="wallet-create-network">
     <div class="wallet-create-network__asset-group">
       <coin-logo class="wallet-create-network__asset-group-icon" :path="assetGroup.logo" :name="assetGroup.symbol" />
-      {{ assetGroup.name }}
+      {{ assetGroup.symbol }}
       <button class="wallet-create-network__asset-group-change" @click="back">Change</button>
     </div>
 
@@ -33,7 +33,7 @@
             <template #label>
               <div class="wallet-create-network__asset-label">
                 <coin-logo class="wallet-create-network__asset-icon" :path="item.logo" :name="item.symbol" />
-                <span class="wallet-create-network__asset-name">{{ item.name }}</span>
+                <span class="wallet-create-network__asset-name">{{ item.symbol }}</span>
               </div>
             </template>
           </v-radio>

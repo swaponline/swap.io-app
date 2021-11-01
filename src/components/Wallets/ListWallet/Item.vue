@@ -6,12 +6,12 @@
     class="list-wallet-item"
     :to="{ name: 'Wallets', params: { address, coin: coin.toLowerCase(), networkId } }"
   >
-    <item-icon :currency-name="logo" :network="networkLogo" />
+    <item-icon :coin-path="logo" :network-path="network.logo" :network="network.name" />
 
     <v-list-item-content>
       <v-list-item-title class="list-wallet-item__title">
         <div class="list-wallet-item__text">
-          <span class="list-wallet-item__currency-name">{{ coinName }}</span>
+          <span class="list-wallet-item__currency-name">{{ coin }}</span>
           <span class="list-wallet-item__name">{{ name || minifyAddress(address) }}</span>
         </div>
         <span class="list-wallet-item__value">{{ value }}</span>
@@ -34,8 +34,7 @@ export default {
     coin: { type: String, default: '' },
     coinName: { type: String, default: '' },
     logo: { type: String, default: '' },
-    networkLogo: { type: String, default: '' },
-    networkName: { type: String, default: '' },
+    network: { type: Object, default: () => ({}) },
     networkId: { type: String, default: '' }
   },
   methods: { minifyAddress }

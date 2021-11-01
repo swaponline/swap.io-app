@@ -13,13 +13,13 @@
       <div class="list-wallet__wrapper" @scroll="scroll">
         <v-list class="list-wallet__body" :class="{ 'list-wallet__body--offset': isSearchVisible }">
           <div
-            v-for="networkGroup in walletsGroupedByNetwork"
-            :key="networkGroup.networkId"
+            v-for="assetGroup in walletsGroupedByAssetGroup"
+            :key="assetGroup.asset.symbol"
             class="list-wallet__item"
             @scroll="scroll"
           >
-            <list-item v-if="networkGroup.wallets.length === 1" v-bind="networkGroup.wallets[0]" />
-            <list-group v-else v-bind="networkGroup" :active="checkActiveWalletInGroup(networkGroup.wallets)" />
+            <list-item v-if="assetGroup.wallets.length === 1" v-bind="assetGroup.wallets[0]" />
+            <list-group v-else v-bind="assetGroup" :active="checkActiveWalletInGroup(assetGroup.wallets)" />
           </div>
         </v-list>
       </div>
@@ -50,8 +50,8 @@ export default {
     }
   },
   computed: {
-    walletsGroupedByNetwork() {
-      return groupWalletsBy(this.wallets, 'networkId')
+    walletsGroupedByAssetGroup() {
+      return groupWalletsBy(this.wallets, 'asset')
     },
     filteredWallets() {
       const { wallets } = this
