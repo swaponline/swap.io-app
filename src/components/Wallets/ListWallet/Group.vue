@@ -8,18 +8,19 @@
     active-class="list-wallet-group__group"
   >
     <template #activator>
-      <item-icon :currency-name="network.networkLogo" />
+      <item-icon :coin-path="asset.logo" />
 
       <v-list-item-title class="list-wallet-group__header">
         <div class="list-wallet-group__text">
-          <span class="list-wallet-group__currency">{{ network.networkName }}</span>
+          <span class="list-wallet-group__currency">{{ asset.symbol }}</span>
           <span class="list-wallet-group__name">
             <coin-logo
-              v-for="{ wallets: groupWallets, coin } in groupWalletsByCoin"
-              :key="generateKey('icon', coin)"
+              v-for="{ network: groupNetwork } in groupWalletsByNetwork"
+              :key="generateKey('icon', groupNetwork.slug)"
               class="list-wallet-group__header-icon"
-              :path="groupWallets[0].logo"
-              :name="coin"
+              :path="groupNetwork.logo"
+              :name="groupNetwork.name"
+              show-tooltip
             />
           </span>
         </div>
@@ -27,21 +28,21 @@
       </v-list-item-title>
     </template>
 
-    <template v-for="{ coin, wallets: groupWallets, value: groupValue } in groupWalletsByCoin">
-      <v-list-item :key="generateKey('coin-group', coin)" class="list-wallet-group__item" disabled>
+    <template v-for="{ network: groupNetwork, wallets: groupWallets, value: groupValue } in groupWalletsByNetwork">
+      <v-list-item :key="generateKey('network-group', groupNetwork.slug)" class="list-wallet-group__item" disabled>
         <v-list-item-content class="list-wallet-group__item-content">
           <div class="list-wallet-group__item-info list-wallet-group__item-info--disabled">
             <p class="list-wallet-group__coin-name">
-              <coin-logo class="list-wallet-group__coin-icon" :path="groupWallets[0].logo" :name="coin" />
-              {{ groupWallets[0].coinName }}
+              <coin-logo class="list-wallet-group__coin-icon" :path="groupNetwork.logo" :name="groupNetwork.name" />
+              {{ groupNetwork.name }}
             </p>
             <span class="list-wallet-group__group-value">{{ groupValue }}</span>
           </div>
         </v-list-item-content>
       </v-list-item>
       <v-list-item
-        v-for="{ address, name, value: walletValue } in groupWallets"
-        :key="generateKey(coin, address)"
+        v-for="{ address, name, networkId, coin, value: walletValue } in groupWallets"
+        :key="generateKey(coin, networkId, address)"
         link
         exact
         class="list-wallet-group__item"
@@ -69,8 +70,8 @@ export default {
   name: 'ListWalletGroup',
   components: { ItemIcon, CoinLogo },
   props: {
-    networkId: { type: String, default: '' },
     wallets: { type: Array, required: true },
+    asset: { type: Object, required: true },
     value: { type: Number, default: 0 },
     active: { type: Boolean, default: false }
   },
@@ -80,12 +81,8 @@ export default {
     }
   },
   computed: {
-    groupWalletsByCoin() {
-      return groupWalletsBy(this.wallets, 'coin')
-    },
-
-    network() {
-      return this.wallets[0]
+    groupWalletsByNetwork() {
+      return groupWalletsBy(this.wallets, 'network')
     }
   },
 
@@ -95,8 +92,8 @@ export default {
   methods: {
     minifyAddress,
 
-    generateKey(key, value) {
-      return `${key}-${value}`
+    generateKey(...keys) {
+      return keys.join('-')
     }
   }
 }
@@ -155,6 +152,7 @@ export default {
     overflow: initial !important;
     border-radius: $--border-radius-large;
     transition: all 0.3s;
+    padding: 0 10px;
 
     &:hover,
     &.v-list-item--active {
@@ -164,7 +162,7 @@ export default {
   }
 
   &__item-content {
-    padding: 15px 10px;
+    padding: 15px 0px;
     border-bottom: 1px solid var(--wallets-item-border);
   }
 
@@ -201,6 +199,7 @@ export default {
   }
 
   &__name {
+    display: flex;
     width: 100%;
     font-size: $--font-size-medium;
     color: var(--secondary-text);

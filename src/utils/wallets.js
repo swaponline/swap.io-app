@@ -1,6 +1,8 @@
+import { isEqual } from '@/utils/common'
+
 export function groupWalletsBy(wallets, field) {
   return wallets.reduce((groupedWallets, wallet) => {
-    const index = groupedWallets.findIndex(group => group[field] === wallet[field])
+    const index = groupedWallets.findIndex(group => isEqual(group[field], wallet[field]))
 
     if (index < 0) {
       groupedWallets.push({

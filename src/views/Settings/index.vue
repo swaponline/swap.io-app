@@ -14,49 +14,23 @@
 </template>
 
 <script>
-import { getStorage, setStorage } from '@/utils/storage'
-import { DARK_THEME_KEY, LIGHT_THEME_KEY, SYSTEM_THEME_KEY, THEME_KEY, THEMES } from '@/constants/theme'
-import { getUserSystemTheme } from '@/utils/theme'
-import { setCSSCustomProperty } from '@/utils/common'
-import { profilesService } from '@/services/profiles'
+import { themeService, THEMES } from '@/services/theme'
 
 export default {
   THEMES,
   name: 'Settings',
   data() {
     return {
-      selectedTheme: null
+      selectedTheme: themeService.getAppTheme()
     }
   },
 
   watch: {
     selectedTheme: {
       handler(theme) {
-        setStorage(THEME_KEY, theme)
-
-        const { color, colorForDarkTheme } = profilesService.getCurrentProfileColorScheme()
-
-        let appTheme = theme
-        if (theme === SYSTEM_THEME_KEY) {
-          appTheme = getUserSystemTheme()
-        }
-
-        if (appTheme === LIGHT_THEME_KEY) {
-          this.$vuetify.theme.light = true
-          this.$vuetify.theme.dark = false
-          setCSSCustomProperty('main-color', color)
-        }
-
-        if (appTheme === DARK_THEME_KEY) {
-          this.$vuetify.theme.dark = true
-          this.$vuetify.theme.light = false
-          setCSSCustomProperty('main-color', colorForDarkTheme)
-        }
+        themeService.setAppTheme(theme)
       }
     }
-  },
-  created() {
-    this.selectedTheme = getStorage(THEME_KEY) || SYSTEM_THEME_KEY
   }
 }
 </script>

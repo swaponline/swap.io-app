@@ -13,12 +13,10 @@ import Canvg from 'canvg'
 import { getFaviconInColorFTheme } from '@/utils/favicon'
 import { NotificationInTabTitle } from '@/services/notificationInTabTitle'
 import { pluralizeNumeral } from '@/utils/pluralization'
-import { getUserSystemTheme } from '@/utils/theme'
 import { setCSSCustomProperty } from '@/utils/common'
-
-import { events, profilesService } from '@/services/profiles'
-import { getStorage } from './utils/storage'
-import { DARK_THEME_KEY, LIGHT_THEME_KEY, SYSTEM_THEME_KEY, THEME_KEY } from './constants/theme'
+import { setAppColorSchemeBasedOnTheme } from '@/utils/appColorScheme'
+import { profilesService, events as profilesServiceEvents } from '@/services/profiles'
+import { themeService, events as themeServiceEvents } from '@/services/theme'
 
 const queries = {
   desktop: '(min-width: 1281px)',
@@ -28,6 +26,7 @@ const queries = {
 }
 
 const MOCK_NOTIFICATION_COUNT = 6
+let canvg = null
 
 export default {
   name: 'App',
@@ -56,30 +55,16 @@ export default {
       handler(scheme) {
         if (!scheme) return
         const { color } = scheme
+        // SET THE CURRENT APP THEME
+        this.$vuetify.theme.dark = themeService.getIsDark()
         this.setFavicon(color)
-        this.setColorThemeOfAddressBar(color)
+        this.setThemeColorOfAddressBar(color)
         this.setCustomColorCSSVariables(scheme)
       }
     }
   },
   mounted() {
     this.subscribeToUpdates()
-    // SET CURRENT THEME
-    const theme = getStorage(THEME_KEY) || SYSTEM_THEME_KEY
-
-    let appTheme = theme
-    if (theme === SYSTEM_THEME_KEY) {
-      appTheme = getUserSystemTheme()
-    }
-
-    if (appTheme === LIGHT_THEME_KEY) {
-      this.$vuetify.theme.light = true
-      this.$vuetify.theme.dark = false
-    }
-    if (appTheme === DARK_THEME_KEY) {
-      this.$vuetify.theme.dark = true
-      this.$vuetify.theme.light = false
-    }
 
     window.addEventListener('resize', this.resize)
     this.resize()
@@ -101,6 +86,7 @@ export default {
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.resize)
+    this.resetCanvg()
     this.subscriptions.forEach(callback => callback.unsubscribe())
   },
   methods: {
@@ -121,8 +107,19 @@ export default {
       this.setBackground()
     },
     subscribeToUpdates() {
-      this.subscriptions.push(profilesService.subscribe(events.UPDATE_TEMPORARY_PROFILE, this.updateUserColorScheme))
-      this.subscriptions.push(profilesService.subscribe(events.UPDATE_CURRENT_PROFILE, this.updateUserColorScheme))
+      this.subscriptions.push(
+        profilesService.subscribe(profilesServiceEvents.UPDATE_TEMPORARY_PROFILE, this.updateUserColorScheme)
+      )
+      this.subscriptions.push(
+        profilesService.subscribe(profilesServiceEvents.UPDATE_CURRENT_PROFILE, this.updateUserColorScheme)
+      )
+
+      this.subscriptions.push(themeService.subscribe(themeServiceEvents.UPDATE_CURRENT_THEME, this.updateAppTheme))
+    },
+
+    updateAppTheme(appTheme) {
+      this.$vuetify.theme.dark = themeService.getIsDark()
+      setAppColorSchemeBasedOnTheme(this.userColorScheme, appTheme)
     },
 
     updateUserColorScheme(profile) {
@@ -133,8 +130,9 @@ export default {
         this.userColorScheme = profilesService.getCurrentProfileColorScheme()
       }
     },
-    setBackground(backgroundSvg) {
-      if (!backgroundSvg) return
+    setBackground() {
+      const { background } = this.userColorScheme
+      if (!background) return
 
       const canvas = this.$refs.backgroundCanvas
       const ctx = canvas.getContext('2d')
@@ -145,13 +143,19 @@ export default {
       // hack for scaling svg to window size
       const widthStr = `width="${window.innerWidth}"\n`
       const heightStr = `height="${window.innerHeight}"\n`
-      const index = backgroundSvg.indexOf('viewBox')
-      const resSvg = backgroundSvg.substring(0, index) + widthStr + heightStr + backgroundSvg.substring(index)
 
-      const canvg = Canvg.fromString(ctx, resSvg, options)
+      const index = background.indexOf('viewBox')
+      const resSvg = background.substring(0, index) + widthStr + heightStr + background.substring(index)
+      if (canvg) this.resetCanvg()
+
+      canvg = Canvg.fromString(ctx, resSvg, options)
 
       canvas.style.display = 'block'
       canvg.start()
+    },
+    resetCanvg() {
+      canvg.stop()
+      canvg = null
     },
     setFavicon(color) {
       const attributeFaviconSvg =
@@ -162,14 +166,9 @@ export default {
 
       dynamicSvgFavicon.setAttribute('href', `${faviconBase64}`)
     },
-    setCustomColorCSSVariables(theme) {
-      const { colorForDarkTheme, color, selectionColor, background } = theme
-
-      if (this.$vuetify.theme.dark) {
-        setCSSCustomProperty('main-color', colorForDarkTheme)
-      } else {
-        setCSSCustomProperty('main-color', color)
-      }
+    setCustomColorCSSVariables({ background, selectionColor, color, colorForDarkTheme }) {
+      const appTheme = themeService.getCurrentTheme()
+      setAppColorSchemeBasedOnTheme({ color, colorForDarkTheme }, appTheme)
 
       setCSSCustomProperty('selection-color', selectionColor)
 
@@ -177,12 +176,12 @@ export default {
         setCSSCustomProperty('background-app', background)
       } else {
         setCSSCustomProperty('background-app', '')
-        this.$nextTick(() => this.setBackground(background))
+        this.$nextTick(() => this.setBackground())
       }
     },
-    setColorThemeOfAddressBar(color) {
-      const colorThemeOfAddressBar = document.querySelector('meta[name="theme-color"]')
-      colorThemeOfAddressBar.setAttribute('color', `${color}`)
+    setThemeColorOfAddressBar(color) {
+      const themeColorOfAddressBar = document.querySelector('meta[name="theme-color"]')
+      themeColorOfAddressBar.setAttribute('color', `${color}`)
     }
   }
 }
