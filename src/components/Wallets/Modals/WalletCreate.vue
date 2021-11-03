@@ -1,22 +1,23 @@
 <template>
-  <component
-    :is="wrapperComponent"
+  <modal-wrapper
     class="wallet-create-modal"
     value
     :title="modalTitle"
     :disable-confirm-button="!selectedAssetGroup || disabledCreateButton"
     :confirm-button-label="confirmButtonLabel"
-    modificator="full-height"
+    :center="isCenter"
     @input="close"
     @submit="create"
     @cancel="close"
   >
-    <div v-if="asBlock" class="wallet-create-modal__header">
-      <div class="wallet-create-modal__title">{{ modalTitle }}</div>
-      <swap-button icon @click="close">
-        <v-icon size="32">mdi-close</v-icon>
-      </swap-button>
-    </div>
+    <template v-if="isCenter" #header>
+      <div class="wallet-create-modal__header">
+        <div class="wallet-create-modal__title">{{ modalTitle }}</div>
+        <swap-button icon @click="close">
+          <v-icon size="32">mdi-close</v-icon>
+        </swap-button>
+      </div>
+    </template>
 
     <v-loader :active="loading" />
     <template v-if="!selectedAssetGroup">
@@ -57,27 +58,21 @@
         :asset-group="selectedAssetGroup"
         @back="reset"
       />
-
-      <swap-button
-        v-if="asBlock"
-        large
-        :disabled="disabledCreateButton"
-        class="wallet-create-modal__submit"
-        @click="create"
-        >Create</swap-button
-      >
     </template>
 
     <template v-if="!selectedAssetGroup" #footer>
       <span></span>
     </template>
-  </component>
+    <template v-else-if="isCenter" #footer>
+      <swap-button large block :disabled="disabledCreateButton" class="wallet-create-modal__submit" @click="create"
+        >Create</swap-button
+      >
+    </template>
+  </modal-wrapper>
 </template>
 
 <script>
 import ModalWrapper from '@/components/UI/ModalWrapper.vue'
-import SwapDialog from '@/components/UI/SwapDialog.vue'
-import TypeCurrencyCard from '@/components/Wallets/TypeCurrencyCard.vue'
 import FormTextField from '@/components/UI/Forms/TextField.vue'
 import CoinLogo from '@/components/Wallets/CoinLogo.vue'
 import WalletCreateNetwork from '@/components/Wallets/Modals/WalletCreateNetwork.vue'
@@ -96,17 +91,15 @@ export default {
   name: 'WalletCreate',
   components: {
     ModalWrapper,
-    TypeCurrencyCard,
     FormTextField,
     CoinLogo,
     WalletCreateNetwork,
     VLoader,
-    InfiniteLoading,
-    SwapDialog
+    InfiniteLoading
   },
   inject: ['mediaQueries'],
   props: {
-    asBlock: { type: Boolean, default: false }
+    isCenter: { type: Boolean, default: false }
   },
   data() {
     return {
@@ -123,9 +116,6 @@ export default {
     }
   },
   computed: {
-    wrapperComponent() {
-      return this.asBlock ? SwapDialog : ModalWrapper
-    },
     filteredCurrencies() {
       if (this.currencySearchString) {
         return this.searchedAssets

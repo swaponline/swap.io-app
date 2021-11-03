@@ -1,13 +1,6 @@
 <template>
-  <v-dialog
-    :value="value"
-    v-bind="$attrs"
-    :overlay-opacity="0.3"
-    :content-class="`modal-wrapper modal-wrapper--${modificator}`"
-    :transition="transition"
-    v-on="$listeners"
-  >
-    <form class="modal-wrapper__inner" @submit.prevent="$emit('submit')">
+  <swap-dialog class="modal-wrapper" :value="value" v-bind="$attrs" v-on="$listeners">
+    <form class="modal-wrapper__form" @submit.prevent="$emit('submit')">
       <slot name="header">
         <header v-if="title" class="modal-wrapper__title" :class="{ 'modal-wrapper__title--with-back': backIcon }">
           <span>
@@ -41,12 +34,15 @@
         </slot>
       </div>
     </form>
-  </v-dialog>
+  </swap-dialog>
 </template>
 
 <script>
+import SwapDialog from '@/components/UI/SwapDialog.vue'
+
 export default {
   name: 'ModalWrapper',
+  components: { SwapDialog },
   inheritAttrs: false,
   props: {
     value: { type: Boolean, default: false },
@@ -55,7 +51,6 @@ export default {
     title: { type: String, default: '' },
     modificator: { type: String, default: '' },
     backIcon: { type: Boolean, default: false },
-    transition: { type: [String, Boolean], default: 'slide-x-reverse-transition' },
     disableConfirmButton: { type: Boolean, default: false }
   },
   methods: {
@@ -68,44 +63,10 @@ export default {
 
 <style lang="scss">
 .modal-wrapper {
-  $this: &;
-
-  position: relative;
-  height: 100%;
-  max-height: calc(var(--vh, 1vh) * 100) !important;
-  width: 40%;
-  max-width: 650px;
-  margin-left: auto;
-  border-radius: 0;
-  overflow: auto;
-  background: var(--primary-background);
-  margin-right: 0;
-  box-shadow: none;
-
-  &--flat {
-    box-shadow: none;
-  }
-  &--full-height {
-    #{$this}__inner {
-      height: 100%;
-    }
-  }
-
-  @include tablet {
-    width: 100%;
-  }
-
-  &__inner {
+  &__form {
     display: flex;
     flex-direction: column;
-    flex-wrap: nowrap;
-    padding: 45px 50px 45px 40px;
-    margin: 0 0;
-    min-height: calc(var(--vh, 1vh) * 100);
-
-    @include phone {
-      padding: 25px 20px 20px;
-    }
+    height: 100%;
   }
 
   &__title {

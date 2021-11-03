@@ -35,7 +35,7 @@ export default {
       this.mutationAddModal({
         name: WALLET_CREATE,
         show: true,
-        info: { asBlock: true }
+        info: { isCenter: true }
       })
     }
   }
