@@ -40,6 +40,30 @@ const walletInfo = await SwapKeysApi.createWallet({
 
 ```
 
+Получить список кошельков, которые созданы на указанном профиле
+```
+const profileWallets = await keysApi.getProfileWallets({
+  profileId: '03089a446b'
+})
+```
+
+Ответ
+```
+{
+  "profileId": "03089a446b",
+  "wallets": {
+    "bitcoin_12mDaWxN6y6CQdQMNVZ7fP49hxpN9ha8Cp": {
+      "profileId": "03089a446b",
+      "networkId": "bitcoin",
+      "coin": "BTC",
+      "walletNumber": 0,
+      "address": "12mDaWxN6y6CQdQMNVZ7fP49hxpN9ha8Cp",
+      "publicKey": "02fa1d93824084e1d973e66a19fd39359b954209cf67eee0ca4dc912d4a989de12"
+    },
+    ....
+  }
+}
+```
 
 Ответ
 ```
