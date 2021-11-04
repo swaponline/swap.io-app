@@ -6,5 +6,6 @@ export const API_END_POINT = {
   CREATE_WALLETS: `/create-wallets`,
   CREATE_WALLET: `/create-wallet`,
   SIGN_MESSAGE: `/sign-message`,
-  VALIDATE_MESSAGE: `/validate-message`
+  VALIDATE_MESSAGE: `/validate-message`,
+  GET_WALLETS: `/get-wallets`
 }

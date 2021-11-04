@@ -2,5 +2,6 @@ export const MESSAGE_TO_API = {
   CREATE_WALLETS: `CreateWallets`,
   CREATE_WALLET: `CreateWallet`,
   SIGN_MESSAGE: `SignMessage`,
-  VALIDATE_MESSAGE: `ValidateMessage`
+  VALIDATE_MESSAGE: `ValidateMessage`,
+  GET_WALLETS: `GetWallets`
 }

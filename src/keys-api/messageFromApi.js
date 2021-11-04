@@ -10,5 +10,6 @@ export const MESSAGE_FROM_API = {
   THEME_SELECTED: `themeSelected`,
   PROFILE_CREATED: `profileCreated`,
   RECOVER_CANCELED: `recoverCancelled`,
-  PROFILE_RECOVERED: `profileRecovered`
+  PROFILE_RECOVERED: `profileRecovered`,
+  GET_WALLETS: `GetWallets`
 }
