@@ -19,6 +19,56 @@ class SwapKeysApi {
     const apiRequest = new WindowHandler()
   }
 
+  getProfileWallets(options) {
+    const {
+      callback,
+      profileId,
+    } = options || {}
+
+    return new Promise((resolve, reject) => {
+      if (!profileId) {
+        reject(`profileId required`)
+      }
+
+      const apiFrame = new WindowHandler({
+        nameFrame: 'getWallets',
+        additionalUrl: API_END_POINT.GET_WALLETS,
+        key: WINDOW_KEYS.GET_WALLETS,
+        silent: true,
+        callback: (callbackMessage) => {
+          const {
+            message: {
+              type
+            }
+          } = callbackMessage
+
+          if (type === MESSAGE_FROM_API.IFRAME_INITED) {
+            apiFrame.sendMessage({
+              type: MESSAGE_TO_API.GET_WALLETS_MESSAGE,
+              data: {
+                profileId
+              }
+            })
+          }
+          if (type === MESSAGE_FROM_API.GET_WALLETS) {
+            const {
+              message: {
+                wallets
+              }
+            } = callbackMessage
+            const answer = {
+              profileId,
+              wallets
+            }
+            resolve(answer)
+            if (callback) callback(answer)
+            apiFrame.close()
+          }
+        }
+      })
+    })
+  }
+
   getProfiles(options) {
     const { callback } = options || {}
 
