@@ -64,9 +64,7 @@
       <span></span>
     </template>
     <template v-else-if="isCenter" #footer>
-      <swap-button large block :disabled="disabledCreateButton" class="wallet-create-modal__submit" @click="create"
-        >Create</swap-button
-      >
+      <swap-button large block :disabled="disabledCreateButton" @click="create">Create</swap-button>
     </template>
   </modal-wrapper>
 </template>
@@ -271,7 +269,6 @@ export default {
 
   &__list {
     overflow: auto;
-    margin-bottom: 16px;
   }
 
   &__asset-info {
@@ -303,10 +300,6 @@ export default {
     margin-right: 10px;
     width: 40px;
     height: 40px;
-  }
-
-  &__submit {
-    margin-top: auto;
   }
 
   &__tip {

@@ -1,6 +1,6 @@
 <template>
   <v-dialog
-    :content-class="`swap-dialog ${classes} ${contentClass}`"
+    :content-class="`${classes} ${contentClass}`"
     :value="value"
     v-bind="$attrs"
     :transition="transition"
@@ -24,7 +24,8 @@ export default {
   computed: {
     classes() {
       const baseClass = 'swap-dialog'
-      return this.center ? `${baseClass}--center` : ''
+      const centerClass = this.center ? `${baseClass}--center` : ''
+      return `${baseClass} ${centerClass}`
     },
 
     transition() {
@@ -37,7 +38,6 @@ export default {
 <style lang="scss">
 .swap-dialog {
   height: 100%;
-  max-height: calc(var(--vh, 1vh) * 100) !important;
   width: 40%;
   max-width: 650px;
   border-radius: 0;
@@ -47,6 +47,10 @@ export default {
   margin-right: 0;
   padding: 40px;
   box-shadow: none;
+
+  &.v-dialog:not(.v-dialog--fullscreen) {
+    max-height: 100%;
+  }
 
   @include tablet {
     width: 100%;
