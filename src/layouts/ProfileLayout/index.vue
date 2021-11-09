@@ -23,5 +23,11 @@ export default {
   overflow: hidden;
   display: flex;
   flex-direction: column;
+
+  padding: 0 20px;
+
+  @include tablet {
+    padding: 0;
+  }
 }
 </style>

@@ -144,7 +144,6 @@ export default {
 
   &__logo {
     text-decoration: none;
-    min-width: 305px;
     margin-right: 20px;
     margin-left: 28px;
 
