@@ -7,9 +7,7 @@
     :overlay-opacity="0.3"
     v-on="$listeners"
   >
-    <div class="swap-dialog__content">
-      <slot />
-    </div>
+    <slot />
   </v-dialog>
 </template>
 
@@ -38,8 +36,8 @@ export default {
 <style lang="scss">
 .swap-dialog {
   height: 100%;
-  width: 40%;
-  max-width: 650px;
+  width: 100%;
+  max-width: 580px;
   border-radius: 0;
   overflow: auto;
   background: var(--primary-background);
@@ -50,10 +48,6 @@ export default {
 
   &.v-dialog:not(.v-dialog--fullscreen) {
     max-height: 100%;
-  }
-
-  @include tablet {
-    width: 100%;
   }
 
   @include phone {
@@ -70,14 +64,10 @@ export default {
 
     @include phone {
       padding: 20px 15px 15px;
+      margin: 0;
+      border-radius: 0;
+      height: 100%;
     }
-  }
-
-  &__content {
-    height: 100%;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
   }
 }
 </style>

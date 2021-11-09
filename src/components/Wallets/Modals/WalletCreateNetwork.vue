@@ -6,40 +6,38 @@
       <button class="wallet-create-network__asset-group-change" @click="back">Change</button>
     </div>
 
-    <div class="wallet-create-network__chips">
-      <h4 class="wallet-create-network__subtitle">Networks</h4>
-      <v-chip-group v-model="networkModel" column>
-        <v-chip
-          v-for="networkItem in networks"
-          :key="networkItem.network.slug"
-          class="wallet-create-network__chip"
-          :value="networkItem"
-        >
-          {{ networkItem.network.name }}
-        </v-chip>
-      </v-chip-group>
+    <h4 class="wallet-create-network__subtitle">Networks</h4>
+    <v-chip-group v-model="networkModel" column>
+      <v-chip
+        v-for="networkItem in networks"
+        :key="networkItem.network.slug"
+        class="wallet-create-network__chip"
+        :value="networkItem"
+      >
+        {{ networkItem.network.name }}
+      </v-chip>
+    </v-chip-group>
 
-      <template v-if="networkModel">
-        <h4 class="wallet-create-network__asset-title">Assets</h4>
-        <v-radio-group v-model="assetModel">
-          <v-radio
-            v-for="(item, index) in networkAssets"
-            :key="`${item.symbol}-${index}`"
-            :value="item"
-            :ripple="false"
-            class="wallet-create-network__asset"
-            active-class="wallet-create-network__asset--active"
-          >
-            <template #label>
-              <div class="wallet-create-network__asset-label">
-                <coin-logo class="wallet-create-network__asset-icon" :path="item.logo" :name="item.symbol" />
-                <span class="wallet-create-network__asset-name">{{ item.symbol }}</span>
-              </div>
-            </template>
-          </v-radio>
-        </v-radio-group>
-      </template>
-    </div>
+    <template v-if="networkModel">
+      <h4 class="wallet-create-network__asset-title">Assets</h4>
+      <v-radio-group v-model="assetModel" hide-details class="wallet-create-network__asset-list">
+        <v-radio
+          v-for="(item, index) in networkAssets"
+          :key="`${item.symbol}-${index}`"
+          :value="item"
+          :ripple="false"
+          class="wallet-create-network__asset"
+          active-class="wallet-create-network__asset--active"
+        >
+          <template #label>
+            <div class="wallet-create-network__asset-label">
+              <coin-logo class="wallet-create-network__asset-icon" :path="item.logo" :name="item.symbol" />
+              <span class="wallet-create-network__asset-name">{{ item.symbol }}</span>
+            </div>
+          </template>
+        </v-radio>
+      </v-radio-group>
+    </template>
   </div>
 </template>
 
@@ -101,6 +99,12 @@ export default {
 
 <style lang="scss">
 .wallet-create-network {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding-bottom: 8px;
+
   &__asset-group {
     display: flex;
     align-items: center;
@@ -128,10 +132,6 @@ export default {
     }
   }
 
-  &__chips {
-    margin-bottom: 16px;
-  }
-
   &__subtitle {
     color: $--grey-3;
     font-weight: $--font-weight-semi-bold;
@@ -150,9 +150,16 @@ export default {
     margin: 10px 0;
   }
 
+  &__asset-list {
+    overflow: auto;
+    margin-top: 0;
+    padding-top: 0;
+  }
+
   &__asset {
     border-radius: $--main-border-radius;
     transition: 0.2s;
+    margin: 2px 0 !important;
 
     &--active,
     &:hover {
