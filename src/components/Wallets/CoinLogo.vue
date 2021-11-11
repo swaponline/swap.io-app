@@ -1,13 +1,13 @@
 <template>
   <div class="coin-logo">
     <v-tooltip v-if="showTooltip" bottom>
-      <template v-slot:activator="{ on, attrs }">
-        <img v-if="path" class="coin-logo__image" v-bind="attrs" :src="logoSrc" :alt="name" v-on="on" />
+      <template #activator="{ on, attrs }">
+        <img v-if="path" class="coin-logo__image" v-bind="attrs" :src="logoSrc" :alt="`${name} logo`" v-on="on" />
         <span v-else class="coin-logo__stub" v-bind="attrs" v-on="on"></span>
       </template>
       <span>{{ name }}</span>
     </v-tooltip>
-    <img v-else-if="path" class="coin-logo__image" :src="logoSrc" :alt="name" />
+    <img v-else-if="path" class="coin-logo__image" :src="logoSrc" :alt="`${name} logo`" />
     <span v-else class="coin-logo__stub"></span>
   </div>
 </template>
