@@ -132,12 +132,12 @@ export default {
 
   @include tablet {
     width: auto;
-    margin: 20px 40px;
+    margin: 0 40px 20px;
     z-index: 10;
   }
 
   @include phone {
-    margin: 8px;
+    margin: 0 12px 12px;
   }
 
   &__inner {

@@ -1,23 +1,23 @@
 <template>
-  <component
-    :is="wrapperComponent"
+  <modal-wrapper
     class="wallet-create-modal"
-    :class="{ 'wallet-create-modal--block': asBlock }"
     value
     :title="modalTitle"
     :disable-confirm-button="!selectedAssetGroup || disabledCreateButton"
     :confirm-button-label="confirmButtonLabel"
-    modificator="full-height"
-    @input="inputClose"
+    :center="isCenter"
+    @input="close"
     @submit="create"
     @cancel="close"
   >
-    <div v-if="asBlock" class="wallet-create-modal__header">
-      <div class="wallet-create-modal__title">{{ modalTitle }}</div>
-      <swap-button icon @click="close">
-        <v-icon size="32">mdi-close</v-icon>
-      </swap-button>
-    </div>
+    <template v-if="isCenter" #header>
+      <div class="wallet-create-modal__header">
+        <div class="wallet-create-modal__title">{{ modalTitle }}</div>
+        <swap-button icon @click="close">
+          <v-icon size="32">mdi-close</v-icon>
+        </swap-button>
+      </div>
+    </template>
 
     <v-loader :active="loading" />
     <template v-if="!selectedAssetGroup">
@@ -49,8 +49,6 @@
           </template>
         </infinite-loading>
       </div>
-
-      <div v-if="asBlock" class="wallet-create-modal__tip">Select currency</div>
     </template>
 
     <template v-else>
@@ -60,22 +58,19 @@
         :asset-group="selectedAssetGroup"
         @back="reset"
       />
-
-      <swap-button
-        v-if="asBlock"
-        large
-        :disabled="disabledCreateButton"
-        class="wallet-create-modal__submit"
-        @click="create"
-        >Create</swap-button
-      >
     </template>
-  </component>
+
+    <template v-if="!selectedAssetGroup" #footer>
+      <span></span>
+    </template>
+    <template v-else-if="isCenter" #footer>
+      <swap-button large block :disabled="disabledCreateButton" @click="create">Create</swap-button>
+    </template>
+  </modal-wrapper>
 </template>
 
 <script>
 import ModalWrapper from '@/components/UI/ModalWrapper.vue'
-import TypeCurrencyCard from '@/components/Wallets/TypeCurrencyCard.vue'
 import FormTextField from '@/components/UI/Forms/TextField.vue'
 import CoinLogo from '@/components/Wallets/CoinLogo.vue'
 import WalletCreateNetwork from '@/components/Wallets/Modals/WalletCreateNetwork.vue'
@@ -94,15 +89,15 @@ export default {
   name: 'WalletCreate',
   components: {
     ModalWrapper,
-    TypeCurrencyCard,
     FormTextField,
     CoinLogo,
     WalletCreateNetwork,
     VLoader,
     InfiniteLoading
   },
+  inject: ['mediaQueries'],
   props: {
-    asBlock: { type: Boolean, default: false }
+    isCenter: { type: Boolean, default: false }
   },
   data() {
     return {
@@ -119,9 +114,6 @@ export default {
     }
   },
   computed: {
-    wrapperComponent() {
-      return this.asBlock ? 'div' : ModalWrapper
-    },
     filteredCurrencies() {
       if (this.currencySearchString) {
         return this.searchedAssets
@@ -238,13 +230,6 @@ export default {
     },
     close() {
       this.$emit('close')
-    },
-
-    // TODO: refactoring modalWrapper
-    inputClose() {
-      if (!this.asBlock) {
-        this.close()
-      }
     }
   }
 }
@@ -252,20 +237,11 @@ export default {
 
 <style lang="scss">
 .wallet-create-modal {
-  &--block {
-    max-width: 412px;
-    width: 100%;
-    height: 608px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-  }
-
   &__header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
   }
 
   &__title {
@@ -279,6 +255,10 @@ export default {
 
   &__chips {
     margin-bottom: 16px;
+
+    .v-slide-group__content {
+      padding: 0;
+    }
   }
 
   &__subtitle {
@@ -289,7 +269,6 @@ export default {
 
   &__list {
     overflow: auto;
-    margin-bottom: 16px;
   }
 
   &__asset-info {
@@ -321,10 +300,6 @@ export default {
     margin-right: 10px;
     width: 40px;
     height: 40px;
-  }
-
-  &__submit {
-    margin-top: auto;
   }
 
   &__tip {

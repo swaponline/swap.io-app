@@ -3,7 +3,7 @@
     <template v-if="hasWallets">
       <list-wallet
         class="wallets__list"
-        :class="{ 'wallets__list--show': !activeWallet }"
+        :class="{ 'wallets__list--show': !activeWallet || isDesktop }"
         :wallets="wallets"
         :active-wallet="activeWallet"
       />
@@ -15,9 +15,7 @@
       </div>
     </template>
 
-    <div v-else class="wallets__content wallets__content--created">
-      <wallets-create />
-    </div>
+    <wallets-create v-else />
 
     <main-actions v-if="hasWallets" />
     <all-modals />
@@ -97,13 +95,17 @@ export default {
 
   methods: {
     setActiveWallet() {
-      if (!this.activeWallet && this.wallets.length > 0 && this.isDesktop) {
-        const { address, coin, networkId } = this.wallets[0]
+      if (!this.activeWallet) {
+        if (this.hasWallets && this.isDesktop) {
+          const { address, coin, networkId } = this.wallets[0]
 
-        this.$router.replace({
-          name: 'Wallets',
-          params: { address, networkId, coin: coin.toLowerCase() }
-        })
+          this.$router.replace({
+            name: 'Wallets',
+            params: { address, networkId, coin: coin.toLowerCase() }
+          })
+        } else if (this.coin) {
+          this.$router.replace({ name: 'Wallets' })
+        }
       }
     }
   }
@@ -115,14 +117,13 @@ export default {
   height: 100%;
   display: flex;
   position: relative;
-  margin-top: 20px;
   max-height: calc(var(--vh, 1vh) * 100);
   overflow: hidden;
-  @include tablet {
-    margin-top: 0;
-  }
+  padding-top: 20px;
+
   @include phone {
     overflow: visible;
+    padding-top: 12px;
   }
   @include small-height {
     max-height: none;
@@ -162,7 +163,7 @@ export default {
         transform: translateX(100vw);
       }
       &--created {
-        padding: 20px 40px;
+        padding: 0 40px;
       }
     }
 

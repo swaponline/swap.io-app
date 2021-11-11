@@ -148,10 +148,14 @@ export default {
     margin-right: 20px;
     margin-left: 28px;
 
+    @include tablet {
+      margin-left: 40px;
+    }
+
     @include phone {
       margin-right: 0;
       min-width: inherit;
-      margin-left: 22px;
+      margin-left: 12px;
       min-width: auto;
     }
   }

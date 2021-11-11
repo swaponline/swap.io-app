@@ -1,38 +1,42 @@
 <template>
-  <div class="wallets-create" :class="{ 'wallets-create--centered': isCreatingWallet }">
+  <div class="wallets-create">
+    <match-media v-slot="{ desktop }">
+      <profile-list v-if="!desktop"></profile-list>
+    </match-media>
     <div class="wallets-create__create-new">
-      <template v-if="!isCreatingWallet">
-        <smiles-icon class="wallets-create__create-new-image" />
-        <div class="wallets-create__create-new-text">
-          <h4 class="wallets-create__create-new-title">Congrats!</h4>
-          You have created a profile for yourself.<br />
-          Now you can very easily add crypto wallets.
-        </div>
-        <swap-button class="wallets-create__button" primary @click="toggleCreatingForm(true)"
-          >Create wallet</swap-button
-        >
-      </template>
-
-      <wallet-create v-else as-block @close="toggleCreatingForm(false)" />
+      <smiles-icon class="wallets-create__create-new-image" />
+      <div class="wallets-create__create-new-text">
+        <h4 class="wallets-create__create-new-title">Congrats!</h4>
+        You have created a profile for yourself.<br />
+        Now you can very easily add crypto wallets.
+      </div>
+      <swap-button class="wallets-create__button" primary @click="openWalletCreate">Create wallet</swap-button>
     </div>
   </div>
 </template>
 
 <script>
 import SmilesIcon from '@/components/UI/Icons/Smiles.vue'
-import WalletCreate from '@/components/Wallets/Modals/WalletCreate.vue'
+import ProfileList from '@/components/Wallets/ProfileList.vue'
+import { MatchMedia } from 'vue-component-media-queries'
+
+import { WALLET_CREATE } from '@/store/modules/Modals/names'
+import { ADD_MODAL } from '@/store/modules/Modals'
+import { mapMutations } from 'vuex'
 
 export default {
   name: 'WalletsCreate',
-  components: { SmilesIcon, WalletCreate },
-  data() {
-    return {
-      isCreatingWallet: false
-    }
-  },
+  components: { SmilesIcon, ProfileList, MatchMedia },
   methods: {
-    toggleCreatingForm(value) {
-      this.isCreatingWallet = value
+    ...mapMutations({
+      mutationAddModal: ADD_MODAL
+    }),
+    openWalletCreate() {
+      this.mutationAddModal({
+        name: WALLET_CREATE,
+        show: true,
+        info: { isCenter: true }
+      })
     }
   }
 }
@@ -40,31 +44,43 @@ export default {
 
 <style lang="scss">
 .wallets-create {
-  min-height: 250px;
-  max-height: 100%;
+  max-height: 555px;
+  max-width: 1064px;
+  height: 100%;
   width: 100%;
-  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
   overflow-y: auto;
-  background: var(--primary-background);
+  margin: 0 auto;
 
-  &--centered {
-    display: block;
-    max-width: 450px;
-    flex-grow: 0;
-    margin: 0 auto;
-    padding: 20px;
+  @include tablet {
+    max-width: 100%;
+    max-height: 100%;
   }
 
   &__create-new {
+    border-radius: 12px;
+    background: var(--primary-background);
     display: flex;
     flex-direction: column;
     align-items: center;
+    height: 100%;
+    padding: 10px;
+
+    @include tablet {
+      margin: 0 40px 40px;
+      justify-content: center;
+    }
+
+    @include phone {
+      margin: 0 12px 12px;
+    }
   }
   &__create-new-image {
     margin-top: 80px;
 
-    @include phone {
-      margin-top: 75px;
+    @include tablet {
+      margin-top: 0;
     }
   }
   &__create-new-title {
@@ -84,7 +100,7 @@ export default {
     margin-bottom: 100px;
 
     @include phone {
-      margin-bottom: 32px;
+      margin-bottom: 0;
     }
   }
 }

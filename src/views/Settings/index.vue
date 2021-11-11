@@ -43,6 +43,16 @@ export default {
   padding: 40px;
   border-radius: 12px;
 
+  @include tablet {
+    margin: 20px 40px 40px;
+    padding: 20px;
+    height: 100%;
+  }
+
+  @include phone {
+    margin: 12px;
+  }
+
   &__theme {
     &-block {
       display: flex;
