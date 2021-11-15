@@ -19,8 +19,8 @@ import { profilesService, events as profilesServiceEvents } from '@/services/pro
 import { themeService, events as themeServiceEvents } from '@/services/theme'
 
 const queries = {
-  desktop: '(min-width: 1281px)',
-  tablet: '(max-width: 1280px)',
+  desktop: '(min-width: 1025px)',
+  tablet: '(max-width: 1024px)',
   phone: '(max-width: 480px)',
   small: '(max-width: 320px)'
 }

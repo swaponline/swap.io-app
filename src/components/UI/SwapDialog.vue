@@ -67,6 +67,7 @@ export default {
       margin: 0;
       border-radius: 0;
       height: 100%;
+      max-width: 100%;
     }
   }
 }

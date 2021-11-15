@@ -1,5 +1,5 @@
 <template>
-  <v-tabs fixed-tabs height="auto" :slider-color="sliderColor" slider-size="4" class="tabs">
+  <v-tabs centered height="auto" :slider-color="sliderColor" slider-size="4" class="tabs">
     <v-tab v-for="tab in tabs" :key="tab.id" :disabled="disabled" :to="tab.to" class="tabs__item">
       {{ tab.label }}
     </v-tab>
@@ -72,9 +72,8 @@ export default {
 
   &__item {
     min-height: $--header-height;
-    max-width: 175px;
+    width: 175px;
     min-width: 80px;
-    margin: 0 0 !important;
     font-weight: $--font-weight-regular;
     font-size: $--font-size-extra-small-subtitle;
     color: var(--primary-text) !important;
@@ -84,7 +83,8 @@ export default {
 
     @include tablet {
       font-size: $--font-size-subtitle;
-      max-width: none;
+      width: auto;
+      flex-grow: 1;
       min-height: 80px;
     }
 

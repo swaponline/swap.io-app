@@ -4,15 +4,16 @@
       class="wallet__main-info"
       v-bind="wallet"
       :compressed="compressed"
-      @uncompress-wallet="compressed = false"
+      @uncompress-wallet="toggleCompressedWallet(false)"
     ></wallet-info>
     <transaction-block
       class="wallet__transaction"
       :class="{ 'wallet__transaction--stretch': compressed }"
       :is-compressed-wallet="compressed"
-      @compress-wallet="compressed = true"
-      @uncompress-wallet="compressed = false"
+      @compress-wallet="toggleCompressedWallet(true)"
+      @uncompress-wallet="toggleCompressedWallet(false)"
     ></transaction-block>
+    <div v-if="compressed" class="wallet__overlay" @click="toggleCompressedWallet(false)"></div>
   </div>
 </template>
 
@@ -28,8 +29,12 @@ export default {
   },
   data() {
     return {
-      compressed: false,
-      isCreatingWallet: false
+      compressed: false
+    }
+  },
+  methods: {
+    toggleCompressedWallet(value) {
+      this.compressed = value
     }
   }
 }
@@ -42,6 +47,26 @@ export default {
   display: flex;
   flex-direction: column;
   position: relative;
+
+  &__overlay {
+    @include phone {
+      &:before,
+      &:after {
+        content: '';
+        position: absolute;
+        top: -100%;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba($--black, 0.45);
+      }
+
+      &:before {
+        top: 0;
+      }
+    }
+  }
+
   &__main-info {
     width: auto;
   }
@@ -54,24 +79,10 @@ export default {
     @include tablet {
       margin-top: 0px;
     }
-    @include phone {
-      &:after {
-        position: absolute;
-        content: '';
-        height: 324px;
-        width: 100%;
-        top: -80px;
-        background: rgba($--black, 0.45);
-        transition: 0.5s;
-        z-index: 2;
-        opacity: 0;
-        pointer-events: none;
-      }
-      &--stretch {
-        &:after {
-          height: 152px;
-          opacity: 1;
-        }
+
+    &--stretch {
+      @include phone {
+        z-index: 1;
       }
     }
   }
