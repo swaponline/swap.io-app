@@ -6,7 +6,7 @@ import { profilesService, events as profilesEvents } from '@/services/profiles'
 import { BASE_MEDIA_URL } from '@/constants/http'
 import { WALLETS_KEY, events } from './types'
 
-function createWalletsService() {
+export function createWalletsService() {
   const emitter = createNanoEvents()
   let wallets = getStorage(WALLETS_KEY) || []
   let currentWallets = []
