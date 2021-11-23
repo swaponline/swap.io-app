@@ -41,7 +41,7 @@ export default {
       this.frame = SwapKeysApi.createProfile({
         callback: ({ message }) => {
           const {
-            IFRAME_INITED,
+            IFRAME_LOADED,
             THEME_SELECTED,
             PROFILE_CREATED,
             CREATION_CANCELLED
@@ -49,7 +49,7 @@ export default {
           const { payload, type } = message
 
           switch (type) {
-            case IFRAME_INITED:
+            case IFRAME_LOADED:
               this.frame.sendMessage({
                 message: {
                   type: SET_APP_THEME,

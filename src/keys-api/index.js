@@ -39,7 +39,7 @@ class SwapKeysApi {
   }
 
   createProfileAnswers = {
-    IFRAME_INITED: 'iframeInited',
+    IFRAME_LOADED: 'iframeLoaded',
     THEME_SELECTED: 'themeSelected',
     PROFILE_CREATED: 'profileCreated',
     CREATION_CANCELLED: 'creationCancelled'
@@ -49,7 +49,7 @@ class SwapKeysApi {
 
     const frame = new WindowHandler({
       nameFrame: 'createProfile',
-      additionalUrl: API_END_POINT.CHOSE_STYLE,
+      additionalUrl: API_END_POINT.CREATE_PROFILE,
       key: WINDOW_KEYS.CREATE_PROFILE,
       callback
     })
@@ -58,7 +58,7 @@ class SwapKeysApi {
   }
 
   restoreProfileAnswers = {
-    IFRAME_INITED: 'iframeInited',
+    IFRAME_LOADED: 'iframeLoaded',
     RECOVER_CANCELED: 'recoverCancelled',
     PROFILE_RECOVERED: 'profileRecovered'
   }
@@ -75,9 +75,7 @@ class SwapKeysApi {
   }
 
   getNetworks(options) {
-    const {
-      callback,
-    } = options || {}
+    const { callback } = options || {}
 
     return new Promise(resolve => {
       if (this._cachedNetworks.length) {
@@ -116,11 +114,7 @@ class SwapKeysApi {
   }
 
   createWallets(options) {
-    const {
-      callback,
-      profileId,
-      wallets = []
-    } = options || {}
+    const { callback, profileId, wallets = [] } = options || {}
 
     return new Promise((resolve, reject) => {
       if (!profileId) {
@@ -156,7 +150,7 @@ class SwapKeysApi {
         key: WINDOW_KEYS.CREATE_WALLETS,
         callback: ({ message }) => {
           const { type } = message
-          if (type === MESSAGE_FROM_API.IFRAME_INITED) {
+          if (type === MESSAGE_FROM_API.IFRAME_LOADED) {
             apiFrame.sendMessage({
               type: MESSAGE_TO_API.CREATE_WALLETS,
               walletsData: {
@@ -190,13 +184,7 @@ class SwapKeysApi {
   }
 
   createWallet(options) {
-    const {
-      callback,
-      profileId,
-      networkId,
-      coin,
-      walletNumber = 0
-    } = options || {}
+    const { callback, profileId, networkId, coin, walletNumber = 0 } = options || {}
 
     return new Promise((resolve, reject) => {
       if (!profileId) {
@@ -218,7 +206,7 @@ class SwapKeysApi {
         key: WINDOW_KEYS.CREATE_WALLET,
         callback: ({ message }) => {
           const { type } = message
-          if (type === MESSAGE_FROM_API.IFRAME_INITED) {
+          if (type === MESSAGE_FROM_API.IFRAME_LOADED) {
             apiFrame.sendMessage({
               type: MESSAGE_TO_API.CREATE_WALLET,
               walletData: {
@@ -254,10 +242,7 @@ class SwapKeysApi {
   }
 
   validateMessage(options) {
-    const {
-      signedMessage,
-      callback
-    } = options
+    const { signedMessage, callback } = options
     return new Promise((resolve, reject) => {
       if (!signedMessage) {
         reject(`signedMessage required`)
@@ -268,14 +253,12 @@ class SwapKeysApi {
         additionalUrl: API_END_POINT.VALIDATE_MESSAGE,
         key: WINDOW_KEYS.VALIDATE_MESSAGE,
         silent: true,
-        callback: (callbackMessage) => {
+        callback: callbackMessage => {
           const {
-            message: {
-              type
-            }
+            message: { type }
           } = callbackMessage
 
-          if (type === MESSAGE_FROM_API.IFRAME_INITED) {
+          if (type === MESSAGE_FROM_API.IFRAME_LOADED) {
             apiFrame.sendMessage({
               type: MESSAGE_TO_API.VALIDATE_MESSAGE,
               data: signedMessage
@@ -283,9 +266,7 @@ class SwapKeysApi {
           }
           if (type === MESSAGE_FROM_API.MESSAGE_VALIDATED) {
             const {
-              message: {
-                isValid
-              }
+              message: { isValid }
             } = callbackMessage
             const answer = {
               signedMessage,
@@ -300,14 +281,9 @@ class SwapKeysApi {
     })
   }
 
-// await keysApi.signMessage({ profileId: '023e01483c', networkId: 'ethereum', message: 'test message' })
+  // await keysApi.signMessage({ profileId: '023e01483c', networkId: 'ethereum', message: 'test message' })
   signMessage(options) {
-    const {
-      callback,
-      profileId,
-      networkId,
-      message
-    } = options
+    const { callback, profileId, networkId, message } = options
     return new Promise((resolve, reject) => {
       if (!profileId) {
         reject(`profileId required`)
@@ -321,14 +297,12 @@ class SwapKeysApi {
         nameFrame: 'signMessage',
         additionalUrl: API_END_POINT.SIGN_MESSAGE,
         key: WINDOW_KEYS.SIGN_MESSAGE,
-        callback: (callbackMessage) => {
+        callback: callbackMessage => {
           const {
-            message: {
-              type
-            }
+            message: { type }
           } = callbackMessage
 
-          if (type === MESSAGE_FROM_API.IFRAME_INITED) {
+          if (type === MESSAGE_FROM_API.IFRAME_LOADED) {
             apiFrame.sendMessage({
               type: MESSAGE_TO_API.SIGN_MESSAGE,
               data: {
@@ -341,13 +315,11 @@ class SwapKeysApi {
           }
           if (type === MESSAGE_FROM_API.MESSAGE_SIGNED) {
             const {
-              message: {
-                signedMessage
-              }
+              message: { signedMessage }
             } = callbackMessage
             const answer = {
               status: API_ANSWER_STATUS.MESSAGE_SIGNED,
-              signedMessage,
+              signedMessage
             }
             resolve(answer)
             if (callback) callback(answer)
@@ -362,13 +334,12 @@ class SwapKeysApi {
             apiFrame.close()
           }
         },
-        silent: true,
+        silent: true
       })
     })
   }
 
   signTransaction(options) {}
-
 }
 
 if (!apiProcessor) {

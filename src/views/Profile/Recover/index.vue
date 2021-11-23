@@ -40,10 +40,10 @@ export default {
 
       this.frame = SwapKeysApi.restoreProfile({
         callback: ({ message }) => {
-          const { IFRAME_INITED, RECOVER_CANCELED, PROFILE_RECOVERED } = SwapKeysApi.restoreProfileAnswers
+          const { IFRAME_LOADED, RECOVER_CANCELED, PROFILE_RECOVERED } = SwapKeysApi.restoreProfileAnswers
           const { payload } = message
           switch (message.type) {
-            case IFRAME_INITED:
+            case IFRAME_LOADED:
               this.frame.sendMessage({
                 message: {
                   type: SET_APP_THEME,
