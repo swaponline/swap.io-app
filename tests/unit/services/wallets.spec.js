@@ -2,7 +2,6 @@ import * as storageService from '@/utils/storage'
 import { createWalletsService } from '@/services/wallets'
 import { profilesService } from '@/services/profiles'
 import { WALLETS_KEY, events } from '@/services/wallets/types'
-import * as eventService from 'nanoevents'
 import { BASE_MEDIA_URL } from '@/constants/http'
 
 const wallet1 = {
@@ -28,8 +27,6 @@ const walletTest = {
   address: 'test',
   name: ''
 }
-
-const originalCreateNanoEvents = eventService.createNanoEvents
 
 describe('Wallets service', () => {
   let walletsService
@@ -107,30 +104,9 @@ describe('Wallets service', () => {
     })
   })
 
-  it('refreshes the list of current wallets', () => {
-    const mockEmit = jest.fn()
-    eventService.createNanoEvents = jest.fn(() => ({ emit: mockEmit }))
-    walletsService = createWalletsService()
-    walletsService.addWallet(walletTest)
-
-    profilesService.getCurrentProfileId = jest.fn().mockReturnValue(walletTest.profileId)
-    walletsService.refreshCurrentWallets()
-
-    const currentWallets = walletsService.getCurrentWallets()
-    currentWallets.forEach(wallet => {
-      expect(wallet.profileId).toBe(walletTest.profileId)
-    })
-    expect(mockEmit).toBeCalledWith(events.REFRESH_CURRENT_WALLETS, currentWallets)
-  })
-
-  it('returns path to image', () => {
-    expect(walletsService.getLogo('/test')).toBe(`${BASE_MEDIA_URL}/test`)
-  })
-
   it('subscribes to events', () => {
     const callback1 = jest.fn()
     const callback2 = jest.fn()
-    eventService.createNanoEvents = originalCreateNanoEvents
     walletsService = createWalletsService()
 
     walletsService.subscribe(events.REFRESH_CURRENT_WALLETS, callback1)
@@ -139,5 +115,21 @@ describe('Wallets service', () => {
 
     expect(callback1).toBeCalled()
     expect(callback2).toBeCalled()
+  })
+
+  it('refreshes the list of current wallets', () => {
+    walletsService = createWalletsService()
+    walletsService.addWallet(walletTest)
+
+    profilesService.getCurrentProfileId = jest.fn().mockReturnValue(walletTest.profileId)
+    walletsService.refreshCurrentWallets()
+
+    walletsService.getCurrentWallets().forEach(wallet => {
+      expect(wallet.profileId).toBe(walletTest.profileId)
+    })
+  })
+
+  it('returns path to image', () => {
+    expect(walletsService.getLogo('/test')).toBe(`${BASE_MEDIA_URL}/test`)
   })
 })
