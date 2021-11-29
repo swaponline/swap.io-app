@@ -1,5 +1,5 @@
 <template>
-  <swap-dialog class="modal-wrapper" :value="value" v-bind="$attrs" v-on="$listeners">
+  <swap-dialog class="modal-wrapper" :value="value" :center="center" v-bind="$attrs" v-on="$listeners">
     <form class="modal-wrapper__form" @submit.prevent="$emit('submit')">
       <slot name="header">
         <header v-if="title" class="modal-wrapper__title" :class="{ 'modal-wrapper__title--with-back': backIcon }">
@@ -51,7 +51,8 @@ export default {
     title: { type: String, default: '' },
     modificator: { type: String, default: '' },
     backIcon: { type: Boolean, default: false },
-    disableConfirmButton: { type: Boolean, default: false }
+    disableConfirmButton: { type: Boolean, default: false },
+    center: { type: Boolean, default: false }
   },
   methods: {
     cancel() {
