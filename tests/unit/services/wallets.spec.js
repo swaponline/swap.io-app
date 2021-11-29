@@ -29,6 +29,8 @@ const walletTest = {
   name: ''
 }
 
+const originalCreateNanoEvents = eventService.createNanoEvents
+
 describe('Wallets service', () => {
   let walletsService
   let wallets
@@ -126,14 +128,16 @@ describe('Wallets service', () => {
   })
 
   it('subscribes to events', () => {
-    const mockOn = jest.fn()
-    const callback = jest.fn()
-    const EVENT = 'event'
-    eventService.createNanoEvents = jest.fn(() => ({ on: mockOn, emit: jest.fn() }))
+    const callback1 = jest.fn()
+    const callback2 = jest.fn()
+    eventService.createNanoEvents = originalCreateNanoEvents
     walletsService = createWalletsService()
 
-    walletsService.subscribe(EVENT, callback)
+    walletsService.subscribe(events.REFRESH_CURRENT_WALLETS, callback1)
+    walletsService.subscribe(events.REFRESH_CURRENT_WALLETS, callback2)
+    walletsService.refreshCurrentWallets()
 
-    expect(mockOn).toBeCalledWith(EVENT, callback)
+    expect(callback1).toBeCalled()
+    expect(callback2).toBeCalled()
   })
 })
