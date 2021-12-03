@@ -188,7 +188,7 @@ describe('WalletCreate', () => {
       )
     })
 
-    it('closes the window after successful wallet creation', async () => {
+    it('closes the modal after successful wallet creation', async () => {
       await selectWalletOptions()
 
       findModalWrapper().vm.$emit('submit')
