@@ -8,8 +8,7 @@
     "build-prod": "vue-cli-service build --mode production",
     "lint": "vue-cli-service lint",
     "lint:style": "vue-cli-service lint:style",
-    "test:unit": "vue-cli-service test:unit",
-    "test:unit-watch": "vue-cli-service test:unit --watchAll"
+    "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
     "axios": "^0.21.1",
