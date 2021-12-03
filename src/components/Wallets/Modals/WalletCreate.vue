@@ -33,6 +33,7 @@
           v-for="(item, index) in filteredCurrencies"
           :key="index"
           class="wallet-create-modal__currency"
+          data-test-id="wallet-currency"
           @click="selectedAssetGroup = item"
         >
           <coin-logo class="wallet-create-modal__currency-icon" :path="item.logo" :name="item.symbol" />

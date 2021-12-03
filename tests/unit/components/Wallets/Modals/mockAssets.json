@@ -1,0 +1,69 @@
+[
+  {
+    "symbol": "BTC",
+    "name": "Bitcoin",
+    "logo": "/networks/bitcoin/coins/BTC/logo.svg",
+    "networks": [
+      {
+        "network": {
+          "name": "Bitcoin",
+          "slug": "bitcoin",
+          "logo": "/networks/bitcoin/coins/BTC/logo.svg"
+        },
+        "assets": [
+          {
+            "symbol": "BTC",
+            "slug": "bitcoin",
+            "name": "Bitcoin",
+            "logo": "/networks/bitcoin/coins/BTC/logo.svg"
+          }
+        ]
+      },
+      {
+        "network": {
+          "name": "Ethereum",
+          "slug": "ethereum",
+          "logo": "/networks/ethereum/coins/ETH/logo.svg"
+        },
+        "assets": [
+          {
+            "name": "WrappedBTC",
+            "symbol": "WBTC",
+            "logo": "/networks/ethereum/tokens/WBTC--0x2260fac5e5542a773aa44fbcfedf7c193bc2c599/logo.svg"
+          },
+          {
+            "name": "renBTC",
+            "symbol": "renBTC",
+            "logo": "/networks/ethereum/tokens/renBTC--0xeb4c2781e4eba804ce9a9803c67d0893436bb27d/logo.svg"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "symbol": "ETH",
+    "name": "Ether",
+    "logo": "/networks/ethereum/coins/ETH/logo.svg",
+    "networks": [
+      {
+        "network": {
+          "name": "Ethereum",
+          "slug": "ethereum",
+          "logo": "/networks/ethereum/coins/ETH/logo.svg"
+        },
+        "assets": [
+          {
+            "symbol": "ETH",
+            "slug": "ether",
+            "logo": "/networks/ethereum/coins/ETH/logo.svg"
+          },
+          {
+            "name": "Wrapped Ether",
+            "symbol": "WETH",
+            "logo": "/networks/ethereum/tokens/WETH--0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2/logo.svg"
+          }
+        ]
+      }
+    ]
+  }
+]
