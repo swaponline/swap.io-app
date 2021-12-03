@@ -12,6 +12,7 @@ import { walletsService } from '@/services/wallets'
 import SwapKeysApi from '@/keys-api'
 import mockAssets from './mockAssets'
 import { stubComponent } from '../../../helpers/stubComponent'
+import flushPromises from '../../../helpers/flushPromises'
 
 jest.mock('lodash.debounce', () => jest.fn(fn => fn))
 
@@ -52,11 +53,6 @@ describe('WalletCreate', () => {
     createComponent()
   })
 
-  afterEach(() => {
-    wrapper.destroy()
-    wrapper = null
-  })
-
   it('is center modal', () => {
     createComponent({ propsData: { isCenter: true } })
 
@@ -81,18 +77,18 @@ describe('WalletCreate', () => {
     expect(modalWrapper.props().title).toBe('Choose network')
   })
 
-  it('emitted close event when modalWrapper closed', async () => {
+  it('emitted close event when modalWrapper closed', () => {
     const modalWrapper = findModalWrapper()
-    await modalWrapper.vm.$emit('cancel')
+    modalWrapper.vm.$emit('cancel')
 
     expect(wrapper.emitted().close).toBeTruthy()
   })
 
-  it('emitted close event for center modal', async () => {
+  it('emitted close event for center modal', () => {
     createComponent({ propsData: { isCenter: true } })
     const closeButton = findButtonByText('mdi-close')
 
-    await closeButton.vm.$emit('click')
+    closeButton.vm.$emit('click')
 
     expect(wrapper.emitted().close).toBeTruthy()
   })
@@ -109,7 +105,8 @@ describe('WalletCreate', () => {
     const assetsGroupItem = findAssetsGroupItems().wrappers[0]
     await assetsGroupItem.trigger('click')
 
-    await findNetworkSelector().vm.$emit('back')
+    findNetworkSelector().vm.$emit('back')
+    await wrapper.vm.$nextTick()
 
     expect(findAssetsGroupItems().exists()).toBe(true)
     expect(findNetworkSelector().exists()).toBe(false)
@@ -126,7 +123,8 @@ describe('WalletCreate', () => {
     })
 
     it('does not infinite loading when there is a search', async () => {
-      await searchInput.vm.$emit(searchEvent, 'test')
+      searchInput.vm.$emit(searchEvent, 'test')
+      await wrapper.vm.$nextTick()
 
       expect(wrapper.findComponent(InfiniteLoading).exists()).toBe(false)
     })
@@ -147,6 +145,13 @@ describe('WalletCreate', () => {
     let BtcAsset
     let BtcNetwork
 
+    const selectWalletOptions = async () => {
+      await findAssetsGroupItems().wrappers[0].trigger('click')
+      const networkSelector = findNetworkSelector()
+      networkSelector.vm.$emit('update:network', BtcNetwork)
+      networkSelector.vm.$emit('update:asset', BtcAsset)
+    }
+
     beforeEach(() => {
       profileId = 'test'
       BtcAsset = { symbol: 'BTC' }
@@ -162,17 +167,11 @@ describe('WalletCreate', () => {
 
     it('calls SwapKeysApi for center modal', async () => {
       createComponent({ propsData: { isCenter: true } })
-      await wrapper.vm.$nextTick()
-      // Select asset group
-      await findAssetsGroupItems().wrappers[0].trigger('click')
-
-      // Select network and asset
-      const networkSelector = findNetworkSelector()
-      await networkSelector.vm.$emit('update:network', BtcNetwork)
-      await networkSelector.vm.$emit('update:asset', BtcAsset)
+      await flushPromises()
+      await selectWalletOptions()
       const createButton = findButtonByText('Create')
 
-      await createButton.vm.$emit('click')
+      createButton.vm.$emit('click')
 
       expect(SwapKeysApi.createWallet).toBeCalledWith(
         expect.objectContaining({ profileId, networkId: BtcNetwork.network.slug, coin: BtcAsset.symbol })
@@ -180,19 +179,22 @@ describe('WalletCreate', () => {
     })
 
     it('calls SwapKeysApi', async () => {
-      // Select asset group
-      await findAssetsGroupItems().wrappers[0].trigger('click')
+      await selectWalletOptions()
 
-      // Select network and asset
-      const networkSelector = findNetworkSelector()
-      await networkSelector.vm.$emit('update:network', BtcNetwork)
-      await networkSelector.vm.$emit('update:asset', BtcAsset)
-
-      await findModalWrapper().vm.$emit('submit')
+      findModalWrapper().vm.$emit('submit')
 
       expect(SwapKeysApi.createWallet).toBeCalledWith(
         expect.objectContaining({ profileId, networkId: BtcNetwork.network.slug, coin: BtcAsset.symbol })
       )
+    })
+
+    it('closes the window after successful wallet creation', async () => {
+      await selectWalletOptions()
+
+      findModalWrapper().vm.$emit('submit')
+      await flushPromises()
+
+      expect(wrapper.emitted().close).toBeTruthy()
     })
   })
 })
