@@ -18,6 +18,9 @@ describe('WalletCreateNetwork', () => {
   const findChangeButton = () => {
     return wrapper.findAll('button').wrappers.find(button => button.text() === 'Change')
   }
+  const findNetworkGroup = () => wrapper.findComponent(VChipGroup)
+  const findAssetsGroup = () => wrapper.findComponent(VRadioGroup)
+  const findAssetsRadioItems = () => wrapper.findAllComponents(VRadio)
 
   const createComponent = ({ propsData, provide } = {}) => {
     wrapper = shallowMount(WalletCreateNetwork, {
@@ -38,34 +41,31 @@ describe('WalletCreateNetwork', () => {
     createComponent()
   })
 
-  it('emits back when click on Change', () => {
+  it('emits back when click on Change button', () => {
     findChangeButton().trigger('click')
 
     expect(wrapper.emitted().back).toBeTruthy()
   })
 
   it('emits update:network', () => {
-    const networkChips = wrapper.findComponent(VChipGroup)
-    networkChips.vm.$emit('change', mockAssets[0].networks[0])
+    findNetworkGroup().vm.$emit('change', mockAssets[0].networks[0])
 
     expect(wrapper.emitted('update:network')).toBeTruthy()
-  })
-
-  it('shows assets if the network is selected', async () => {
-    expect(wrapper.findComponent(VRadioGroup).exists()).toBe(false)
-
-    const selectedNetwork = mockAssets[0].networks[0]
-    await wrapper.setProps({ network: selectedNetwork })
-
-    expect(wrapper.findAllComponents(VRadio).length).toBe(selectedNetwork.assets.length)
   })
 
   it('emits update:asset', async () => {
     const selectedNetwork = mockAssets[0].networks[0]
     await wrapper.setProps({ network: selectedNetwork })
-    const assetsRadio = wrapper.findComponent(VRadioGroup)
-    assetsRadio.vm.$emit('change', selectedNetwork.assets[0])
+
+    findAssetsGroup().vm.$emit('change', selectedNetwork.assets[0])
 
     expect(wrapper.emitted('update:asset')).toBeTruthy()
+  })
+
+  it('shows assets if the network is selected', async () => {
+    const selectedNetwork = mockAssets[0].networks[0]
+    await wrapper.setProps({ network: selectedNetwork })
+
+    expect(findAssetsRadioItems().length).toBe(selectedNetwork.assets.length)
   })
 })
