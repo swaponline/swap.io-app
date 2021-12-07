@@ -48,24 +48,38 @@ describe('WalletCreateNetwork', () => {
   })
 
   it('emits update:network', () => {
-    findNetworkGroup().vm.$emit('change', mockAssets[0].networks[0])
+    const selectedNetwork = mockAssets[0].networks[0]
+    findNetworkGroup().vm.$emit('change', selectedNetwork)
 
-    expect(wrapper.emitted('update:network')).toBeTruthy()
+    const eventUpdateNetwork = wrapper.emitted('update:network')
+    expect(eventUpdateNetwork).toBeTruthy()
+    expect(eventUpdateNetwork[0][0]).toEqual(selectedNetwork)
   })
 
   it('emits update:asset', async () => {
     const selectedNetwork = mockAssets[0].networks[0]
+    const selectedAsset = selectedNetwork.assets[0]
     await wrapper.setProps({ network: selectedNetwork })
 
-    findAssetsGroup().vm.$emit('change', selectedNetwork.assets[0])
+    findAssetsGroup().vm.$emit('change', selectedAsset)
 
-    expect(wrapper.emitted('update:asset')).toBeTruthy()
+    const eventUpdateAsset = wrapper.emitted('update:asset')
+    expect(eventUpdateAsset).toBeTruthy()
+    expect(eventUpdateAsset[0][0]).toEqual(selectedAsset)
   })
 
   it('shows assets if the network is selected', async () => {
     const selectedNetwork = mockAssets[0].networks[0]
     await wrapper.setProps({ network: selectedNetwork })
 
+    expect(findAssetsGroup().exists()).toBe(true)
     expect(findAssetsRadioItems().length).toBe(selectedNetwork.assets.length)
+  })
+
+  it('does not show assets if the network is not selected', async () => {
+    await wrapper.setProps({ network: mockAssets[0].networks[0] })
+    await wrapper.setProps({ network: null })
+
+    expect(findAssetsGroup().exists()).toBe(false)
   })
 })
