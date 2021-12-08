@@ -46,6 +46,7 @@ export default [
       {
         path: '/create-profile',
         name: 'CreateProfile',
+        props: true,
         component: () => import(/* webpackChunkName: 'Create' */ '@/views/Profile/Create')
       },
       {

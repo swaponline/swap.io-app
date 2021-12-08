@@ -40,6 +40,7 @@ class SwapKeysApi {
 
   createProfileAnswers = {
     IFRAME_LOADED: 'iframeLoaded',
+    IFRAME_RENDERED: 'iframeRendered',
     THEME_SELECTED: 'themeSelected',
     PROFILE_CREATED: 'profileCreated',
     CREATION_CANCELLED: 'creationCancelled'
@@ -59,6 +60,7 @@ class SwapKeysApi {
 
   restoreProfileAnswers = {
     IFRAME_LOADED: 'iframeLoaded',
+    IFRAME_RENDERED: 'iframeRendered',
     RECOVER_CANCELED: 'recoverCancelled',
     PROFILE_RECOVERED: 'profileRecovered'
   }
@@ -67,7 +69,7 @@ class SwapKeysApi {
 
     const frame = new WindowHandler({
       nameFrame: 'recoverProfile',
-      additionalUrl: API_END_POINT.SECRET_PHRASE,
+      additionalUrl: API_END_POINT.RECOVER_PROFILE,
       key: WINDOW_KEYS.RECOVER_PROFILE,
       callback
     })
