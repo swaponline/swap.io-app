@@ -44,12 +44,13 @@ export default [
         component: () => import(/* webpackChunkName: 'SecurityInfo' */ '@/views/Profile/Create/SecurityInfo.vue')
       },
       {
-        path: '/create-profiles',
+        path: '/create-profile',
         name: 'CreateProfile',
+        props: true,
         component: () => import(/* webpackChunkName: 'Create' */ '@/views/Profile/Create')
       },
       {
-        path: '/recover-profiles',
+        path: '/recover-profile',
         name: 'RecoverProfile',
         component: () => import(/* webpackChunkName: 'Recover' */ '@/views/Profile/Recover')
       },

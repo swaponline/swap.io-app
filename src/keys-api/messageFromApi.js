@@ -1,5 +1,5 @@
 export const MESSAGE_FROM_API = {
-  IFRAME_INITED: `iframeInited`,
+  IFRAME_LOADED: `iframeLoaded`,
   WALLETS_CREATED: `WalletsCreated`,
   WALLETS_CREATE_CANCELED: `CancelCreateWallets`,
   WALLET_CREATED: `WalletCreated`,

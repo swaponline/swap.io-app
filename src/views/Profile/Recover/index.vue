@@ -9,7 +9,7 @@
 import Substrate from '@/components/Profile/Substrate.vue'
 import VLoader from '@/components/Loaders/VLoader.vue'
 import SwapIframe from '@/components/UI/SwapIframe'
-import { SET_APP_THEME } from '@/constants/createProfile'
+import { SET_DEFAULT_STATE_IFRAME } from '@/constants/createProfile'
 import { themeService } from '@/services/theme'
 import SwapKeysApi from '@/keys-api'
 import { profilesService } from '@/services/profiles'
@@ -40,19 +40,26 @@ export default {
 
       this.frame = SwapKeysApi.restoreProfile({
         callback: ({ message }) => {
-          const { IFRAME_INITED, RECOVER_CANCELED, PROFILE_RECOVERED } = SwapKeysApi.restoreProfileAnswers
+          const {
+            IFRAME_LOADED,
+            IFRAME_RENDERED,
+            RECOVER_CANCELED,
+            PROFILE_RECOVERED
+          } = SwapKeysApi.restoreProfileAnswers
           const { payload } = message
           switch (message.type) {
-            case IFRAME_INITED:
+            case IFRAME_LOADED:
               this.frame.sendMessage({
                 message: {
-                  type: SET_APP_THEME,
+                  type: SET_DEFAULT_STATE_IFRAME,
                   payload: {
                     theme: themeService.getCurrentTheme()
                   }
                 }
               })
 
+              break
+            case IFRAME_RENDERED:
               this.loading = false
               break
             case RECOVER_CANCELED:

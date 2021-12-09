@@ -93,9 +93,8 @@ export default {
     },
     next() {
       if (this.mediaQueries.desktop || this.activeStep === securityInfoBlocks.length) {
-        this.$router.push({ name: 'CreateProfile' })
+        this.$router.push({ name: 'CreateProfile', params: { needSetIframeState: true } })
       }
-
       this.activeStep += 1
     }
   }
