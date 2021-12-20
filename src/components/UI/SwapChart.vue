@@ -37,14 +37,14 @@ export default {
     chartOptions: {
       handler(newOptions, oldOptions) {
         if (!isEqual(newOptions, oldOptions)) return
-        const chartOptions = { ...newOptions, ...oldOptions }
+        const chartOptions = { ...oldOptions, ...newOptions }
         this.updateChartOptions(chartOptions)
       }
     },
     areaStyleOptions: {
       handler(newStyleOptions, oldStyleOptions) {
         if (!isEqual(newStyleOptions, oldStyleOptions)) return
-        const areaStyleOptions = { ...newStyleOptions, ...oldStyleOptions }
+        const areaStyleOptions = { ...oldStyleOptions, ...newStyleOptions }
         this.updateAreaStyleOptions(areaStyleOptions)
       }
     }
