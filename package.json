@@ -16,6 +16,7 @@
     "canvg": "^3.0.7",
     "core-js": "^3.6.5",
     "js-base64": "^3.6.1",
+    "lightweight-charts": "^3.7.0",
     "lodash.clonedeep": "^4.5.0",
     "lodash.debounce": "^4.0.8",
     "lodash.isequal": "^4.5.0",
