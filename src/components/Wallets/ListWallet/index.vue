@@ -10,13 +10,12 @@
           <wallet-search v-if="isSearchVisible" v-model="search" />
         </component>
       </div>
-      <div class="list-wallet__wrapper" @scroll="scroll">
+      <div class="list-wallet__wrapper" data-test-id="list-wrapper" @scroll="scroll">
         <v-list class="list-wallet__body" :class="{ 'list-wallet__body--offset': isSearchVisible }">
           <div
             v-for="assetGroup in walletsGroupedByAssetGroup"
             :key="assetGroup.asset.symbol"
             class="list-wallet__item"
-            @scroll="scroll"
           >
             <list-item v-if="assetGroup.wallets.length === 1" v-bind="assetGroup.wallets[0]" />
             <list-group v-else v-bind="assetGroup" :active="checkActiveWalletInGroup(assetGroup.wallets)" />
@@ -51,7 +50,7 @@ export default {
   },
   computed: {
     walletsGroupedByAssetGroup() {
-      return groupWalletsBy(this.wallets, 'asset')
+      return groupWalletsBy(this.filteredWallets, 'asset')
     },
     filteredWallets() {
       const { wallets } = this
