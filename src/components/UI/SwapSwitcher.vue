@@ -1,9 +1,9 @@
 <template>
   <div class="swap-switcher">
-    <label for="swap-switcher" class="swap-switcher__label">
-      {{ label }}
+    <label class="swap-switcher__wrapper">
+      <span if="label" class="swap-switcher__label">{{ label }}</span>
+      <input v-model="model" type="checkbox" class="swap-switcher__input" />
     </label>
-    <input id="swap-switcher" v-model="model" type="checkbox" class="swap-switcher__input" name="toggle" />
   </div>
 </template>
 
@@ -39,8 +39,12 @@ export default {
 
 <style lang="scss">
 .swap-switcher {
-  display: flex;
-  align-items: center;
+  width: fit-content;
+
+  &__wrapper {
+    display: flex;
+    align-items: center;
+  }
 
   &__label {
     cursor: pointer;
