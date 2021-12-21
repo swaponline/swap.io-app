@@ -6,7 +6,13 @@ import ListItem from '@/components/Wallets/ListWallet/Item.vue'
 
 import { shallowMount } from '@vue/test-utils'
 import { nextTick } from 'vue'
-import { mockWallets, mockWalletsSum, bitcoinWallets, binanceWallet } from '../../../__mocks__/wallets.mock'
+import {
+  mockWallets,
+  mockWalletsSum,
+  bitcoinWallets,
+  binanceWallet,
+  ethereumWallet
+} from '../../../__mocks__/wallets.mock'
 
 describe('List wallets', () => {
   let wrapper
@@ -92,5 +98,16 @@ describe('List wallets', () => {
     expect(listItem.props().coin).toBe(binanceWallet.coin)
     expect(listItem.props().networkId).toBe(binanceWallet.networkId)
     expect(listItem.props().address).toBe(binanceWallet.address)
+  })
+
+  it('finds an active wallet group', async () => {
+    const listGroups = wrapper.findAllComponents(ListGroup)
+    const btcGroup = listGroups.wrappers[0]
+    const ethGroup = listGroups.wrappers[1]
+    expect(btcGroup.props().active).toEqual(true)
+
+    await wrapper.setProps({ activeWallet: ethereumWallet })
+    expect(btcGroup.props().active).toBe(false)
+    expect(ethGroup.props().active).toBe(true)
   })
 })
