@@ -40,30 +40,34 @@ describe('List wallets', () => {
     expect(sumComponent.props().totalValue).toBe(mockWalletsSum)
   })
 
-  it('shows search input', async () => {
-    const listWrapper = findListWrapper()
-    listWrapper.element.scrollTop = 1
+  describe('searches wallets', () => {
+    beforeEach(async () => {
+      const listWrapper = findListWrapper()
+      listWrapper.element.scrollTop = 1
 
-    await listWrapper.trigger('scroll')
-    await nextTick()
+      await listWrapper.trigger('scroll')
+      await nextTick()
+    })
 
-    expect(wrapper.findComponent(WalletSearch).exists()).toBe(true)
-  })
+    it('shows search input', () => {
+      expect(wrapper.findComponent(WalletSearch).exists()).toBe(true)
+    })
 
-  it('searches wallets', async () => {
-    const searchString = 'Main'
-    const listWrapper = findListWrapper()
-    listWrapper.element.scrollTop = 1
-    await listWrapper.trigger('scroll')
-    await nextTick()
+    it.each`
+      field          | searchString
+      ${'name'}      | ${'main'}
+      ${'networkId'} | ${'binance-smart-chain'}
+      ${'coin'}      | ${'bnb'}
+      ${'address'}   | ${'1gaN21RQHLSWxapkSLX1xFK9fwTKDgWJR'}
+    `('searches wallets by $field', async ({ field, searchString }) => {
+      const walletSearch = wrapper.findComponent(WalletSearch)
+      walletSearch.vm.$emit(WalletSearch.model?.event || 'input', searchString)
+      await nextTick()
 
-    const walletSearch = wrapper.findComponent(WalletSearch)
-    walletSearch.vm.$emit(WalletSearch.model?.event || 'input', searchString)
-    await nextTick()
-
-    const listItems = wrapper.findAllComponents(ListItem)
-    expect(listItems.wrappers.length).toBe(1)
-    expect(listItems.wrappers[0].props().name).toBe(searchString)
+      const listItems = wrapper.findAllComponents(ListItem)
+      expect(listItems.wrappers.length).toBe(1)
+      expect(listItems.wrappers[0].props(field).toLowerCase()).toBe(searchString.toLowerCase())
+    })
   })
 
   it('groups wallets', () => {
