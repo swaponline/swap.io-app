@@ -163,7 +163,7 @@ export default {
 
   &__item-content {
     padding: 15px 0px;
-    border-bottom: 1px solid var(--wallets-item-border);
+    border-bottom: 1px solid get-theme-for($wallets-item, 'border');
   }
 
   &__item-info {

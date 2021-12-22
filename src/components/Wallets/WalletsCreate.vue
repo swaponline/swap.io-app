@@ -60,7 +60,7 @@ export default {
 
   &__create-new {
     border-radius: 12px;
-    background: var(--primary-background);
+    background: get-theme-for($background, 'primary');
     display: flex;
     flex-direction: column;
     align-items: center;
