@@ -30,6 +30,7 @@
 <script>
 import { MatchMedia } from 'vue-component-media-queries'
 import { groupWalletsBy } from '@/utils/wallets'
+import { sum } from '@/utils/common'
 import WalletSearch from './Search.vue'
 import ProfileList from '../ProfileList.vue'
 import TotalWalletSum from './TotalWalletSum.vue'
@@ -68,7 +69,7 @@ export default {
       })
     },
     totalValue() {
-      return this.wallets.reduce((value, wallet) => value + wallet.value, 0)
+      return this.wallets.reduce((value, wallet) => sum(value, wallet.value), 0)
     }
   },
   methods: {
