@@ -298,7 +298,7 @@ export default {
     display: flex;
     padding: 3px;
     border-radius: $--main-border-radius;
-    background-color: var(--main-input-background);
+    background-color: get-theme-for($background, 'secondary');
   }
   &__toggle {
     width: 50%;
@@ -311,7 +311,7 @@ export default {
     cursor: pointer;
 
     &--active {
-      background-color: var(--primary-background);
+      background-color: get-theme-for($background, 'primary');
       box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.12), 0px 3px 1px rgba(0, 0, 0, 0.04);
     }
   }
@@ -364,15 +364,15 @@ export default {
     line-height: 21px;
     font-weight: $--font-weight-semi-bold;
     font-size: $--font-size-extra-small-subtitle;
-    background-color: var(--main-input-background);
+    background-color: get-theme-for($background, 'secondary');
     padding: 8px 8px 8px 12px;
-    color: var(--secondary-text);
+    color: get-theme-for($text, 'secondary');
     border-radius: $--main-border-radius;
     cursor: pointer;
     transition: all 0.3s;
 
     &:hover {
-      background-color: var(--main-button-background-hover);
+      background-color: get-theme-for($button, 'primary', 'hover');
     }
   }
   &__fee-row {
@@ -393,13 +393,13 @@ export default {
     line-height: 21px;
     font-weight: $--font-weight-semi-bold;
     font-size: $--font-size-extra-small-subtitle;
-    color: var(--secondary-text);
+    color: get-theme-for($text, 'secondary');
   }
   &__amount {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    color: var(--primary-text);
+    color: get-theme-for($text, 'primary');
     font-size: $--font-size-extra-small-subtitle;
   }
   &__amount-fiat {
@@ -407,7 +407,7 @@ export default {
     line-height: 16px;
   }
   &__currency-name {
-    color: var(--secondary-text);
+    color: get-theme-for($text, 'secondary');
   }
   &__add-memo {
     margin-bottom: 30px;

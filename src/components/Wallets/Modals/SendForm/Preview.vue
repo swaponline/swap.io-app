@@ -78,11 +78,11 @@ export default {
   &__wrapper {
     padding: 16px 12px;
     border-radius: $--main-border-radius;
-    background-color: var(--main-input-background) !important;
+    background-color: get-theme-for($background, 'secondary') !important;
     margin-bottom: 20px;
   }
   &__wallet {
-    background-color: var(--main-button-background-active);
+    background-color: get-theme-for($button, 'primary', 'pressed');
     border-radius: $--main-border-radius;
     margin-bottom: 16px;
   }
@@ -91,7 +91,7 @@ export default {
     margin-bottom: 12px;
   }
   &__field {
-    background-color: var(--main-button-background-active);
+    background-color: get-theme-for($button, 'primary', 'pressed');
     border-radius: $--main-border-radius;
     padding: 6px 14px 8px;
     display: flex;
@@ -116,11 +116,11 @@ export default {
     letter-spacing: 0.01em;
   }
   &__label {
-    color: var(--secondary-text);
+    color: get-theme-for($text, 'secondary');
     font-size: $--font-size-small;
   }
   &__value {
-    color: var(--primary-text);
+    color: get-theme-for($text, 'primary');
     font-size: $--font-size-extra-small-subtitle;
   }
   &__divider {
@@ -137,7 +137,7 @@ export default {
     font-size: $--font-size-extra-small-subtitle;
   }
   &__result-label {
-    color: var(--secondary-text);
+    color: get-theme-for($text, 'secondary');
   }
   &__result-value {
     display: flex;
@@ -145,7 +145,7 @@ export default {
     align-items: flex-end;
   }
   &__currency-name {
-    color: var(--secondary-text);
+    color: get-theme-for($text, 'secondary');
     margin-right: 4px;
   }
 
@@ -155,8 +155,8 @@ export default {
     display: flex;
     flex-direction: column;
     border-radius: $--main-border-radius;
-    background-color: var(--main-input-background);
-    border: 1px solid var(--main-border-color);
+    background-color: get-theme-for($background, 'secondary');
+    border: 1px solid get-theme-for($border-color, 'primary');
     margin-bottom: 32px;
   }
 }

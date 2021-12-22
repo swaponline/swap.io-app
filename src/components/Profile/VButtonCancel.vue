@@ -10,7 +10,7 @@
     width: 22px;
     height: 22px;
     z-index: 100;
-    color: var(--primary-text);
+    color: get-theme-for($text, 'primary');
   }
 }
 </style>

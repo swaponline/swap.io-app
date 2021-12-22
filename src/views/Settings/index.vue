@@ -38,7 +38,7 @@ export default {
 <style lang="scss">
 .settings {
   margin-top: 20px;
-  background: var(--primary-background);
+  background: get-theme-for($background, 'primary');
   min-height: 400px;
   padding: 40px;
   border-radius: 12px;

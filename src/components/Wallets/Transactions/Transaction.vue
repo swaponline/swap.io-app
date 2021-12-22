@@ -188,12 +188,12 @@ export default {
 
 <style lang="scss">
 .transaction-item {
-  border-bottom: 1px solid var(--main-border-color) !important;
-  border-top: 1px solid var(--main-border-color) !important;
+  border-bottom: 1px solid get-theme-for($border-color, 'primary') !important;
+  border-top: 1px solid get-theme-for($border-color, 'primary') !important;
   padding: 20px 0;
   margin: 0 20px;
   border-radius: 0px !important;
-  background-color: var(--primary-background) !important;
+  background-color: get-theme-for($background, 'primary') !important;
   transition: $--theme-transition;
 
   @include tablet {
@@ -252,16 +252,19 @@ export default {
     font-size: $--font-size-extra-small-subtitle;
     color: $--green;
     line-height: 25px;
+
     &--send {
       color: $--text-color-error;
     }
   }
+
   &__value-in-usd {
     margin-top: 4px;
     font-size: $--font-size-small;
     line-height: 16px;
-    color: $--black;
+    color: get-theme-for($text, 'primary');
   }
+
   &__amount {
     flex: 0 !important;
     margin: 0 15px;
@@ -269,6 +272,7 @@ export default {
     font-size: $--font-size-extra-small-subtitle;
     line-height: 25px;
     color: $--grey-2;
+
     @include tablet {
       display: none;
     }
