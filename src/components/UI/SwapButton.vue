@@ -56,7 +56,10 @@ export default {
     }
   }
 
-  &--theme-primary {
+  &--theme-primary.v-btn.theme--dark.v-btn--has-bg,
+  &--theme-primary.v-btn.theme--light.v-btn--has-bg,
+  &--theme-primary.v-btn.theme--light.v-btn.v-btn--disabled.v-btn--has-bg,
+  &--theme-primary.v-btn.theme--dark.v-btn.v-btn--disabled.v-btn--has-bgcolor {
     color: $--white !important;
     background-color: var(--main-color) !important;
     &.v-btn::before {
