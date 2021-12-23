@@ -30,6 +30,7 @@
 <script>
 import { MatchMedia } from 'vue-component-media-queries'
 import { groupWalletsBy } from '@/utils/wallets'
+import { sum } from '@/utils/common'
 import WalletSearch from './Search.vue'
 import ProfileList from '../ProfileList.vue'
 import TotalWalletSum from './TotalWalletSum.vue'
@@ -68,7 +69,7 @@ export default {
       })
     },
     totalValue() {
-      return this.wallets.reduce((value, wallet) => value + wallet.value, 0)
+      return this.wallets.reduce((value, wallet) => sum(value, wallet.value), 0)
     }
   },
   methods: {
@@ -91,7 +92,7 @@ export default {
 <style lang="scss">
 .list-wallet {
   position: relative;
-  background: var(--primary-background);
+  background: get-theme-for($background, 'primary');
   max-width: 305px;
   width: 100%;
   height: 100%;
@@ -101,7 +102,7 @@ export default {
   overflow-y: hidden;
 
   .v-list {
-    background: var(--primary-background);
+    background: get-theme-for($background, 'primary');
   }
 
   @include tablet {
@@ -112,7 +113,7 @@ export default {
   &__wrapper {
     height: 100%;
     overflow: auto;
-    background: var(--primary-background);
+    background: get-theme-for($background, 'primary');
     border-radius: 12px 12px 0 0 !important;
     padding-bottom: 100px;
     transition: all 0.5s;
@@ -155,7 +156,7 @@ export default {
     position: relative;
     padding: 5px 0;
     margin: 0 10px;
-    border-bottom: 1px solid var(--main-border-color);
+    border-bottom: 1px solid get-theme-for($border-color, 'primary');
 
     &:first-child {
       margin-top: 5px;

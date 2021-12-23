@@ -186,6 +186,10 @@ export default {
 .select-wallet {
   border-radius: 12px;
 
+  .v-card {
+    background-color: get-theme-for($background, 'primary');
+  }
+
   &__card {
     height: 600px;
   }
@@ -219,11 +223,11 @@ export default {
   }
   &__item {
     &:hover {
-      background-color: var(--main-button-active);
+      background-color: get-theme-for($button, 'primary', 'pressed');
       cursor: pointer;
     }
     &:not(:last-child) {
-      border-bottom: 1px solid var(--main-button-active);
+      border-bottom: 1px solid get-theme-for($button, 'primary', 'pressed');
     }
   }
 
@@ -238,12 +242,12 @@ export default {
   &__chip {
     padding: 0 8px !important;
     border-radius: 4px !important;
-    background-color: var(--main-button-background) !important;
+    background-color: get-theme-for($button, 'primary', 'enabled') !important;
   }
   &__select {
     fieldset {
       border-width: 2px;
-      border-color: var(--main-border-color);
+      border-color: get-theme-for($border-color, 'primary');
     }
     &.v-input--is-focused {
       fieldset {

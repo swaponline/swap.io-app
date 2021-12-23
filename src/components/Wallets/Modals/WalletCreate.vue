@@ -292,7 +292,7 @@ export default {
     padding: 8px 4px;
     border-radius: $--main-border-radius;
     &:hover {
-      background-color: var(--main-button-background-hover);
+      background-color: get-theme-for($button, 'primary', 'hover');
       cursor: pointer;
     }
   }

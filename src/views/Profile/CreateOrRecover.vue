@@ -100,7 +100,7 @@ export default {
   &__text {
     font-size: $--font-size-extra-title;
     font-weight: $--font-weight-semi-bold;
-    color: var(--primary-text);
+    color: get-theme-for($text, 'primary');
   }
 
   &__subtext {
