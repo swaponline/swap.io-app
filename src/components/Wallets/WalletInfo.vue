@@ -180,13 +180,13 @@ export default {
 
   @include tablet {
     height: 220px;
-    padding: 20px 15px;
+    padding: 20px 20px 22px;
     margin: 0 40px 20px;
   }
 
   @include phone {
     margin: 0 12px 12px;
-    padding: 12px;
+    padding: 10px 16px;
   }
 
   &__chart-switcher-wrapper {
@@ -205,6 +205,12 @@ export default {
   &__coin-price-chart-title {
     font-weight: unset;
     margin-right: 25px;
+    font-size: 18px;
+
+    @include phone {
+      font-size: 14px;
+      margin-right: 5px;
+    }
   }
 
   &__dividing-line {
@@ -213,6 +219,10 @@ export default {
     background-color: var(--main-button-background);
     opacity: 0.3;
     margin: 0 10px;
+
+    @include phone {
+      margin: 0 7px;
+    }
   }
 
   &--compressed {
@@ -272,6 +282,10 @@ export default {
       align-items: center;
       margin-bottom: 14px;
     }
+
+    @include tablet {
+      margin-bottom: 14px;
+    }
     @include phone {
       max-height: 100px;
     }
@@ -328,9 +342,10 @@ export default {
     margin: 0 0 var(--margin-button-address);
     overflow: hidden;
     transition: 0.3s;
+    margin-bottom: 38px;
 
-    @include phone {
-      margin: 0 0;
+    @include tablet {
+      margin-bottom: 40px;
       max-height: var(--height-header);
     }
   }
@@ -389,7 +404,6 @@ export default {
     width: auto;
     max-height: 70px;
     margin: 0 -6px;
-    margin-top: 30px;
 
     @include tablet {
       margin: 0 -5px;
