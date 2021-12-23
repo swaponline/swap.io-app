@@ -1,6 +1,7 @@
 import cloneDeepLodash from 'lodash.clonedeep'
 import debounceLodash from 'lodash.debounce'
 import isEqualLodash from 'lodash.isequal'
+import mergeLodash from 'lodash.merge'
 import Decimal from 'decimal.js-light'
 
 export function minifyAddress(address) {
@@ -56,6 +57,9 @@ export function debounce(func, wait = 0, options = {}) {
 
 export function isEqual(value, other) {
   return isEqualLodash(value, other)
+}
+export function deepMerge(object, other) {
+  return mergeLodash(object, other)
 }
 
 export function sum(value1, value2) {
