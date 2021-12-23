@@ -15,7 +15,12 @@ module.exports = {
   css: {
     loaderOptions: {
       scss: {
-        prependData: '@import "~@/assets/scss/vars"; @import "~@/assets/scss/media";'
+        prependData: `
+        @import "~@/assets/scss/vars"; 
+        @import "~@/assets/scss/media"; 
+        @import "~@/assets/scss/functions";
+        @import "~@/assets/scss/theme-variable";
+        `
       }
     }
   },

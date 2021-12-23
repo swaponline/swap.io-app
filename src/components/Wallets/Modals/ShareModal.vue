@@ -106,7 +106,7 @@ $--color-whatsapp: #25d366;
     align-items: center;
     padding: 30px 12px;
     border-radius: $--main-border-radius;
-    background-color: var(--main-input-background);
+    background-color: get-theme-for($background, 'secondary');
   }
 
   &__indent {

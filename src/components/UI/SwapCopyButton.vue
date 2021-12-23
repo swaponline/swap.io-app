@@ -34,6 +34,7 @@ export default {
 <style lang="scss">
 .swap-copy-button {
   $this: &;
+
   display: flex;
   align-items: flex-start;
   padding: 4px;
@@ -43,7 +44,7 @@ export default {
   max-width: 100%;
 
   &:hover {
-    background: var(--main-button-background-hover);
+    background: get-theme-for($button, 'primary', 'hover');
   }
 
   &--size-small {

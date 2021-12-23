@@ -50,7 +50,7 @@ export default {
     cursor: pointer;
     font-size: 12px;
     margin-right: 4px;
-    color: var(--primary-text);
+    color: get-theme-for($text, 'primary');
     white-space: nowrap;
   }
 

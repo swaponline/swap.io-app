@@ -1,4 +1,4 @@
-import { isEqual } from '@/utils/common'
+import { isEqual, sum } from '@/utils/common'
 
 export function groupWalletsBy(wallets, field) {
   return wallets.reduce((groupedWallets, wallet) => {
@@ -13,7 +13,7 @@ export function groupWalletsBy(wallets, field) {
     } else {
       groupedWallets[index].wallets.push(wallet)
       // eslint-disable-next-line no-param-reassign
-      groupedWallets[index].value += wallet.value || 0
+      groupedWallets[index].value = sum(wallet.value, groupedWallets[index].value) || 0
     }
 
     return groupedWallets

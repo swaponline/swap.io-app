@@ -173,7 +173,7 @@ export default {
   position: relative;
   padding: 20px 25px 25px;
   overflow: hidden;
-  background: var(--primary-background);
+  background: get-theme-for($background, 'primary');
   height: 250px;
   border-radius: 12px;
   transition: $--theme-transition;
@@ -191,9 +191,13 @@ export default {
 
   &__chart-switcher-wrapper {
     padding: 6px 10px;
-    background-color: var(--main-button-background);
+    background-color: get-theme-for($button, 'primary', 'enabled');
     border-radius: 22px;
     z-index: 100;
+
+    &:hover {
+      background-color: get-theme-for($button, 'primary', 'hover');
+    }
   }
 
   &__coin-price-chart-header {
@@ -303,6 +307,7 @@ export default {
 
   &__optional-button {
     position: relative;
+    background-color: get-theme-for($background, 'primary') !important;
 
     &:not(:last-child) {
       margin-right: 10px;
@@ -333,7 +338,8 @@ export default {
     width: 14px !important;
     height: 14px !important;
     font-size: 14px !important;
-    color: var(--main-icon-color) !important;
+
+    color: get-theme-for($icon, 'active') !important;
   }
   &__address-wrapper {
     position: relative;
