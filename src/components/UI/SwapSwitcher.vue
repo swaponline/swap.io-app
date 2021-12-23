@@ -51,6 +51,7 @@ export default {
     font-size: 12px;
     margin-right: 4px;
     color: var(--primary-text);
+    white-space: nowrap;
   }
 
   &__input {
