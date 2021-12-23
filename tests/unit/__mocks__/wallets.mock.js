@@ -116,4 +116,4 @@ export const mockWallets = [
   binanceWallet
 ]
 
-export const mockWalletsSum = 203.4
+export const mockWalletsSum = 203.15
