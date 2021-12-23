@@ -61,6 +61,7 @@ export function isEqual(value, other) {
 export function deepMerge(object, other) {
   return mergeLodash(object, other)
 }
+
 export function sum(value1, value2) {
   return new Decimal(value1).plus(value2).toNumber()
 }
