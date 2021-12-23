@@ -72,7 +72,6 @@ export default {
   computed: {
     localChartOptions() {
       const { currentTheme } = this
-      console.log(this.mediaQueries)
 
       const defaultChartOptions = {
         height: this.mediaQueries.desktop ? HEIGHT.normal : HEIGHT.small,
