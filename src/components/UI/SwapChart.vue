@@ -6,7 +6,6 @@
 
 <script>
 import { createChart } from 'lightweight-charts'
-import { isEqual } from '@/utils/common'
 
 export default {
   name: 'SwapChart',
@@ -34,19 +33,11 @@ export default {
     datasets(newDataSets) {
       this.updateDataSets(newDataSets)
     },
-    chartOptions: {
-      handler(newOptions, oldOptions) {
-        if (!isEqual(newOptions, oldOptions)) return
-        const chartOptions = { ...newOptions, ...oldOptions }
-        this.updateChartOptions(chartOptions)
-      }
+    chartOptions(newOptions) {
+      this.updateChartOptions(newOptions)
     },
-    areaStyleOptions: {
-      handler(newStyleOptions, oldStyleOptions) {
-        if (!isEqual(newStyleOptions, oldStyleOptions)) return
-        const areaStyleOptions = { ...newStyleOptions, ...oldStyleOptions }
-        this.updateAreaStyleOptions(areaStyleOptions)
-      }
+    areaStyleOptions(newStyleOptions) {
+      this.updateAreaStyleOptions(newStyleOptions)
     }
   },
   mounted() {

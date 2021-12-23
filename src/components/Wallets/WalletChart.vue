@@ -7,31 +7,33 @@
 </template>
 
 <script>
-import { themeService } from '@/services/theme'
+import { themeService, events as themeServiceEvents } from '@/services/theme'
+import { DARK_THEME_KEY, LIGHT_THEME_KEY } from '@/constants/theme'
+import { deepMerge } from '@/utils/common'
 
 const LAYOUT_BACKGROUND = {
-  darkTheme: '#0f1422',
-  lightTheme: '#fff'
+  [DARK_THEME_KEY]: '#0f1422',
+  [LIGHT_THEME_KEY]: '#fff'
 }
 
 const TEXT_COLOR = {
-  darkTheme: '#D0D0D0',
-  lightTheme: '#0F1422'
+  [DARK_THEME_KEY]: '#D0D0D0',
+  [LIGHT_THEME_KEY]: '#0F1422'
 }
 
 const GRID_COLOR = {
-  darkTheme: 'rgba(208, 208, 208, 0.2)',
-  lightTheme: '#f6f6f6'
+  [DARK_THEME_KEY]: 'rgba(208, 208, 208, 0.2)',
+  [LIGHT_THEME_KEY]: '#f6f6f6'
 }
 
 const COLOR_GRADIENT = {
   top: {
-    darkTheme: 'rgba(97, 68, 229, 1)',
-    lightTheme: 'rgba(97, 68, 229, 0)'
+    [DARK_THEME_KEY]: 'rgba(97, 68, 229, 1)',
+    [LIGHT_THEME_KEY]: 'rgba(97, 68, 229, 0)'
   },
   bottom: {
-    darkTheme: 'rgba(5, 8, 15, 0.79)',
-    lightTheme: 'rgba(255, 255, 255, 0.92)'
+    [DARK_THEME_KEY]: 'rgba(5, 8, 15, 0.79)',
+    [LIGHT_THEME_KEY]: 'rgba(255, 255, 255, 0.92)'
   }
 }
 
@@ -55,18 +57,21 @@ export default {
       default: () => []
     }
   },
-
+  data() {
+    return {
+      currentTheme: themeService.getCurrentTheme(),
+      subscriptions: []
+    }
+  },
   computed: {
-    isDarkTheme() {
-      return themeService.getIsDark()
-    },
     localChartOptions() {
+      const { currentTheme } = this
       const defaultChartOptions = {
         height: 171,
         layout: {
-          backgroundColor: this.isDarkTheme ? LAYOUT_BACKGROUND.darkTheme : LAYOUT_BACKGROUND.lightTheme,
+          backgroundColor: LAYOUT_BACKGROUND[currentTheme],
           fontFamily: FONT_FAMILY,
-          textColor: this.isDarkTheme ? TEXT_COLOR.darkTheme : TEXT_COLOR.lightTheme
+          textColor: TEXT_COLOR[currentTheme]
         },
         localization: {
           priceFormatter(price) {
@@ -75,10 +80,10 @@ export default {
         },
         grid: {
           vertLines: {
-            color: this.isDarkTheme ? GRID_COLOR.darkTheme : GRID_COLOR.lightTheme
+            color: GRID_COLOR[currentTheme]
           },
           horzLines: {
-            color: this.isDarkTheme ? GRID_COLOR.darkTheme : GRID_COLOR.lightTheme
+            color: GRID_COLOR[currentTheme]
           }
         },
         rightPriceScale: {
@@ -94,16 +99,33 @@ export default {
         }
       }
 
-      return { ...defaultChartOptions, ...this.chartOptions }
+      return { ...deepMerge(defaultChartOptions, this.chartOptions) }
     },
     localAreaStyleOptions() {
+      const { currentTheme } = this
+
       const defaultArealStyleOptions = {
-        topColor: this.isDarkTheme ? COLOR_GRADIENT.top.darkTheme : COLOR_GRADIENT.top.lightTheme,
-        bottomColor: this.isDarkTheme ? COLOR_GRADIENT.bottom.darkTheme : COLOR_GRADIENT.bottom.lightTheme,
+        topColor: COLOR_GRADIENT.top[currentTheme],
+        bottomColor: COLOR_GRADIENT.bottom[currentTheme],
         lineColor: LINE_COLOR,
         lineWidth: 2
       }
-      return { ...defaultArealStyleOptions, ...this.areaStyleOptions }
+      return { ...deepMerge(defaultArealStyleOptions, this.areaStyleOptions) }
+    }
+  },
+  created() {
+    this.subscribeToUpdates()
+  },
+  beforeDestroy() {
+    this.subscriptions.forEach(callback => callback.unsubscribe())
+  },
+  methods: {
+    subscribeToUpdates() {
+      this.subscriptions.push(
+        themeService.subscribe(themeServiceEvents.UPDATE_CURRENT_THEME, theme => {
+          this.currentTheme = theme
+        })
+      )
     }
   }
 }
