@@ -108,7 +108,7 @@ export default {
     &:checked::after {
       transform: translateX(100%);
       background-color: $--white;
-      transition: all 3s;
+      transition: all 0.3s cubic-bezier(0.2, 0.85, 0.32, 1.2);
     }
   }
 }
