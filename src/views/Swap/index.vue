@@ -146,7 +146,7 @@ export default {
 <style lang="scss">
 .swap {
   position: relative;
-  left: 0px;
+  left: 0;
   width: 100%;
   max-width: 370px;
   height: 100%;
@@ -157,7 +157,7 @@ export default {
   align-items: flex-start;
   background: $--white;
   border-radius: 12px;
-  box-shadow: 0px 0px 15px rgba($--black, 0.015);
+  box-shadow: 0 0 15px rgba($--black, 0.015);
   overflow-x: hidden;
   overflow-y: auto;
   transition: 0.5s;
@@ -165,18 +165,21 @@ export default {
   @include tablet {
     margin-top: 20px;
   }
+
   @include phone {
     max-width: none;
     width: auto;
     margin: 12px 12px;
   }
+
   @include small-phone {
     max-height: 415px;
   }
 }
+
 .swap-form {
   z-index: 2;
-  background: var(--primary-background);
+  background: get-theme-for($background, 'primary');
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -185,12 +188,15 @@ export default {
   width: 100%;
   max-width: 370px;
   border-radius: 12px;
+
   @include tablet {
     max-width: none;
   }
+
   @include small-phone {
     padding: 16px 12px 14px;
   }
+
   &__header {
     width: 100%;
     display: flex;
@@ -200,10 +206,12 @@ export default {
     font-size: $--font-size-extra-small-subtitle;
     margin-bottom: 16px;
   }
+
   &__balance {
     color: $--grey-3;
     font-size: $--font-size-base;
   }
+
   &__row {
     display: flex;
     justify-content: center;
@@ -216,11 +224,13 @@ export default {
     margin-bottom: 0;
     height: 54px;
   }
+
   &__button-icon {
     margin-right: 4px;
     width: 17px;
     height: 17px;
   }
+
   &__button-currency {
     color: $--grey-3;
     margin-right: 4px;
@@ -234,7 +244,7 @@ export default {
   &__swap-icon {
     width: 22px;
     height: 22px;
-    color: var(--main-icon-color);
+    color: get-theme-for($icon, 'active');
   }
 
   &__info {
@@ -244,9 +254,10 @@ export default {
     font-size: $--font-size-base;
 
     .v-divider {
-      border-color: var(--main-border-color);
+      border-color: get-theme-for($border-color, 'primary');
     }
   }
+
   &__info-row {
     width: 100%;
     display: flex;
@@ -256,10 +267,12 @@ export default {
     &:first-of-type {
       margin-top: 5px;
     }
+
     &:last-of-type {
       margin-bottom: 5px;
     }
   }
+
   &__button {
     margin-top: auto;
     width: 100%;

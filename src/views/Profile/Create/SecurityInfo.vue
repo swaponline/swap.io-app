@@ -182,7 +182,7 @@ export default {
 
   &__buttons {
     width: 100%;
-    background: var(--primary-background);
+    background: get-theme-for($background, 'primary');
     border-radius: 12px;
     padding: 22px;
 
@@ -230,7 +230,7 @@ export default {
     width: 10px;
     border-radius: 50%;
     margin: 0 5px;
-    background-color: var(--main-button-background);
+    background-color: get-theme-for($button, 'primary', 'enabled');
 
     &--fill {
       background: var(--main-color);

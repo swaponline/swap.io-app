@@ -113,7 +113,7 @@ export default {
     margin-bottom: 15px;
     font-size: $--font-size-extra-small-subtitle;
     font-weight: $--font-weight-semi-bold;
-    background-color: var(--main-input-background);
+    background-color: get-theme-for($background, 'secondary');
     border-radius: $--main-border-radius;
   }
 
@@ -141,7 +141,7 @@ export default {
   &__chip {
     padding: 0 8px !important;
     border-radius: 4px !important;
-    background-color: var(--main-button-background) !important;
+    background-color: get-theme-for($button, 'primary', 'enabled') !important;
   }
 
   &__asset-title {
@@ -163,7 +163,7 @@ export default {
 
     &--active,
     &:hover {
-      background-color: var(--main-button-background);
+      background-color: get-theme-for($button, 'primary', 'enabled');
     }
 
     .v-input--selection-controls__input {

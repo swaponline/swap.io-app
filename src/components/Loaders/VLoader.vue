@@ -1,5 +1,5 @@
 <template>
-  <vue-element-loading :active="active" class="loader-wrapper" background-color="var(--primary-background)">
+  <vue-element-loading :active="active" class="loader-wrapper" background-color="get-theme-for($background, 'primary')">
     <svg
       :width="width"
       :height="height"

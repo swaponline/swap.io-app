@@ -21,7 +21,7 @@ export default {
       &__heading,
       &__image,
       &__text {
-        background: var(--main-button-background-hover);
+        background: get-theme-for($button, 'primary', 'hover');
       }
 
       &__actions,
