@@ -1,6 +1,7 @@
 import cloneDeepLodash from 'lodash.clonedeep'
 import debounceLodash from 'lodash.debounce'
 import isEqualLodash from 'lodash.isequal'
+import mergeLodash from 'lodash.merge'
 
 export function minifyAddress(address) {
   return `${address.slice(0, 5)} ... ${address.slice(-5)}`
@@ -55,4 +56,7 @@ export function debounce(func, wait = 0, options = {}) {
 
 export function isEqual(value, other) {
   return isEqualLodash(value, other)
+}
+export function deepMerge(object, other) {
+  return mergeLodash(object, other)
 }

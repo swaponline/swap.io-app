@@ -9,6 +9,7 @@
 <script>
 import { themeService, events as themeServiceEvents } from '@/services/theme'
 import { DARK_THEME_KEY, LIGHT_THEME_KEY } from '@/constants/theme'
+import { deepMerge } from '@/utils/common'
 
 const LAYOUT_BACKGROUND = {
   [DARK_THEME_KEY]: '#0f1422',
@@ -98,7 +99,7 @@ export default {
         }
       }
 
-      return { ...defaultChartOptions, ...this.chartOptions }
+      return { ...deepMerge(defaultChartOptions, this.chartOptions) }
     },
     localAreaStyleOptions() {
       const { currentTheme } = this
@@ -109,8 +110,11 @@ export default {
         lineColor: LINE_COLOR,
         lineWidth: 2
       }
-      return { ...defaultArealStyleOptions, ...this.areaStyleOptions }
+      return { ...deepMerge(defaultArealStyleOptions, this.areaStyleOptions) }
     }
+  },
+  created() {
+    this.subscribeToUpdates()
   },
   beforeDestroy() {
     this.subscriptions.forEach(callback => callback.unsubscribe())
