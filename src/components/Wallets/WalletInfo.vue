@@ -153,7 +153,7 @@ export default {
   position: relative;
   padding: 20px 25px 25px;
   overflow: hidden;
-  background: var(--primary-background);
+  background: get-theme-for($background, 'primary');
   height: 250px;
   border-radius: 12px;
   display: flex;
@@ -242,7 +242,7 @@ export default {
   }
   &__optional-button {
     position: relative;
-    background-color: var(--primary-background) !important;
+    background-color: get-theme-for($background, 'primary') !important;
 
     &:not(:last-child) {
       margin-right: 6px;
@@ -272,7 +272,7 @@ export default {
   &__icon {
     width: 18px;
     height: 23px;
-    color: var(--main-icon-color) !important;
+    color: get-theme-for($icon, 'active') !important;
   }
   &__address-wrapper {
     position: relative;

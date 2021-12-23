@@ -32,7 +32,7 @@ export default {
   }
 
   &.v-btn::before {
-    background-color: var(--main-button-background-hover);
+    background-color: get-theme-for($button, 'primary', 'hover');
   }
 
   &:not(.v-btn--round):not(.v-btn--tile) {
@@ -40,11 +40,26 @@ export default {
   }
 
   &.v-btn.theme--dark.v-btn--has-bg,
-  &.v-btn.theme--light.v-btn--has-bg {
-    background-color: var(--main-button-background);
+  &.v-btn.theme--light.v-btn--has-bg,
+  &.v-btn.theme--light.v-btn.v-btn--disabled.v-btn--has-bg,
+  &.v-btn.theme--dark.v-btn.v-btn--disabled.v-btn--has-bg {
+    background-color: get-theme-for($button, 'primary', 'enabled') !important;
   }
 
-  &--theme-primary {
+  &.v-btn.theme--light.v-btn.v-btn--disabled,
+  &.v-btn.theme--dark.v-btn.v-btn--disabled {
+    pointer-events: auto;
+    cursor: not-allowed;
+
+    .v-btn__content {
+      color: get-theme-for($text, 'disabled');
+    }
+  }
+
+  &--theme-primary.v-btn.theme--dark.v-btn--has-bg,
+  &--theme-primary.v-btn.theme--light.v-btn--has-bg,
+  &--theme-primary.v-btn.theme--light.v-btn.v-btn--disabled.v-btn--has-bg,
+  &--theme-primary.v-btn.theme--dark.v-btn.v-btn--disabled.v-btn--has-bgcolor {
     color: $--white !important;
     background-color: var(--main-color) !important;
     &.v-btn::before {
@@ -59,7 +74,6 @@ export default {
 
   &:not(.v-btn--round).v-size--small {
     height: $--button-size-small;
-
     padding: 0 10px;
     font-size: $--font-size-base;
 
