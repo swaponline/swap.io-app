@@ -75,6 +75,17 @@ describe('List wallets', () => {
       expect(listItems.wrappers.length).toBe(1)
       expect(listItems.wrappers[0].props(field).toLowerCase()).toContain(searchString.toLowerCase())
     })
+
+    it('does not show wallets when not found', async () => {
+      const walletSearch = wrapper.findComponent(WalletSearch)
+      walletSearch.vm.$emit(WalletSearch.model?.event || 'input', 'test')
+      await nextTick()
+
+      const listItems = wrapper.findAllComponents(ListItem)
+      const listGroups = wrapper.findAllComponents(ListGroup)
+      expect(listItems.wrappers.length).toBe(0)
+      expect(listGroups.wrappers.length).toBe(0)
+    })
   })
 
   it('groups wallets', () => {
