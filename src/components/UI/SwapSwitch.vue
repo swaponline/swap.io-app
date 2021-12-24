@@ -9,7 +9,7 @@
 
 <script>
 export default {
-  name: 'SwapSwitcher',
+  name: 'SwapSwitch',
   model: {
     prop: 'checked',
     event: 'change'
@@ -72,11 +72,7 @@ export default {
     border-radius: 16px;
     outline: none;
     cursor: pointer;
-
-    -webkit-appearance: none;
-    -moz-appearance: none;
     appearance: none;
-
     transition: all 0.3s cubic-bezier(0.2, 0.85, 0.32, 1.2);
 
     &::after {

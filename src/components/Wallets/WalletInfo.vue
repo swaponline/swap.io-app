@@ -18,7 +18,7 @@
       />
       <div class="wallet-info__optional-buttons">
         <div class="wallet-info__chart-switcher-wrapper">
-          <swap-switcher v-model="isChartView" label="Price chart"></swap-switcher>
+          <swap-switch v-model="isChartView" label="Price chart"></swap-switch>
         </div>
 
         <div class="wallet-info__dividing-line"></div>
