@@ -6,6 +6,7 @@ import SwapButtonGoBack from './SwapButtonGoBack.vue'
 import SwapCopyWrapper from './SwapCopyWrapper.vue'
 import SwapSkeleton from './SwapSkeleton.vue'
 import SwapChart from './SwapChart.vue'
+import swapSwitch from './swapSwitch.vue'
 
 export default {
   install(Vue) {
@@ -17,5 +18,6 @@ export default {
     Vue.component('SwapCopyWrapper', SwapCopyWrapper)
     Vue.component('SwapSkeleton', SwapSkeleton)
     Vue.component('SwapChart', SwapChart)
+    Vue.component('swapSwitch', swapSwitch)
   }
 }
