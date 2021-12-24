@@ -66,7 +66,7 @@ describe('List wallets', () => {
       ${'networkId'} | ${'binance'}
       ${'coin'}      | ${'bnb'}
       ${'address'}   | ${'1gaN21R'}
-    `('searches wallets by $field', async ({ field, searchString }) => {
+    `('searches wallet by $field', async ({ field, searchString }) => {
       const walletSearch = wrapper.findComponent(WalletSearch)
       walletSearch.vm.$emit(WalletSearch.model?.event || 'input', searchString)
       await nextTick()
@@ -74,6 +74,17 @@ describe('List wallets', () => {
       const listItems = wrapper.findAllComponents(ListItem)
       expect(listItems.wrappers.length).toBe(1)
       expect(listItems.wrappers[0].props(field).toLowerCase()).toContain(searchString.toLowerCase())
+    })
+
+    it('shows a groups of wallets', async () => {
+      const walletSearch = wrapper.findComponent(WalletSearch)
+      walletSearch.vm.$emit(WalletSearch.model?.event || 'input', 'eth')
+      await nextTick()
+
+      const listGroups = wrapper.findAllComponents(ListGroup)
+      expect(listGroups.length).toBe(2)
+      expect(listGroups.wrappers[0].props().wallets.length).toBe(2)
+      expect(listGroups.wrappers[1].props().wallets.length).toBe(2)
     })
 
     it('does not show wallets when not found', async () => {
