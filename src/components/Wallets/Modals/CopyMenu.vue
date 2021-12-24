@@ -2,8 +2,8 @@
   <v-dialog :value="value" content-class="copy-menu" transition="slide-y-reverse-transition" @click:outside="close">
     <div class="copy-menu__buttons">
       <div v-if="showAddress" class="copy-menu__address">{{ address }}</div>
-      <swap-button color="white" tile block light class="copy-menu__button" @click="copy">Copy</swap-button>
-      <swap-button color="white" tile block light class="copy-menu__button" @click="openQrModal">qr-code</swap-button>
+      <swap-button tile block class="copy-menu__button" @click="copy">Copy</swap-button>
+      <swap-button tile block class="copy-menu__button" @click="openQrModal">qr-code</swap-button>
     </div>
   </v-dialog>
 </template>
@@ -57,9 +57,11 @@ export default {
 .copy-menu {
   margin-top: auto;
   box-shadow: none;
+
   :not(:last-child) {
     border-bottom: 1px solid $--light-grey !important;
   }
+
   &__buttons {
     border-radius: 12px;
     overflow: hidden;
@@ -67,6 +69,7 @@ export default {
     max-width: 540px;
     margin: auto;
   }
+
   &__address {
     min-height: 60px;
     width: 100%;
@@ -75,13 +78,15 @@ export default {
     justify-content: center;
     word-break: break-all;
     text-align: center;
-    background: $--white;
+    background: get-theme-for($background, 'primary');
     font-weight: $--font-weight-bold;
     font-size: $--font-size-extra-small-subtitle;
   }
+
   &__button {
     min-height: 60px;
     font-weight: $--font-weight-bold;
+
     span {
       font-size: $--font-size-extra-small-subtitle;
     }

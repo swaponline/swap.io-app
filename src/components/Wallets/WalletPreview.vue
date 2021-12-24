@@ -34,7 +34,7 @@ export default {
   display: flex;
   align-items: center;
   padding: 12px 14px;
-  background-color: var(--main-input-background);
+  background-color: get-theme-for($background, 'secondary');
 
   &__icon {
     margin-right: 14px;
@@ -49,7 +49,7 @@ export default {
     justify-content: space-between;
   }
   &__name {
-    color: var(--primary-text);
+    color: get-theme-for($text, 'primary');
   }
   &__name,
   &__value,

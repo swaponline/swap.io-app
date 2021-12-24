@@ -10,6 +10,7 @@ import {
   mockWallets,
   mockWalletsSum,
   bitcoinWallets,
+  bitcoinWallet,
   binanceWallet,
   ethereumWallet
 } from '../../../__mocks__/wallets.mock'
@@ -19,7 +20,7 @@ describe('List wallets', () => {
 
   const DEFAULT_PROPS = {
     wallets: mockWallets,
-    activeWallet: mockWallets[0]
+    activeWallet: bitcoinWallet
   }
 
   const findListWrapper = () => wrapper.find('[data-test-id=list-wrapper]')
@@ -62,17 +63,39 @@ describe('List wallets', () => {
     it.each`
       field          | searchString
       ${'name'}      | ${'main'}
-      ${'networkId'} | ${'binance-smart-chain'}
+      ${'networkId'} | ${'binance'}
       ${'coin'}      | ${'bnb'}
-      ${'address'}   | ${'1gaN21RQHLSWxapkSLX1xFK9fwTKDgWJR'}
-    `('searches wallets by $field', async ({ field, searchString }) => {
+      ${'address'}   | ${'1gaN21R'}
+    `('searches wallet by $field', async ({ field, searchString }) => {
       const walletSearch = wrapper.findComponent(WalletSearch)
       walletSearch.vm.$emit(WalletSearch.model?.event || 'input', searchString)
       await nextTick()
 
       const listItems = wrapper.findAllComponents(ListItem)
       expect(listItems.wrappers.length).toBe(1)
-      expect(listItems.wrappers[0].props(field).toLowerCase()).toBe(searchString.toLowerCase())
+      expect(listItems.wrappers[0].props(field).toLowerCase()).toContain(searchString.toLowerCase())
+    })
+
+    it('shows wallet groups when searching', async () => {
+      const walletSearch = wrapper.findComponent(WalletSearch)
+      walletSearch.vm.$emit(WalletSearch.model?.event || 'input', 'eth')
+      await nextTick()
+
+      const listGroups = wrapper.findAllComponents(ListGroup)
+      expect(listGroups.length).toBe(2)
+      expect(listGroups.wrappers[0].props().wallets.length).toBe(2)
+      expect(listGroups.wrappers[1].props().wallets.length).toBe(2)
+    })
+
+    it('does not show wallets when not found', async () => {
+      const walletSearch = wrapper.findComponent(WalletSearch)
+      walletSearch.vm.$emit(WalletSearch.model?.event || 'input', 'test')
+      await nextTick()
+
+      const listItems = wrapper.findAllComponents(ListItem)
+      const listGroups = wrapper.findAllComponents(ListGroup)
+      expect(listItems.wrappers.length).toBe(0)
+      expect(listGroups.wrappers.length).toBe(0)
     })
   })
 
@@ -105,6 +128,7 @@ describe('List wallets', () => {
     const btcGroup = listGroups.wrappers[0]
     const ethGroup = listGroups.wrappers[1]
     expect(btcGroup.props().active).toEqual(true)
+    expect(ethGroup.props().active).toBe(false)
 
     await wrapper.setProps({ activeWallet: ethereumWallet })
     expect(btcGroup.props().active).toBe(false)

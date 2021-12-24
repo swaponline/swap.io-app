@@ -103,12 +103,12 @@ export default {
     width: 100%;
     text-align: left;
     z-index: 100;
-    background: var(--primary-background);
+    background: get-theme-for($background, 'primary');
     top: 0;
     display: flex;
     justify-content: space-between;
     padding: 0 25px;
-    color: var(--primary-text) !important;
+    color: get-theme-for($text, 'primary') !important;
     font-size: $--font-size-medium;
     transition: $--theme-transition;
 

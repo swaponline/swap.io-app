@@ -140,6 +140,10 @@ export default {
     margin: 0 12px 12px;
   }
 
+  .v-expansion-panel-content__wrap {
+    background: get-theme-for($background, 'primary');
+  }
+
   &__inner {
     border-radius: 12px !important;
 
@@ -160,14 +164,14 @@ export default {
     margin: 0;
     padding: 0 12px 0 12px;
     min-height: $--header-height !important;
-    background: var(--primary-background);
+    background: get-theme-for($background, 'primary');
     transition: $--theme-transition;
     border-radius: 12px;
     display: flex;
     align-items: center;
 
     &:hover {
-      background-color: var(--main-input-background);
+      background-color: get-theme-for($background, 'secondary');
     }
 
     @include phone {
@@ -198,7 +202,7 @@ export default {
   &__avatar-icon {
     position: absolute;
     bottom: -4px;
-    fill: var(--main-icon-color);
+    fill: get-theme-for($icon, 'active');
   }
 
   &__arrow-icon {
@@ -211,7 +215,7 @@ export default {
     flex-shrink: 0 !important;
     width: 9px;
     height: 9px;
-    fill: var(--main-icon-color);
+    fill: get-theme-for($icon, 'active');
     transition: $--transition-duration;
 
     &--active {
@@ -221,7 +225,7 @@ export default {
 
   &__list-account {
     margin: 0 -24px -6px;
-    background-color: var(--primary-background) !important;
+    background-color: get-theme-for($background, 'primary') !important;
   }
 
   &__list-item {
@@ -229,7 +233,7 @@ export default {
     height: 60px;
 
     &:hover {
-      background-color: var(--main-input-background);
+      background-color: get-theme-for($background, 'secondary');
     }
 
     @include tablet {
@@ -248,12 +252,12 @@ export default {
 
   &__add-new-profile {
     width: 100%;
-    border-top: 1px solid var(--main-border-color);
+    border-top: 1px solid get-theme-for($border-color, 'primary');
     padding: 16px 10px 15px 10px;
-    color: var(--primary-text);
+    color: get-theme-for($text, 'primary');
 
     &:hover {
-      background-color: var(--main-input-background);
+      background-color: get-theme-for($background, 'secondary');
     }
   }
 
