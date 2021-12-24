@@ -76,7 +76,7 @@ describe('List wallets', () => {
       expect(listItems.wrappers[0].props(field).toLowerCase()).toContain(searchString.toLowerCase())
     })
 
-    it('shows a groups of wallets', async () => {
+    it('shows wallet groups when searching', async () => {
       const walletSearch = wrapper.findComponent(WalletSearch)
       walletSearch.vm.$emit(WalletSearch.model?.event || 'input', 'eth')
       await nextTick()
