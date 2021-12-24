@@ -10,6 +10,7 @@ import {
   mockWallets,
   mockWalletsSum,
   bitcoinWallets,
+  bitcoinWallet,
   binanceWallet,
   ethereumWallet
 } from '../../../__mocks__/wallets.mock'
@@ -19,7 +20,7 @@ describe('List wallets', () => {
 
   const DEFAULT_PROPS = {
     wallets: mockWallets,
-    activeWallet: mockWallets[0]
+    activeWallet: bitcoinWallet
   }
 
   const findListWrapper = () => wrapper.find('[data-test-id=list-wrapper]')
@@ -62,9 +63,9 @@ describe('List wallets', () => {
     it.each`
       field          | searchString
       ${'name'}      | ${'main'}
-      ${'networkId'} | ${'binance-smart-chain'}
+      ${'networkId'} | ${'binance'}
       ${'coin'}      | ${'bnb'}
-      ${'address'}   | ${'1gaN21RQHLSWxapkSLX1xFK9fwTKDgWJR'}
+      ${'address'}   | ${'1gaN21R'}
     `('searches wallets by $field', async ({ field, searchString }) => {
       const walletSearch = wrapper.findComponent(WalletSearch)
       walletSearch.vm.$emit(WalletSearch.model?.event || 'input', searchString)
@@ -72,7 +73,7 @@ describe('List wallets', () => {
 
       const listItems = wrapper.findAllComponents(ListItem)
       expect(listItems.wrappers.length).toBe(1)
-      expect(listItems.wrappers[0].props(field).toLowerCase()).toBe(searchString.toLowerCase())
+      expect(listItems.wrappers[0].props(field).toLowerCase()).toContain(searchString.toLowerCase())
     })
   })
 
@@ -105,6 +106,7 @@ describe('List wallets', () => {
     const btcGroup = listGroups.wrappers[0]
     const ethGroup = listGroups.wrappers[1]
     expect(btcGroup.props().active).toEqual(true)
+    expect(ethGroup.props().active).toBe(false)
 
     await wrapper.setProps({ activeWallet: ethereumWallet })
     expect(btcGroup.props().active).toBe(false)
