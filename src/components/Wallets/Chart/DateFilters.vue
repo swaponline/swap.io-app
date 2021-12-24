@@ -1,7 +1,7 @@
 <template>
   <div class="chart-date-filters">
     <button
-      v-for="(label, range) in $options.TIME_PERIOD_CHART"
+      v-for="(label, range) in options"
       :key="range"
       class="chart-date-filters__filter-button"
       :class="{ 'chart-date-filters__filter-button--active': dateRange === range }"
@@ -13,13 +13,11 @@
 </template>
 
 <script>
-import { TIME_PERIOD_CHART, ONE_DAY_TYPE } from '@/constants/chartDateRange'
-
 export default {
-  TIME_PERIOD_CHART,
   name: 'ChartDateFilters',
   props: {
-    dateRange: { type: String, default: ONE_DAY_TYPE }
+    dateRange: { type: String, default: '' },
+    options: { type: [Array, Object], default: () => [] }
   },
   methods: {
     changeDateRange(dateRange) {
@@ -40,8 +38,8 @@ export default {
     border-radius: $--main-border-radius;
     border: 0.5px solid transparent;
     line-height: 18px;
-    font-weight: 600;
-    font-size: 14px;
+    font-weight: $--font-weight-semi-bold;
+    font-size: $--font-size-base;
     color: get-theme-for($text, 'primary');
     padding: 4px 8px;
 

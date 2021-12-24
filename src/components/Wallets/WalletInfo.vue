@@ -10,7 +10,12 @@
         <span class="wallet-info__fiat-value">3000.04 USD</span>
       </div>
       <h3 v-else class="wallet-info__coin-price-chart-title">{{ coin }} Price Chart</h3>
-      <chart-date-filters v-if="isChartView" :date-range="chartDateRange" @change="changeChartDateRange" />
+      <chart-date-filters
+        v-if="isChartView"
+        :date-range="chartDateRange"
+        :options="$options.TIME_PERIOD_CHART"
+        @change="changeChartDateRange"
+      />
       <div class="wallet-info__optional-buttons">
         <div class="wallet-info__chart-switcher-wrapper">
           <swap-switcher v-model="isChartView" label="Price chart"></swap-switcher>
@@ -71,7 +76,13 @@ import CoinLogo from '@/components/Wallets/CoinLogo.vue'
 import WalletChart from '@/components/Wallets/WalletChart.vue'
 import { THIS_MONTH, ONE_DAY, YEAR, SEVEN_DAYS } from '@/api/chartMocks'
 import ChartDateFilters from '@/components/Wallets/Chart/DateFilters.vue'
-import { ONE_DAY_TYPE, SEVEN_DAYS_TYPE, THIS_MONTH_TYPE, YEAR_TYPE } from '@/constants/chartDateRange'
+import {
+  ONE_DAY_TYPE,
+  SEVEN_DAYS_TYPE,
+  THIS_MONTH_TYPE,
+  YEAR_TYPE,
+  TIME_PERIOD_CHART
+} from '@/constants/chartDateRange'
 
 const CHART_DATE_RANGE_MAP = {
   [ONE_DAY_TYPE]: ONE_DAY,
@@ -81,6 +92,7 @@ const CHART_DATE_RANGE_MAP = {
 }
 
 export default {
+  TIME_PERIOD_CHART,
   name: 'WalletInfo',
   components: { CoinLogo, WalletChart, ChartDateFilters },
   inject: ['mediaQueries'],
