@@ -12,7 +12,7 @@
       <h3 v-else class="wallet-info__coin-price-chart-title">{{ coin }} Price Chart</h3>
       <div class="wallet-info__optional-buttons">
         <div class="wallet-info__chart-switcher-wrapper">
-          <swap-switcher v-model="isChartView" label="Price chart"></swap-switcher>
+          <swap-switch v-model="isChartView" label="Price chart"></swap-switch>
         </div>
 
         <div class="wallet-info__dividing-line"></div>
