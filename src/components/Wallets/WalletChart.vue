@@ -41,8 +41,14 @@ const LINE_COLOR = '#6144E5'
 
 const FONT_FAMILY = 'Nunito'
 
+const HEIGHT = {
+  normal: 171,
+  small: 155
+}
+
 export default {
   name: 'WalletChart',
+  inject: ['mediaQueries'],
   props: {
     chartOptions: {
       type: Object,
@@ -66,8 +72,9 @@ export default {
   computed: {
     localChartOptions() {
       const { currentTheme } = this
+
       const defaultChartOptions = {
-        height: 171,
+        height: this.mediaQueries.desktop ? HEIGHT.normal : HEIGHT.small,
         layout: {
           backgroundColor: LAYOUT_BACKGROUND[currentTheme],
           fontFamily: FONT_FAMILY,

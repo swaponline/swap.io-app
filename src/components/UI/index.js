@@ -1,4 +1,4 @@
-import SwapStepper from '@/components/UI/SwapStepper'
+import SwapStepper from './SwapStepper.vue'
 import SvgIcon from './SvgIcon.vue'
 import SwapButton from './SwapButton.vue'
 import SwapCopyButton from './SwapCopyButton.vue'
