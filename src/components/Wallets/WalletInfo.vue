@@ -1,50 +1,62 @@
 <template>
   <div class="wallet-info" :class="{ 'wallet-info--compressed': compressed }" @click="uncompressWallet">
-    <coin-logo class="wallet-info__background-icon" :path="logo" :name="coin" />
+    <coin-logo v-show="!isChartView" class="wallet-info__background-icon" :path="logo" :name="coin" />
 
-    <div class="wallet-info__optional-buttons">
-      <swap-button fab small class="wallet-info__optional-button" @click="openShareModal">
-        <v-icon class="wallet-info__icon">mdi-export-variant</v-icon>
-      </swap-button>
-      <swap-button fab small class="wallet-info__optional-button" @click="openSettingsModal">
-        <v-icon class="wallet-info__icon">mdi-tune</v-icon>
-      </swap-button>
-    </div>
-
-    <header class="wallet-info__header">
-      <div>
+    <header class="wallet-info__header " :class="[isChartView && 'wallet-info__header--coin-price-chart']">
+      <div v-if="!isChartView" class="wallet-info__crypto-value-wrapper">
         <span class="wallet-info__crypto-value">
           {{ value }} <span class="grey--text">{{ coin }}</span>
         </span>
         <span class="wallet-info__fiat-value">3000.04 USD</span>
       </div>
+      <h3 v-else class="wallet-info__coin-price-chart-title">{{ coin }} Price Chart</h3>
+      <div class="wallet-info__optional-buttons">
+        <div class="wallet-info__chart-switcher-wrapper">
+          <swap-switch v-model="isChartView" label="Price chart"></swap-switch>
+        </div>
+
+        <div class="wallet-info__dividing-line"></div>
+
+        <swap-button fab small class="wallet-info__optional-button" @click="openShareModal">
+          <v-icon class="wallet-info__icon">mdi-export-variant</v-icon>
+        </swap-button>
+        <swap-button fab small class="wallet-info__optional-button" @click="openSettingsModal">
+          <v-icon class="wallet-info__icon">mdi-tune</v-icon>
+        </swap-button>
+      </div>
     </header>
 
-    <div class="wallet-info__address-wrapper">
-      <swap-copy-wrapper>
-        <template #default="{ copy, tooltopOn }">
-          <button
-            v-ripple="{ center: true }"
-            class="wallet-info__button-copy"
-            tabindex="-1"
-            @click="mediaQueries.desktop ? copy(address) : openCopyMenu()"
-            v-on="tooltopOn"
-          >
-            <span class="wallet-info__address">{{ mediaQueries.desktop ? address : minifiedAddress }}</span>
-            <svg-icon class="wallet-info__icon-copy" name="copy" />
-          </button>
-        </template>
-      </swap-copy-wrapper>
+    <div v-if="!isChartView" class="wallet-info__main">
+      <div class="wallet-info__address-wrapper">
+        <swap-copy-wrapper>
+          <template #default="{ copy, tooltopOn }">
+            <button
+              v-ripple="{ center: true }"
+              class="wallet-info__button-copy"
+              tabindex="-1"
+              @click="mediaQueries.desktop ? copy(address) : openCopyMenu()"
+              v-on="tooltopOn"
+            >
+              <span class="wallet-info__address">{{ mediaQueries.desktop ? address : minifiedAddress }}</span>
+              <svg-icon class="wallet-info__icon-copy" name="copy" />
+            </button>
+          </template>
+        </swap-copy-wrapper>
 
-      <button class="wallet-info__button-qrcode" @click="openShareModal">
-        <svg-icon class="wallet-info__icon-qrcode" name="qrcode"></svg-icon>
-      </button>
+        <button class="wallet-info__button-qrcode" @click="openShareModal">
+          <svg-icon class="wallet-info__icon-qrcode" name="qrcode"></svg-icon>
+        </button>
+      </div>
+
+      <div class="wallet-info__buttons">
+        <swap-button class="wallet-info__button" @click="openInvoiceBlock">Invoice</swap-button>
+        <swap-button :to="{ name: 'Swap' }" class="wallet-info__button">Swap</swap-button>
+        <swap-button class="wallet-info__button" @click="openSendForm">Send</swap-button>
+      </div>
     </div>
 
-    <div class="wallet-info__buttons">
-      <swap-button class="wallet-info__button" @click="openInvoiceBlock">Invoice</swap-button>
-      <swap-button :to="{ name: 'Swap' }" class="wallet-info__button">Swap</swap-button>
-      <swap-button class="wallet-info__button" @click="openSendForm">Send</swap-button>
+    <div v-else class="wallet-info__coin-price-chart-container">
+      <wallet-chart :datasets="$options.MOUTH_DATA"></wallet-chart>
     </div>
   </div>
 </template>
@@ -55,10 +67,13 @@ import { ADD_MODAL } from '@/store/modules/Modals'
 import { COPY_MENU, INVOICE_FORM, SEND_FORM, SHARE_MODAL, WALLET_SETTINGS } from '@/store/modules/Modals/names'
 import { minifyAddress } from '@/utils/common'
 import CoinLogo from '@/components/Wallets/CoinLogo.vue'
+import WalletChart from '@/components/Wallets/WalletChart.vue'
+import { monthData } from '@/api/chartMocks'
 
 export default {
+  MOUTH_DATA: monthData,
   name: 'WalletInfo',
-  components: { CoinLogo },
+  components: { CoinLogo, WalletChart },
   inject: ['mediaQueries'],
   props: {
     compressed: { type: Boolean, default: false },
@@ -68,6 +83,11 @@ export default {
     coin: { type: String, default: '' },
     logo: { type: String, default: '' },
     networkId: { type: String, default: '' }
+  },
+  data() {
+    return {
+      isChartView: false
+    }
   },
   computed: {
     minifiedAddress() {
@@ -156,21 +176,57 @@ export default {
   background: get-theme-for($background, 'primary');
   height: 250px;
   border-radius: 12px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: stretch;
   transition: $--theme-transition;
 
   @include tablet {
     height: 220px;
-    padding: 20px 15px;
+    padding: 20px 20px 22px;
     margin: 0 40px 20px;
   }
 
   @include phone {
     margin: 0 12px 12px;
-    padding: 12px;
+    padding: 10px 16px;
+  }
+
+  &__chart-switcher-wrapper {
+    padding: 6px 10px;
+    background-color: get-theme-for($button, 'primary', 'enabled');
+    border-radius: 22px;
+    z-index: 100;
+
+    &:hover {
+      background-color: get-theme-for($button, 'primary', 'hover');
+    }
+  }
+
+  &__coin-price-chart-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 13px;
+  }
+
+  &__coin-price-chart-title {
+    font-weight: unset;
+    margin-right: 25px;
+    font-size: 18px;
+
+    @include phone {
+      font-size: 14px;
+      margin-right: 5px;
+    }
+  }
+
+  &__dividing-line {
+    width: 1px;
+    height: 20px;
+    background-color: var(--main-button-background);
+    opacity: 0.3;
+    margin: 0 10px;
+
+    @include phone {
+      margin: 0 7px;
+    }
   }
 
   &--compressed {
@@ -222,30 +278,39 @@ export default {
     display: flex;
     justify-content: space-between;
     overflow: hidden;
-    transition: 0.5s;
+    transition: height 0.5s;
     max-height: var(--height-header);
+    margin-bottom: 37px;
+
+    &--coin-price-chart {
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    @include tablet {
+      margin-bottom: 14px;
+    }
     @include phone {
       max-height: 100px;
     }
   }
   &__optional-buttons {
-    position: absolute;
-    right: 25px;
+    display: flex;
+    height: fit-content;
+    align-items: center;
 
-    @include tablet {
-      top: 15px;
-    }
-    @include phone {
-      top: 12px;
-      right: 11px;
+    .swap-button.v-btn--fab.v-size--small {
+      width: 30px;
+      height: 30px;
     }
   }
+
   &__optional-button {
     position: relative;
     background-color: get-theme-for($background, 'primary') !important;
 
     &:not(:last-child) {
-      margin-right: 6px;
+      margin-right: 10px;
     }
   }
   &__crypto-value {
@@ -270,8 +335,10 @@ export default {
     align-items: center;
   }
   &__icon {
-    width: 18px;
-    height: 23px;
+    width: 14px !important;
+    height: 14px !important;
+    font-size: 14px !important;
+
     color: get-theme-for($icon, 'active') !important;
   }
   &__address-wrapper {
@@ -281,9 +348,10 @@ export default {
     margin: 0 0 var(--margin-button-address);
     overflow: hidden;
     transition: 0.3s;
+    margin-bottom: 38px;
 
-    @include phone {
-      margin: 0 0;
+    @include tablet {
+      margin-bottom: 40px;
       max-height: var(--height-header);
     }
   }
@@ -342,9 +410,11 @@ export default {
     width: auto;
     max-height: 70px;
     margin: 0 -6px;
+
     @include tablet {
       margin: 0 -5px;
     }
+
     @include phone {
       margin: 0 -3px;
       max-height: var(--height-header);
