@@ -3,9 +3,10 @@ import ItemIcon from '@/components/Wallets/ListWallet/ItemIcon.vue'
 import { VListGroup, VListItemTitle } from 'vuetify/lib'
 
 import { groupWalletsBy } from '@/utils/wallets'
+import { minifyAddress } from '@/utils/common'
 import { shallowMount } from '@vue/test-utils'
-import { stubComponent } from '../../../helpers/stubComponent'
-import { btcGroup } from '../../../__mocks__/wallets.mock'
+import { stubComponent } from '../../../__helpers__/stubComponent'
+import { btcGroup, bitcoinWallet, bitcoinWBTCWallet } from '../../../__mocks__/wallets.mock'
 
 const ListGroupStub = stubComponent(VListGroup, {
   template: '<div><slot name="activator"></slot><slot></slot></div>',
@@ -24,6 +25,7 @@ describe('List wallet group', () => {
 
   const findGroupTitle = () => wrapper.findComponent(VListItemTitle)
   const findGroupTitleLogos = () => wrapper.findAll('[data-testid=group-network-logo]')
+  const findGroupWallets = () => wrapper.findAll('[data-testid=group-wallet]')
 
   const createComponent = ({ propsData, provide } = {}) => {
     wrapper = shallowMount(ListWalletGroup, {
@@ -88,5 +90,40 @@ describe('List wallet group', () => {
       expect(networkLogo.props().name).toBe(network.name)
       expect(networkLogo.props().showTooltip).toBe(true)
     })
+  })
+
+  it('shows group wallets', () => {
+    createComponent()
+    const wallets = findGroupWallets()
+    const btcWalletWrapper = wallets.wrappers[0]
+
+    expect(wallets.length).toBe(btcGroup.wallets.length)
+
+    expect(btcWalletWrapper.text()).toContain(bitcoinWallet.value)
+    expect(btcWalletWrapper.text()).toContain(bitcoinWallet.name)
+  })
+
+  it('show minified address for a wallet without a name', () => {
+    createComponent()
+    const wallets = findGroupWallets()
+    const wbtcWalletWrapper = wallets.wrappers[1]
+
+    expect(wbtcWalletWrapper.text()).toContain(minifyAddress(bitcoinWBTCWallet.address))
+  })
+
+  it('binds props to a list-item', () => {
+    createComponent()
+    const wallets = findGroupWallets()
+    const btcWalletWrapper = wallets.wrappers[0]
+
+    expect(btcWalletWrapper.props().to).toEqual(
+      expect.objectContaining({
+        params: {
+          address: bitcoinWallet.address,
+          coin: bitcoinWallet.coin.toLowerCase(),
+          networkId: bitcoinWallet.networkId
+        }
+      })
+    )
   })
 })

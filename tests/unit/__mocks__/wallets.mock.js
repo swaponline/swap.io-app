@@ -111,8 +111,6 @@ export const btcGroup = {
   value: 202.245
 }
 
-export const btcWalletsGroupedByNetwork = {}
-
 export const bitcoinWallets = [bitcoinWallet, bitcoinWBTCWallet, bitcoinRenBTCWallet, bitcoinWBTCWallet2]
 export const mockWallets = [
   bitcoinWallet,

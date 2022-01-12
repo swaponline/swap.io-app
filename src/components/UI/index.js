@@ -6,7 +6,7 @@ import SwapButtonGoBack from './SwapButtonGoBack.vue'
 import SwapCopyWrapper from './SwapCopyWrapper.vue'
 import SwapSkeleton from './SwapSkeleton.vue'
 import SwapChart from './SwapChart.vue'
-import swapSwitch from './swapSwitch.vue'
+import swapSwitch from './SwapSwitch.vue'
 
 export default {
   install(Vue) {
