@@ -26,6 +26,11 @@ const GRID_COLOR = {
   [LIGHT_THEME_KEY]: '#f6f6f6'
 }
 
+const CROSSHAIR = {
+  [DARK_THEME_KEY]: '#f6f6f6',
+  [LIGHT_THEME_KEY]: '#101010'
+}
+
 const COLOR_GRADIENT = {
   top: {
     [DARK_THEME_KEY]: 'rgba(97, 68, 229, 1)',
@@ -85,6 +90,26 @@ export default {
             return `$${price.toFixed(2)}`
           }
         },
+        timeScale: {
+          timeVisible: true,
+          borderVisible: false
+        },
+        crosshair: {
+          horzLine: {
+            visible: true,
+            style: 3,
+            width: 1,
+            color: CROSSHAIR[currentTheme],
+            labelVisible: false
+          },
+          vertLine: {
+            visible: true,
+            style: 3,
+            width: 1,
+            color: CROSSHAIR[currentTheme],
+            labelVisible: false
+          }
+        },
         grid: {
           vertLines: {
             color: GRID_COLOR[currentTheme]
@@ -98,10 +123,6 @@ export default {
         },
         leftPriceScale: {
           visible: true,
-          borderVisible: false
-        },
-        timeScale: {
-          timeVisible: true,
           borderVisible: false
         }
       }
