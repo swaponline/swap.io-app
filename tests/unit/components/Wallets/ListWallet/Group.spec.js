@@ -3,10 +3,9 @@ import ItemIcon from '@/components/Wallets/ListWallet/ItemIcon.vue'
 import { VListGroup, VListItemTitle } from 'vuetify/lib'
 
 import { groupWalletsBy } from '@/utils/wallets'
-import { minifyAddress } from '@/utils/common'
 import { shallowMount } from '@vue/test-utils'
 import { stubComponent } from '../../../__helpers__/stubComponent'
-import { btcGroup, bitcoinWallet, bitcoinWBTCWallet } from '../../../__mocks__/wallets.mock'
+import { btcGroup, bitcoinWallet } from '../../../__mocks__/wallets.mock'
 
 const ListGroupStub = stubComponent(VListGroup, {
   template: '<div><slot name="activator"></slot><slot></slot></div>',
@@ -108,22 +107,21 @@ describe('List wallet group', () => {
     const wallets = findGroupWallets()
     const wbtcWalletWrapper = wallets.wrappers[1]
 
-    expect(wbtcWalletWrapper.text()).toContain(minifyAddress(bitcoinWBTCWallet.address))
+    expect(wbtcWalletWrapper.text()).toContain('0xbd3 ... 2412c')
   })
 
   it('binds props to a list-item', () => {
     createComponent()
     const wallets = findGroupWallets()
     const btcWalletWrapper = wallets.wrappers[0]
+    const props = {
+      params: {
+        address: '1gaN21RQHLSWxapkSLX1xFK9fwTKDgWJR',
+        coin: 'btc',
+        networkId: 'bitcoin'
+      }
+    }
 
-    expect(btcWalletWrapper.props().to).toEqual(
-      expect.objectContaining({
-        params: {
-          address: bitcoinWallet.address,
-          coin: bitcoinWallet.coin.toLowerCase(),
-          networkId: bitcoinWallet.networkId
-        }
-      })
-    )
+    expect(btcWalletWrapper.props().to).toEqual(expect.objectContaining(props))
   })
 })
