@@ -18,6 +18,7 @@
               v-for="{ network: groupNetwork } in groupWalletsByNetwork"
               :key="generateKey('icon', groupNetwork.slug)"
               class="list-wallet-group__header-icon"
+              data-testid="group-network-logo"
               :path="groupNetwork.logo"
               :name="groupNetwork.name"
               show-tooltip
@@ -29,7 +30,12 @@
     </template>
 
     <template v-for="{ network: groupNetwork, wallets: groupWallets, value: groupValue } in groupWalletsByNetwork">
-      <v-list-item :key="generateKey('network-group', groupNetwork.slug)" class="list-wallet-group__item" disabled>
+      <v-list-item
+        :key="generateKey('network-group', groupNetwork.slug)"
+        data-testid="group-network"
+        class="list-wallet-group__item"
+        disabled
+      >
         <v-list-item-content class="list-wallet-group__item-content">
           <div class="list-wallet-group__item-info list-wallet-group__item-info--disabled">
             <p class="list-wallet-group__coin-name">
@@ -43,6 +49,7 @@
       <v-list-item
         v-for="{ address, name, networkId, coin, value: walletValue } in groupWallets"
         :key="generateKey(coin, networkId, address)"
+        data-testid="group-wallet"
         link
         exact
         class="list-wallet-group__item"
@@ -61,10 +68,10 @@
 
 <script>
 import ItemIcon from '@/components/Wallets/ListWallet/ItemIcon.vue'
+import CoinLogo from '@/components/Wallets/CoinLogo.vue'
 
 import { minifyAddress } from '@/utils/common'
 import { groupWalletsBy } from '@/utils/wallets'
-import CoinLogo from '@/components/Wallets/CoinLogo.vue'
 
 export default {
   name: 'ListWalletGroup',
