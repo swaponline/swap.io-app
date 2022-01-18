@@ -1,3 +1,4 @@
+import '../../../__mocks__/matchMedia.mock'
 import WalletCreate from '@/components/Wallets/Modals/WalletCreate.vue'
 import ModalWrapper from '@/components/UI/ModalWrapper.vue'
 import SwapButton from '@/components/UI/SwapButton.vue'
