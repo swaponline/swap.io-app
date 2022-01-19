@@ -14,6 +14,7 @@
           <a
             v-for="social in $options.SOCIALS"
             :key="social.name"
+            data-testid="social-link"
             class="share-modal__social-link"
             :class="`share-modal__social-link--${social.name}`"
             target="_blank"
@@ -25,7 +26,7 @@
       </div>
 
       <div v-if="hasData" class="share-modal__info">
-        <form-indent class="share-modal__indent" :title="data.label">
+        <form-indent class="share-modal__indent" data-testid="share-data" :title="data.label">
           <swap-copy-button :value="data.value" :label="data.value" />
         </form-indent>
       </div>
@@ -82,6 +83,7 @@ export default {
       this.$emit('close')
     },
     systemShare() {
+      debugger
       navigator.share({
         title: 'Номер счета', // Заголовок
         text: `Адрес счета для ознакомления: \n${this.shareUrl}` // текст
