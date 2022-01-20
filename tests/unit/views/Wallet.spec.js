@@ -1,4 +1,3 @@
-import '../__mocks__/matchMedia.mock'
 import Wallet from '@/views/Wallet.vue'
 import ListWallet from '@/components/Wallets/ListWallet/index.vue'
 import WalletContent from '@/components/Wallets/WalletContent.vue'
