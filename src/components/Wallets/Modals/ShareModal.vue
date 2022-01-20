@@ -83,7 +83,6 @@ export default {
       this.$emit('close')
     },
     systemShare() {
-      debugger
       navigator.share({
         title: 'Номер счета', // Заголовок
         text: `Адрес счета для ознакомления: \n${this.shareUrl}` // текст
