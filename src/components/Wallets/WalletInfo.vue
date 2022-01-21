@@ -220,7 +220,7 @@ export default {
     padding: 6px 10px;
     background-color: get-theme-for($button, 'primary', 'enabled');
     border-radius: 22px;
-    z-index: 100;
+    z-index: 1;
 
     &:hover {
       background-color: get-theme-for($button, 'primary', 'hover');
