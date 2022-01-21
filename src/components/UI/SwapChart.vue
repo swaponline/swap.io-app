@@ -13,7 +13,7 @@ const WIDTH_PRICE_BAR = 54
 const tooltipsConfiguration = [
   {
     name: 'time',
-    position: 'left',
+    positionName: 'left',
     tooltipWidth: 93,
     formatDate({ day, month, year }) {
       return format(new Date(year, month, day), 'dd MMM. yy')
@@ -34,7 +34,7 @@ const tooltipsConfiguration = [
   },
   {
     name: 'price',
-    position: 'top',
+    positionName: 'top',
     tooltipHeight: 16,
     getData(param, { areaSeries }) {
       const price = param.seriesPrices.get(areaSeries)
@@ -66,7 +66,8 @@ export default {
   data() {
     return {
       chart: null,
-      areaSeries: null
+      areaSeries: null,
+      bindedMoveTooltip: null
     }
   },
   watch: {
@@ -87,37 +88,43 @@ export default {
 
     this.createTooltips()
   },
+  destroyed() {
+    this.chart.unsubscribeCrosshairMove(this.bindedMoveTooltip)
+  },
   methods: {
     createTooltips() {
-      tooltipsConfiguration.forEach(tooltip => {
-        const widthChartContainer = this.$refs.swapChart.clientWidth
+      tooltipsConfiguration.forEach(tooltipConf => {
         const tooltipNode = document.createElement('div')
-        tooltipNode.className = `tooltip tooltip--${tooltip.name}`
-
+        tooltipNode.className = `swap-chart__tooltip swap-chart__tooltip--${tooltipConf.name}`
         this.$refs.swapChart.appendChild(tooltipNode)
-
-        this.chart.subscribeCrosshairMove(param => {
-          if (
-            !param.time ||
-            param.point.x < 0 ||
-            param.point.y > widthChartContainer ||
-            param.point.y < 0 ||
-            param.point.y > 171
-          ) {
-            tooltipNode.style.display = 'none'
-            return
-          }
-
-          const tooltipData = tooltip.getData(param, {
-            widthChartContainer,
-            areaSeries: this.areaSeries
-          })
-
-          tooltipNode.style.display = 'block'
-          tooltipNode.innerHTML = tooltipData.text
-          tooltipNode.style[tooltip.position] = tooltipData.position
-        })
+        this.bindedMoveTooltip = this.movementOfTooltip.bind(this, { tooltipNode, tooltipConf })
+        this.chart.subscribeCrosshairMove(this.bindedMoveTooltip)
       })
+    },
+    movementOfTooltip(options, param) {
+      const { tooltipNode, tooltipConf } = options
+      const widthChartContainer = this.$refs.swapChart.clientWidth
+      const heightChartContainer = this.$refs.swapChart.clientHeight
+      // We check to what limits it is necessary to draw the tooltip
+      if (
+        !param.time ||
+        param.point.x < 0 ||
+        param.point.y > widthChartContainer ||
+        param.point.y < 0 ||
+        param.point.y > heightChartContainer
+      ) {
+        tooltipNode.style.display = 'none'
+        return
+      }
+
+      const tooltipData = tooltipConf.getData(param, {
+        widthChartContainer,
+        areaSeries: this.areaSeries
+      })
+
+      tooltipNode.style.display = 'block'
+      tooltipNode.innerHTML = tooltipData.text
+      tooltipNode.style[tooltipConf.positionName] = tooltipData.position
     },
     updateChartOptions(newOptions) {
       this.chart.applyOptions(newOptions)
@@ -135,39 +142,6 @@ export default {
 </script>
 
 <style lang="scss">
-.tooltip {
-  position: absolute;
-  display: none;
-  font-family: 'Nunito';
-  font-weight: 600;
-  padding: 2px 4px;
-  font-size: 9px;
-  line-height: 12px;
-  border-radius: 22px;
-  text-align: center;
-  z-index: 1000;
-  bottom: 10px;
-  pointer-events: none;
-
-  .theme--light & {
-    background-color: $--black;
-    color: #fff;
-  }
-
-  .theme--dark & {
-    background-color: $--white;
-    color: $--black;
-  }
-
-  &--time {
-    width: 93px;
-  }
-
-  &--price {
-    width: 48px;
-    height: 16px;
-  }
-}
 .swap-chart {
   position: relative;
   &__no-data {
@@ -180,6 +154,40 @@ export default {
     font-weight: $--font-weight-medium;
     text-align: center;
     z-index: 1;
+  }
+
+  &__tooltip {
+    position: absolute;
+    display: none;
+    font-family: $--font-base;
+    font-weight: $--font-weight-semi-bold;
+    padding: 2px 4px;
+    font-size: 9px;
+    line-height: 12px;
+    border-radius: 22px;
+    text-align: center;
+    z-index: 1000;
+    bottom: 10px;
+    pointer-events: none;
+
+    .theme--light & {
+      background-color: $--black;
+      color: $--white;
+    }
+
+    .theme--dark & {
+      background-color: $--white;
+      color: $--black;
+    }
+
+    &--time {
+      width: 93px;
+    }
+
+    &--price {
+      width: 48px;
+      height: 16px;
+    }
   }
 }
 </style>

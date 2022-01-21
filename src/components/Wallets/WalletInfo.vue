@@ -1,73 +1,76 @@
 <template>
-  <div class="wallet-info" :class="{ 'wallet-info--compressed': compressed }" @click="uncompressWallet">
-    <coin-logo v-show="!isChartView" class="wallet-info__background-icon" :path="logo" :name="coin" />
+  <match-media v-slot="{ phone }" tag="div">
+    <div class="wallet-info" :class="{ 'wallet-info--compressed': compressed }" @click="uncompressWallet">
+      <coin-logo v-show="!isChartView" class="wallet-info__background-icon" :path="logo" :name="coin" />
 
-    <header class="wallet-info__header " :class="[isChartView && 'wallet-info__header--coin-price-chart']">
-      <div v-if="!isChartView" class="wallet-info__crypto-value-wrapper">
-        <span class="wallet-info__crypto-value">
-          {{ value }} <span class="grey--text">{{ coin }}</span>
-        </span>
-        <span class="wallet-info__fiat-value">3000.04 USD</span>
-      </div>
-      <h3 v-else class="wallet-info__coin-price-chart-title">{{ coin }} Price Chart</h3>
-      <chart-date-filters
-        v-if="isChartView"
-        :date-range="chartDateRange"
-        :options="$options.TIME_PERIOD_CHART"
-        @change="changeChartDateRange"
-      />
-      <div class="wallet-info__optional-buttons">
-        <div class="wallet-info__chart-switcher-wrapper">
-          <swap-switch v-model="isChartView" label="Price chart"></swap-switch>
+      <header class="wallet-info__header " :class="[isChartView && 'wallet-info__header--coin-price-chart']">
+        <div v-if="!isChartView" class="wallet-info__crypto-value-wrapper">
+          <span class="wallet-info__crypto-value">
+            {{ value }} <span class="grey--text">{{ coin }}</span>
+          </span>
+          <span class="wallet-info__fiat-value">3000.04 USD</span>
+        </div>
+        <h3 v-else class="wallet-info__coin-price-chart-title">{{ coin }} Price Chart</h3>
+        <chart-date-filters
+          v-if="isChartView && !phone"
+          :date-range="chartDateRange"
+          :options="$options.TIME_PERIOD_CHART"
+          @change="changeChartDateRange"
+        />
+        <div class="wallet-info__optional-buttons">
+          <div class="wallet-info__chart-switcher-wrapper">
+            <swap-switch v-model="isChartView" label="Price chart"></swap-switch>
+          </div>
+
+          <div class="wallet-info__dividing-line"></div>
+
+          <swap-button fab small class="wallet-info__optional-button" @click="openShareModal">
+            <v-icon class="wallet-info__icon">mdi-export-variant</v-icon>
+          </swap-button>
+          <swap-button fab small class="wallet-info__optional-button" @click="openSettingsModal">
+            <v-icon class="wallet-info__icon">mdi-tune</v-icon>
+          </swap-button>
+        </div>
+      </header>
+
+      <div v-if="!isChartView" class="wallet-info__main">
+        <div class="wallet-info__address-wrapper">
+          <swap-copy-wrapper>
+            <template #default="{ copy, tooltopOn }">
+              <button
+                v-ripple="{ center: true }"
+                class="wallet-info__button-copy"
+                tabindex="-1"
+                @click="mediaQueries.desktop ? copy(address) : openCopyMenu()"
+                v-on="tooltopOn"
+              >
+                <span class="wallet-info__address">{{ mediaQueries.desktop ? address : minifiedAddress }}</span>
+                <svg-icon class="wallet-info__icon-copy" name="copy" />
+              </button>
+            </template>
+          </swap-copy-wrapper>
+
+          <button class="wallet-info__button-qrcode" @click="openShareModal">
+            <svg-icon class="wallet-info__icon-qrcode" name="qrcode"></svg-icon>
+          </button>
         </div>
 
-        <div class="wallet-info__dividing-line"></div>
-
-        <swap-button fab small class="wallet-info__optional-button" @click="openShareModal">
-          <v-icon class="wallet-info__icon">mdi-export-variant</v-icon>
-        </swap-button>
-        <swap-button fab small class="wallet-info__optional-button" @click="openSettingsModal">
-          <v-icon class="wallet-info__icon">mdi-tune</v-icon>
-        </swap-button>
-      </div>
-    </header>
-
-    <div v-if="!isChartView" class="wallet-info__main">
-      <div class="wallet-info__address-wrapper">
-        <swap-copy-wrapper>
-          <template #default="{ copy, tooltopOn }">
-            <button
-              v-ripple="{ center: true }"
-              class="wallet-info__button-copy"
-              tabindex="-1"
-              @click="mediaQueries.desktop ? copy(address) : openCopyMenu()"
-              v-on="tooltopOn"
-            >
-              <span class="wallet-info__address">{{ mediaQueries.desktop ? address : minifiedAddress }}</span>
-              <svg-icon class="wallet-info__icon-copy" name="copy" />
-            </button>
-          </template>
-        </swap-copy-wrapper>
-
-        <button class="wallet-info__button-qrcode" @click="openShareModal">
-          <svg-icon class="wallet-info__icon-qrcode" name="qrcode"></svg-icon>
-        </button>
+        <div class="wallet-info__buttons">
+          <swap-button class="wallet-info__button" @click="openInvoiceBlock">Invoice</swap-button>
+          <swap-button :to="{ name: 'Swap' }" class="wallet-info__button">Swap</swap-button>
+          <swap-button class="wallet-info__button" @click="openSendForm">Send</swap-button>
+        </div>
       </div>
 
-      <div class="wallet-info__buttons">
-        <swap-button class="wallet-info__button" @click="openInvoiceBlock">Invoice</swap-button>
-        <swap-button :to="{ name: 'Swap' }" class="wallet-info__button">Swap</swap-button>
-        <swap-button class="wallet-info__button" @click="openSendForm">Send</swap-button>
+      <div v-else class="wallet-info__coin-price-chart-container">
+        <wallet-chart v-bind="{ datasets }"></wallet-chart>
       </div>
     </div>
-
-    <div v-else class="wallet-info__coin-price-chart-container">
-      <wallet-chart v-bind="{ datasets }"></wallet-chart>
-    </div>
-  </div>
+  </match-media>
 </template>
 
 <script>
+import { MatchMedia } from 'vue-component-media-queries'
 import { mapMutations } from 'vuex'
 import { ADD_MODAL } from '@/store/modules/Modals'
 import { COPY_MENU, INVOICE_FORM, SEND_FORM, SHARE_MODAL, WALLET_SETTINGS } from '@/store/modules/Modals/names'
@@ -94,7 +97,7 @@ const CHART_DATE_RANGE_MAP = {
 export default {
   TIME_PERIOD_CHART,
   name: 'WalletInfo',
-  components: { CoinLogo, WalletChart, ChartDateFilters },
+  components: { MatchMedia, CoinLogo, WalletChart, ChartDateFilters },
   inject: ['mediaQueries'],
   props: {
     compressed: { type: Boolean, default: false },
