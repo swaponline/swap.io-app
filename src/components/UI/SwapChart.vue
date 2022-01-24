@@ -15,6 +15,7 @@ const tooltipsConfiguration = [
     name: 'time',
     positionName: 'left',
     tooltipWidth: 93,
+    //  TODO: Подключить сторонее апи с курсом криптовалют и добавить обработку времени
     formatDate({ day, month, year }) {
       return format(new Date(year, month, day), 'dd MMM. yy')
     },
