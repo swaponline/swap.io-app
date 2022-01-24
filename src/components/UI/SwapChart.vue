@@ -54,8 +54,6 @@ export default {
       this.areaSeries.applyOptions(newStyleOptions)
     },
     updateDataSets(newDataSets) {
-      this.updateChartOptions(this.chartOptions)
-      this.updateAreaStyleOptions(this.areaStyleOptions)
       this.areaSeries.setData(newDataSets)
     }
   }
