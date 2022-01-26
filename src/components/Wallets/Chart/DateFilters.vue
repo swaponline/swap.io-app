@@ -1,6 +1,6 @@
 <template>
-  <match-media v-slot="{ phone }" tag="div">
-    <div v-if="!phone" class="chart-date-filters">
+  <match-media v-slot="{ desktop }" tag="div">
+    <div v-if="desktop" class="chart-date-filters">
       <button
         v-for="{ id, value, label } in options"
         :key="id"
@@ -11,23 +11,23 @@
         {{ label }}
       </button>
     </div>
-    <v-select
-      v-else
-      :value="dateRange"
-      height="27"
-      item-text="label"
-      item-value="value"
-      class="chart-date-select__item"
-      hide-details
-      dense
-      flat
-      filled
-      append-icon="mdi-chevron-down"
-      :menu-props="{ 'content-class': 'chart-date-select__select-menu' }"
-      :items="options"
-      @input="changeDateRange"
-    >
-    </v-select>
+    <div v-else class="chart-date-select">
+      <v-select
+        :value="dateRange"
+        height="27"
+        item-text="label"
+        item-value="value"
+        class="chart-date-select__item"
+        hide-details
+        dense
+        flat
+        filled
+        append-icon="mdi-chevron-down"
+        :menu-props="{ 'content-class': 'chart-date-select__select-menu' }"
+        :items="options"
+        @input="changeDateRange"
+      />
+    </div>
   </match-media>
 </template>
 
@@ -43,22 +43,9 @@ export default {
     dateRange: { type: String, default: '' },
     options: { type: [Array, Object], default: () => [] }
   },
-  data() {
-    return {
-      isOpenPanel: false
-    }
-  },
-  computed: {
-    selectDateRange() {
-      return this.data
-    }
-  },
   methods: {
     changeDateRange(dateRange) {
       this.$emit('change', dateRange)
-    },
-    closePanel() {
-      this.isOpenPanel = false
     }
   }
 }
