@@ -6,12 +6,12 @@ export const YEAR_TYPE = 'YEAR'
 export const YTD_TIME_TYPE = 'YTD'
 export const ALL_TIME_TYPE = 'ALL'
 
-export const TIME_PERIOD_CHART = {
-  [ONE_DAY_TYPE]: '1D',
-  [SEVEN_DAYS_TYPE]: '7D',
-  [THIS_MONTH_TYPE]: '1M',
-  [THREE_MONTHS_TYPE]: '3M',
-  [YEAR_TYPE]: '1Y',
-  [YTD_TIME_TYPE]: 'YTD',
-  [ALL_TIME_TYPE]: 'All'
-}
+export const TIME_PERIOD_CHART = [
+  { id: 0, value: ONE_DAY_TYPE, label: '1D' },
+  { id: 1, value: SEVEN_DAYS_TYPE, label: '7D' },
+  { id: 2, value: THIS_MONTH_TYPE, label: '1M' },
+  { id: 3, value: THREE_MONTHS_TYPE, label: '3M' },
+  { id: 4, value: YEAR_TYPE, label: '1Y' },
+  { id: 5, value: YTD_TIME_TYPE, label: 'YTD' },
+  { id: 6, value: ALL_TIME_TYPE, label: 'All' }
+]
