@@ -7,6 +7,8 @@ import { API_END_POINT } from './apiEndPoint'
 import { MESSAGE_TO_API } from './messageToApi'
 import { MESSAGE_FROM_API } from './messageFromApi'
 import { API_ANSWER_STATUS } from './apiAnswerStatus'
+import { SET_DEFAULT_STATE_IFRAME } from '@/constants/createProfile'
+import { themeService } from '@/services/theme'
 
 let apiProcessor = null
 
@@ -209,6 +211,16 @@ class SwapKeysApi {
         callback: ({ message }) => {
           const { type } = message
           if (type === MESSAGE_FROM_API.IFRAME_LOADED) {
+            apiFrame.sendMessage({
+              message: {
+                type: SET_DEFAULT_STATE_IFRAME,
+                payload: {
+                  theme: themeService.getCurrentTheme()
+                }
+              }
+            })
+          }
+          if (type === MESSAGE_FROM_API.IFRAME_RENDERED) {
             apiFrame.sendMessage({
               type: MESSAGE_TO_API.CREATE_WALLET,
               walletData: {

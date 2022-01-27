@@ -105,6 +105,12 @@ export const ethereumWETHWallet = {
   value: 0.006
 }
 
+export const btcGroup = {
+  asset: { name: 'Bitcoin', logo: '/networks/bitcoin/coins/BTC/logo.svg', symbol: 'BTC' },
+  wallets: [bitcoinWallet, bitcoinWBTCWallet, bitcoinRenBTCWallet, bitcoinWBTCWallet2],
+  value: 202.245
+}
+
 export const bitcoinWallets = [bitcoinWallet, bitcoinWBTCWallet, bitcoinRenBTCWallet, bitcoinWBTCWallet2]
 export const mockWallets = [
   bitcoinWallet,

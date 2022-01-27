@@ -11,8 +11,8 @@ import { profilesService } from '@/services/profiles'
 import { walletsService } from '@/services/wallets'
 import SwapKeysApi from '@/keys-api'
 import mockAssets from './mockAssets'
-import { stubComponent } from '../../../helpers/stubComponent'
-import flushPromises from '../../../helpers/flushPromises'
+import { stubComponent } from '../../../__helpers__/stubComponent'
+import flushPromises from '../../../__helpers__/flushPromises'
 
 jest.mock('lodash.debounce', () => jest.fn(fn => fn))
 
