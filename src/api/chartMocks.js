@@ -1,4 +1,4 @@
-export const dayData = [
+export const ONE_DAY = [
   { time: '2018-10-19', value: 26.19 },
   { time: '2018-10-22', value: 25.87 },
   { time: '2018-10-23', value: 25.83 },
@@ -151,7 +151,7 @@ export const dayData = [
   { time: '2019-05-28', value: 26.23 }
 ]
 
-export const weekData = [
+export const SEVEN_DAYS = [
   { time: '2016-07-18', value: 26.1 },
   { time: '2016-07-25', value: 26.19 },
   { time: '2016-08-01', value: 26.24 },
@@ -304,7 +304,7 @@ export const weekData = [
   { time: '2019-05-27', value: 26.23 }
 ]
 
-export const monthData = [
+export const THIS_MONTH = [
   { time: '2006-12-01', value: 25.4 },
   { time: '2007-01-01', value: 25.5 },
   { time: '2007-02-01', value: 25.11 },
@@ -457,7 +457,7 @@ export const monthData = [
   { time: '2019-05-01', value: 26.23 }
 ]
 
-export const yearData = [
+export const YEAR = [
   { time: '2006-01-02', value: 24.89 },
   { time: '2007-01-01', value: 25.5 },
   { time: '2008-01-01', value: 23.9 },

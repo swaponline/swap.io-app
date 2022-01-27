@@ -1,6 +1,7 @@
 <template>
   <div class="swap-chart">
     <div ref="swapChart" class="swap-chart__container"></div>
+    <h3 v-if="!datasets.length" class="swap-chart__no-data">insufficient data</h3>
   </div>
 </template>
 
@@ -53,8 +54,24 @@ export default {
       this.areaSeries.applyOptions(newStyleOptions)
     },
     updateDataSets(newDataSets) {
-      this.areaSeries.update(newDataSets)
+      this.areaSeries.setData(newDataSets)
     }
   }
 }
 </script>
+
+<style lang="scss">
+.swap-chart {
+  &__no-data {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.5em;
+    color: get-theme-for($text, 'primary');
+    font-weight: $--font-weight-medium;
+    text-align: center;
+    z-index: 1;
+  }
+}
+</style>

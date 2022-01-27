@@ -10,6 +10,12 @@
         <span class="wallet-info__fiat-value">3000.04 USD</span>
       </div>
       <h3 v-else class="wallet-info__coin-price-chart-title">{{ coin }} Price Chart</h3>
+      <chart-date-filters
+        v-if="isChartView"
+        :date-range="chartDateRange"
+        :options="$options.TIME_PERIOD_CHART"
+        @change="changeChartDateRange"
+      />
       <div class="wallet-info__optional-buttons">
         <div class="wallet-info__chart-switcher-wrapper">
           <swap-switch v-model="isChartView" label="Price chart"></swap-switch>
@@ -56,7 +62,7 @@
     </div>
 
     <div v-else class="wallet-info__coin-price-chart-container">
-      <wallet-chart :datasets="$options.MOUTH_DATA"></wallet-chart>
+      <wallet-chart v-bind="{ datasets }"></wallet-chart>
     </div>
   </div>
 </template>
@@ -68,12 +74,27 @@ import { COPY_MENU, INVOICE_FORM, SEND_FORM, SHARE_MODAL, WALLET_SETTINGS } from
 import { minifyAddress } from '@/utils/common'
 import CoinLogo from '@/components/Wallets/CoinLogo.vue'
 import WalletChart from '@/components/Wallets/WalletChart.vue'
-import { monthData } from '@/api/chartMocks'
+import { THIS_MONTH, ONE_DAY, YEAR, SEVEN_DAYS } from '@/api/chartMocks'
+import ChartDateFilters from '@/components/Wallets/Chart/DateFilters.vue'
+import {
+  ONE_DAY_TYPE,
+  SEVEN_DAYS_TYPE,
+  THIS_MONTH_TYPE,
+  YEAR_TYPE,
+  TIME_PERIOD_CHART
+} from '@/constants/chartDateRange'
+
+const CHART_DATE_RANGE_MAP = {
+  [ONE_DAY_TYPE]: ONE_DAY,
+  [SEVEN_DAYS_TYPE]: SEVEN_DAYS,
+  [THIS_MONTH_TYPE]: THIS_MONTH,
+  [YEAR_TYPE]: YEAR
+}
 
 export default {
-  MOUTH_DATA: monthData,
+  TIME_PERIOD_CHART,
   name: 'WalletInfo',
-  components: { CoinLogo, WalletChart },
+  components: { CoinLogo, WalletChart, ChartDateFilters },
   inject: ['mediaQueries'],
   props: {
     compressed: { type: Boolean, default: false },
@@ -86,6 +107,8 @@ export default {
   },
   data() {
     return {
+      datasets: ONE_DAY,
+      chartDateRange: ONE_DAY_TYPE,
       isChartView: false
     }
   },
@@ -103,6 +126,10 @@ export default {
     }),
     uncompressWallet() {
       this.$emit('uncompress-wallet')
+    },
+    changeChartDateRange(range) {
+      this.chartDateRange = range
+      this.datasets = CHART_DATE_RANGE_MAP[range]
     },
     openCopyMenu() {
       this.mutationAddModal({
@@ -193,7 +220,7 @@ export default {
     padding: 6px 10px;
     background-color: get-theme-for($button, 'primary', 'enabled');
     border-radius: 22px;
-    z-index: 100;
+    z-index: 1;
 
     &:hover {
       background-color: get-theme-for($button, 'primary', 'hover');
@@ -276,7 +303,6 @@ export default {
   }
   &__header {
     display: flex;
-    justify-content: space-between;
     overflow: hidden;
     transition: height 0.5s;
     max-height: var(--height-header);
@@ -298,6 +324,7 @@ export default {
     display: flex;
     height: fit-content;
     align-items: center;
+    margin-left: auto;
 
     .swap-button.v-btn--fab.v-size--small {
       width: 30px;
