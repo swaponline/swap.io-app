@@ -1,6 +1,7 @@
 import Transaction from '@/api/swap'
 import { SET_LIST, UPDATE_MODEL, LOADING, LOADED } from '@/store/common/mutations.types'
 import { getDate } from '@/utils/date'
+import { walletsService } from '@/services/wallets'
 
 export const MODULE_NAME = 'Transactions'
 
@@ -25,7 +26,15 @@ export default {
      */
     [TRANSACTIONS_SORTED_BY_DATE]({ list }) {
       return wallet => {
-        return list
+        const [firstWallet] = walletsService.getWallets()
+
+        const localList = list.map(item => {
+          return {
+            ...item,
+            to: firstWallet.address
+          }
+        })
+        return localList
           .filter(el => el.to === wallet || el.from === wallet)
           .reduce((newList, el) => {
             const nameDay = getDate(el.timestamp)
