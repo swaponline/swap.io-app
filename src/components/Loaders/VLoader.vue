@@ -1,5 +1,5 @@
 <template>
-  <vue-element-loading :active="active" class="loader-wrapper" background-color="get-theme-for($background, 'primary')">
+  <vue-element-loading :active="active" class="loader-wrapper">
     <svg
       :width="width"
       :height="height"
@@ -53,6 +53,7 @@ export default {
 <style lang="scss">
 .loader-wrapper {
   z-index: 150 !important;
+  background-color: get-theme-for($background, 'primary') !important;
 }
 .loader-animation > path {
   &:nth-child(1) {
