@@ -5,6 +5,7 @@ import SwapButton from '@/components/UI/SwapButton.vue'
 
 import { shallowMount } from '@vue/test-utils'
 import { stubComponent } from '../../../__helpers__/stubComponent'
+import '../../../__mocks__/canShare.mock'
 
 const ModalWrapperStub = stubComponent(ModalWrapper, {
   template: '<div><slot name="header"></slot><slot></slot><slot name="footer"></slot></div>'
@@ -97,7 +98,4 @@ describe('WalletCreate', () => {
     expect(dataCopyButton.props().label).toBe(testData.value)
     expect(dataCopyButton.props().value).toBe(testData.value)
   })
-
-  it.todo('v-for="social in $options.SOCIALS"')
-  it.todo(':src="qrCodeSrc"')
 })
