@@ -4,7 +4,7 @@ import { createNanoEvents } from 'nanoevents'
 
 import { CURRENT_PROFILE_ID_KEY, events, PROFILES_KEY } from './types'
 
-const TEMPORARY_PROFILE_ID = 'temporaryProfile'
+export const TEMPORARY_PROFILE_ID = 'temporaryProfile'
 
 function getEmptyProfile() {
   return {
@@ -75,7 +75,7 @@ function setupLocalStorage() {
 
 setupLocalStorage()
 
-function createProfilesService() {
+export function createProfilesService() {
   const emitter = createNanoEvents()
 
   const profilesList = getStorage(PROFILES_KEY) || []
